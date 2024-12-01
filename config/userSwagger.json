@@ -1,0 +1,725 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Cary You",
+        "description": "Cary You",
+        "version": "1.0"
+    },
+    "produces": ["application/json"],
+    "basePath": "/",
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "authorization",
+            "in": "header"
+        }
+    },
+    "paths": {
+        "/users/signUp": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-signUp-post",
+                "tags": ["Application User"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "fullName",
+                        "in": "formData",
+                        "description": "Enter the firstName",
+                        "required": true,
+                        "type": "string",
+                        "value": "Vaneet kumar"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Enter the email",
+                        "required": true,
+                        "type": "string",
+                        "value": "vaneet@gmail.com"
+                    },
+                    {
+                        "name": "countryCode",
+                        "in": "formData",
+                        "description": "Enter countryCode ",
+                        "required": true,
+                        "type": "string",
+                        "value": "+91"
+                    },
+                    {
+                        "name": "phoneNumber",
+                        "in": "formData",
+                        "description": "Enter phone number",
+                        "required": true,
+                        "type": "string",
+                        "value": "8628023157"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "Enter password",
+                        "required": true,
+                        "type": "string",
+                        "value": "123456"
+                    },
+                    {
+                        "name": "profilePicture",
+                        "in": "formData",
+                        "description": "Profile picture to upload",
+                        "required": false,
+                        "type": "file",
+                        "format": "binary",
+                        "maxLength": 5242880,
+                        "allowedMimeTypes": [
+                          "image/jpeg",
+                          "image/png"
+                        ]
+                    },
+                    {
+                        "name": "deviceToken",
+                        "in": "formData",
+                        "description": "Enter deviceToken",
+                        "required": false,
+                        "type": "string",
+                        "value": ""
+                    },
+                    {
+                        "name": "deviceType",
+                        "in": "formData",
+                        "description": "Enter deviceType",
+                        "enum": [1,2],
+                        "required": false,
+                        "type": "number",
+                        "value": 1
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/login": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-login-post",
+                "tags": ["Application User"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Enter the email",
+                        "required": true,
+                        "type": "string",
+                        "value": "test@gmail.com"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "Enter password",
+                        "required": true,
+                        "type": "string",
+                        "value": "123456"
+                    },
+                    {
+                        "name": "deviceToken",
+                        "in": "formData",
+                        "description": "Enter deviceToken",
+                        "required": false,
+                        "type": "string",
+                        "value": ""
+                    },
+                    {
+                        "name": "deviceType",
+                        "in": "formData",
+                        "description": "Enter deviceType",
+                        "enum": [1,2],
+                        "required": false,
+                        "type": "number",
+                        "value": 1
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/socialLogin": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-socialLogin-post",
+                "tags": ["Application User"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "socialId",
+                        "in": "formData",
+                        "description": "Enter the socialId",
+                        "required": true,
+                        "type": "string",
+                        "value": ""
+                    },
+                    {
+                        "name": "socialType",
+                        "in": "formData",
+                        "description": "Enter the socialType",
+                        "required": true,
+                        "enum":[1,2,3,4],
+                        "type": "string",
+                        "value": ""
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Enter the email",
+                        "required": true,
+                        "type": "string",
+                        "value": "vaneet@gmail.com"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": false,
+                        "type": "string",
+                        "value": "vaneet kumar"
+                    },
+                    {
+                        "name": "deviceToken",
+                        "in": "formData",
+                        "description": "Enter deviceToken",
+                        "required": false,
+                        "type": "string",
+                        "value": ""
+                    },
+                    {
+                        "name": "deviceType",
+                        "in": "formData",
+                        "description": "Enter deviceType",
+                        "enum": [1,2],
+                        "required": false,
+                        "type": "number",
+                        "value": 1
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/deleteAccount": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-deleteAccount-post",
+                "tags": ["Application User"],
+                "description": "",
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
+				"parameters": [
+					
+				],
+                "responses": {}
+            }
+        },
+        "/users/updateProfile": {
+            "patch": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-updateProfile-post",
+                "tags": ["Application User"],
+                "description": "",
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
+                "parameters": [
+                    {
+                        "name": "fullName",
+                        "in": "formData",
+                        "description": "Enter the firstName",
+                        "required": false,
+                        "type": "string",
+                        "value": "Vaneet kumar"
+                    },
+                    {
+                        "name": "countryCode",
+                        "in": "formData",
+                        "description": "Enter the countryCode",
+                        "required": false,
+                        "type": "string",
+                        "value": "+91"
+                    },
+                    {
+                        "name": "phoneNumber",
+                        "in": "formData",
+                        "description": "Enter phone number",
+                        "required": false,
+                        "type": "string",
+                        "value": "8628023157"
+                    },
+                    {
+                        "name": "profilePicture",
+                        "in": "formData",
+                        "description": "Profile picture to upload",
+                        "required": false,
+                        "type": "file",
+                        "format": "binary",
+                        "maxLength": 5242880,
+                        "allowedMimeTypes": [
+                          "image/jpeg",
+                          "image/png"
+                        ]
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/logout": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-logout-post",
+                "tags": ["Application User"],
+                "description": "",
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
+				"parameters": [
+					
+				],
+                "responses": {}
+            }
+        },
+        "/users/changePassword": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-changePassword-post",
+                "tags": ["Application User"],
+                "description": "",
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
+                "parameters": [
+                    {
+                        "name": "currentPassword",
+                        "in": "formData",
+                        "description": "Enter the currentPassword",
+                        "required": true,
+                        "type": "string",
+                        "value": "123456"
+                    },
+                    {
+                        "name": "newPassword",
+                        "in": "formData",
+                        "description": "Enter newPassword ",
+                        "required": true,
+                        "type": "string",
+                        "value": "123456"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/forgotPassword": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-forgotPassword-post",
+                "tags": ["Application User"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Enter the email",
+                        "required": false,
+                        "type": "string",
+                        "value": "vaneet@gmail.com"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/otpSend": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-otpSend-post",
+                "tags": ["Application User"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "countryCode",
+                        "in": "formData",
+                        "description": "Enter the countryCode",
+                        "required": false,
+                        "type": "string",
+                        "value": "+91"
+                    },
+                    {
+                        "name": "phoneNumber",
+                        "in": "formData",
+                        "description": "Enter the phoneNumber",
+                        "required": false,
+                        "type": "string",
+                        "value": "8628023157"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/otpVerify": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-otpVerify-post",
+                "tags": ["Application User"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "countryCode",
+                        "in": "formData",
+                        "description": "Enter the countryCode",
+                        "required": false,
+                        "type": "string",
+                        "value": "+91"
+                    },
+                    {
+                        "name": "phoneNumber",
+                        "in": "formData",
+                        "description": "Enter the phoneNumber",
+                        "required": false,
+                        "type": "string",
+                        "value": "8628023157"
+                    },
+                    {
+                        "name": "otp",
+                        "in": "formData",
+                        "description": "Enter the otp",
+                        "required": false,
+                        "type": "string",
+                        "value": "1414"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/resendOtp": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-resendOtp-post",
+                "tags": ["Application User"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "countryCode",
+                        "in": "formData",
+                        "description": "Enter the countryCode",
+                        "required": false,
+                        "type": "string",
+                        "value": "+91"
+                    },
+                    {
+                        "name": "phoneNumber",
+                        "in": "formData",
+                        "description": "Enter the phoneNumber",
+                        "required": false,
+                        "type": "string",
+                        "value": "8628023157"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/addAddress": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-addAdddress-post",
+                "tags": ["Application User"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "fullName",
+                        "in": "formData",
+                        "description": "Enter the firstName",
+                        "required": true,
+                        "type": "string",
+                        "value": "Vaneet kumar"
+                    },
+                    {
+                        "name": "address",
+                        "in": "formData",
+                        "description": "Enter the address",
+                        "required": true,
+                        "type": "string",
+                        "value": "Mohali chandigarh"
+                    },
+                    {
+                        "name": "countryCode",
+                        "in": "formData",
+                        "description": "Enter countryCode ",
+                        "required": true,
+                        "type": "string",
+                        "value": "+91"
+                    },
+                    {
+                        "name": "phoneNumber",
+                        "in": "formData",
+                        "description": "Enter phone number",
+                        "required": true,
+                        "type": "string",
+                        "value": "8628023157"
+                    },
+                    {
+                        "name": "city",
+                        "in": "formData",
+                        "description": "Enter city",
+                        "required": true,
+                        "type": "string",
+                        "value": "123456"
+                    },
+                    {
+                        "name": "state",
+                        "in": "formData",
+                        "description": "Enter state",
+                        "required": false,
+                        "type": "string",
+                        "value": "Mohali"
+                    },
+                    {
+                        "name": "zipCode",
+                        "in": "formData",
+                        "description": "Enter zipCode",
+                        "required": false,
+                        "type": "string",
+                        "value": "123456"
+                    },
+                    {
+                        "name": "type",
+                        "in": "formData",
+                        "description": "Enter zipCode ==> 1 for home , 2 for work, 3 for other" ,
+                        "required": false,
+                        "enum":[1,2,3],
+                        "type": "number",
+                        "value": 1
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/addressList": {
+            "get": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-addressList-post",
+                "tags": ["Application User"],
+                "description": "",
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
+				"parameters": [
+					
+				],
+                "responses": {}
+            }
+        },
+        "/users/stripeDetail": {
+            "get": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-stripeDetail-post",
+                "tags": ["Application Stripe"],
+                "description": "",
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
+				"parameters": [
+					
+				],
+                "responses": {}
+            }
+        },
+        "/users/createCard": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-createCard-post",
+                "tags": ["Application Stripe"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "cardToken",
+                        "in": "formData",
+                        "description": "Enter the cardToken",
+                        "required": true,
+                        "type": "string",
+                        "value": ""
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/deleteCard": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-deleteCard-post",
+                "tags": ["Application Stripe"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "cardId",
+                        "in": "formData",
+                        "description": "Enter the cardId",
+                        "required": true,
+                        "type": "string",
+                        "value": ""
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/cardsList": {
+            "get": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-cardsList-post",
+                "tags": ["Application Stripe"],
+                "description": "",
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
+				"parameters": [
+					
+				],
+                "responses": {}
+            }
+        },
+        "/users/createPaymentUsingCard": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-createPaymentUsingCard-post",
+                "tags": ["Application Stripe"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "cardId",
+                        "in": "formData",
+                        "description": "Enter the cardId",
+                        "required": true,
+                        "type": "string",
+                        "value": ""
+                    },
+                    {
+                        "name": "amount",
+                        "in": "formData",
+                        "description": "Enter the amount",
+                        "required": true,
+                        "type": "number",
+                        "value": ""
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/stripeConnect": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-stripeConnect-post",
+                "tags": ["Application Stripe"],
+                "description": "",
+                "parameters": [
+                 
+                ],
+                "responses": {}
+            }
+        },
+        "/users/addExternalBankAccount": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-addExternalBankAccount-post",
+                "tags": ["Application Stripe"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "accountHolderName",
+                        "in": "formData",
+                        "description": "Enter the accountHolderName",
+                        "required": true,
+                        "type": "string",
+                        "value": "Vaneet kumar"
+                    },
+                    {
+                        "name": "routingNumber",
+                        "in": "formData",
+                        "description": "Enter the routingNumber",
+                        "required": true,
+                        "type": "string",
+                        "value": "110000000"
+                    },
+                    {
+                        "name": "accountNumber",
+                        "in": "formData",
+                        "description": "Enter the accountNumber (this is the link of number https://docs.stripe.com/connect/testing)",
+                        "required": true,
+                        "enum":["000123456789","000111111116","000111111113","000222222227","000333333335","000444444440","000888888883"],
+                        "type": "string",
+                        "value": "000123456789"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/makeDefaultBankAccount": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-makeDefaultBankAccount-post",
+                "tags": ["Application Stripe"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "bankAccountId",
+                        "in": "formData",
+                        "description": "Enter the bankAccountId",
+                        "required": true,
+                        "type": "string",
+                        "value": ""
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/bankAccountList": {
+            "get": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-bankAccountList-post",
+                "tags": ["Application Stripe"],
+                "description": "",
+                "parameters": [
+                   
+                ],
+                "responses": {}
+            }
+        },
+        "/users/deleteExternalAccount": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-deleteExternalAccount-post",
+                "tags": ["Application Stripe"],
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "bankAccountId",
+                        "in": "formData",
+                        "description": "Enter the bankAccountId",
+                        "required": true,
+                        "type": "string",
+                        "value": ""
+                    }
+                ],
+                "responses": {}
+            }
+        }
+
+    },
+    "definitions": {
+    }
+}
