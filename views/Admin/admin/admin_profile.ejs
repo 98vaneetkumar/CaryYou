@@ -1,0 +1,198 @@
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <h1>Profile</h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="/Dashboard">Dashboard</a></div>
+        <div class="breadcrumb-item">Profile</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="card">
+        <form action="/admin/Update_admin_profile" method="post" id="addForm" enctype="multipart/form-data">
+          <div class="row mt-sm-4 justify-content-center ">
+            <div class="col-12 col-md-12 col-lg-4">
+              <div class="card profile-widget">
+                <div class="profile-widget-header text-center py-3">
+                  <% if(session.image !='' ) { %>
+                    <img alt="image" width="200" height="200" id="blah" src="<%=session.image%>"
+                      class="profile_img rounded-circle"></td>
+                    <% } else { %>
+                      <img src="/assets/img/defaultimage.jpg" width="200" height="200" id="blah"
+                        class="profile_img rounded-circle" alt=""></td>
+                      <% } %>
+                        <input type="file" name="image" title="" value="<%=session.image%>" id="imgInp" accept=""
+                          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+                </div>
+
+              </div>
+            </div>
+            <div class="col-12 col-md-12 col-lg-7">
+              <div class="card-body">
+                <div class="form-group col-12 floating-addon">
+                  <label>Name</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-user"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="text" class="form-control" name="name" value="<%=session.name%>" required>
+                  <input type="hidden" name="hiddenid" value="">
+                </div>
+
+                <div class="form-group col-12 floating-addon">
+                  <label> Email</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-envelope"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="email" class="form-control" name="email" value="<%=session.email%>" disabled>
+                  <input type="hidden" name="" value="">
+                  <div class="invalid-feedback">
+                    Please fill in the email
+                  </div>
+                </div>
+                <div class="form-group col-12 floating-addon">
+                  <label> Phone </label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-phone"></i>
+                      </div>
+                    </div>
+                    <input type="text" class="form-control" name="phone"
+                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                      maxlength="12" value="<%=session.phone%>" required>
+                    <div class="invalid-feedback">
+                      Please fill in the name
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="form-group">
+                  <div class="col-sm-12 col-md-12 text-right">
+                    <button type="submit" class="btn btn-success">Update</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+<script>
+  imgInp.onchange = evt => {
+    const [file] = imgInp.files
+    if (file) {
+      blah.src = URL.createObjectURL(file)
+    }
+  }
+</script>
+
+<style>
+  .error {
+    color: red !important;
+  }
+</style>
+
+<script>
+  $(document).ready(function () {
+
+    jQuery.validator.addMethod("noSpace", function (value, element) {
+      console.log(value,"MMMMMMMMMMM")
+      return value == '' || value.trim().length != 0;
+    },
+
+      jQuery.validator.addMethod("emailExt", function (value, element, param) {
+        return value.match(/^[a-zA-Z0-9_\.%\+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/);
+      }, 'Your e-mail is wrong'),
+
+
+      $('form[id="addForm"]').validate({
+        keypress: function (element) {
+          var element_id = $(element).attr('id');
+          if (this.settings.rules[element_id].keypress !== false) {
+            $(element).valid();
+          }
+        },
+
+        rules: {
+          name: {
+            required: true,
+            noSpace: true,
+            maxlength: 30
+          },
+          lastname: {
+            required: true,
+            noSpace: true,
+            maxlength: 20
+          },
+          email: {
+            required: true,
+            noSpace: true,
+            emailExt: true
+          },
+          password: {
+            noSpace: true,
+            required: true,
+            minlength: 5
+          },
+          phone: {
+            digits: true,
+            required: true,
+            noSpace: true,
+            minlength: 10,
+            maxlength: 12
+          },
+          location: {
+            required: true,
+            noSpace: true,
+            maxlength: 20
+          },
+
+        },
+        messages: {
+
+          name: {
+            required: "This field is required.",
+            noSpace: "Space not allowed",
+            maxlength: "First name should be 30 charcater"
+          },
+
+          lastname: {
+            required: "This field is required.",
+            noSpace: "Space not allowed",
+            maxlength: "Last name should be 20 charcater"
+          },
+
+          email: {
+            required: " This filed is required"
+          },
+          phone: {
+            required: "This field is required.",
+            noSpace: "Space not allowed",
+            maxlength: "Phone Number should be 12 charcater"
+          },
+          location: {
+            required: "This field is required.",
+            noSpace: "Space not allowed",
+            maxlength: "Location should be 20 charcater"
+          },
+
+        },
+        submitHandler: function (form) {
+          form.submit();
+        }
+      }));
+  });
+</script>

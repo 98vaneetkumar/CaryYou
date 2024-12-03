@@ -1,0 +1,145 @@
+<!-- Main Content -->
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <h1>Dashboard</h1>
+    </div>
+    <div class="row">
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="/admin/user_list">
+          <div class="card card-statistic-1">
+            <div class="card-icon bg-cyan">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4><b> Users</b></h4>
+              </div>
+              <div class="card-body">
+                <%=user%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <!-- <a href="/admin/list_provider"> -->
+          <a href="#">
+
+          <div class="card card-statistic-1">
+            <div class="card-icon bg-info">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4><b>Providers</b></h4>
+              </div>
+              <div class="card-body">
+                <%=provider%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <!-- <a href="/admin/service_listing"> -->
+          <a href="#">
+
+          <div class="card card-statistic-1">
+            <div class="card-icon bg-warning">
+              <i class="fas fa-list"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4><b>Services</b></h4>
+              </div>
+              <div class="card-body">
+                <%=servicesdata%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <!-- <a href="/admin/service_listing"> -->
+          <a href="#">
+
+          <div class="card card-statistic-1">
+            <div class="card-icon bg-info">
+              <i class="fas fa-list"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4><b>Contact Us</b></h4>
+              </div>
+              <div class="card-body">
+                <%=contactus%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+     
+
+
+    </div>
+    <div class="col-12 col-md-6 col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Number Of Response</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="myChart"></canvas>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+</div>
+
+<script>
+  setTimeout(function() {
+    $("div.msg").fadeOut();
+  }, 2000);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<!-- <script>
+
+  var totalUsers = `<%=user%>`;
+  var totalProviders = `<%=provider%>`; // Example data for total providers
+  
+  new Chart("myChart", {
+    type: "bar", 
+    data: {
+            labels: ['Users','Providers'],
+            datasets: [{
+                label: ['Users'],
+                
+                data: [totalUsers, totalProviders],
+                backgroundColor: [
+                'rgba(83, 167, 172, 0.9)', 
+                '#a3d349',
+                
+              ],
+              barThickness:130
+            }]
+        },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            min: 0, // Min value for y-axis
+            max: 100 
+          }
+        }]
+      }
+    },
+    barPercentage: 1,
+      categoryPercentage: 0.8
+  });
+</script> -->

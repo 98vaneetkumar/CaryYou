@@ -10,8 +10,9 @@ const otpManager = require("node-twillo-otp-manager")(
 const stripe = require("stripe")(process.env.STRIPE_SK);
 const commonHelper = require("../helpers/commonHelper.js.js");
 const helper = require("../helpers/validation.js");
-const Models = require("../models/index");
+const Models = require("../Models/index");
 const Response = require("../config/responses.js");
+
 
 // const stripeReturnUrl="http://localhost:3000/users/stripe_return_url"
 const stripeReturnUrl="https://example.com/reauth"
@@ -86,7 +87,8 @@ module.exports = {
         deviceToken: payload.deviceToken,
         deviceType: payload.deviceType,
         customerId:customer.id,
-        loginTime:time
+        loginTime:time,
+        role: 1
       };
 
       let response = await Models.userModel.create(objToSave);
@@ -384,8 +386,8 @@ module.exports = {
     try {
       const schema = Joi.object().keys({
         fullName: Joi.string().optional(),
-        countryCode: Joi.string().optional()
-,       phoneNumber: Joi.string().optional(),
+        countryCode: Joi.string().optional(),
+        phoneNumber: Joi.string().optional(),
       });
 
       let payload = await helper.validationJoi(req.body, schema);
@@ -405,7 +407,7 @@ module.exports = {
       };
 
       await Models.userModel.updateOne(
-        { _id: _id }, // Filter by the user's ID
+        { _id: user.id }, // Filter by the user's ID
         { $set: updateProfile } // Update the  field
       );
     
@@ -452,7 +454,7 @@ module.exports = {
       );
 
       await Models.userModel.updateOne(
-        { _id: _id }, // Filter by the user's ID
+        { _id: user.id }, // Filter by the user's ID
         { $set: { password: hashedNewPassword } } // Update the password field
       );
 

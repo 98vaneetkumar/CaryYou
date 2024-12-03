@@ -109,7 +109,7 @@
                         "description": "Enter the email",
                         "required": true,
                         "type": "string",
-                        "value": "test@gmail.com"
+                        "value": "vaneet@gmail.com"
                     },
                     {
                         "name": "password",
@@ -434,6 +434,11 @@
                 "operationId": "users-addAdddress-post",
                 "tags": ["Application User"],
                 "description": "",
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
                 "parameters": [
                     {
                         "name": "fullName",

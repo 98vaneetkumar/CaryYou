@@ -6,11 +6,19 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const fileUpload = require("express-fileupload");
 const http = require("http");
+const session = require('express-session')
 const socketio = require("socket.io");
 const createError = require("http-errors");
+const flash = require('express-flash');
+var expressLayouts = require('express-ejs-layouts');
+const indexRouter = require("./routes/index");
+
+
+const port = process.env.PORT || '3000';
 
 // Initialize the Express app
 const app = express();
+
 
 // Create HTTP server and attach Socket.IO
 const server = http.createServer(app);
@@ -29,6 +37,10 @@ mongoose
 
 // Socket.IO Integration
 require("./socket/socket")(io);
+app.use("/", indexRouter);
+
+app.use(expressLayouts)
+app.set('layout', './Admin/layouts/layout')
 
 // View Engine Setup
 app.set("views", path.join(__dirname, "views"));
@@ -48,6 +60,16 @@ app.use(
     tempFileDir: "/tmp/",
   })
 );
+app.use(session({
+	secret: 'keyboard cat',
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		maxAge: 24 * 60 * 60 * 365 * 1000,
+	},
+}));
+app.use(flash())
+
 
 // Swagger UI Setup
 const swaggerUi = require("swagger-ui-express");
@@ -63,9 +85,11 @@ const swaggerOptions = {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerOptions));
 
 // Routes
-const indexRouter = require("./routes/index");
+const adminRouter = require('./routes/adminRoute')
 const usersRouter = require("./routes/users")(io); // Pass io to usersRouter if needed
-app.use("/", indexRouter);
+
+app.use('/admin', adminRouter);
+
 app.use("/users", usersRouter);
 
 // Catch 404 and Forward to Error Handler
@@ -80,9 +104,10 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render("error");
 });
- 
-// Export both app and server
-module.exports = { app, server };
+ server.listen(port, ()=>{
+  console.log(`server is running on port ${port}`)
+ })
+
 
 
 // https://chromewebstore.google.com/detail/firecamp-a-multi-protocol/eajaahbjpnhghjcdaclbkeamlkepinbl

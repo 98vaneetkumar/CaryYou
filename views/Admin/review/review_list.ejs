@@ -1,0 +1,170 @@
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <h1> Rating </h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="/Dashboard">Dashboard</a></div>
+        <div class="breadcrumb-item"><a href='/admin/review_list'>Rating</a></div>
+        <!-- <div class="breadcrumb-item">View Category</div> -->
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="col-12 col-md-6 col-lg-12">
+        <div class="table-responsive">
+          <table id="myTable" class="table table-hover table-md">
+            <thead class="text-center">
+              <tr style="background-color: #ebf2f2;">
+                <th scope="col">S No.</th>
+                <th scope="col">User Name</th>
+                <th scope="col">Provider Name</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Comment</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <% if(reviewdata?.length !=0){%>
+                <% reviewdata.forEach(function(data,i) { %>
+                  <tr>
+                    <td>
+                      <%=1+i%>
+                    </td>
+                    <td>
+                      <%=data.userId ? data.userId.name : "" %>
+                    </td>
+                    <td>
+                      <%=data.providerId ? data?.providerId?.name : "" %>
+                    </td>
+                    <td class="text-left">
+                      <% for (let j=1; j <=data.rating; j++) { %>
+                        <span class="text-warning h4 mb-0 star <%= j <= data.rating ? 'filled' : '' %>">&#9733;</span>
+                        <% } %>
+                    </td>
+                    <td>
+                      <%=data.comment%>
+                    </td>
+                    <td>
+                      <a href="/admin/view_review/<%=data._id%>" class="btn btn-sm bg-warning"><i class="fa fa-eye"
+                          aria-hidden="true"></i></a>
+                      <button onclick="confirmDelete('<%=data._id%>')" class="btn btn-sm bg-danger"> <i
+                          class="fa fa-trash"></i> </button>
+                    </td>
+                  </tr>
+                  <%})%>
+                    <%}%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<script>
+  $(document).ready(function () {
+    $('#myTable').DataTable();
+  });
+</script>
+
+<script>
+  setTimeout(function () {
+    $("div.msg").fadeOut();
+  }, 2000);
+</script>
+
+<script>
+  $(document).ready(function () {
+    // alert("ready!");
+  });
+
+  function confirmDelete(id) {
+    console.log(">>>>>>>>done>>>>>>>>>>", id)
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-warning',
+        cancelButton: 'btn btn-info'
+      },
+      buttonsStyling: true
+
+    })
+
+    // console.log("------------------------------result------", id);
+
+    swalWithBootstrapButtons.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((isConfirm) => {
+      // console.log(isConfirm)
+      // return
+      if (isConfirm.isConfirmed) {
+        // alert('asd')
+        $.ajax({
+          url: "/admin/delete_review/:id",
+          type: 'delete',
+          data: {
+            id: id
+          },
+          success: function (result) { }
+        });
+        swalWithBootstrapButtons.fire(
+          'Deleted!',
+          'The Rating has been deleted .',
+          'success'
+        ).then(() => {
+          location.reload();
+        })
+      } else {
+        swalWithBootstrapButtons.fire(
+          'Cancelled',
+          'The Rating is safe :)',
+          'error'
+        )
+      }
+    })
+
+  }
+</script>
+
+
+<script>
+  const changeStatus = (val) => {
+    console.log(val)
+    let id = val.getAttribute('data-id')
+    let value = val.getAttribute('value')
+    let elemID = val.getAttribute('id')
+    elemID = document.getElementById(elemID)
+
+    $.ajax({
+      type: "post",
+      url: "/admin/Category_status",
+      data: {
+        id: id,
+        value: value
+
+      },
+      success: function (data) {
+        if (data) {
+          elemID.setAttribute('value', 0)
+          elemID.innerText = `Active`
+          elemID.classList.remove('btn-danger')
+          elemID.classList.add('btn-success')
+        } else {
+          elemID.setAttribute('value', 1)
+          elemID.innerText = `IN-Active`
+          elemID.classList.remove('btn-success')
+          elemID.classList.add('btn-danger')
+        }
+
+      }
+    });
+  }
+
+</script>
