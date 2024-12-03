@@ -130,7 +130,9 @@ module.exports = {
       if (!user) {
         return commonHelper.failed(res, Response.failed_msg.userNotFound);
       }
-
+      if(user&&user.status === 0){
+        return commonHelper.failed(res, Response.failed_msg.notActiveAccountYet);
+      }
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {

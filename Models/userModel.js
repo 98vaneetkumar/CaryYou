@@ -79,8 +79,9 @@ const userSchema = new mongoose.Schema({
   },
   status: {
     type: Number,
-    default: 0
-  }
+    default: 0   // 1 means active and 0 means not active
+  },
+  admincommission:{type:Number,default:0},
 },
 { timestamps: true });
 

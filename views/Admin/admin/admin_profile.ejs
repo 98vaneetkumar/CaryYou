@@ -3,7 +3,7 @@
     <div class="section-header">
       <h1>Profile</h1>
       <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item active"><a href="/Dashboard">Dashboard</a></div>
+        <div class="breadcrumb-item active"><a href="/admin/dashboard">Dashboard</a></div>
         <div class="breadcrumb-item">Profile</div>
       </div>
     </div>
@@ -38,7 +38,7 @@
                       </div>
                     </div>
                   </div>
-                  <input type="text" class="form-control" name="name" value="<%=session.name%>" required>
+                  <input type="text" class="form-control" name="name" value="<%=session.fullName%>" required>
                   <input type="hidden" name="hiddenid" value="">
                 </div>
 
@@ -67,7 +67,7 @@
                     </div>
                     <input type="text" class="form-control" name="phone"
                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-                      maxlength="12" value="<%=session.phone%>" required>
+                      maxlength="12" value="<%=session.phoneNumber%>" required>
                     <div class="invalid-feedback">
                       Please fill in the name
                     </div>

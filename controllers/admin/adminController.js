@@ -1,5 +1,6 @@
 const Models = require("../../Models/index");
 const bcrypt = require("bcrypt");
+const helper=require("../../helpers/commonHelper.js")
 
 module.exports = {
   login_page: async (req, res) => {
@@ -34,14 +35,20 @@ module.exports = {
       console.log(error);
     }
   },
+  logout: async (req, res) => {
+    try {
+      req.session.destroy((err) => { });
+      res.redirect("/admin/login");
+    } catch (error) {
+      helper.error(res, error);
+    }
+  },
 
   dashboard: async (req, res) => {
     try {
       let title = "dashboard";
       let user = await Models.userModel.countDocuments({ role: 1 });
       let provider = await Models.userModel.countDocuments({ role: 2 });
-      console.log("=====", user);
-      // return
       res.render("Admin/dashboard", {
         title,
         user,
@@ -53,6 +60,7 @@ module.exports = {
       });
     } catch (error) {
       console.log(error);
+      throw error
     }
   },
 
@@ -71,6 +79,7 @@ module.exports = {
       });
     } catch (error) {
       console.log(error);
+      throw error
     }
   },
 
@@ -87,6 +96,7 @@ module.exports = {
       });
     } catch (error) {
       console.log(error);
+      throw error
     }
   },
 
@@ -97,6 +107,7 @@ module.exports = {
       res.redirect("/admin/user_list");
     } catch (error) {
       console.log(error);
+      throw error
     }
   },
 
@@ -112,6 +123,118 @@ module.exports = {
       if (req.body.value == 1) res.send(true);
     } catch (error) {
       console.log(error);
+      throw error
+    }
+  },
+
+
+  admin_profile: async (req, res) => {
+    try {
+      let title = "admin_profile"
+      res.render('Admin/admin/admin_profile', { title, session: req.session.user, msg: req.flash('msg') })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+
+  update_admin_profile: async (req, res) => {
+    try {
+      if (req.files && req.files.image) {
+        var image = req.files.image;
+        if (image) {
+          req.body.image = await helper.fileUpload(image, "images");
+        }
+      }
+      console.log(req.session.user._id);
+      const userData = await Models.userModel.findByIdAndUpdate(
+        { _id: req.session.user._id },
+        {
+          name: req.body.name,
+          image: req.body.image,
+          phoneNumber: req.body.phone,
+        }
+      );
+      let data = await Models.userModel.findById({ _id: req.session.user._id });
+      req.session.user = data;
+      req.flash("msg", "Profile updated successfully");
+      if (userData) {
+        res.redirect("back");
+      } else {
+        res.redirect("back");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  change_password: async (req, res) => {
+    try {
+      let title = "change_password"
+      res.render('Admin/admin/change_password', { title, session: req.session.user, msg: req.flash('msg') })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+
+  Update_password: async function (req, res) {
+    try {
+      const schema = Joi.object().keys({
+        oldPassword: Joi.string().required(),
+        newPassword: Joi.string().required(),
+        confirm_password: Joi.string().required(),
+      });
+
+      let payload = await helper.validationJoi(req.body, schema);
+      let data = req.session.user;
+
+      if (data) {
+        let comp = await bcrypt.compare(payload.oldPassword, data.password);
+
+        if (comp) {
+          const bcryptPassword = await bcrypt.hash(req.body.newPassword, 10);
+          let create = await Models.userModel.updateOne(
+            { _id: data._id },
+            { password: bcryptPassword }
+          );
+          req.session.user = create;
+          req.flash('msg', 'Update password successfully')
+          res.redirect("/admin/login");
+        } else {
+          req.flash('msg', 'Old password do not match')
+          res.redirect("/admin/change_password");
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  },
+  admin_commission: async (req, res) => {
+    try {
+      let title = "commission"
+      let users = await Models.userModel.findOne({ _id: req.session.user._id });
+      res.render('Admin/commission/commission', { title, users, session: req.session.user, msg: req.flash('msg') })
+    }
+    catch (error) {
+      console.log(error);
+      throw error
+    }
+  },
+
+  update_commission: async (req, res) => {
+    try {
+
+      await Models.userModel.updateOne({ _id: req.session.user._id },
+        {
+          admincommission: req.body.admincommission
+        });
+      let users = await Models.userModel.findOne({ _id: req.session.user._id });
+      req.flash("msg", "Updated successfully")
+      res.redirect('/admin/admin_commission')
+
+    } catch (error) {
+      console.log(error)
+      throw error
     }
   },
 };

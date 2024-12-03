@@ -28,6 +28,7 @@ var success_msg = {
 
 var failed_msg = {
   userNotFound: "User not found",
+  notActiveAccountYet:"Account is not active yet",
   invalidPassword: "Invalid password",
   noAccWEmail: "No account exists with this email",
   pwdNoMatch: "Passwords do not match!",
