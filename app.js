@@ -41,6 +41,7 @@ app.use("/", indexRouter);
 
 app.use(expressLayouts)
 app.set('layout', './Admin/layouts/layout')
+app.set('layout', './SubAdmin/layouts/layout')
 
 // View Engine Setup
 app.set("views", path.join(__dirname, "views"));
@@ -87,10 +88,13 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerOptions));
 
 // Routes
 const adminRouter = require('./routes/adminRoute')
+const subAdminRouter = require('./routes/subAdminRoute')
 const usersRouter = require("./routes/usersRoute")(io); // Pass io to usersRouter if needed
 const riderRoute = require('./routes/ridersRoute')(io)
 
+
 app.use('/admin', adminRouter);
+app.use('/subadmin', subAdminRouter);
 app.use("/users", usersRouter);
 app.use('/rider', riderRoute)
 

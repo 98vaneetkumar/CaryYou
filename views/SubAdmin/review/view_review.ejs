@@ -1,0 +1,65 @@
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <h1>View Rating</h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="/subAdmin/dashboard">Dashboard</a></div>
+        <div class="breadcrumb-item"><a href='/review_list'>Rating</a></div>
+        <div class="breadcrumb-item">View Rating</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <form action="/subAdmin/Update_Profile" method="post" enctype="multipart/form-data">
+        <div class="row mt-sm-4 justify-content-center">
+          <div class="col-12 col-md-12 col-lg-10 offset-lg-0">
+            <div class="card">
+              <div class="card-body">
+                <div class="form-group ">
+                  <label class="col-form-label text-md-right col-12 col-md-5 col-lg-3">User Name</label>
+                  <div class="col-sm-12 col-md-12">
+                    <input type="text" name="userId" value="<%=userdata?.userId?.name%>" class="form-control" disabled>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Provider Name</label>
+                  <div class="col-sm-12 col-md-12">
+                    <input type="text" name="workerId" value="<%=userdata?.providerId?.name%>" class="form-control"
+                      disabled>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Rating</label>
+                  <div class="col-sm-12 col-md-12">
+                    <input type="text" name="rating" value="<%=userdata?.rating%>" class="form-control" disabled>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Comment</label>
+                  <div class="col-sm-12 col-md-12">
+                    <textarea name="" id="" rows="4" class="form-control h-auto"
+                      disabled><%=userdata?.comment%></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-12 col-md-12 text-right mt-4">
+                    <a href="/subAdmin/Review_list" class="btn btn-info">Back</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+
+
+<script>
+  imgInp.onchange = evt => {
+    const [file] = imgInp.files
+    if (file) {
+      blah.src = URL.createObjectURL(file)
+    }
+  }
+</script>

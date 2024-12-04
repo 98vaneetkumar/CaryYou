@@ -1,0 +1,94 @@
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <h1>Portal Images</h1>
+    </div>
+    <div class="section-body">
+      <div class="card">
+        <form action="" method="post" enctype="multipart/form-data">
+          <% if(portals.length !=0){ %>
+            <div class="row">
+              <% for (let i=0; i < portals.length; i++) { %>
+                <% let data=portals[i]; %>
+                  <div class="col-md-3">
+                    <div class="card">
+                      <img alt="image" src="<%= data %>" class="img-fluid" data-toggle="tooltip" title="Portal Image">
+                    </div>
+                  </div>
+                  <% } %>
+            </div>
+            <% } else { %>
+              <div class="text-center">
+                <p> Portal Images Unavailable .</p>
+
+              </div>
+              <% } %>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<style>
+  /* Custom styles for image layout */
+  .card {
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: scale-down;
+    border-radius: 5px;
+  }
+</style>
+
+<script>
+  $(document).ready(function () {
+    $('#myTable').DataTable();
+  });
+  $(document).ready(function () {
+    $('#myTable2').DataTable();
+  });
+  $(document).ready(function () {
+    $('#myTable3').DataTable();
+  });
+  setTimeout(function () {
+    $("div.msg").fadeOut();
+  }, 2000);
+
+  const changeStatus = (val) => {
+    console.log(val)
+    let id = val.getAttribute('data-id')
+    let value = val.getAttribute('value')
+    let elemID = val.getAttribute('id')
+    elemID = document.getElementById(elemID)
+
+    $.ajax({
+      type: "post",
+      url: "/subAdmin/view_worker_status",
+      data: {
+        id: id,
+        value: value
+
+      },
+      success: function (data) {
+        if (data) {
+          elemID.setAttribute('value', 0)
+          elemID.innerText = `Approved`
+          elemID.classList.remove('btn-danger')
+          elemID.classList.add('btn-success')
+        } else {
+          elemID.setAttribute('value', 1)
+          elemID.innerText = `Un-approved`
+          elemID.classList.remove('btn-success')
+          elemID.classList.add('btn-danger')
+        }
+        window.location.reload();
+      }
+    });
+  }
+</script>

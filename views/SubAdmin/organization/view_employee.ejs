@@ -1,0 +1,186 @@
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <h1>View Employee</h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="/subAdmin/dashboard">Dashboard</a></div>
+        <div class="breadcrumb-item"><a href="/employee/<%=cateData?.orgId%>">Employee</a></div>
+        <div class="breadcrumb-item">View Employee</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="card">
+        <form action="/subAdmin/employee/<%=cateData?.orgId%>" method="get" enctype="multipart/form-data">
+          <div class="row mt-sm-4 justify-content-center ">
+            <div class="col-12 col-md-6 col-lg-4">
+              <!-- <div class="card profile-widget"> -->
+              <div class="profile-widget-header text-center py-3">
+                <img alt="image" width="200" height="200" id="blah" src="<%=cateData?.image%>"
+                  class="profile_img rounded-circle">
+              </div>
+              <!-- </div> -->
+            </div>
+            <div class="col-12 col-lg-8 offset-lg-0">
+              <form action="" method="post" class="needs-validation" enctype="multipart/form-data" novalidate="">
+                <div class="card-body">
+                  <div class="form-group col-8 floating-addon">
+                    <label> Name</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <input type="text" class="form-control" value="<%=cateData?.name%>" disabled>
+                    <input type="hidden" name="id" value="">
+                    <div class="invalid-feedback">
+                      Please fill in the name
+                    </div>
+                  </div>
+                  <div class="form-group col-8 floating-addon">
+                    <label>Email</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <input type="text" class="form-control" value="<%=cateData?.email%>" disabled>
+                    <input type="hidden" name="id" value="">
+                    <div class="invalid-feedback">
+                      Please fill in the name
+                    </div>
+                  </div>
+                  <div class="form-group col-8 floating-addon">
+                    <label>Phone</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <input type="text" class="form-control" value="<%=cateData?.phone%>" disabled>
+                    <input type="hidden" name="id" value="">
+                    <div class="invalid-feedback">
+                      Please fill in the name
+                    </div>
+                  </div>
+                  <div class="form-group col-8 floating-addon">
+                    <label>Address</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <input type="text" class="form-control" value="<%=cateData?.address%>" disabled>
+                    <input type="hidden" name="id" value="">
+                    <div class="invalid-feedback">
+                      Please fill in the name
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-12 col-md-5 text-right mt-4">
+                      <button type="submit" class="btn btn-success">Back</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <div class="col-12 col-md-6 col-lg-12">
+        <div class="section-header">
+          <h1>Employee 's Booking</h1>
+        </div>
+        <div class="table-responsive  mt-3">
+          <table id="myTable" class="table table-hover table-md">
+            <thead>
+              <tr style="background-color: #ebf2f2;">
+                <th scope="col">S No.</th>
+                <!-- <th scope="col">Image</th> -->
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Services</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Price</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody class="table_data">
+              <% if(geyJob.length !=0){%>
+                <% geyJob.forEach(function(data,i) { %>
+                  <tr>
+                    <td>
+                      <%=1+i%>
+                    </td>
+                    <!-- <% if(data.image !='' ) { %>
+                        <td> <img alt="" width="50" height="50" id="blah" src="<%=data.image%>" class="profile_img rounded-circle"></td>
+                         <% } else { %>
+                         <td> <img src="/assets/img/defaultimage.jpg" width="50" height="50" id="blah" 
+                          class="profile_img rounded-circle" alt=""></td>
+                           <% } %> -->
+                    <td>
+                      <%=data.userId ? data.userId.name : "user not available" %>
+                    </td>
+                    <td>
+                      <%=data.userId ? data.userId.email : "email not available" %>
+                    </td>
+                    <td>
+                      <%=data.serviceId ? data.serviceId.service : "" %>
+                    </td>
+                    <td>
+                      <%=data.date%>
+                    </td>
+                    <td>
+                      <%=data.time%>
+                    </td>
+                    <td>
+                      <%=data.price%>
+                    </td>
+
+                    <% if(data.status==0 ) { %>
+                      <td> <button id="userId_<%-data.id%>" class=" btn btn-sm btn-success status "
+                          data-id="<%=data._id%>" value="0" disabled>Processing</button></td>
+                      <% } else { %>
+                        <td> <button id="userId_<%-data.id%>" class=" btn btn-sm btn-success status "
+                            data-id="<%=data._id%>" value="1" disabled>Ongoing</button></td>
+                        <% } %>
+                  </tr>
+                  <%})%>
+                    <%}%>
+            </tbody>
+            <tbody class="append_tbody">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#myTable').DataTable();
+  });
+
+  setTimeout(function () {
+    $("div.msg").fadeOut();
+  }, 2000);
+</script>
+<script>
+  imgInp.onchange = evt => {
+    const [file] = imgInp.files
+    if (file) {
+      blah.src = URL.createObjectURL(file)
+    }
+  }
+</script>
