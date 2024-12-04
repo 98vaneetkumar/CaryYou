@@ -2,5 +2,6 @@
 module.exports={
     adminController: require("./admin/adminController"),
     cmsController:require("./admin/cmsController"),
-    userController:require("./userController")
+    userController:require("./userController"),
+    riderController:require('./riderController')
 }

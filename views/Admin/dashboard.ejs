@@ -8,15 +8,15 @@
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/user_list">
-          <div class="card card-statistic-1">
-            <div class="card-icon bg-cyan">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #6666ff, #9999ff);">
+            <div class="card-icon" style="background: rgba(56, 56, 187, 0.8);">
               <i class="fas fa-user-tie"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4><b> Users</b></h4>
+                <h4 style="color: white; font-weight: bold;"><b> Users</b></h4>
               </div>
-              <div class="card-body">
+              <div class="card-body" style="color: white; font-weight: bold;">
                 <%=user%>
               </div>
             </div>
@@ -25,18 +25,16 @@
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <!-- <a href="/admin/list_provider"> -->
-          <a href="#">
-
-          <div class="card card-statistic-1">
-            <div class="card-icon bg-info">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cccc, #66cccc);">
+            <div class="card-icon" style="background: rgba(38, 152, 152, 0.8);">
               <i class="fas fa-users"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4><b>Providers</b></h4>
+                <h4 style="color: white; font-weight: bold;"><b>Providers</b></h4>
               </div>
-              <div class="card-body">
+              <div class="card-body" style="color: white; font-weight: bold;">
                 <%=provider%>
               </div>
             </div>
@@ -45,37 +43,34 @@
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <!-- <a href="/admin/service_listing"> -->
-          <a href="#">
-
-          <div class="card card-statistic-1">
-            <div class="card-icon bg-warning">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc99, #66cc99);">
+            <div class="card-icon" style="background: rgba(38, 151, 114, 0.8);">
               <i class="fas fa-list"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4><b>Services</b></h4>
+                <h4 style="color: white; font-weight: bold;"><b>Services</b></h4>
               </div>
-              <div class="card-body">
+              <div class="card-body" style="color: white; font-weight: bold;">
                 <%=servicesdata%>
               </div>
             </div>
           </div>
         </a>
       </div>
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <!-- <a href="/admin/service_listing"> -->
-          <a href="#">
 
-          <div class="card card-statistic-1">
-            <div class="card-icon bg-info">
-              <i class="fas fa-list"></i>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
+              <i class="far fa-address-book"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4><b>Contact Us</b></h4>
+                <h4 style="color: white; font-weight: bold;"><b>Contact Us</b></h4>
               </div>
-              <div class="card-body">
+              <div class="card-body" style="color: white; font-weight: bold;">
                 <%=contactus%>
               </div>
             </div>
@@ -83,14 +78,16 @@
         </a>
       </div>
 
-     
 
+    
 
     </div>
+
+    <!-- Number of Responses -->
     <div class="col-12 col-md-6 col-lg-6">
-      <div class="card">
+      <div class="card" style="background: linear-gradient(135deg, #cccccc, #eeeeee);">
         <div class="card-header">
-          <h4>Number Of Response</h4>
+          <h4 style="color: white; font-weight: bold;">Number Of Response</h4>
         </div>
         <div class="card-body">
           <canvas id="myChart"></canvas>
@@ -107,10 +104,11 @@
   }, 2000);
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
 <!-- <script>
 
-  var totalUsers = `<%=user%>`;
-  var totalProviders = `<%=provider%>`; // Example data for total providers
+  var totalUsers = <%=user%>;
+  var totalProviders = <%=provider%>; // Example data for total providers
   
   new Chart("myChart", {
     type: "bar", 
@@ -143,4 +141,3 @@
       categoryPercentage: 0.8
   });
 </script> -->
-

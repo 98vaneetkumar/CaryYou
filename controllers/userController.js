@@ -647,13 +647,22 @@ module.exports = {
   },
   createCard: async (req, res) => {
     try {
-      const {cardToken} =req.body
+      const { cardToken } = req.body;
       const response = await stripe.customers.createSource(
         req.user.customerId,
         {
           source: cardToken,
         }
       );
+
+      // Retrieve customer details to check existing default source
+      const customer = await stripe.customers.retrieve(req.user.customerId);
+
+      if (!customer.default_source) {
+        await stripe.customers.update(req.user.customerId, {
+            default_source: addedCard.id,
+        });
+    }
       return commonHelper.success(res,Response.success_msg.card_add , response);
     } catch (err) {
       console.log("error", err); // Fixed: changed commonHelper.error to err
@@ -697,6 +706,21 @@ module.exports = {
     } catch (error) {
       console.error("Error retrieving card list:", error);
       throw error;
+    }
+  },
+
+  setDefaultCard:async(req,res)=>{
+    try {
+      const updatedCustomer = await stripe.customers.update(
+        req.user.customerId,
+        {
+          default_source: req.body.cardId, // Set the card ID as the default source
+        }
+      );
+      return commonHelper.success(res, Response.success_msg.defaultCard_success)    
+    } catch (error) {
+      console.log(error)
+      throw error
     }
   },
 

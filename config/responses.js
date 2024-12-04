@@ -22,7 +22,8 @@ var success_msg = {
   external_bank_delete_success:"External bank account deleted successfully",
   default_bank_success:"Default bank account added successfully",
   bankAccountList: "Bank account list get successfully",
-  fundTransfer: "Fund transfer get successfully"
+  fundTransfer: "Fund transfer get successfully",
+  defaultCard_success: "Default card updated successfully"
 
 };
 

@@ -13,207 +13,196 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
     integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <!-- CSS Libraries -->
-  <!-- <link rel="stylesheet" href="../node_modules/bootstrap-social/bootstrap-social.css"> -->
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #1b1b1b, #2e2e2e);
+      overflow: hidden;
+    }
 
-  <!-- Template CSS -->
-  <link rel="stylesheet" href="../assets/css/style.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
+    /* Left side content */
+    .login-container {
+      position: absolute;
+      left: 0;
+      width: 40%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #181818, #232323);
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .login-brand {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-brand img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+    }
+
+    .card-header {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      border: none;
+      background: none;
+    }
+
+    .card-body {
+      background: none;
+      color: #e0e0e0;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #bbb;
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 25px;
+      padding: 10px 15px;
+      color: #fff;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-control:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn {
+      border-radius: 25px;
+      padding: 10px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, #ffafbd, #ffc3a0); /* Pastel gradient */
+      border: none;
+      width: 100%;
+      max-width: 250px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .btn-info:hover {
+      background: linear-gradient(135deg, #ffc3a0, #ffafbd);
+      transform: scale(1.05);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .footer-left {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #999;
+    }
+
+    .footer-left a {
+      color: #ff6f61;
+      text-decoration: none;
+    }
+
+    /* Right side: Static content */
+    .animation-container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, #181818, #232323);
+    }
+
+    .caryYou {
+      font-size: 60px;
+      font-weight: bold;
+      color: #ff6f61;
+      letter-spacing: 10px;
+    }
+
+    .slogan {
+      font-size: 24px;
+      font-weight: normal;
+      color: #ccc;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 
-<style>
-  .error {
-    color: red !important;
-  }
-</style>
-
-<style>
-  div#app {
-    background: url(/assets/img/bec.jpg);
-    background-size: cover;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-  }
-</style>
-<% if(msg !='' ) { %>
-  <div class="alert alert-success msg"
-      style="position: absolute; z-index: 9999; color:rgb(255, 255, 255); background-color: #68b752ed; right: 40px; top: 75px;">
-      <span style="font-size: 16px;">
-          <%= msg %>
-      </span>
-  </div>
-  <% } %>
-
 <body>
-  <div id="app">
-    <section class="section">
-      <div class="container">
-        <div class="row">
-          <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
-            <div class="login-brand">
-              <img src="../assets/img/logo.png" alt="logo" width="90" height="80" style="margin-top: 25px";
-                class="shadow-light ">
+  <!-- Left Side: Form -->
+  <div class="login-container">
+    <div class="login-box">
+      <div class="login-brand">
+        <img src="/assets/img/logo.png" alt="Logo" class="w-25">
+      </div>
+      <div class="card card-primary shadow-none overflow-hidden">
+        <div class="card-header">Sign in</div>
+        <div class="card-body">
+          <form method="POST" action="/admin/Login" id="addForm" class="needs-validation" novalidate="">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
             </div>
-            <div class="card card-primary shadow-none overflow-hidden">
-              <div class="card-header">
-                <h4>Sign in</h4>
-              </div>
-              <div class="card-body bg-light">
-                <form method="POST" action="/admin/Login" id="addForm" class="needs-validation" novalidate="">
-                  <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
-                  </div>
 
-                  <div class="form-group">
-                    <label>Password</label>
-                    <div class="passwordEye">
-                      <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
-                      <i class="fas fa-eye-slash int_eye" id="eye"></i>
-                    </div>
-                  </div>
-                  <br>
-
-                  <div class="offset-xl-3">
-                    <div class="form-group">
-                      <button type="submit" class="btn btn-info btn-lg btn-block" tabindex="4">
-                        Login
-                      </button>
-                    </div>
-                  </div>
-                </form>
-                <div class="footer-left mt-4">
-                  <div class="bullet"></div> <b>Design By </b>
-                  <a href="https://github.com/98vaneetkumar">Developer Vaneet kumar</a>
-                </div>
+            <div class="form-group">
+              <label>Password</label>
+              <div>
+                <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
               </div>
             </div>
+            <br>
+
+            <div class="form-group text-center">
+              <button type="submit" class="btn btn-info btn-lg" tabindex="4">
+                Login
+              </button>
+            </div>
+          </form>
+          <div class="footer-left mt-4">
+            <b>Design By</b>
+            <a href="https://github.com/98vaneetkumar">Developer Vaneet Kumar</a>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   </div>
 
-  <!-- General JS Scripts -->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-  <script src="../assets/js/stisla.js"></script>
-
-  <!-- JS Libraies -->
-  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-
-  <!-- Template JS File -->
-  <script src="../assets/js/scripts.js"></script>
-  <script src="../assets/js/custom.js"></script>
-
-  <!-- Page Specific JS File -->
-
+  <!-- Right Side: Static Content -->
+  <div class="animation-container">
+    <div class="caryYou">CaryYou</div>
+    <div class="slogan">Your Needs, Delivered with Ease!</div>
+  </div>
 </body>
 
 </html>
-
-<script>
-  setTimeout(function () {
-    $("div.msg").fadeOut();
-  }, 3000);
-
-  $('#eye').click(function () {
-
-    if ($(this).hasClass('fa-eye-slash')) {
-
-      $(this).removeClass('fa-eye-slash');
-
-      $(this).addClass('fa-eye');
-
-      $('#password').attr('type', 'text');
-
-    } else {
-
-      $(this).removeClass('fa-eye');
-
-      $(this).addClass('fa-eye-slash');
-
-      $('#password').attr('type', 'password');
-    }
-  });
-
-</script>
-
-<script>
-  function togglePasswordVisibility() {
-    var passwordInput = document.getElementById("password");
-    var eyeIcon = document.getElementById("eye");
-
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-      eyeIcon.classList.remove("fa-eye-slash");
-      eyeIcon.classList.add("fa-eye");
-    } else {
-      passwordInput.type = "password";
-      eyeIcon.classList.remove("fa-eye");
-      eyeIcon.classList.add("fa-eye-slash");
-    }
-  }
-</script>
-
-
-<script>
-  $(document).ready(function () {
-
-    jQuery.validator.addMethod("noSpace", function (value, element) {
-      return value == '' || value.trim().length != 0;
-    },
-
-      jQuery.validator.addMethod("emailExt", function (value, element, param) {
-        return value.match(/^[a-zA-Z0-9_\.%\+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/);
-      }, 'Your e-mail is wrong'),
-
-      $('form[id="addForm"]').validate({
-
-        keypress: function (element) {
-
-          var element_id = $(element).attr('id');
-          if (this.settings.rules[element_id].keypress !== false) {
-            $(element).valid();
-          }
-        },
-
-        rules: {
-          email: {
-            required: true,
-            emailExt: true
-          },
-          password: {
-            required: true,
-            minlength: 5
-          },
-
-        },
-        messages: {
-
-          email: {
-            required: " This filed is required"
-          },
-          password: {
-            required: "This filed is required",
-            minlength: "Password should be minmum 5 charcater"
-          },
-
-        },
-        submitHandler: function (form) {
-          form.submit();
-        }
-      }));
-  });
-</script>

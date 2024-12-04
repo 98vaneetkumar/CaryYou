@@ -598,6 +598,30 @@
                 "responses": {}
             }
         },
+        "/users/setDefaultCard": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "users-setDefaultCard-post",
+                "tags": ["Application Stripe"],
+                "description": "",
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
+				"parameters": [
+					{
+                        "name": "cardId",
+                        "in": "formData",
+                        "description": "Enter the cardId",
+                        "required": true,
+                        "type": "string",
+                        "value": ""
+                    }
+				],
+                "responses": {}
+            }
+        },
         "/users/createPaymentUsingCard": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",

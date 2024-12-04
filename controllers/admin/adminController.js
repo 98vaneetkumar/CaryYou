@@ -29,7 +29,9 @@ module.exports = {
       } else {
         req.session.user = findUser;
         req.flash("msg", "Login Successfully");
-        res.redirect("/admin/dashboard");
+        setTimeout(()=>{
+          res.redirect("/admin/dashboard");
+        }, 500)
       }
     } catch (error) {
       console.log(error);
