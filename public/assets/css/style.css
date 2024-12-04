@@ -2949,7 +2949,7 @@ ul.nav-tabs li.nav-item a.nav-link.active i {
   --danger: #fc544b;
   --light: #e3eaef;
   --dark: #191d21;
-  --theme: #94cd33ed;
+  --theme: #8174A0;
 }
 
 body,
@@ -4026,7 +4026,7 @@ body.layout-3 .navbar.navbar-secondary .navbar-nav>.nav-item .dropdown-menu .nav
 .dt-buttons .dt-button {
   padding: 5px 15px;
   border-radius: 4px;
-  background: #94cd33ed;
+  background: #8174A0;
   color: white;
   margin-right: 5px;
   font-weight: 400;
@@ -4161,7 +4161,7 @@ body.layout-3 .main-footer {
 .main-sidebar .sidebar-menu li.active a {
   color: #ffffff;
   font-weight: 600;
-  background-color: #92ce2b;
+  background-color: #8174A0;
 }
 
 .main-sidebar .sidebar-menu li.active a.has-dropdown:after {
