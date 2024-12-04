@@ -54,7 +54,8 @@ var error_msg = {
   otpVerErr: "Error while verifying the otp",
   otpResErr: "Failed to resend OTP",
   address_failed_add: "Failed to add address",
-  payment_failed:"Payment not successful"
+  payment_failed:"Payment not successful",
+  riderData_failed: "Error during entering rider's details"
 };
 
 module.exports = {

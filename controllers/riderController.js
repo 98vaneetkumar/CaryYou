@@ -14,7 +14,8 @@ module.exports = {
     try {
         
     } catch (error) {
-        
+      console.error("Error during entering rider's details:", error);
+      return commonHelper.error(res, Response.error_msg.riderData_failed, error.message);
     }
   },
 
