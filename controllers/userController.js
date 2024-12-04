@@ -54,6 +54,7 @@ module.exports = {
         password: Joi.string().required(),
         profilePicture: Joi.string().optional(),
         deviceToken: Joi.string().optional(),
+        role: Joi.number().valid(1, 2, 3, 4).required(),
         deviceType: Joi.number().valid(1, 2).optional(),
       });
 
@@ -88,7 +89,7 @@ module.exports = {
         deviceType: payload.deviceType,
         customerId:customer.id,
         loginTime:time,
-        role: 1
+        role: req.body.role
       };
 
       let response = await Models.userModel.create(objToSave);

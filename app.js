@@ -79,6 +79,7 @@ const swaggerOptions = {
     urls: [
       { url: "/user", name: "User API" },
       { url: "/business", name: "Business API" },
+      { url: "/rider", name: "Rider API" },
     ],
   },
 };
@@ -86,11 +87,12 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerOptions));
 
 // Routes
 const adminRouter = require('./routes/adminRoute')
-const usersRouter = require("./routes/users")(io); // Pass io to usersRouter if needed
+const usersRouter = require("./routes/usersRoute")(io); // Pass io to usersRouter if needed
+const riderRoute = require('./routes/ridersRoute')(io)
 
 app.use('/admin', adminRouter);
-
 app.use("/users", usersRouter);
+app.use('/rider', riderRoute)
 
 // Catch 404 and Forward to Error Handler
 app.use((req, res, next) => {

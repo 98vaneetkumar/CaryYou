@@ -15,11 +15,11 @@
         }
     },
     "paths": {
-        "/users/signUp": {
+        "/riders/signUp": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-signUp-post",
-                "tags": ["Application User"],
+                "operationId": "riders-signUp-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "parameters": [
                     {
@@ -105,11 +105,11 @@
                 "responses": {}
             }
         },
-        "/users/login": {
+        "/riders/login": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-login-post",
-                "tags": ["Application User"],
+                "operationId": "riders-login-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "parameters": [
                     {
@@ -149,11 +149,11 @@
                 "responses": {}
             }
         },
-        "/users/socialLogin": {
+        "/riders/socialLogin": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-socialLogin-post",
-                "tags": ["Application User"],
+                "operationId": "riders-socialLogin-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "parameters": [
                     {
@@ -210,11 +210,11 @@
                 "responses": {}
             }
         },
-        "/users/deleteAccount": {
+        "/riders/deleteAccount": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-deleteAccount-post",
-                "tags": ["Application User"],
+                "operationId": "riders-deleteAccount-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "security": [
 					{
@@ -227,11 +227,11 @@
                 "responses": {}
             }
         },
-        "/users/updateProfile": {
+        "/riders/updateProfile": {
             "patch": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-updateProfile-post",
-                "tags": ["Application User"],
+                "operationId": "riders-updateProfile-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "security": [
 					{
@@ -280,11 +280,11 @@
                 "responses": {}
             }
         },
-        "/users/logout": {
+        "/riders/logout": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-logout-post",
-                "tags": ["Application User"],
+                "operationId": "riders-logout-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "security": [
 					{
@@ -297,11 +297,11 @@
                 "responses": {}
             }
         },
-        "/users/changePassword": {
+        "/riders/changePassword": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-changePassword-post",
-                "tags": ["Application User"],
+                "operationId": "riders-changePassword-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "security": [
 					{
@@ -329,11 +329,11 @@
                 "responses": {}
             }
         },
-        "/users/forgotPassword": {
+        "/riders/forgotPassword": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-forgotPassword-post",
-                "tags": ["Application User"],
+                "operationId": "riders-forgotPassword-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "parameters": [
                     {
@@ -348,11 +348,11 @@
                 "responses": {}
             }
         },
-        "/users/otpSend": {
+        "/riders/otpSend": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-otpSend-post",
-                "tags": ["Application User"],
+                "operationId": "riders-otpSend-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "parameters": [
                     {
@@ -375,11 +375,11 @@
                 "responses": {}
             }
         },
-        "/users/otpVerify": {
+        "/riders/otpVerify": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-otpVerify-post",
-                "tags": ["Application User"],
+                "operationId": "riders-otpVerify-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "parameters": [
                     {
@@ -410,11 +410,11 @@
                 "responses": {}
             }
         },
-        "/users/resendOtp": {
+        "/riders/resendOtp": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-resendOtp-post",
-                "tags": ["Application User"],
+                "operationId": "riders-resendOtp-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "parameters": [
                     {
@@ -437,11 +437,11 @@
                 "responses": {}
             }
         },
-        "/users/addAddress": {
+        "/riders/addAddress": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-addAdddress-post",
-                "tags": ["Application User"],
+                "operationId": "riders-addAdddress-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "security": [
 					{
@@ -518,11 +518,11 @@
                 "responses": {}
             }
         },
-        "/users/addressList": {
+        "/riders/addressList": {
             "get": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-addressList-post",
-                "tags": ["Application User"],
+                "operationId": "riders-addressList-post",
+                "tags": ["Application Rider"],
                 "description": "",
                 "security": [
 					{
@@ -535,65 +535,10 @@
                 "responses": {}
             }
         },
-        "/users/stripeDetail": {
+        "/riders/stripeDetail": {
             "get": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-stripeDetail-post",
-                "tags": ["Application Stripe"],
-                "description": "",
-                "security": [
-					{
-						"Bearer": []
-					}
-				],
-				"parameters": [
-					
-				],
-                "responses": {}
-            }
-        },
-        "/users/createCard": {
-            "post": {
-                "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-createCard-post",
-                "tags": ["Application Stripe"],
-                "description": "",
-                "parameters": [
-                    {
-                        "name": "cardToken",
-                        "in": "formData",
-                        "description": "Enter the cardToken",
-                        "required": true,
-                        "type": "string",
-                        "value": ""
-                    }
-                ],
-                "responses": {}
-            }
-        },
-        "/users/deleteCard": {
-            "post": {
-                "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-deleteCard-post",
-                "tags": ["Application Stripe"],
-                "description": "",
-                "parameters": [
-                    {
-                        "name": "cardId",
-                        "in": "formData",
-                        "description": "Enter the cardId",
-                        "required": true,
-                        "type": "string",
-                        "value": ""
-                    }
-                ],
-                "responses": {}
-            }
-        },
-        "/users/cardsList": {
-            "get": {
-                "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-cardsList-post",
+                "operationId": "riders-stripeDetail-post",
                 "tags": ["Application Stripe"],
                 "description": "",
                 "security": [
@@ -607,61 +552,10 @@
                 "responses": {}
             }
         },
-        "/users/setDefaultCard": {
+        "/riders/stripeConnect": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-setDefaultCard-post",
-                "tags": ["Application Stripe"],
-                "description": "",
-                "security": [
-					{
-						"Bearer": []
-					}
-				],
-				"parameters": [
-					{
-                        "name": "cardId",
-                        "in": "formData",
-                        "description": "Enter the cardId",
-                        "required": true,
-                        "type": "string",
-                        "value": ""
-                    }
-				],
-                "responses": {}
-            }
-        },
-        "/users/createPaymentUsingCard": {
-            "post": {
-                "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-createPaymentUsingCard-post",
-                "tags": ["Application Stripe"],
-                "description": "",
-                "parameters": [
-                    {
-                        "name": "cardId",
-                        "in": "formData",
-                        "description": "Enter the cardId",
-                        "required": true,
-                        "type": "string",
-                        "value": ""
-                    },
-                    {
-                        "name": "amount",
-                        "in": "formData",
-                        "description": "Enter the amount",
-                        "required": true,
-                        "type": "number",
-                        "value": ""
-                    }
-                ],
-                "responses": {}
-            }
-        },
-        "/users/stripeConnect": {
-            "post": {
-                "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-stripeConnect-post",
+                "operationId": "riders-stripeConnect-post",
                 "tags": ["Application Stripe"],
                 "description": "",
                 "parameters": [
@@ -670,10 +564,10 @@
                 "responses": {}
             }
         },
-        "/users/addExternalBankAccount": {
+        "/riders/addExternalBankAccount": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-addExternalBankAccount-post",
+                "operationId": "riders-addExternalBankAccount-post",
                 "tags": ["Application Stripe"],
                 "description": "",
                 "parameters": [
@@ -706,10 +600,10 @@
                 "responses": {}
             }
         },
-        "/users/makeDefaultBankAccount": {
+        "/riders/makeDefaultBankAccount": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-makeDefaultBankAccount-post",
+                "operationId": "riders-makeDefaultBankAccount-post",
                 "tags": ["Application Stripe"],
                 "description": "",
                 "parameters": [
@@ -725,10 +619,10 @@
                 "responses": {}
             }
         },
-        "/users/bankAccountList": {
+        "/riders/bankAccountList": {
             "get": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-bankAccountList-post",
+                "operationId": "riders-bankAccountList-post",
                 "tags": ["Application Stripe"],
                 "description": "",
                 "parameters": [
@@ -737,10 +631,10 @@
                 "responses": {}
             }
         },
-        "/users/deleteExternalAccount": {
+        "/riders/deleteExternalAccount": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "users-deleteExternalAccount-post",
+                "operationId": "riders-deleteExternalAccount-post",
                 "tags": ["Application Stripe"],
                 "description": "",
                 "parameters": [
