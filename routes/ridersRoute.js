@@ -17,9 +17,10 @@ module.exports = (io)=>{
     router.get('/resetPassword', forgotPasswordVerify, controller.userController.resetPassword);
     router.post('/forgotChangePassword', controller.userController.forgotChangePassword);
     router.post('/changePassword', authentication, controller.userController.changePassword);
-
-
-
+     //Deriver details
+    router.post("/licenseDetailsAdd",authentication, controller.riderController.licenseDetailsAdd);
+    router.put("/licenseDetailsUpdate", authentication, controller.riderController.licenseDetailsUpdate)
+    router.post("/feedBackSend", authentication, controller.riderController.feedBackSend)
     //stripe apis
     
     router.get("/stripeDetail",authentication,controller.userController.stripeDetailReturn)

@@ -143,7 +143,13 @@ module.exports = {
       next();
     } else {
       return res.redirect("/admin/login");
-
+    }
+  },
+  sessionSubAdmin: async (req, res, next) => {
+    if (req.session.user) {
+      next();
+    } else {
+      return res.redirect("/subadmin/login");
     }
   },
 };

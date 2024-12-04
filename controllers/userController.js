@@ -599,7 +599,7 @@ module.exports = {
               type: payload.type
           }
           const result = await Models.userModel.updateOne(
-            { _id: req.user.id }, // Filter by the user's ID
+            { _id: req.user._id }, // Filter by the user's ID
             { $push: { address: objToSave } } // Add the new address to the address array
           );
         let response=await Models.userModel.findOne({_id: req.user._id})
@@ -943,9 +943,5 @@ module.exports = {
       res.status(500).send({ message: error.message });
     }
   },
-
-
-// Rider account
-
 
 };

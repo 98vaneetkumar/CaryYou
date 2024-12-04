@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
       type:{type:Number} //1 for home , 2 for work , 3 for other 
     }
   ],
-  licenceDetails:[{
+  licenceDetails:{
     licenceNumber:{type:String},
     licenceType:{type:String},
     licenceImage:[{type:String}],
@@ -52,16 +52,16 @@ const userSchema = new mongoose.Schema({
     DOB:{type:String},
     nationality:{type:String},
     expiry_date:{type:String},
-  }],
-  vehicleInfo:[{
+  },
+  vehicleInfo:{
     picOfVehicle:[{type:String}],
-    typeOfVehicle:{type:String},
-    picOfVehicleRegistration:[{type:String}],
-    regExpDate:{type:String},
     insurancePolicy:[{type:String}],
+    picOfVehicleRegistration:[{type:String}],
+    typeOfVehicle:{type:String},
+    regExpDate:{type:String},
     insuranceExpiryDate:{type:String},
     vehicleNumber:{type:String},
-  }],
+  },
   riderOnOff:{type:Number},
   notificationStatus:{type:Number, default:1},// 0 means off and 1 means on
   deviceToken: { type: String },

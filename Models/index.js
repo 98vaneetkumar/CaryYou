@@ -1,4 +1,5 @@
 module.exports={
     userModel: require("./userModel"),
-    cmsModel:require("./cms")
+    cmsModel:require("./cms"),
+    feedBackModel:require("./feedbackSupport")
 }

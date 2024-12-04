@@ -23,7 +23,10 @@ var success_msg = {
   default_bank_success:"Default bank account added successfully",
   bankAccountList: "Bank account list get successfully",
   fundTransfer: "Fund transfer get successfully",
-  defaultCard_success: "Default card updated successfully"
+  defaultCard_success: "Default card updated successfully",
+  licenceDetailsAdd: "License details add successfully",
+  licenceDetailsUpdated:"License details updated successfully",
+  feedBack_send_success:"Feedback sent successfully"
 
 };
 
@@ -55,7 +58,8 @@ var error_msg = {
   otpResErr: "Failed to resend OTP",
   address_failed_add: "Failed to add address",
   payment_failed:"Payment not successful",
-  riderData_failed: "Error during entering rider's details"
+  riderData_failed: "Error during entering rider's details",
+  licenceDetails_failed: "Error during entering licence details"
 };
 
 module.exports = {

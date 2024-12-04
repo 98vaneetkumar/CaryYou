@@ -18,8 +18,6 @@ const port = process.env.PORT || '3000';
 
 // Initialize the Express app
 const app = express();
-
-
 // Create HTTP server and attach Socket.IO
 const server = http.createServer(app);
 const io = socketio(server, {
@@ -29,19 +27,22 @@ const io = socketio(server, {
   },
 });
 
+// Routes
+const usersRouter = require("./routes/usersRoute")(io); // Pass io to usersRouter if needed
+const riderRoute = require('./routes/ridersRoute')(io)
+const adminRouter = require('./routes/adminRoute')
+const subAdminRouter = require('./routes/subAdminRoute')
+
 // MongoDB Connection
 mongoose 
   .connect(process.env.URL)
   .then(() => console.log("Connected to MongoDB!"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Socket.IO Integration
-require("./socket/socket")(io);
-app.use("/", indexRouter);
 
 app.use(expressLayouts)
-app.set('layout', './Admin/layouts/layout')
-app.set('layout', './SubAdmin/layouts/layout')
+// app.set('layout', './Admin/layouts/layout')
+// app.set('layout', './SubAdmin/layouts/layout')
 
 // View Engine Setup
 app.set("views", path.join(__dirname, "views"));
@@ -79,22 +80,27 @@ const swaggerOptions = {
   swaggerOptions: {
     urls: [
       { url: "/user", name: "User API" },
-      { url: "/business", name: "Business API" },
+      { url: "/restaurant", name: "Restaurant API" },
       { url: "/rider", name: "Rider API" },
     ],
   },
 };
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerOptions));
 
-// Routes
-const adminRouter = require('./routes/adminRoute')
-const subAdminRouter = require('./routes/subAdminRoute')
-const usersRouter = require("./routes/usersRoute")(io); // Pass io to usersRouter if needed
-const riderRoute = require('./routes/ridersRoute')(io)
 
+// Socket.IO Integration
+require("./socket/socket")(io);
+app.use("/", indexRouter);
 
-app.use('/admin', adminRouter);
-app.use('/subadmin', subAdminRouter);
+app.use("/admin", (req, res, next) => {
+  res.locals.layout = "./Admin/layouts/layout";
+  next();
+}, adminRouter);
+
+app.use("/subadmin", (req, res, next) => {
+  res.locals.layout = "./SubAdmin/layouts/layout";
+  next();
+}, subAdminRouter);
 app.use("/users", usersRouter);
 app.use('/rider', riderRoute)
 

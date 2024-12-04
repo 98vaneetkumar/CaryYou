@@ -7,5 +7,4 @@ const feedBackSupportSchema=new mongoose.Schema({
   message:{type:String, required:true},
 },{ timestamps: true })
 
-const feedbackSupport = mongoose.model("feedbackSupport", feedBackSupportSchema);
-module.exports = feedbackSupport;
+module.exports = mongoose.models.feedbackSupport || mongoose.model('feedbackSupport', feedBackSupportSchema);

@@ -14,8 +14,8 @@ router.get("/user", async (req, res) => {
   return res.status(200).send(jsonData);
 });
 
-router.get("/business", async (req, res) => {
-  let jsonData = require("../config/businessSwagger.json");
+router.get("/restaurant", async (req, res) => {
+  let jsonData = require("../config/restaurantSwagger.json");
   delete jsonData.host;
   jsonData.host = await commonHelper.getHost(req, res); // Dynamically set the host
   // console.log("jsonData.host:  ", jsonData.host);

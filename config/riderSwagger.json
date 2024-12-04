@@ -437,10 +437,292 @@
                 "responses": {}
             }
         },
-        "/riders/addAddress": {
+        "/riders/licenseDetailsAdd": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
-                "operationId": "riders-addAdddress-post",
+                "operationId": "riders-licenseDetailsAdd-post",
+                "tags": ["Application Rider"],
+                "description": "",
+                "consumes": ["multipart/form-data"],
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
+                "parameters": [
+                    {
+                        "name": "licenceNumber",
+                        "in": "formData",
+                        "description": "Enter the licenceNumber",
+                        "required": true,
+                        "type": "string",
+                        "value": "123Ed234Ed"
+                    },
+                    {
+                        "name": "licenceType",
+                        "in": "formData",
+                        "description": "Enter the licenceType",
+                        "required": true,
+                        "type": "string",
+                        "value": "LL"
+                    },
+                    {
+                        "name": "issueOn",
+                        "in": "formData",
+                        "description": "Enter issueOn date ",
+                        "required": true,
+                        "type": "string",
+                        "value": "2025-01-26"
+                    },
+                    {
+                        "name": "DOB",
+                        "in": "formData",
+                        "description": "Enter Date of birth",
+                        "required": true,
+                        "type": "string",
+                        "value": "1998-01-26"
+                    },
+                    {
+                        "name": "nationality",
+                        "in": "formData",
+                        "description": "Enter nationality",
+                        "required": true,
+                        "type": "string",
+                        "value": "India"
+                    },
+                    {
+                        "name": "expiry_date",
+                        "in": "formData",
+                        "description": "Enter expiry_date",
+                        "required": false,
+                        "type": "string",
+                        "value": "2025-01-30"
+                    },
+                    {
+                        "name": "typeOfVehicle",
+                        "in": "formData",
+                        "description": "Enter typeOfVehicle",
+                        "required": false,
+                        "type": "string",
+                        "value": "LL"
+                    },
+                    {
+                        "name": "regExpDate",
+                        "in": "formData",
+                        "description": "Enter regExpDate",
+                        "required": false,
+                        "type": "string",
+                        "value": "2025-01-26"
+                    },
+                    {
+                        "name": "vehicleNumber",
+                        "in": "formData",
+                        "description": "Enter vehicleNumber",
+                        "required": false,
+                        "type": "string",
+                        "value": "HP 64A 1234"
+                    },
+                    {
+                        "name": "insuranceExpiryDate",
+                        "in": "formData",
+                        "description": "Enter insuranceExpiryDate",
+                        "required": false,
+                        "type": "string",
+                        "value": "2025-01-26"
+                    },
+                    {
+                        "name": "licenceImage",
+                        "in": "formData",
+                        "description": "Profile licence to upload",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                          }
+                    },
+                    {
+                        "name": "picOfVehicle",
+                        "in": "formData",
+                        "description": "Profile of vechile to upload",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                          }
+                    },
+                    {
+                        "name": "picOfVehicleRegistration",
+                        "in": "formData",
+                        "description": "Profile vechile registration Image to upload",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                          }
+                    },
+                    {
+                        "name": "insurancePolicy",
+                        "in": "formData",
+                        "description": "Profile insurance Image to upload",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                          }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/riders/licenseDetailsUpdate": {
+            "put": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "riders-licenseDetailsUpdate-post",
+                "tags": ["Application Rider"],
+                "description": "",
+                "consumes": ["multipart/form-data"],
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
+                "parameters": [
+                    {
+                        "name": "licenceNumber",
+                        "in": "formData",
+                        "description": "Enter the licenceNumber",
+                        "required": true,
+                        "type": "string",
+                        "value": "123Ed234Ed"
+                    },
+                    {
+                        "name": "licenceType",
+                        "in": "formData",
+                        "description": "Enter the licenceType",
+                        "required": true,
+                        "type": "string",
+                        "value": "LL"
+                    },
+                    {
+                        "name": "issueOn",
+                        "in": "formData",
+                        "description": "Enter issueOn date ",
+                        "required": true,
+                        "type": "string",
+                        "value": "2025-01-26"
+                    },
+                    {
+                        "name": "DOB",
+                        "in": "formData",
+                        "description": "Enter Date of birth",
+                        "required": true,
+                        "type": "string",
+                        "value": "1998-01-26"
+                    },
+                    {
+                        "name": "nationality",
+                        "in": "formData",
+                        "description": "Enter nationality",
+                        "required": true,
+                        "type": "string",
+                        "value": "India"
+                    },
+                    {
+                        "name": "expiry_date",
+                        "in": "formData",
+                        "description": "Enter expiry_date",
+                        "required": false,
+                        "type": "string",
+                        "value": "2025-01-30"
+                    },
+                    {
+                        "name": "typeOfVehicle",
+                        "in": "formData",
+                        "description": "Enter typeOfVehicle",
+                        "required": false,
+                        "type": "string",
+                        "value": "LL"
+                    },
+                    {
+                        "name": "regExpDate",
+                        "in": "formData",
+                        "description": "Enter regExpDate",
+                        "required": false,
+                        "type": "string",
+                        "value": "2025-01-26"
+                    },
+                    {
+                        "name": "vehicleNumber",
+                        "in": "formData",
+                        "description": "Enter vehicleNumber",
+                        "required": false,
+                        "type": "string",
+                        "value": "HP 64A 1234"
+                    },
+                    {
+                        "name": "insuranceExpiryDate",
+                        "in": "formData",
+                        "description": "Enter insuranceExpiryDate",
+                        "required": false,
+                        "type": "string",
+                        "value": "2025-01-26"
+                    },
+                    {
+                        "name": "licenceImage",
+                        "in": "formData",
+                        "description": "Profile licence to upload",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                          }
+                    },
+                    {
+                        "name": "picOfVehicle",
+                        "in": "formData",
+                        "description": "Profile of vechile to upload",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                          }
+                    },
+                    {
+                        "name": "picOfVehicleRegistration",
+                        "in": "formData",
+                        "description": "Profile vechile registration Image to upload",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                          }
+                    },
+                    {
+                        "name": "insurancePolicy",
+                        "in": "formData",
+                        "description": "Profile insurance Image to upload",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                          }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/riders/feedBackSend": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "riders-feedBackSend-post",
                 "tags": ["Application Rider"],
                 "description": "",
                 "security": [
@@ -458,17 +740,17 @@
                         "value": "Vaneet kumar"
                     },
                     {
-                        "name": "address",
+                        "name": "email",
                         "in": "formData",
-                        "description": "Enter the address",
+                        "description": "Enter the email",
                         "required": true,
                         "type": "string",
-                        "value": "Mohali chandigarh"
+                        "value": "vaneet@gmail.com"
                     },
                     {
                         "name": "countryCode",
                         "in": "formData",
-                        "description": "Enter countryCode ",
+                        "description": "Enter country Code ",
                         "required": true,
                         "type": "string",
                         "value": "+91"
@@ -476,62 +758,20 @@
                     {
                         "name": "phoneNumber",
                         "in": "formData",
-                        "description": "Enter phone number",
+                        "description": "Enter phone Number",
                         "required": true,
                         "type": "string",
                         "value": "8628023157"
                     },
                     {
-                        "name": "city",
+                        "name": "message",
                         "in": "formData",
-                        "description": "Enter city",
+                        "description": "Enter message",
                         "required": true,
                         "type": "string",
-                        "value": "123456"
-                    },
-                    {
-                        "name": "state",
-                        "in": "formData",
-                        "description": "Enter state",
-                        "required": false,
-                        "type": "string",
-                        "value": "Mohali"
-                    },
-                    {
-                        "name": "zipCode",
-                        "in": "formData",
-                        "description": "Enter zipCode",
-                        "required": false,
-                        "type": "string",
-                        "value": "123456"
-                    },
-                    {
-                        "name": "type",
-                        "in": "formData",
-                        "description": "Enter zipCode ==> 1 for home , 2 for work, 3 for other" ,
-                        "required": false,
-                        "enum":[1,2,3],
-                        "type": "number",
-                        "value": 1
+                        "value": "India"
                     }
                 ],
-                "responses": {}
-            }
-        },
-        "/riders/addressList": {
-            "get": {
-                "x-swagger-router-controller": "middleware-name1",
-                "operationId": "riders-addressList-post",
-                "tags": ["Application Rider"],
-                "description": "",
-                "security": [
-					{
-						"Bearer": []
-					}
-				],
-				"parameters": [
-					
-				],
                 "responses": {}
             }
         },
