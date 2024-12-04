@@ -5,7 +5,7 @@
       <h1>Dashboard</h1>
     </div>
     <div class="row">
-
+      <!-- User Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/subAdmin/user_list">
           <div class="card card-statistic-1" style="background: linear-gradient(135deg, #6666ff, #9999ff);">
@@ -14,16 +14,17 @@
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold;"><b> Users</b></h4>
+                <h4 style="color: white; font-weight: bold;"><b>Users</b></h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%=user%>
+                <%= user %>
               </div>
             </div>
           </div>
         </a>
       </div>
 
+      <!-- Providers Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
           <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cccc, #66cccc);">
@@ -35,13 +36,14 @@
                 <h4 style="color: white; font-weight: bold;"><b>Providers</b></h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%=provider%>
+                <%= provider %>
               </div>
             </div>
           </div>
         </a>
       </div>
 
+      <!-- Services Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
           <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc99, #66cc99);">
@@ -53,7 +55,26 @@
                 <h4 style="color: white; font-weight: bold;"><b>Services</b></h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%=servicesdata%>
+                <%= servicesdata %>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Contact Us Card -->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
+              <i class="far fa-address-book"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold;"><b>Contact Us</b></h4>
+              </div>
+              <div class="card-body" style="color: white; font-weight: bold;">
+                <%= contactus %>
               </div>
             </div>
           </div>
@@ -68,19 +89,159 @@
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold;"><b>Contact Us</b></h4>
+                <h4 style="color: white; font-weight: bold;"><b>Pending Orders</b></h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%=contactus%>
+                <%= pendingorders%>
               </div>
             </div>
           </div>
         </a>
       </div>
 
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
+              <i class="far fa-address-book"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold;"><b>Active Orders</b></h4>
+              </div>
+              <div class="card-body" style="color: white; font-weight: bold;">
+                <%= activeorders%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
 
-    
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
+              <i class="far fa-address-book"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold;"><b>Delivered Orders</b></h4>
+              </div>
+              <div class="card-body" style="color: white; font-weight: bold;">
+                <%= deliveredorders%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
 
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
+              <i class="far fa-address-book"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold;"><b>Cancelled Orders</b></h4>
+              </div>
+              <div class="card-body" style="color: white; font-weight: bold;">
+                <%= cancelledorders%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
+              <i class="far fa-address-book"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold;"><b>Vendors</b></h4>
+              </div>
+              <div class="card-body" style="color: white; font-weight: bold;">
+                <%= vendors%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
+              <i class="far fa-address-book"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold;"><b>Categories</b></h4>
+              </div>
+              <div class="card-body" style="color: white; font-weight: bold;">
+                <%= categories%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
+              <i class="far fa-address-book"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold;"><b>Sub Categories</b></h4>
+              </div>
+              <div class="card-body" style="color: white; font-weight: bold;">
+                <%= subcategories%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
+              <i class="far fa-address-book"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold;"><b>Products</b></h4>
+              </div>
+              <div class="card-body" style="color: white; font-weight: bold;">
+                <%= products%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
+              <i class="far fa-address-book"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold;"><b>Return Requests</b></h4>
+              </div>
+              <div class="card-body" style="color: white; font-weight: bold;">
+                <%= returnrequests%>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
     </div>
 
     <!-- Number of Responses -->
@@ -94,50 +255,49 @@
         </div>
       </div>
     </div>
-    
   </section>
 </div>
 
 <script>
-  setTimeout(function() {
+  setTimeout(function () {
     $("div.msg").fadeOut();
   }, 2000);
 </script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
-<!-- <script>
+<!-- Uncommented code for dynamic charts -->
+<!--
+<script>
+  var totalUsers = <%= user %>;
+  var totalProviders = <%= provider %>; // Example data for total providers
 
-  var totalUsers = <%=user%>;
-  var totalProviders = <%=provider%>; // Example data for total providers
-  
   new Chart("myChart", {
-    type: "bar", 
+    type: "bar",
     data: {
-            labels: ['Users','Providers'],
-            datasets: [{
-                label: ['Users'],
-                
-                data: [totalUsers, totalProviders],
-                backgroundColor: [
-                'rgba(83, 167, 172, 0.9)', 
-                '#a3d349',
-                
-              ],
-              barThickness:130
-            }]
+      labels: ["Users", "Providers"],
+      datasets: [
+        {
+          label: "Statistics",
+          data: [totalUsers, totalProviders],
+          backgroundColor: ["rgba(83, 167, 172, 0.9)", "#a3d349"],
+          barThickness: 130,
         },
+      ],
+    },
     options: {
       scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-            min: 0, // Min value for y-axis
-            max: 100 
-          }
-        }]
-      }
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+              min: 0,
+              max: 100, // Adjust based on your data
+            },
+          },
+        ],
+      },
     },
-    barPercentage: 1,
-      categoryPercentage: 0.8
   });
-</script> -->
+</script>
+-->

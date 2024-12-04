@@ -1,25 +1,97 @@
 <div class="main-sidebar">
   <aside id="sidebar-wrapper">
-      <div class="sidebar-brand pt-2" style="padding-bottom: 10px;">
-       <a href="/subAdmin/dashboard">
-            <img src="/assets/img/logo.png" class="w-25" style="border-radius: 50%; width: 50px; height: 60px;">
+    <div class="sidebar-brand pt-2" style="padding-bottom: 10px">
+      <a href="/subAdmin/dashboard">
+        <img
+          src="/assets/img/logo.png"
+          class="w-25"
+          style="border-radius: 50%; width: 50px; height: 60px"
+        />
       </a>
-      </div>
-          
-          
-      <div class="sidebar-brand sidebar-brand-sm" style="padding-bottom: 10px;">
-            <a href="/subAdmin/dashboard">
-              <img src="/assets/img/logo.png" class="w-50" style="border-radius: 50%; width: 20px; height: 30px; transition: all 0.2s ease;">
-            </a>
-          </div>
-          
-          <br>
-    <ul class="sidebar-menu">
-      <li class="<%=(title =='dashboard'?'active':'') %>"><a class="nav-link" href="/subAdmin/dashboard"><i class="fas fa-home"
-            style="font-size: large;"></i><span><b>Dashboard</b></span></a></li>
+    </div>
 
-       <li class="<%=(title =='user_list'?'active':'') %>"><a class="nav-link" href="/subAdmin/user_list"><i
-            class="fas fa-user-tie" style="font-size: large;"></i><span><b>User</b></span></a></li>
+    <div class="sidebar-brand sidebar-brand-sm" style="padding-bottom: 10px">
+      <a href="/subAdmin/dashboard">
+        <img
+          src="/assets/img/logo.png"
+          class="w-50"
+          style="
+            border-radius: 50%;
+            width: 20px;
+            height: 30px;
+            transition: all 0.2s ease;
+          "
+        />
+      </a>
+    </div>
+
+    <br />
+    <ul class="sidebar-menu">
+      <li class="<%=(title =='dashboard'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/dashboard">
+            <i class="fas fa-home" style="font-size: large"></i
+          ><span><b>Dashboard</b></span></a>
+      </li>
+
+      <li class="<%=(title =='#'?'active':'') %>">
+        <a class="nav-link" href="#">
+            <i class="fas fa-user-tie" style="font-size: large"></i
+          ><span><b>Profile</b></span></a>
+      </li>
+
+      <li class="<%=(title =='user_list'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/user_list">
+            <i class="fas fa-users" style="font-size: large"></i>
+          <span><b>Users</b></span></a>
+      </li>
+
+      <li class="<%=(title =='#'?'active':'') %>">
+        <a class="nav-link" href="#">
+            <i class="fas fa-receipt" style="font-size: large"></i>
+            <span><b>Orders</b></span></a>
+      </li>
+
+      <li class="<%=(title =='#'?'active':'') %>">
+        <a class="nav-link" href="#">
+            <i class="fas fa-store" style="font-size: large"></i>
+            <span><b>Vendors</b></span></a>
+      </li>
+
+      <li class="<%=(title =='#'?'active':'') %>">
+        <a class="nav-link" href="#">
+            <i class="fas fa-money-bill" style="font-size: large"></i>
+            <span><b>Accounting</b></span></a>
+      </li>
+
+      <li class="<%=(title =='#'?'active':'') %>">
+        <a class="nav-link" href="#">
+            <i class="fas fa-user-friends" style="font-size: large"></i>
+            <span><b>Customers</b></span></a>
+      </li>
+
+      <li class="<%=(title =='#'?'active':'') %>">
+        <a class="nav-link" href="#">
+            <i class="fas fa-search" style="font-size: large"></i>
+            <span><b>Product Review</b></span></a>
+      </li>
+
+      <li class="<%=(title =='#'?'active':'') %>">
+            <a class="nav-link" href="#">
+                <i class="fas fa-laptop" style="font-size: large"></i>
+                <span><b>CMS</b></span></a>
+          </li>
+
+      <li class="<%=(title =='#'?'active':'') %>">
+        <a class="nav-link" href="#">
+            <i class="fab fa-product-hunt" style="font-size: large"></i>
+            <span><b>Products</b></span></a>
+      </li>
+
+      <li class="<%=(title =='#'?'active':'') %>">
+        <a class="nav-link" href="#">
+            <i class="fas fa-chess-board" style="font-size: large"></i>
+            <span><b>Banners</b></span></a>
+      </li>
 
       <!-- <li class="<%=(title =='list_provider'?'active':'') %>"><a class="nav-link" href="/subAdmin/list_provider"><i
             class="fas fa-users" style="font-size: large;"></i><span><b>Individual Providers</b></span></a></li>
@@ -50,14 +122,23 @@
       <li class="<%=(title =='report_list'?'active':'') %>"><a class="nav-link" href="/subAdmin/report_list"><i
             class="fas fa-file" style="font-size: large;"></i><span><b> Reports </b></span></a></li> -->
 
-      <li class="<%=(title =='terms_condition'?'active':'') %>"><a class="nav-link" href="/subAdmin/terms_condition"><i
-            class="fas fa-leaf" style="font-size: large;"></i><span><b>Term & Condition</b></span></a></li>
-      <li class="<%=(title =='privacy_policy'?'active':'') %>"><a class="nav-link" href="/subAdmin/privacy_policy"><i
-            class="fas fa-hands" style="font-size: large;"></i><span><b>Privacy Policy</b></span></a></li>
-      <li class="<%=(title =='Aboutus'?'active':'') %>"><a class="nav-link" href="/subAdmin/Aboutus"><i class="fas fa-book"
-            style="font-size: large;"></i><span> <b>About Us</b></span></a></li>
+      <li class="<%=(title =='terms_condition'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/terms_condition">
+            <i class="fas fa-leaf" style="font-size: large"></i>
+            <span><b>Term & Condition</b></span></a>
+      </li>
 
+      <li class="<%=(title =='privacy_policy'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/privacy_policy">
+            <i class="fas fa-hands" style="font-size: large"></i>
+            <span><b>Privacy Policy</b></span></a>
+      </li>
 
+      <li class="<%=(title =='Aboutus'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/Aboutus">
+            <i class="fas fa-book" style="font-size: large"></i>
+            <span> <b>About Us</b></span></a>
+      </li>
     </ul>
   </aside>
 </div>
