@@ -44,6 +44,9 @@ const rideBookingSchema = new mongoose.Schema(
         required: false,
       },
     },
+    // vehicleType:{
+    //   type: String
+    // },
     riderLocation: {
       type: {
         type: String,
