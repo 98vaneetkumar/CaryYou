@@ -666,8 +666,24 @@ module.exports = {
     }
       return commonHelper.success(res,Response.success_msg.card_add , response);
     } catch (err) {
-      console.log("error", err); // Fixed: changed commonHelper.error to err
-      throw err;
+      // Prepare an error object with relevant information
+      let errorMessage = 'An unknown error occurred.';
+
+      // Check the type of the error and customize the message
+      switch (err.type) {
+        case 'StripeCardError':
+          errorMessage = `A payment error occurred: ${err.message}`;
+          break;
+        case 'StripeInvalidRequestError':
+          errorMessage = 'An invalid request occurred.';
+          break;
+        default:
+          errorMessage = 'Another problem occurred, maybe unrelated to Stripe.';
+          break;
+      }
+  
+      // Return the error message so the caller can handle it
+      return { error: true, message: errorMessage };
     }
   },
   deleteCard: async (req, res) => {

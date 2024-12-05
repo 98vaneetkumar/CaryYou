@@ -170,6 +170,9 @@ module.exports = {
         }
       }
   
+      // Fetch existing user data to preserve old images
+      const existingUser = await Models.userModel.findOne({ _id: req.user._id });
+  
       // Prepare objects for updating
       const licenceUpdate = {
         ...(payload.licenceNumber && { licenceNumber: payload.licenceNumber }),
@@ -178,17 +181,34 @@ module.exports = {
         ...(payload.DOB && { DOB: payload.DOB }),
         ...(payload.nationality && { nationality: payload.nationality }),
         ...(payload.expiry_date && { expiry_date: payload.expiry_date }),
-        ...(licenceImagePaths.length && { licenceImage: licenceImagePaths }),
+        ...(licenceImagePaths.length && {
+          licenceImage: existingUser?.licenceDetails?.licenceImage
+            ? [...existingUser.licenceDetails.licenceImage, ...licenceImagePaths] // Append new images to old ones
+            : licenceImagePaths, // If no previous images, use the new ones
+        }),
       };
   
       const vehicleUpdate = {
         ...(payload.typeOfVehicle && { typeOfVehicle: payload.typeOfVehicle }),
-        ...(picOfVehicleArray.length && { picOfVehicle: picOfVehicleArray }),
+        ...(picOfVehicleArray.length && {
+          picOfVehicle: existingUser?.vehicleInfo?.picOfVehicle
+            ? [...existingUser.vehicleInfo.picOfVehicle, ...picOfVehicleArray] // Append new images to old ones
+            : picOfVehicleArray, // If no previous images, use the new ones
+        }),
         ...(picOfVehicleRegistrationArray.length && {
-          picOfVehicleRegistration: picOfVehicleRegistrationArray,
+          picOfVehicleRegistration: existingUser?.vehicleInfo?.picOfVehicleRegistration
+            ? [
+                ...existingUser.vehicleInfo.picOfVehicleRegistration,
+                ...picOfVehicleRegistrationArray,
+              ] // Append new images to old ones
+            : picOfVehicleRegistrationArray, // If no previous images, use the new ones
         }),
         ...(payload.regExpDate && { regExpDate: payload.regExpDate }),
-        ...(insurancePolicyArray.length && { insurancePolicy: insurancePolicyArray }),
+        ...(insurancePolicyArray.length && {
+          insurancePolicy: existingUser?.vehicleInfo?.insurancePolicy
+            ? [...existingUser.vehicleInfo.insurancePolicy, ...insurancePolicyArray] // Append new images to old ones
+            : insurancePolicyArray, // If no previous images, use the new ones
+        }),
         ...(payload.insuranceExpiryDate && { insuranceExpiryDate: payload.insuranceExpiryDate }),
         ...(payload.vehicleNumber && { vehicleNumber: payload.vehicleNumber }),
       };
@@ -215,6 +235,7 @@ module.exports = {
       return commonHelper.error(res, Response.error_msg.riderData_failed, error.message);
     }
   },
+  
   feedBackSend:async(req,res)=>{
     try {
       const schema = Joi.object().keys({

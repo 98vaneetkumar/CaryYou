@@ -582,6 +582,7 @@
                 "tags": ["Application Rider"],
                 "description": "",
                 "consumes": ["multipart/form-data"],
+                "produces":["application/json"],
                 "security": [
 					{
 						"Bearer": []
@@ -675,43 +676,39 @@
                         "required": false,
                         "type": "array",
                         "items": {
-                            "type": "string",
-                            "format": "binary"
-                          }
-                    },
-                    {
+                          "type": "file"
+                        }
+                      },
+                      {
                         "name": "picOfVehicle",
                         "in": "formData",
-                        "description": "Profile of vechile to upload",
+                        "description": "Profile of vehicle to upload",
                         "required": false,
                         "type": "array",
                         "items": {
-                            "type": "string",
-                            "format": "binary"
-                          }
-                    },
-                    {
+                          "type": "file"
+                        }
+                      },
+                      {
                         "name": "picOfVehicleRegistration",
                         "in": "formData",
-                        "description": "Profile vechile registration Image to upload",
+                        "description": "Profile vehicle registration Image to upload",
                         "required": false,
                         "type": "array",
                         "items": {
-                            "type": "string",
-                            "format": "binary"
-                          }
-                    },
-                    {
+                          "type": "file"
+                        }
+                      },
+                      {
                         "name": "insurancePolicy",
                         "in": "formData",
                         "description": "Profile insurance Image to upload",
                         "required": false,
                         "type": "array",
                         "items": {
-                            "type": "string",
-                            "format": "binary"
-                          }
-                    }
+                          "type": "file"
+                        }
+                      }
                 ],
                 "responses": {}
             }
