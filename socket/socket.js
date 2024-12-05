@@ -1,4 +1,4 @@
-const Models = require("../models/index.js");
+const Models = require("../Models/index.js");
 const helper = require("../helpers/commonHelper.js");
 
 module.exports = function (io) {
