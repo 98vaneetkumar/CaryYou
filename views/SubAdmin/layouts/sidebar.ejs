@@ -29,115 +29,142 @@
     <ul class="sidebar-menu">
       <li class="<%=(title =='dashboard'?'active':'') %>">
         <a class="nav-link" href="/subAdmin/dashboard">
-            <i class="fas fa-home" style="font-size: large"></i
-          ><span><b>Dashboard</b></span></a>
-      </li>
-
-      <li class="<%=(title =='#'?'active':'') %>">
-        <a class="nav-link" href="#">
-            <i class="fas fa-user-tie" style="font-size: large"></i
-          ><span><b>Profile</b></span></a>
+          <i class="fas fa-home" style="font-size: large"></i>
+          <span><b>Dashboard</b></span>
+        </a>
       </li>
 
       <li class="<%=(title =='user_list'?'active':'') %>">
         <a class="nav-link" href="/subAdmin/user_list">
-            <i class="fas fa-users" style="font-size: large"></i>
-          <span><b>Users</b></span></a>
+          <i class="fas fa-users" style="font-size: large"></i>
+          <span><b>Users</b></span>
+        </a>
       </li>
 
-      <li class="<%=(title =='#'?'active':'') %>">
-        <a class="nav-link" href="#">
-            <i class="fas fa-receipt" style="font-size: large"></i>
-            <span><b>Orders</b></span></a>
+      <li class="<%=(title =='providers'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/providers">
+          <i class="fas fa-user-tie" style="font-size: large"></i>
+          <span><b>Providers</b></span>
+        </a>
       </li>
 
-      <li class="<%=(title =='#'?'active':'') %>">
-        <a class="nav-link" href="#">
-            <i class="fas fa-store" style="font-size: large"></i>
-            <span><b>Vendors</b></span></a>
+      <li class="<%=(title =='services'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/services">
+          <i class="fas fa-wrench" style="font-size: large"></i>
+          <span><b>Services</b></span>
+        </a>
       </li>
 
-      <li class="<%=(title =='#'?'active':'') %>">
-        <a class="nav-link" href="#">
-            <i class="fas fa-money-bill" style="font-size: large"></i>
-            <span><b>Accounting</b></span></a>
+      <li class="<%=(title =='contact_us'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/contact_us">
+          <i class="fas fa-envelope" style="font-size: large"></i>
+          <span><b>Contact Us</b></span>
+        </a>
       </li>
 
-      <li class="<%=(title =='#'?'active':'') %>">
-        <a class="nav-link" href="#">
-            <i class="fas fa-user-friends" style="font-size: large"></i>
-            <span><b>Customers</b></span></a>
+      <li class="<%=(title =='pending_orders'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/pending_orders">
+          <i class="fas fa-clock" style="font-size: large"></i>
+          <span><b>Pending Orders</b></span>
+        </a>
       </li>
 
-      <li class="<%=(title =='#'?'active':'') %>">
-        <a class="nav-link" href="#">
-            <i class="fas fa-search" style="font-size: large"></i>
-            <span><b>Product Review</b></span></a>
+      <li class="<%=(title =='active_orders'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/active_orders">
+          <i class="fas fa-shopping-cart" style="font-size: large"></i>
+          <span><b>Active Orders</b></span>
+        </a>
       </li>
 
-      <li class="<%=(title =='#'?'active':'') %>">
-            <a class="nav-link" href="#">
-                <i class="fas fa-laptop" style="font-size: large"></i>
-                <span><b>CMS</b></span></a>
-          </li>
-
-      <li class="<%=(title =='#'?'active':'') %>">
-        <a class="nav-link" href="#">
-            <i class="fab fa-product-hunt" style="font-size: large"></i>
-            <span><b>Products</b></span></a>
+      <li class="<%=(title =='delivered_orders'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/delivered_orders">
+          <i class="fas fa-truck" style="font-size: large"></i>
+          <span><b>Delivered Orders</b></span>
+        </a>
       </li>
 
-      <li class="<%=(title =='#'?'active':'') %>">
-        <a class="nav-link" href="#">
-            <i class="fas fa-chess-board" style="font-size: large"></i>
-            <span><b>Banners</b></span></a>
+      <li class="<%=(title =='cancelled_orders'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/cancelled_orders">
+          <i class="fas fa-times-circle" style="font-size: large"></i>
+          <span><b>Cancelled Orders</b></span>
+        </a>
       </li>
 
-      <!-- <li class="<%=(title =='list_provider'?'active':'') %>"><a class="nav-link" href="/subAdmin/list_provider"><i
-            class="fas fa-users" style="font-size: large;"></i><span><b>Individual Providers</b></span></a></li>
-      <li class="<%=(title =='organization'?'active':'') %>"><a class="nav-link" href="/subAdmin/organization"><i
-            class="fas fa-home" style="font-size: large;"></i><span><b>Organization</b></span></a></li>
+      <li class="<%=(title =='vendors'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/vendors">
+          <i class="fas fa-store" style="font-size: large"></i>
+          <span><b>Vendors</b></span>
+        </a>
+      </li>
 
-      <li class="<%=(title =='banner'?'active':'') %>"><a class="nav-link" href="/subAdmin/banner_list"><i
-            class="fas fa-briefcase" style="font-size: large;"></i><span><b> Banners</b></span></a></li>
+      <li class="<%=(title =='categories'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/categories">
+          <i class="fas fa-th" style="font-size: large"></i>
+          <span><b>Categories</b></span>
+        </a>
+      </li>
 
-      <li class="<%=(title =='service_listing'?'active':'') %>"><a class="nav-link" href="/subAdmin/service_listing"><i
-            class="fas fa-wrench" style="font-size: large;"></i><span><b> Services</b></span></a></li>
+      <li class="<%=(title =='sub_categories'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/sub_categories">
+          <i class="fas fa-th-list" style="font-size: large"></i>
+          <span><b>Sub Categories</b></span>
+        </a>
+      </li>
 
+      <li class="<%=(title =='products'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/products">
+          <i class="fab fa-product-hunt" style="font-size: large"></i>
+          <span><b>Products</b></span>
+        </a>
+      </li>
 
-      <li class="<%=(title =='bookingsList'?'active':'') %>"><a class="nav-link" href="/subAdmin/bookingsList"><i
-            class="fas fa-table" style="font-size: large;"></i><span><b>Booking</b></span></a></li>
+      <li class="<%=(title =='return_requests'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/return_requests">
+          <i class="fas fa-undo-alt" style="font-size: large"></i>
+          <span><b>Return Requests</b></span>
+        </a>
+      </li>
 
-      <li class="<%=(title =='review_list'?'active':'') %>"><a class="nav-link" href="/subAdmin/review_list"><i
-            class="fas fa-star" style="font-size: large;"></i><span><b>Rating</b></span></a></li>
+      <li class="<%=(title =='accounting'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/accounting">
+          <i class="fas fa-money-bill" style="font-size: large"></i>
+          <span><b>Accounting</b></span>
+        </a>
+      </li>
 
+      <li class="<%=(title =='product_review'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/product_review">
+          <i class="fas fa-search" style="font-size: large"></i>
+          <span><b>Product Review</b></span>
+        </a>
+      </li>
 
-
-      <li class="<%=(title =='contact_list'?'active':'') %>"><a class="nav-link" href="/subAdmin/contact_list"><i
-            class="fas fa-envelope" style="font-size: large;"></i><span><b>Contact Us</b></span></a></li>
-
-      <li class="<%=(title =='transaction'?'active':'') %>"><a class="nav-link" href="/subAdmin/transaction_list"><i
-            class="fas fa-money-bill" style="font-size: large;"></i><span><b>Transaction</b></span></a></li>
-
-      <li class="<%=(title =='report_list'?'active':'') %>"><a class="nav-link" href="/subAdmin/report_list"><i
-            class="fas fa-file" style="font-size: large;"></i><span><b> Reports </b></span></a></li> -->
+      <li class="<%=(title =='banners'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/banners">
+          <i class="fas fa-chess-board" style="font-size: large"></i>
+          <span><b>Banners</b></span>
+        </a>
+      </li>
 
       <li class="<%=(title =='terms_condition'?'active':'') %>">
         <a class="nav-link" href="/subAdmin/terms_condition">
-            <i class="fas fa-leaf" style="font-size: large"></i>
-            <span><b>Term & Condition</b></span></a>
+          <i class="fas fa-leaf" style="font-size: large"></i>
+          <span><b>Terms & Conditions</b></span>
+        </a>
       </li>
 
       <li class="<%=(title =='privacy_policy'?'active':'') %>">
         <a class="nav-link" href="/subAdmin/privacy_policy">
-            <i class="fas fa-hands" style="font-size: large"></i>
-            <span><b>Privacy Policy</b></span></a>
+          <i class="fas fa-hands" style="font-size: large"></i>
+          <span><b>Privacy Policy</b></span>
+        </a>
       </li>
 
-      <li class="<%=(title =='Aboutus'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/Aboutus">
-            <i class="fas fa-book" style="font-size: large"></i>
-            <span> <b>About Us</b></span></a>
+      <li class="<%=(title =='about_us'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/about_us">
+          <i class="fas fa-book" style="font-size: large"></i>
+          <span><b>About Us</b></span>
+        </a>
       </li>
     </ul>
   </aside>

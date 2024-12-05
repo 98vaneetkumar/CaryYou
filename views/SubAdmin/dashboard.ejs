@@ -2,7 +2,7 @@
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1>Dashboard</h1>
+      <h1>SubAdmin Dashboard</h1>
     </div>
     <div class="row">
       <!-- User Card -->
@@ -83,165 +83,168 @@
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
-            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
-              <i class="far fa-address-book"></i>
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #cc9933, #ffd466);">
+            <div class="card-icon" style="background: rgba(163, 135, 41, 0.8);">
+              <i class="fas fa-hourglass-half"></i> <!-- Updated icon -->
             </div>
             <div class="card-wrap">
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold;"><b>Pending Orders</b></h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%= pendingorders%>
+                <%= pendingorders %>
               </div>
             </div>
           </div>
         </a>
       </div>
+      
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
-            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
-              <i class="far fa-address-book"></i>
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #FF5733, #FF8C66);">
+            <div class="card-icon" style="background: rgba(204, 85, 51, 0.8);">
+              <i class="fas fa-shopping-cart"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold;"><b>Active Orders</b></h4>
+                <h4 style="color: white; font-weight: bold;">Active Orders</h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%= activeorders%>
+                <%= activeorders %>
               </div>
             </div>
           </div>
         </a>
       </div>
-
+      
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
-            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
-              <i class="far fa-address-book"></i>
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33A1FF, #66C2FF);">
+            <div class="card-icon" style="background: rgba(51, 128, 204, 0.8);">
+              <i class="fas fa-truck"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold;"><b>Delivered Orders</b></h4>
+                <h4 style="color: white; font-weight: bold;">Delivered Orders</h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%= deliveredorders%>
+                <%= deliveredorders %>
               </div>
             </div>
           </div>
         </a>
       </div>
-
+      
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
-            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
-              <i class="far fa-address-book"></i>
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #FFC300, #FFD966);">
+            <div class="card-icon" style="background: rgba(204, 153, 51, 0.8);">
+              <i class="fas fa-ban"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold;"><b>Cancelled Orders</b></h4>
+                <h4 style="color: white; font-weight: bold;">Cancelled Orders</h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%= cancelledorders%>
+                <%= cancelledorders %>
               </div>
             </div>
           </div>
         </a>
       </div>
-
+      
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
-            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
-              <i class="far fa-address-book"></i>
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #8E44AD, #C39BD3);">
+            <div class="card-icon" style="background: rgba(142, 68, 173, 0.8);">
+              <i class="fas fa-store"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold;"><b>Vendors</b></h4>
+                <h4 style="color: white; font-weight: bold;">Vendors</h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%= vendors%>
+                <%= vendors %>
               </div>
             </div>
           </div>
         </a>
       </div>
-
+      
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
-            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
-              <i class="far fa-address-book"></i>
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #16A085, #48C9B0);">
+            <div class="card-icon" style="background: rgba(22, 160, 133, 0.8);">
+              <i class="fas fa-tags"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold;"><b>Categories</b></h4>
+                <h4 style="color: white; font-weight: bold;">Categories</h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%= categories%>
+                <%= categories %>
               </div>
             </div>
           </div>
         </a>
       </div>
-
+      
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
-            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
-              <i class="far fa-address-book"></i>
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #2980B9, #5DADE2);">
+            <div class="card-icon" style="background: rgba(41, 128, 185, 0.8);">
+              <i class="fas fa-tag"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold;"><b>Sub Categories</b></h4>
+                <h4 style="color: white; font-weight: bold;">Sub Categories</h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%= subcategories%>
+                <%= subcategories %>
               </div>
             </div>
           </div>
         </a>
       </div>
-
+      
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
-            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
-              <i class="far fa-address-book"></i>
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #cb894c, #dfa172);">
+            <div class="card-icon" style="background: rgba(184, 128, 59, 0.8);">
+              <i class="fas fa-box-open"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold;"><b>Products</b></h4>
+                <h4 style="color: white; font-weight: bold;">Products</h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%= products%>
+                <%= products %>
               </div>
             </div>
           </div>
         </a>
       </div>
-
+      
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66);">
-            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8);">
-              <i class="far fa-address-book"></i>
+          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #4CAF50, #81C784);">
+            <div class="card-icon" style="background: rgba(76, 175, 80, 0.8);">
+              <i class="fas fa-undo-alt"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold;"><b>Return Requests</b></h4>
+                <h4 style="color: white; font-weight: bold;">Return Requests</h4>
               </div>
               <div class="card-body" style="color: white; font-weight: bold;">
-                <%= returnrequests%>
+                <%= returnrequests %>
               </div>
             </div>
           </div>
         </a>
       </div>
+      
+      
     </div>
 
     <!-- Number of Responses -->

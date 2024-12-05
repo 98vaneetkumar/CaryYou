@@ -9,7 +9,7 @@ const http = require("http");
 const session = require('express-session')
 const socketio = require("socket.io");
 const createError = require("http-errors");
-const flash = require('express-flash');
+const flash = require('connect-flash');
 var expressLayouts = require('express-ejs-layouts');
 const indexRouter = require("./routes/index");
 
@@ -80,7 +80,7 @@ const swaggerOptions = {
   swaggerOptions: {
     urls: [
       { url: "/user", name: "User API" },
-      { url: "/restaurant", name: "Restaurant API" },
+      // { url: "/restaurant", name: "Restaurant API" },
       { url: "/rider", name: "Rider API" },
     ],
   },
@@ -102,7 +102,7 @@ app.use("/subadmin", (req, res, next) => {
   next();
 }, subAdminRouter);
 app.use("/users", usersRouter);
-app.use('/rider', riderRoute)
+app.use('/riders', riderRoute)
 
 // Catch 404 and Forward to Error Handler
 app.use((req, res, next) => {

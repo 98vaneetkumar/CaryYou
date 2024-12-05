@@ -15,6 +15,12 @@ router.delete('/delete_user/:id', controllers.adminController.delete_user)
 router.post('/user_status', controllers.adminController.user_status)
 
 
+router.get('/rider_list', session, controllers.adminController.rider_list)
+router.get('/view_rider/:id', session, controllers.adminController.view_rider)
+router.delete('/delete_rider/:id', controllers.adminController.delete_rider)
+router.post('/rider_status', controllers.adminController.rider_status)
+
+
 //<------------------------------ ADMIN ------------------------->
 router.get('/admin_profile', session, controllers.adminController.admin_profile)
 router.post('/update_admin_profile', controllers.adminController.update_admin_profile)

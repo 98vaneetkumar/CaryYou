@@ -51,20 +51,32 @@ module.exports = {
       let title = "dashboard";
       let user = await Models.userModel.countDocuments({ role: 1 });
       let provider = await Models.userModel.countDocuments({ role: 2 });
+  
+      console.log("Flash msg:", req.flash("msg"));
+  
       res.render("Admin/dashboard", {
         title,
         user,
-        provider,
+        provider: 100,
         servicesdata: 0,
         contactus: 0,
+        rider: 5,
+        orders: 55,
+        payments: 2,
+        feedbacks: 4,
+        activeorders: 10,
+        deliveredorders: 5,
+        cancelledorders: 50,
         session: req.session.user,
-        msg: req.flash("msg"),
+        msg: req.flash("msg") || '',
       });
+  
     } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
+  
 
   user_list: async (req, res) => {
     try {
@@ -128,6 +140,73 @@ module.exports = {
       throw error
     }
   },
+
+//---------riders list apis--------------
+
+rider_list: async (req, res) => {
+  try {
+    let title = "rider_list";
+    let riderdata = await Models.userModel
+      .find({ role: 3 })
+      .sort({ createdAt: -1 });
+    res.render("Admin/rider/rider_list", {
+      title,
+      riderdata,
+      session: req.session.user,
+      msg: req.flash("msg"),
+    });
+  } catch (error) {
+    console.log(error);
+    throw error
+  }
+},
+
+view_rider: async (req, res) => {
+  try {
+    let title = "rider_list";
+    let viewrider = await Models.userModel.findById({ _id: req.params.id });
+    // console.log(viewrider,"viewriderviewriderviewriderviewrider");return
+    res.render("Admin/rider/view_rider", {
+      title,
+      viewrider,
+      session: req.session.user,
+      msg: req.flash("msg"),
+    });
+  } catch (error) {
+    console.log(error);
+    throw error
+  }
+},
+
+delete_rider: async (req, res) => {
+  try {
+    let riderid = req.body.id;
+    let remove = await Models.userModel.deleteOne({ _id: riderid });
+    res.redirect("/admin/rider_list");
+  } catch (error) {
+    console.log(error);
+    throw error
+  }
+},
+
+rider_status: async (req, res) => {
+  try {
+    var check = await Models.userModel.updateOne(
+      { _id: req.body.id },
+      { status: req.body.value }
+    );
+    req.flash("msg", "Status update successfully");
+
+    if (req.body.value == 0) res.send(false);
+    if (req.body.value == 1) res.send(true);
+  } catch (error) {
+    console.log(error);
+    throw error
+  }
+},
+
+
+//---------------------------------------
 
 
   admin_profile: async (req, res) => {

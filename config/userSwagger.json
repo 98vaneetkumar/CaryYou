@@ -68,7 +68,7 @@
                         "description": "Enter role for user only 1 valid",
                         "required": true,
                         "enum": [1],
-                        "type": "number",
+                        "type": "number",   
                         "value": ""
                     },
                     {

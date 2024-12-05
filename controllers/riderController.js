@@ -12,6 +12,7 @@ const Response = require("../config/responses.js");
 module.exports = {
   licenseDetailsAdd:async(req, res)=>{
     try {
+      console.log('========', req.files)
       const schema = Joi.object().keys({
         licenceNumber: Joi.string().required(),
         licenceType: Joi.string().required(),
@@ -31,24 +32,24 @@ module.exports = {
       let picOfVehicleRegistrationArray=[];
       let insurancePolicyArray=[];
       
-      if (files && files.licenceImage) {
-        const licenceFiles = Array.isArray(files.licenceImage) ? files.licenceImage : [files.licenceImage];
+      if (req.files && req.files.licenceImage) {
+        const licenceFiles = Array.isArray(req.files.licenceImage) ? req.files.licenceImage : [req.files.licenceImage];
         for (const file of licenceFiles) {
           const uploadedPath = await commonHelper.fileUpload(file);
           licenceImagePaths.push(uploadedPath);
         }
       }
      
-      if (files && files.picOfVehicle) {
-        const picOfVehicleFiles = Array.isArray(files.picOfVehicle) ? files.picOfVehicle : [files.picOfVehicle];
+      if (req.files && req.files.picOfVehicle) {
+        const picOfVehicleFiles = Array.isArray(req.files.picOfVehicle) ? req.files.picOfVehicle : [req.files.picOfVehicle];
         for (const file of picOfVehicleFiles) {
           const uploadedPath = await commonHelper.fileUpload(file);
           picOfVehicleArray.push(uploadedPath);
         }
       }
    
-      if (files && files.picOfVehicleRegistration) {
-        const picOfVehicleRegistrationFiles = Array.isArray(files.picOfVehicleRegistration) ? files.picOfVehicleRegistration : [files.picOfVehicleRegistration];
+      if (req.files && req.files.picOfVehicleRegistration) {
+        const picOfVehicleRegistrationFiles = Array.isArray(req.files.picOfVehicleRegistration) ? req.files.picOfVehicleRegistration : [req.files.picOfVehicleRegistration];
         for (const file of picOfVehicleRegistrationFiles) {
           const uploadedPath = await commonHelper.fileUpload(file);
           picOfVehicleRegistrationArray.push(uploadedPath);
@@ -56,8 +57,8 @@ module.exports = {
       }
 
    
-      if (files && files.insurancePolicy) {
-        const insurancePolicyFiles = Array.isArray(files.insurancePolicy) ? files.insurancePolicy : [files.insurancePolicy];
+      if (req.files && req.files.insurancePolicy) {
+        const insurancePolicyFiles = Array.isArray(req.files.insurancePolicy) ? req.files.insurancePolicy : [req.files.insurancePolicy];
         for (const file of insurancePolicyFiles) {
           const uploadedPath = await commonHelper.fileUpload(file);
           insurancePolicyArray.push(uploadedPath);

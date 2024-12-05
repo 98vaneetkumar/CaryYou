@@ -16,7 +16,7 @@ module.exports = {
       if (!findUser) {
         console.log("Please enter valid email");
         req.flash("msg", "Incorrect email");
-        res.redirect("/SubAdmin/login");
+        res.redirect("/subadmin/login");
       }
 
       let checkPassword = await bcrypt.compare(
@@ -25,12 +25,12 @@ module.exports = {
       );
       if (!checkPassword) {
         req.flash("msg", "Incorrect password");
-        res.redirect("/SubAdmin/login");
+        res.redirect("/subadmin/login");
       } else {
         req.session.user = findUser;
         req.flash("msg", "Login Successfully");
         setTimeout(()=>{
-          res.redirect("/SubAdmin/dashboard");
+          res.redirect("/subadmin/dashboard");
         }, 500)
       }
     } catch (error) {
@@ -40,7 +40,7 @@ module.exports = {
   logout: async (req, res) => {
     try {
       req.session.destroy((err) => { });
-      res.redirect("/SubAdmin/login");
+      res.redirect("/subadmin/login");
     } catch (error) {
       helper.error(res, error);
     }
@@ -115,7 +115,7 @@ module.exports = {
     try {
       let userid = req.body.id;
       let remove = await Models.userModel.deleteOne({ _id: userid });
-      res.redirect("/SubAdmin/user_list");
+      res.redirect("/subadmin/user_list");
     } catch (error) {
       console.log(error);
       throw error
@@ -209,10 +209,10 @@ module.exports = {
           );
           req.session.user = create;
           req.flash('msg', 'Update password successfully')
-          res.redirect("/SubAdmin/login");
+          res.redirect("/subadmin/login");
         } else {
           req.flash('msg', 'Old password do not match')
-          res.redirect("/SubAdmin/change_password");
+          res.redirect("/subadmin/change_password");
         }
       }
     } catch (error) {
@@ -241,7 +241,7 @@ module.exports = {
         });
       let users = await Models.userModel.findOne({ _id: req.session.user._id });
       req.flash("msg", "Updated successfully")
-      res.redirect('/SubAdmin/SubAdmin_commission')
+      res.redirect('/subadmin/SubAdmin_commission')
 
     } catch (error) {
       console.log(error)

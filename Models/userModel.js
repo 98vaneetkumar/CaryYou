@@ -62,7 +62,7 @@ const userSchema = new mongoose.Schema({
     insuranceExpiryDate:{type:String},
     vehicleNumber:{type:String},
   },
-  riderOnOff:{type:Number},
+  riderOnOff:{type:Number}, // 0 for off 1 for on
   notificationStatus:{type:Number, default:1},// 0 means off and 1 means on
   deviceToken: { type: String },
   deviceType: { type: String },
