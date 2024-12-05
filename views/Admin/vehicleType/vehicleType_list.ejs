@@ -1,0 +1,125 @@
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <h1>Vehicle Type</h1>
+      <div class="section-header-breadcrumb">
+        <a href="/add_vehicleType" class="btn btn-sm" style="background-color: var(--theme);">
+          <i class="fa fa-plus"></i> Add Vehicle Type
+        </a>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table id="myTable" class="table table-bordered table-hover table-md">
+            <thead class="text-center">
+              <tr style="background-color: #ebf2f2;">
+                <th>S No.</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% catedata.forEach(function(data, i) { %>
+                <tr>
+                  <td class="text-center"><%= 1 + i %></td>
+                  <td class="text-center">
+                    <img src="<%= data.image %>" width="50" height="50" class="rounded-circle border">
+                  </td>
+                  <td class="text-center"><%= data.name %></td>
+                  <td class="text-center">
+                    <% if (data.status == 1) { %>
+                      <button onclick="changeStatus(this)" id="status_<%- data.id %>"
+                        class="btn btn-sm btn-success" data-id="<%= data._id %>" value="0">Active</button>
+                    <% } else { %>
+                      <button onclick="changeStatus(this)" id="status_<%- data.id %>"
+                        class="btn btn-sm btn-danger" data-id="<%= data._id %>" value="1">Inactive</button>
+                    <% } %>
+                  </td>
+                  <td class="text-center">
+                    <a href="/admin/edit_vehicleType/<%= data._id %>" class="btn btn-sm btn-warning">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <button onclick="confirmDelete('<%= data._id %>')" class="btn btn-sm btn-danger">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  $(document).ready(function () {
+    // Initialize DataTable with export buttons
+    $('#myTable').DataTable({
+      dom: 'Bfrtip',
+      buttons: ['excel', 'pdf', 'print']
+    });
+
+    // Auto-hide messages
+    setTimeout(function () {
+      $("div.msg").fadeOut();
+    }, 2000);
+  });
+
+  // Confirm delete functionality
+  function confirmDelete(id) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "This action cannot be undone.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "/delete_vehicleType/:id",
+          type: 'DELETE',
+          data: { id },
+          success: function () {
+            Swal.fire('Deleted!', 'The Vehicle Type has been deleted.', 'success')
+              .then(() => location.reload());
+          },
+          error: function () {
+            Swal.fire('Error!', 'Failed to delete the Vehicle Type.', 'error');
+          }
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire('Cancelled', 'The Vehicle Type is safe.', 'error');
+      }
+    });
+  }
+
+  // Change status functionality
+  function changeStatus(button) {
+    const id = button.getAttribute('data-id');
+    const value = button.getAttribute('value');
+    const buttonElement = document.getElementById(button.id);
+
+    $.ajax({
+      type: "POST",
+      url: "/vehicleType_status",
+      data: { id, value },
+      success: function (response) {
+        if (response.success) {
+          buttonElement.setAttribute('value', value == "1" ? "0" : "1");
+          buttonElement.innerText = value == "1" ? "Active" : "Inactive";
+          buttonElement.classList.toggle('btn-success', value == "1");
+          buttonElement.classList.toggle('btn-danger', value != "1");
+        } else {
+          Swal.fire('Error!', 'Failed to update status.', 'error');
+        }
+      }
+    });
+  }
+</script>

@@ -210,6 +210,83 @@ rider_status: async (req, res) => {
 
 //---------------------------------------
 
+//---------vehicle type apis-------------
+
+
+  // List Vehicle Types
+  vehicleType_list: async (req, res) => {
+    try {
+      let title = "Vehicle Type List";
+      let vehicleTypes = await Models.vehicleType
+        .find({})
+        .sort({ createdAt: -1 });
+      res.render("Admin/vehicleType/vehicleType_list", {
+        title,
+        vehicleTypes,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
+  // View Vehicle Type Details
+  view_vehicleType: async (req, res) => {
+    try {
+      let title = "View Vehicle Type";
+      let vehicleType = await Models.vehicleType.findById({
+        _id: req.params.id,
+      });
+      res.render("Admin/vehicleType/view_vehicleType", {
+        title,
+        vehicleType,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
+  // Delete Vehicle Type
+  delete_vehicleType: async (req, res) => {
+    try {
+      let vehicleTypeId = req.body.id;
+      await Models.vehicleType.deleteOne({ _id: vehicleTypeId });
+      req.flash("msg", "Vehicle Type deleted successfully");
+      res.redirect("/admin/vehicleType_list");
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
+  // Update Vehicle Type Status
+  vehicleType_status: async (req, res) => {
+    try {
+      let updated = await Models.vehicleType.updateOne(
+        { _id: req.body.id },
+        { status: req.body.value }
+      );
+      req.flash("msg", "Status updated successfully");
+
+      // Return appropriate response
+      if (req.body.value == 0) res.send(false);
+      if (req.body.value == 1) res.send(true);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
+
+
+//---------------------------------------
+
+
 
   admin_profile: async (req, res) => {
     try {

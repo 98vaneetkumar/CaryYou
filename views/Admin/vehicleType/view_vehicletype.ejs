@@ -1,0 +1,64 @@
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <h1>View Vehicle Type</h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="/admin/dashboard">Dashboard</a></div>
+        <div class="breadcrumb-item"><a href="/vehicleType_list">Vehicle Type</a></div>
+        <div class="breadcrumb-item">View Vehicle Type</div>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <div class="card">
+        <div class="row mt-4 justify-content-center">
+          <!-- Image Section -->
+          <div class="col-12 col-md-4 text-center">
+            <div class="card profile-widget">
+              <div class="profile-widget-header py-3">
+                <img alt="Vehicle Image" id="vehicleImage" src="<%= cateData.image %>" class="profile_img rounded-circle" width="200" height="200">
+              </div>
+            </div>
+          </div>
+
+          <!-- Details Section -->
+          <div class="col-12 col-md-8">
+            <div class="card-body">
+              <div class="form-group floating-addon">
+                <label for="vehicleName">Name</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-user"></i>
+                    </div>
+                  </div>
+                  <input type="text" id="vehicleName" class="form-control" value="<%= cateData.name %>" disabled>
+                </div>
+              </div>
+
+              <!-- Back Button -->
+              <div class="form-group text-right mt-4">
+                <a href="/vehicleType_list" class="btn btn-primary">Back</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  // Preview uploaded image (if editing functionality is added later)
+  const imgInp = document.getElementById('imgInp');
+  const vehicleImage = document.getElementById('vehicleImage');
+  
+  if (imgInp) {
+    imgInp.onchange = evt => {
+      const [file] = imgInp.files;
+      if (file) {
+        vehicleImage.src = URL.createObjectURL(file);
+      }
+    };
+  }
+</script>
