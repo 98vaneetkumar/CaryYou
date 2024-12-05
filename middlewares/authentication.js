@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const secretKey = process.env.SECRET_KEY;
-const Models = require("../models/index");
+const Models = require("../Models/index.js");
 const commonHelper = require("../helpers/commonHelper.js");
 const resp = require("../config/responses");
 
