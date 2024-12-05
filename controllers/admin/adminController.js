@@ -64,6 +64,7 @@ module.exports = {
         contactus: 0,
         rider,
         orders: 55,
+        vehicleType: 10,
         payments: 2,
         feedbacks: 4,
         activeorders: 10,
@@ -217,7 +218,7 @@ rider_status: async (req, res) => {
   vehicleType_list: async (req, res) => {
     try {
       let title = "Vehicle Type List";
-      let vehicleTypes = await Models.vehicleType
+      let vehicleTypes = await Models.vehicleTypeModel
         .find({})
         .sort({ createdAt: -1 });
       res.render("Admin/vehicleType/vehicleType_list", {
@@ -236,7 +237,7 @@ rider_status: async (req, res) => {
   view_vehicleType: async (req, res) => {
     try {
       let title = "View Vehicle Type";
-      let vehicleType = await Models.vehicleType.findById({
+      let vehicleType = await Models.vehicleTypeModel.findById({
         _id: req.params.id,
       });
       res.render("Admin/vehicleType/view_vehicleType", {
@@ -255,7 +256,7 @@ rider_status: async (req, res) => {
   delete_vehicleType: async (req, res) => {
     try {
       let vehicleTypeId = req.body.id;
-      await Models.vehicleType.deleteOne({ _id: vehicleTypeId });
+      await Models.vehicleTypeModel.deleteOne({ _id: vehicleTypeId });
       req.flash("msg", "Vehicle Type deleted successfully");
       res.redirect("/admin/vehicleType_list");
     } catch (error) {
@@ -267,7 +268,7 @@ rider_status: async (req, res) => {
   // Update Vehicle Type Status
   vehicleType_status: async (req, res) => {
     try {
-      let updated = await Models.vehicleType.updateOne(
+      let updated = await Models.vehicleTypeModel.updateOne(
         { _id: req.body.id },
         { status: req.body.value }
       );

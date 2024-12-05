@@ -16,7 +16,9 @@
               <tr style="background-color: #ebf2f2;">
                 <th>S No.</th>
                 <th>Image</th>
-                <th>Name</th>
+                <th>Category</th> <!-- Two-Wheelers or Four-Wheelers -->
+                <th>Type</th> <!-- Scooty, Bike, etc. -->
+                <th>Name</th> <!-- Specific model name -->
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -28,7 +30,9 @@
                   <td class="text-center">
                     <img src="<%= data.image %>" width="50" height="50" class="rounded-circle border">
                   </td>
-                  <td class="text-center"><%= data.name %></td>
+                  <td class="text-center"><%= data.category %></td> <!-- Category -->
+                  <td class="text-center"><%= data.type %></td> <!-- Vehicle type -->
+                  <td class="text-center"><%= data.name %></td> <!-- Vehicle name -->
                   <td class="text-center">
                     <% if (data.status == 1) { %>
                       <button onclick="changeStatus(this)" id="status_<%- data.id %>"
@@ -58,19 +62,16 @@
 
 <script>
   $(document).ready(function () {
-    // Initialize DataTable with export buttons
     $('#myTable').DataTable({
       dom: 'Bfrtip',
       buttons: ['excel', 'pdf', 'print']
     });
 
-    // Auto-hide messages
     setTimeout(function () {
       $("div.msg").fadeOut();
     }, 2000);
   });
 
-  // Confirm delete functionality
   function confirmDelete(id) {
     Swal.fire({
       title: 'Are you sure?',
@@ -83,7 +84,7 @@
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
-          url: "/delete_vehicleType/:id",
+          url: "/delete_vehicleType",
           type: 'DELETE',
           data: { id },
           success: function () {
@@ -100,7 +101,6 @@
     });
   }
 
-  // Change status functionality
   function changeStatus(button) {
     const id = button.getAttribute('data-id');
     const value = button.getAttribute('value');

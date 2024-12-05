@@ -21,6 +21,12 @@ router.delete('/delete_rider/:id', controllers.adminController.delete_rider)
 router.post('/rider_status', controllers.adminController.rider_status)
 
 
+router.get('/vehicleType_list', session, controllers.adminController.vehicleType_list)
+router.get('/view_vehicleType/:id', session, controllers.adminController.view_vehicleType)
+router.delete('/delete_vehicleType/:id', controllers.adminController.delete_vehicleType)
+router.post('/vehicleType_status', controllers.adminController.vehicleType_status)
+
+
 //<------------------------------ ADMIN ------------------------->
 router.get('/admin_profile', session, controllers.adminController.admin_profile)
 router.post('/update_admin_profile', controllers.adminController.update_admin_profile)

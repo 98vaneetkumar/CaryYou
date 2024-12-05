@@ -3,5 +3,6 @@ module.exports={
     cmsModel:require("./cms"),
     feedBackModel:require("./feedbackSupport"),
     chatConstantModel: require('./chatConstantModel'),
-    messageModel: require('./messageModel')
+    messageModel: require('./messageModel'),
+    vehicleTypeModel: require('./vehicleTypeModel')
 }
