@@ -28,6 +28,22 @@ const rideBookingSchema = new mongoose.Schema(
         required: false,
       },
     },
+    destinationLocation: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+      },
+      location:{
+        type: String
+      },
+      coordinates: {
+        type: [Number], // [longitude, latitude]
+        index: "2dsphere", // Create a geospatial index for coordinates
+        default: [0, 0],
+        required: false,
+      },
+    },
     riderLocation: {
       type: {
         type: String,
@@ -56,6 +72,8 @@ const rideBookingSchema = new mongoose.Schema(
 );
 rideBookingSchema.index({"userLocation": '2dsphere' });
 rideBookingSchema.index({"riderLocation": '2dsphere' });
+rideBookingSchema.index({"destinationLocation": '2dsphere' });
+
 
 
 module.exports =
