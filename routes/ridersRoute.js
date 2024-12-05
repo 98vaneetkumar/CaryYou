@@ -21,6 +21,7 @@ module.exports = (io)=>{
     router.post("/licenseDetailsAdd",authentication, controller.riderController.licenseDetailsAdd);
     router.put("/licenseDetailsUpdate", authentication, controller.riderController.licenseDetailsUpdate)
     router.post("/feedBackSend", authentication, controller.riderController.feedBackSend)
+    router.post("/deleteFile", controller.riderController.deleteFile)
     //stripe apis
     
     router.get("/stripeDetail",authentication,controller.userController.stripeDetailReturn)

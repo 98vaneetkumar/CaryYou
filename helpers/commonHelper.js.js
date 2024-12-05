@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const emailTamplate = require("../helpers/emailTemplate/forgetPassword");
-
+const fs = require("fs");
 module.exports = {
   success: async (res, message, body = {}) => {
     try {
@@ -56,6 +56,30 @@ module.exports = {
     } catch (error) {
       console.error("Error during file upload:", error);
       return null;
+    }
+  },
+  deleteFile: async (fileName, folder = "images") => {
+    try {
+      if (!fileName || fileName.trim() === "") {
+        throw new Error("File name is required");
+      }
+  
+      // Create the path to the file
+      const filePath = path.join(__dirname, "..", "public", fileName);
+  console.log("filePath:", filePath);
+      // Check if the file exists
+      if (!fs.existsSync(filePath)) {
+        throw new Error("File does not exist");
+      }
+  
+      // Delete the file
+      fs.unlinkSync(filePath);
+  
+      console.log(`File ${fileName} has been deleted successfully.`);
+      return true; // Indicate success
+    } catch (error) {
+      console.error("Error during file deletion:", error);
+      return false; // Indicate failure
     }
   },
 

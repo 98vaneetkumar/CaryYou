@@ -7,11 +7,11 @@ const resp = require("../config/responses");
 module.exports = {
   authentication: async (req, res, next) => {
     let token = req.headers["authorization"];
-    token = token.startsWith("Bearer ") ? token.split(" ")[1] : token;
     if (token) {
+      token = token.startsWith("Bearer ") ? token.split(" ")[1] : token;
       jwt.verify(token, secretKey, async (err, authData) => {
         if (err) {
-          return commonHelper.failed(resp.failed_msg.invTok);
+          return commonHelper.failed(res,resp.failed_msg.invTok);
         }
         let userDetail = await Models.userModel.findOne({
          _id: authData._id 
@@ -21,7 +21,7 @@ module.exports = {
         next();
       });
     } else {
-      return commonHelper.error(resp.error_msg.tokenNotPrv);
+      return commonHelper.error(res,resp.error_msg.tokenNotPrv);
     }
   },
 

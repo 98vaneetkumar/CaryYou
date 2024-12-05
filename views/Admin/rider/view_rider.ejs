@@ -99,7 +99,7 @@
                     </div>
                     <!-- License Images Tab -->
                     <div class="col-md-3">
-                      <button type="button" class="btn btn-sm btn-primary" onclick="showImages('licenseImages')">License Images</button>
+                      <button type="button" class="btn btn-sm btn-primary" onclick="showImages('licenceImage')">License Images</button>
                     </div>
                   </div>
 
@@ -143,15 +143,17 @@
                   </div>
 
                   <!-- Tab Content: License Images -->
-                  <div id="licenseImages" class="image-tab mt-2" style="display:none;">
-                    <% if (viewrider?.licenseDetails?.licenceImage) { %>
+                  <div id="licenceImage" class="image-tab mt-2" style="display:none;">
+                    <% if (viewrider?.licenceDetails?.licenceImage?.length > 0) { %>
                       <div class="row">
-                        <% viewrider.licenseDetails.licenceImage.forEach(function(image) { %>
+                        <% viewrider.licenceDetails.licenceImage.forEach(function (image) { %>
                           <div class="col-4 mb-3">
-                            <img src="<%= image %>" class="license-image" width="100%" alt="License Image">
+                            <img src="<%= image %>" class="license-image" alt="License Image">
                           </div>
                         <% }) %>
                       </div>
+                    <% } else { %>
+                      <p class="text-center">No license images available.</p>
                     <% } %>
                   </div>
                 </div>
@@ -199,9 +201,66 @@
   
 </script>
 
+<script>
+  function showImages(tabId) {
+    // Get all tabs
+    const tabs = document.querySelectorAll('.image-tab');
+
+    tabs.forEach((tab) => {
+      if (tab.id === tabId) {
+        // If the tab is already visible, hide it
+        if (tab.style.maxHeight && tab.style.maxHeight !== '0px') {
+          tab.style.opacity = '0';
+          tab.style.maxHeight = '0';
+          setTimeout(() => (tab.style.display = 'none'), 300); // Matches transition duration
+        } else {
+          // Show the selected tab with animation
+          tab.style.display = 'block';
+          setTimeout(() => {
+            tab.style.opacity = '1';
+            tab.style.maxHeight = tab.scrollHeight + 'px'; // Adjusts to content height
+          }, 0);
+        }
+      } else {
+        // Hide other tabs
+        tab.style.opacity = '0';
+        tab.style.maxHeight = '0';
+        setTimeout(() => (tab.style.display = 'none'), 300);
+      }
+    });
+
+    // Add event listener to close tab when clicking outside
+    document.addEventListener('click', (event) => {
+      const tabContent = document.getElementById(tabId);
+
+      // Close if click is outside the tab and not on a button
+      if (
+        tabContent &&
+        !tabContent.contains(event.target) &&
+        !event.target.closest('button')
+      ) {
+        tabContent.style.opacity = '0';
+        tabContent.style.maxHeight = '0';
+        setTimeout(() => (tabContent.style.display = 'none'), 300);
+
+        // Remove this event listener after closing
+        document.removeEventListener('click', arguments.callee);
+      }
+    });
+  }
+</script>
+
 
 <!-- CSS for Hover Zoom Effect -->
 <style>
+  .image-tab {
+  display: none;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out;
+}
+
 .license-image, .vehicle-image {
   position: relative;
   transition: transform 0.3s ease;

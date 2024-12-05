@@ -713,6 +713,38 @@
                 "responses": {}
             }
         },
+        "/riders/deleteFile": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "riders-deleteFile-post",
+                "tags": ["Application Rider"],
+                "description": "",
+                "consumes": ["multipart/form-data"],
+                "produces":["application/json"],
+                "security": [
+					{
+						"Bearer": []
+					}
+				],
+                "parameters": [
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "description": "Profile picture to upload",
+                        "required": false,
+                        "type": "file",
+                        "format": "binary",
+                        "maxLength": 5242880,
+                        "allowedMimeTypes": [
+                          "image/jpeg",
+                          "image/png"
+                        ]
+                    }
+                    
+                ],
+                "responses": {}
+            }
+        },
         "/riders/feedBackSend": {
             "post": {
                 "x-swagger-router-controller": "middleware-name1",
