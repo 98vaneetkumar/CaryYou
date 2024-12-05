@@ -283,6 +283,68 @@ rider_status: async (req, res) => {
     }
   },
 
+  // Add Vehicle Type (Create Vehicle Type)
+// Add Vehicle Type (Create Vehicle Type)
+create_vehicleType: async (req, res) => {
+  try {
+    let { name, category, fuelType, status } = req.body;
+    let newVehicleType = new Models.vehicleTypeModel({
+      name,
+      category,
+      fuelType,
+      status: status || 1, // Default to active
+    });
+
+    // Save the new vehicle type
+    await newVehicleType.save();
+    req.flash("msg", "Vehicle Type created successfully");
+    res.redirect("/admin/vehicleType_list");
+  } catch (error) {
+    console.log(error);
+    req.flash("msg", "Error creating Vehicle Type");
+    res.redirect("/admin/vehicleType_list");
+  }
+},
+
+
+  // Edit Vehicle Type (Update Vehicle Type)
+  edit_vehicleType: async (req, res) => {
+    try {
+      let title = "Edit Vehicle Type";
+      let vehicleType = await Models.vehicleTypeModel.findById(req.params.id);
+      res.render("Admin/vehicleType/edit_vehicleType", {
+        title,
+        vehicleType,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
+  // Update Vehicle Type (Post edited vehicle type)
+  update_vehicleType: async (req, res) => {
+    try {
+      let vehicleTypeId = req.params.id;
+      let { name, category, fuelType, status } = req.body;
+
+      // Update the vehicle type fields
+      let updatedVehicleType = await Models.vehicleTypeModel.findByIdAndUpdate(
+        vehicleTypeId,
+        { name, category, fuelType, status },
+        { new: true }
+      );
+      req.flash("msg", "Vehicle Type updated successfully");
+      res.redirect("/admin/vehicleType_list");
+    } catch (error) {
+      console.log(error);
+      req.flash("msg", "Error updating Vehicle Type");
+      res.redirect("/admin/vehicleType_list");
+    }
+  },
+
 
 
 //---------------------------------------

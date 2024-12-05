@@ -1,9 +1,10 @@
+<!-- List of Vehicle Types -->
 <div class="main-content">
   <section class="section">
     <div class="section-header">
       <h1>Vehicle Type</h1>
       <div class="section-header-breadcrumb">
-        <a href="/add_vehicleType" class="btn btn-sm" style="background-color: var(--theme);">
+        <a href="javascript:void(0);" class="btn btn-sm" style="background-color: var(--theme);" data-toggle="modal" data-target="#addVehicleTypeModal">
           <i class="fa fa-plus"></i> Add Vehicle Type
         </a>
       </div>
@@ -11,28 +12,24 @@
     <div class="section-body">
       <div class="col-12">
         <div class="table-responsive">
-          <table id="myTable" class="table table-bordered table-hover table-md">
+          <table id="vehicleTypeTable" class="table table-bordered table-hover table-md">
             <thead class="text-center">
               <tr style="background-color: #ebf2f2;">
                 <th>S No.</th>
-                <th>Image</th>
-                <th>Category</th> <!-- Two-Wheelers or Four-Wheelers -->
-                <th>Type</th> <!-- Scooty, Bike, etc. -->
-                <th>Name</th> <!-- Specific model name -->
+                <th>Category</th>
+                <th>Name</th>
+                <th>Fuel Type</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <% catedata.forEach(function(data, i) { %>
+              <% vehicleTypes.forEach(function(data, i) { %>
                 <tr>
                   <td class="text-center"><%= 1 + i %></td>
-                  <td class="text-center">
-                    <img src="<%= data.image %>" width="50" height="50" class="rounded-circle border">
-                  </td>
-                  <td class="text-center"><%= data.category %></td> <!-- Category -->
-                  <td class="text-center"><%= data.type %></td> <!-- Vehicle type -->
-                  <td class="text-center"><%= data.name %></td> <!-- Vehicle name -->
+                  <td class="text-center"><%= data.category %></td>
+                  <td class="text-center"><%= data.name %></td>
+                  <td class="text-center"><%= data.fuelType %></td>
                   <td class="text-center">
                     <% if (data.status == 1) { %>
                       <button onclick="changeStatus(this)" id="status_<%- data.id %>"
@@ -60,66 +57,168 @@
   </section>
 </div>
 
+<!-- Add Vehicle Type Modal -->
+<div class="modal fade" id="addVehicleTypeModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleTypeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addVehicleTypeModalLabel">Add Vehicle Type</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/admin/Create_vehicleType" id="addForm" enctype="multipart/form-data" method="post">
+          <div class="row mt-sm-4 justify-content-center">
+            <div class="col-12 col-md-12 col-lg-4">
+              <div class="card profile-widget bg-white">
+                <div class="profile-widget-header text-center py-3">
+                  <img alt="image" width="200" height="200" id="blah" src="/assets/img/defaultimage.jpg" class="profile_img rounded-circle border">
+                  <input type="file" name="image" onchange="previewImage(event)" id="imgInp" accept="image/png,image/jpeg,image/gif" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-12 col-lg-10">
+              <div class="card-body p-0">
+                <div class="form-group w-100 floating-addon">
+                  <label for="name">Vehicle Type Name</label>
+                  <input id="name" type="text" class="form-control" name="name" placeholder="Vehicle Type Name" required>
+                </div>
+                <div class="form-group w-100 floating-addon">
+                  <label for="category">Category</label>
+                  <input id="category" type="text" class="form-control" name="category" placeholder="Vehicle Category (e.g., Bike, Auto, Car)" required>
+                </div>
+                <div class="form-group w-100 floating-addon">
+                  <label for="fuelType">Fuel Type</label>
+                  <select id="fuelType" name="fuelType" class="form-control" required>
+                    <option value="">Select Fuel Type</option>
+                    <option value="Petrol">Petrol</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Hybrid">Hybrid</option>
+                  </select>
+                </div>
+                <div class="text-right mt-4">
+                  <button type="submit" class="btn btn-info">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Include DataTables and Export Button Libraries -->
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+
+<!-- DataTables Buttons CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+
+<!-- DataTables JS -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+<!-- DataTables Buttons JS -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+
+<!-- JSZip (for Excel export) -->
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+<!-- PDFMake (for PDF export) -->
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+
+<!-- vfs_fonts (for PDF export) -->
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
   $(document).ready(function () {
-    $('#myTable').DataTable({
+    // Initialize DataTable with buttons for export options
+    $('#vehicleTypeTable').DataTable({
       dom: 'Bfrtip',
-      buttons: ['excel', 'pdf', 'print']
+      buttons: [
+        'excelHtml5',  // Export to Excel
+        'pdfHtml5',    // Export to PDF
+        'print'         // Print table
+      ]
     });
-
-    setTimeout(function () {
-      $("div.msg").fadeOut();
-    }, 2000);
   });
 
   function confirmDelete(id) {
-    Swal.fire({
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-warning',
+        cancelButton: 'btn btn-info'
+      },
+      buttonsStyling: true
+    });
+
+    swalWithBootstrapButtons.fire({
       title: 'Are you sure?',
-      text: "This action cannot be undone.",
+      text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, cancel!',
       reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
+    }).then((isConfirm) => {
+      if (isConfirm.isConfirmed) {
         $.ajax({
-          url: "/delete_vehicleType",
+          url: "/admin/delete_vehicleType/" + id,
           type: 'DELETE',
-          data: { id },
-          success: function () {
-            Swal.fire('Deleted!', 'The Vehicle Type has been deleted.', 'success')
-              .then(() => location.reload());
-          },
-          error: function () {
-            Swal.fire('Error!', 'Failed to delete the Vehicle Type.', 'error');
+          success: function (result) {
+            swalWithBootstrapButtons.fire(
+              'Deleted!',
+              'The vehicle type has been deleted.',
+              'success'
+            ).then(() => {
+              location.reload();
+            });
           }
         });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire('Cancelled', 'The Vehicle Type is safe.', 'error');
+      } else {
+        swalWithBootstrapButtons.fire(
+          'Cancelled',
+          'The vehicle type is safe :)',
+          'error'
+        );
       }
     });
   }
 
-  function changeStatus(button) {
-    const id = button.getAttribute('data-id');
-    const value = button.getAttribute('value');
-    const buttonElement = document.getElementById(button.id);
+  const changeStatus = (val) => {
+    let id = val.getAttribute('data-id')
+    let value = val.getAttribute('value')
+    let elemID = val.getAttribute('id')
+    elemID = document.getElementById(elemID)
 
     $.ajax({
-      type: "POST",
-      url: "/vehicleType_status",
-      data: { id, value },
+      type: "post",
+      url: "/admin/vehicle_type_status",
+      data: {
+        id: id,
+        status: value
+      },
       success: function (response) {
-        if (response.success) {
-          buttonElement.setAttribute('value', value == "1" ? "0" : "1");
-          buttonElement.innerText = value == "1" ? "Active" : "Inactive";
-          buttonElement.classList.toggle('btn-success', value == "1");
-          buttonElement.classList.toggle('btn-danger', value != "1");
+        if (value == 1) {
+          elemID.classList.remove('btn-success')
+          elemID.classList.add('btn-danger')
+          elemID.setAttribute('value', 0)
+          elemID.innerText = "Inactive"
         } else {
-          Swal.fire('Error!', 'Failed to update status.', 'error');
+          elemID.classList.remove('btn-danger')
+          elemID.classList.add('btn-success')
+          elemID.setAttribute('value', 1)
+          elemID.innerText = "Active"
         }
       }
-    });
+    })
   }
 </script>
