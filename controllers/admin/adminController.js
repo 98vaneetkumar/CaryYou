@@ -51,6 +51,8 @@ module.exports = {
       let title = "dashboard";
       let user = await Models.userModel.countDocuments({ role: 1 });
       let provider = await Models.userModel.countDocuments({ role: 2 });
+      let rider = await Models.userModel.countDocuments({ role: 3 });
+
   
       console.log("Flash msg:", req.flash("msg"));
   
@@ -60,7 +62,7 @@ module.exports = {
         provider: 100,
         servicesdata: 0,
         contactus: 0,
-        rider: 5,
+        rider,
         orders: 55,
         payments: 2,
         feedbacks: 4,
