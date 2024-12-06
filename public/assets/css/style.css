@@ -344,7 +344,6 @@ select.form-control:not([size]):not([multiple]) {
 
 .form-group.floating-addon .form-control {
   border-radius: 3px;
-  padding-left: 40px;
   border-color: rgb(105, 104, 104);
 }
 

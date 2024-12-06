@@ -21,10 +21,15 @@ router.delete('/delete_rider/:id', controllers.adminController.delete_rider)
 router.post('/rider_status', controllers.adminController.rider_status)
 
 
-router.get('/vehicleType_list', session, controllers.adminController.vehicleType_list)
-router.get('/view_vehicleType/:id', session, controllers.adminController.view_vehicleType)
-router.delete('/delete_vehicleType/:id', controllers.adminController.delete_vehicleType)
-router.post('/vehicleType_status', controllers.adminController.vehicleType_status)
+router.get('/vehicleType_list', session, controllers.adminController.vehicleType_list);
+router.get('/edit_vehicleType/:id', session, controllers.adminController.edit_vehicleType);
+router.post('/delete_vehicleType', session, controllers.adminController.delete_vehicleType);
+router.post('/vehicleType_status', session, controllers.adminController.vehicleType_status);
+router.get('/add_vehicleType', session, controllers.adminController.add_vehicleType);
+router.post('/create_vehicleType', session, controllers.adminController.create_vehicleType);
+router.post('/update_vehicleType', session, controllers.adminController.update_vehicleType);
+
+
 
 
 //<------------------------------ ADMIN ------------------------->

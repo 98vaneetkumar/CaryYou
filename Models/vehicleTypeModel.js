@@ -11,6 +11,10 @@ const vehicleTypeSchema = new mongoose.Schema(
       type: String, // e.g., Petrol, Diesel, Electric, Hybrid
       enum: ['Petrol', 'Diesel', 'Electric', 'Hybrid'],
       required: true,
+    },
+    status: {
+      type: Number,
+      default: 1   // 1 for active 0 for not active
     }
   },
   { timestamps: true }

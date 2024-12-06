@@ -1,6 +1,7 @@
 const Models = require("../../Models/index");
 const bcrypt = require("bcrypt");
-const helper=require("../../helpers/commonHelper.js")
+const helper = require("../../helpers/commonHelper.js");
+const { trusted } = require("mongoose");
 
 module.exports = {
   login_page: async (req, res) => {
@@ -29,9 +30,9 @@ module.exports = {
       } else {
         req.session.user = findUser;
         req.flash("msg", "Login Successfully");
-        setTimeout(()=>{
+        setTimeout(() => {
           res.redirect("/admin/dashboard");
-        }, 500)
+        }, 500);
       }
     } catch (error) {
       console.log(error);
@@ -39,7 +40,7 @@ module.exports = {
   },
   logout: async (req, res) => {
     try {
-      req.session.destroy((err) => { });
+      req.session.destroy((err) => {});
       res.redirect("/admin/login");
     } catch (error) {
       helper.error(res, error);
@@ -52,10 +53,11 @@ module.exports = {
       let user = await Models.userModel.countDocuments({ role: 1 });
       let provider = await Models.userModel.countDocuments({ role: 2 });
       let rider = await Models.userModel.countDocuments({ role: 3 });
+      let vehicleType = await Models.vehicleTypeModel.countDocuments();
 
-  
+
       console.log("Flash msg:", req.flash("msg"));
-  
+
       res.render("Admin/dashboard", {
         title,
         user,
@@ -64,22 +66,20 @@ module.exports = {
         contactus: 0,
         rider,
         orders: 55,
-        vehicleType: 10,
+        vehicleType,
         payments: 2,
         feedbacks: 4,
         activeorders: 10,
         deliveredorders: 5,
         cancelledorders: 50,
         session: req.session.user,
-        msg: req.flash("msg") || '',
+        msg: req.flash("msg") || "",
       });
-  
     } catch (error) {
       console.log(error);
       throw error;
     }
   },
-  
 
   user_list: async (req, res) => {
     try {
@@ -96,7 +96,7 @@ module.exports = {
       });
     } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
 
@@ -113,7 +113,7 @@ module.exports = {
       });
     } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
 
@@ -124,7 +124,7 @@ module.exports = {
       res.redirect("/admin/user_list");
     } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
 
@@ -140,90 +140,21 @@ module.exports = {
       if (req.body.value == 1) res.send(true);
     } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
 
-//---------riders list apis--------------
+  //---------riders list apis--------------
 
-rider_list: async (req, res) => {
-  try {
-    let title = "rider_list";
-    let riderdata = await Models.userModel
-      .find({ role: 3 })
-      .sort({ createdAt: -1 });
-    res.render("Admin/rider/rider_list", {
-      title,
-      riderdata,
-      session: req.session.user,
-      msg: req.flash("msg"),
-    });
-  } catch (error) {
-    console.log(error);
-    throw error
-  }
-},
-
-view_rider: async (req, res) => {
-  try {
-    let title = "rider_list";
-    let viewrider = await Models.userModel.findById({ _id: req.params.id });
-    // console.log(viewrider,"viewriderviewriderviewriderviewrider");return
-    res.render("Admin/rider/view_rider", {
-      title,
-      viewrider,
-      session: req.session.user,
-      msg: req.flash("msg"),
-    });
-  } catch (error) {
-    console.log(error);
-    throw error
-  }
-},
-
-delete_rider: async (req, res) => {
-  try {
-    let riderid = req.body.id;
-    let remove = await Models.userModel.deleteOne({ _id: riderid });
-    res.redirect("/admin/rider_list");
-  } catch (error) {
-    console.log(error);
-    throw error
-  }
-},
-
-rider_status: async (req, res) => {
-  try {
-    var check = await Models.userModel.updateOne(
-      { _id: req.body.id },
-      { status: req.body.value }
-    );
-    req.flash("msg", "Status update successfully");
-
-    if (req.body.value == 0) res.send(false);
-    if (req.body.value == 1) res.send(true);
-  } catch (error) {
-    console.log(error);
-    throw error
-  }
-},
-
-
-//---------------------------------------
-
-//---------vehicle type apis-------------
-
-
-  // List Vehicle Types
-  vehicleType_list: async (req, res) => {
+  rider_list: async (req, res) => {
     try {
-      let title = "Vehicle Type List";
-      let vehicleTypes = await Models.vehicleTypeModel
-        .find({})
+      let title = "rider_list";
+      let riderdata = await Models.userModel
+        .find({ role: 3 })
         .sort({ createdAt: -1 });
-      res.render("Admin/vehicleType/vehicleType_list", {
+      res.render("Admin/rider/rider_list", {
         title,
-        vehicleTypes,
+        riderdata,
         session: req.session.user,
         msg: req.flash("msg"),
       });
@@ -233,16 +164,14 @@ rider_status: async (req, res) => {
     }
   },
 
-  // View Vehicle Type Details
-  view_vehicleType: async (req, res) => {
+  view_rider: async (req, res) => {
     try {
-      let title = "View Vehicle Type";
-      let vehicleType = await Models.vehicleTypeModel.findById({
-        _id: req.params.id,
-      });
-      res.render("Admin/vehicleType/view_vehicleType", {
+      let title = "rider_list";
+      let viewrider = await Models.userModel.findById({ _id: req.params.id });
+      // console.log(viewrider,"viewriderviewriderviewriderviewrider");return
+      res.render("Admin/rider/view_rider", {
         title,
-        vehicleType,
+        viewrider,
         session: req.session.user,
         msg: req.flash("msg"),
       });
@@ -252,29 +181,25 @@ rider_status: async (req, res) => {
     }
   },
 
-  // Delete Vehicle Type
-  delete_vehicleType: async (req, res) => {
+  delete_rider: async (req, res) => {
     try {
-      let vehicleTypeId = req.body.id;
-      await Models.vehicleTypeModel.deleteOne({ _id: vehicleTypeId });
-      req.flash("msg", "Vehicle Type deleted successfully");
-      res.redirect("/admin/vehicleType_list");
+      let riderid = req.body.id;
+      let remove = await Models.userModel.deleteOne({ _id: riderid });
+      res.redirect("/admin/rider_list");
     } catch (error) {
       console.log(error);
       throw error;
     }
   },
 
-  // Update Vehicle Type Status
-  vehicleType_status: async (req, res) => {
+  rider_status: async (req, res) => {
     try {
-      let updated = await Models.vehicleTypeModel.updateOne(
+      var check = await Models.userModel.updateOne(
         { _id: req.body.id },
         { status: req.body.value }
       );
-      req.flash("msg", "Status updated successfully");
+      req.flash("msg", "Status update successfully");
 
-      // Return appropriate response
       if (req.body.value == 0) res.send(false);
       if (req.body.value == 1) res.send(true);
     } catch (error) {
@@ -283,80 +208,191 @@ rider_status: async (req, res) => {
     }
   },
 
-  // Add Vehicle Type (Create Vehicle Type)
-// Add Vehicle Type (Create Vehicle Type)
-create_vehicleType: async (req, res) => {
-  try {
-    let { name, category, fuelType, status } = req.body;
-    let newVehicleType = new Models.vehicleTypeModel({
-      name,
-      category,
-      fuelType,
-      status: status || 1, // Default to active
-    });
+  //---------------------------------------
 
-    // Save the new vehicle type
-    await newVehicleType.save();
-    req.flash("msg", "Vehicle Type created successfully");
-    res.redirect("/admin/vehicleType_list");
-  } catch (error) {
-    console.log(error);
-    req.flash("msg", "Error creating Vehicle Type");
-    res.redirect("/admin/vehicleType_list");
-  }
-},
+  //---------vehicle type apis-------------
 
-
-  // Edit Vehicle Type (Update Vehicle Type)
-  edit_vehicleType: async (req, res) => {
+  // List Vehicle Types
+  vehicleType_list: async (req, res) => {
     try {
-      let title = "Edit Vehicle Type";
-      let vehicleType = await Models.vehicleTypeModel.findById(req.params.id);
-      res.render("Admin/vehicleType/edit_vehicleType", {
+      const title = "Vehicle Type List";
+      const vehicleTypes = await Models.vehicleTypeModel
+        .find({})
+        .sort({ createdAt: -1 });
+
+      res.render("Admin/vehicleType/vehicleType_list", {
         title,
-        vehicleType,
+        vehicleTypes,
         session: req.session.user,
         msg: req.flash("msg"),
       });
     } catch (error) {
-      console.log(error);
-      throw error;
+      console.error("Error fetching vehicle type list:", error);
+      req.flash("msg", "Error fetching vehicle type list");
+      res.redirect("/admin/dashboard");
     }
   },
 
-  // Update Vehicle Type (Post edited vehicle type)
-  update_vehicleType: async (req, res) => {
+  // View Vehicle Type Details
+  edit_vehicleType: async (req, res) => {
     try {
-      let vehicleTypeId = req.params.id;
-      let { name, category, fuelType, status } = req.body;
+      const title = "View Vehicle Type";
+      const editData = await Models.vehicleTypeModel.findById(req.params.id);
 
-      // Update the vehicle type fields
-      let updatedVehicleType = await Models.vehicleTypeModel.findByIdAndUpdate(
-        vehicleTypeId,
-        { name, category, fuelType, status },
-        { new: true }
-      );
-      req.flash("msg", "Vehicle Type updated successfully");
+      if (!editData) {
+        req.flash("msg", "Vehicle Type not found");
+        return res.redirect("/admin/vehicleType_list");
+      }
+
+      res.render("Admin/vehicleType/edit_vehicleType", {
+        title,
+        editData,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.error("Error fetching vehicle type details:", error);
+      req.flash("msg", "Error fetching vehicle type details");
+      res.redirect("/admin/vehicleType_list");
+    }
+  },
+
+  // Delete Vehicle Type
+  delete_vehicleType: async (req, res) => {
+    try {
+      const { id } = req.body;
+
+      const deleteResult = await Models.vehicleTypeModel.deleteOne({ _id: id });
+
+      if (deleteResult.deletedCount === 0) {
+        req.flash("msg", "Vehicle Type not found or already deleted");
+        return res.redirect("/admin/vehicleType_list");
+      }
+
+      req.flash("msg", "Vehicle Type deleted successfully");
       res.redirect("/admin/vehicleType_list");
     } catch (error) {
+      console.error("Error deleting vehicle type:", error);
+      req.flash("msg", "Error deleting Vehicle Type");
+      res.redirect("/admin/vehicleType_list");
+    }
+  },
+
+  // Update Vehicle Type Status
+  vehicleType_status: async (req, res) => {
+    try {
+      const { id, value } = req.body;
+
+      const updated = await Models.vehicleTypeModel.updateOne(
+        { _id: id },
+        { status: value }
+      );
+
+      if (updated.modifiedCount === 0) {
+        req.flash("msg", "Error updating status");
+        return res.status(400).send(false);
+      }
+      const vehicleTypes = await Models.vehicleTypeModel
+        .find({})
+        .sort({ createdAt: -1 });
+
+      req.flash("msg", "Status updated successfully");
+      res.render("Admin/vehicleType/vehicleType_list", {
+        title,
+        vehicleTypes,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+
+    } catch (error) {
+      console.error("Error updating vehicle type status:", error);
+      req.flash("msg", "Error updating status");
+      res.status(500).send(false);
+    }
+  },
+
+  add_vehicleType: async (req, res) => {
+    try {
+      let title = "Add Vehicle Type";
+      let msg = req.flash("msg");
+      let session = req.session.user;
+      res.render("Admin/vehicleType/add_vehicleType", { title, msg, session });
+    } catch (error) {
       console.log(error);
+      // throw error
+    }
+  },
+
+  // Add Vehicle Type (Create Vehicle Type)
+  create_vehicleType: async (req, res) => {
+    try {
+      const { name, category, fuelType } = req.body;
+
+      const newVehicleType = new Models.vehicleTypeModel({
+        name,
+        category,
+        fuelType,
+      });
+
+      await newVehicleType.save();
+
+      req.flash("msg", "Vehicle Type created successfully");
+      res.redirect("/admin/vehicleType_list");
+    } catch (error) {
+      console.error("Error creating vehicle type:", error);
+      req.flash("msg", "Error creating Vehicle Type");
+      res.redirect("/admin/vehicleType_list");
+    }
+  },
+
+  // Update Vehicle Type (Post edited details)
+  update_vehicleType: async (req, res) => {
+    try {
+      const { id } = req.body;
+      const { name, category, fuelType } = req.body;
+      const title = "View Vehicle Type";
+
+      const updatedVehicleType =
+        await Models.vehicleTypeModel.findByIdAndUpdate(
+          {_id :id},
+          { name, category, fuelType },
+          { new: true }
+        );
+
+      if (!updatedVehicleType) {
+        req.flash("msg", "Vehicle Type not found");
+        return res.redirect("/admin/vehicleType_list");
+      }
+      const vehicleTypes = await Models.vehicleTypeModel
+      .find({})
+      .sort({ createdAt: -1 });
+
+      req.flash("msg", "Vehicle Type updated successfully");
+      res.render("Admin/vehicleType/vehicleType_list", {
+        title,
+        vehicleTypes,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.error("Error updating vehicle type:", error);
       req.flash("msg", "Error updating Vehicle Type");
       res.redirect("/admin/vehicleType_list");
     }
   },
 
-
-
-//---------------------------------------
-
-
+  //---------------------------------------
 
   admin_profile: async (req, res) => {
     try {
-      let title = "admin_profile"
-      res.render('Admin/admin/admin_profile', { title, session: req.session.user, msg: req.flash('msg') })
+      let title = "admin_profile";
+      res.render("Admin/admin/admin_profile", {
+        title,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -392,10 +428,14 @@ create_vehicleType: async (req, res) => {
 
   change_password: async (req, res) => {
     try {
-      let title = "change_password"
-      res.render('Admin/admin/change_password', { title, session: req.session.user, msg: req.flash('msg') })
+      let title = "change_password";
+      res.render("Admin/admin/change_password", {
+        title,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -420,44 +460,48 @@ create_vehicleType: async (req, res) => {
             { password: bcryptPassword }
           );
           req.session.user = create;
-          req.flash('msg', 'Update password successfully')
+          req.flash("msg", "Update password successfully");
           res.redirect("/admin/login");
         } else {
-          req.flash('msg', 'Old password do not match')
+          req.flash("msg", "Old password do not match");
           res.redirect("/admin/change_password");
         }
       }
     } catch (error) {
-      console.log(error)
-      throw error
+      console.log(error);
+      throw error;
     }
   },
   admin_commission: async (req, res) => {
     try {
-      let title = "commission"
+      let title = "commission";
       let users = await Models.userModel.findOne({ _id: req.session.user._id });
-      res.render('Admin/commission/commission', { title, users, session: req.session.user, msg: req.flash('msg') })
-    }
-    catch (error) {
+      res.render("Admin/commission/commission", {
+        title,
+        users,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
 
   update_commission: async (req, res) => {
     try {
-
-      await Models.userModel.updateOne({ _id: req.session.user._id },
+      await Models.userModel.updateOne(
+        { _id: req.session.user._id },
         {
-          admincommission: req.body.admincommission
-        });
+          admincommission: req.body.admincommission,
+        }
+      );
       let users = await Models.userModel.findOne({ _id: req.session.user._id });
-      req.flash("msg", "Updated successfully")
-      res.redirect('/admin/admin_commission')
-
+      req.flash("msg", "Updated successfully");
+      res.redirect("/admin/admin_commission");
     } catch (error) {
-      console.log(error)
-      throw error
+      console.log(error);
+      throw error;
     }
   },
 };

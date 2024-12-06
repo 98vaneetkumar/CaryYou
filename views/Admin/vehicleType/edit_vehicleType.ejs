@@ -12,22 +12,43 @@
       <div class="card">
         <form action="/admin/update_vehicleType" id="addForm" method="post" enctype="multipart/form-data">
           <div class="row mt-sm-4 justify-content-center">
-            <div class="col-12 col-md-12 col-lg-4">
+            <!-- <div class="col-12 col-md-12 col-lg-4">
               <div class="card profile-widget bg-white">
                 <div class="profile-widget-header text-center py-3">
-                  <img alt="image" width="200" height="200" id="blah" src="<%=editData.image%>"
-                    class="profile_img rounded-circle border">
+                  <img alt="image" width="200" height="200" id="blah" src="<%=editData.image%>" class="profile_img rounded-circle border">
                   <input type="file" name="image" id="imgInp" accept="image/png,image/jpeg,image/gif"
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
                 </div>
               </div>
-            </div>
+            </div> -->
+
             <div class="col-12 col-lg-10">
               <div class="card-body">
+                <!-- Back Button -->
+                <div class="mb-3">
+                  <a href="/admin/vehicleType_list" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                  </a>
+                </div>
+
+                <!-- Vehicle Type Form Fields -->
                 <div class="form-group">
-                  <label for="name">Name</label>
+                  <label for="name">Vehicle Type Name</label>
                   <input type="text" class="form-control" id="name" name="name" value="<%=editData.name%>" required>
                   <input type="hidden" name="id" value="<%=editData._id%>">
+                </div>
+                <div class="form-group">
+                  <label for="category">Category</label>
+                  <input type="text" class="form-control" id="category" name="category" value="<%=editData.category%>" required>
+                </div>
+                <div class="form-group">
+                  <label for="fuelType">Fuel Type</label>
+                  <select id="fuelType" name="fuelType" class="form-control" required>
+                    <option value="Petrol" <%= editData.fuelType === 'Petrol' ? 'selected' : '' %>>Petrol</option>
+                    <option value="Diesel" <%= editData.fuelType === 'Diesel' ? 'selected' : '' %>>Diesel</option>
+                    <option value="Electric" <%= editData.fuelType === 'Electric' ? 'selected' : '' %>>Electric</option>
+                    <option value="Hybrid" <%= editData.fuelType === 'Hybrid' ? 'selected' : '' %>>Hybrid</option>
+                  </select>
                 </div>
                 <div class="text-right mt-4">
                   <button type="submit" class="btn btn-success">Update</button>
@@ -56,14 +77,30 @@
           required: true,
           maxlength: 50,
           noSpace: true
-        }
+        },
+        category: {
+          required: true,
+          maxlength: 50,
+          noSpace: true
+        },
+        fuelType: {
+          required: true
+        },
       },
       messages: {
         name: {
           required: "Vehicle Type Name is required.",
           maxlength: "Name cannot exceed 50 characters.",
           noSpace: "This field cannot be empty or contain only spaces."
-        }
+        },
+        category: {
+          required: "Category is required.",
+          maxlength: "Category cannot exceed 50 characters.",
+          noSpace: "This field cannot be empty or contain only spaces."
+        },
+        fuelType: {
+          required: "Please select a fuel type."
+        },
       },
       submitHandler: function (form) {
         form.submit();

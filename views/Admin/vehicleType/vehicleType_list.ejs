@@ -4,9 +4,9 @@
     <div class="section-header">
       <h1>Vehicle Type</h1>
       <div class="section-header-breadcrumb">
-        <a href="javascript:void(0);" class="btn btn-sm" style="background-color: var(--theme);" data-toggle="modal" data-target="#addVehicleTypeModal">
-          <i class="fa fa-plus"></i> Add Vehicle Type
-        </a>
+        <a href="/admin/add_vehicleType" class="btn btn-sm" style="background-color: rgba(6, 191, 12, 0.628);">
+          <i class="fa fa-plus"></i> Add
+        </a>        
       </div>
     </div>
     <div class="section-body">
@@ -16,8 +16,8 @@
             <thead class="text-center">
               <tr style="background-color: #ebf2f2;">
                 <th>S No.</th>
-                <th>Category</th>
                 <th>Name</th>
+                <th>Category</th>
                 <th>Fuel Type</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -27,8 +27,8 @@
               <% vehicleTypes.forEach(function(data, i) { %>
                 <tr>
                   <td class="text-center"><%= 1 + i %></td>
-                  <td class="text-center"><%= data.category %></td>
                   <td class="text-center"><%= data.name %></td>
+                  <td class="text-center"><%= data.category %></td>
                   <td class="text-center"><%= data.fuelType %></td>
                   <td class="text-center">
                     <% if (data.status == 1) { %>
@@ -57,58 +57,6 @@
   </section>
 </div>
 
-<!-- Add Vehicle Type Modal -->
-<div class="modal fade" id="addVehicleTypeModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleTypeModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addVehicleTypeModalLabel">Add Vehicle Type</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="/admin/Create_vehicleType" id="addForm" enctype="multipart/form-data" method="post">
-          <div class="row mt-sm-4 justify-content-center">
-            <div class="col-12 col-md-12 col-lg-4">
-              <div class="card profile-widget bg-white">
-                <div class="profile-widget-header text-center py-3">
-                  <img alt="image" width="200" height="200" id="blah" src="/assets/img/defaultimage.jpg" class="profile_img rounded-circle border">
-                  <input type="file" name="image" onchange="previewImage(event)" id="imgInp" accept="image/png,image/jpeg,image/gif" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-md-12 col-lg-10">
-              <div class="card-body p-0">
-                <div class="form-group w-100 floating-addon">
-                  <label for="name">Vehicle Type Name</label>
-                  <input id="name" type="text" class="form-control" name="name" placeholder="Vehicle Type Name" required>
-                </div>
-                <div class="form-group w-100 floating-addon">
-                  <label for="category">Category</label>
-                  <input id="category" type="text" class="form-control" name="category" placeholder="Vehicle Category (e.g., Bike, Auto, Car)" required>
-                </div>
-                <div class="form-group w-100 floating-addon">
-                  <label for="fuelType">Fuel Type</label>
-                  <select id="fuelType" name="fuelType" class="form-control" required>
-                    <option value="">Select Fuel Type</option>
-                    <option value="Petrol">Petrol</option>
-                    <option value="Diesel">Diesel</option>
-                    <option value="Electric">Electric</option>
-                    <option value="Hybrid">Hybrid</option>
-                  </select>
-                </div>
-                <div class="text-right mt-4">
-                  <button type="submit" class="btn btn-info">Submit</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Include DataTables and Export Button Libraries -->
 <!-- jQuery -->
@@ -201,7 +149,7 @@
 
     $.ajax({
       type: "post",
-      url: "/admin/vehicle_type_status",
+      url: "/admin/vehicleType_status",
       data: {
         id: id,
         status: value
