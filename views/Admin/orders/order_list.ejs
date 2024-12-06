@@ -27,7 +27,7 @@
                   <td><%= 1 + i %></td>
                   <td>
                     <img 
-                      src="<%= data.image ? data.image : 'https://avatar.iran.liara.run/public/boy?ordername=Ash' %>" 
+                      src="<%= data.image || 'https://avatar.iran.liara.run/public/boy?ordername=Ash' %>" 
                       width="50" 
                       height="50" 
                       class="profile_img rounded-circle border" 
@@ -55,44 +55,7 @@
   $(document).ready(function () {
     $('#myTable').DataTable({
       dom: 'Bfrtip',
-      buttons: [
-        'excel', 'pdf', 'print'
-      ]
+      buttons: ['excel', 'pdf', 'print']
     });
   });
-
-  setTimeout(function () {
-    $("div.msg").fadeOut();
-  }, 2000);
-
-
-  const changeStatus = (val) => {
-    let id = val.getAttribute('data-id');
-    let value = val.getAttribute('value');
-    let elemID = val.getAttribute('id');
-    elemID = document.getElementById(elemID);
-
-    $.ajax({
-      type: "post",
-      url: "/admin/order_status",
-      data: {
-        id: id,
-        value: value
-      },
-      success: function (data) {
-        if (data) {
-          elemID.setAttribute('value', 0);
-          elemID.innerText = `Active`;
-          elemID.classList.remove('btn-danger');
-          elemID.classList.add('btn-success');
-        } else {
-          elemID.setAttribute('value', 1);
-          elemID.innerText = `In-Active`;
-          elemID.classList.remove('btn-success');
-          elemID.classList.add('btn-danger');
-        }
-        window.location.reload();
-      }
-    });
-  };
 </script>

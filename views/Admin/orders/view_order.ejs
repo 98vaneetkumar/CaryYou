@@ -1,299 +1,119 @@
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1>Rider Detail</h1>
+      <h1>Order Details</h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="/admin/dashboard">Dashboard</a></div>
-        <div class="breadcrumb-item"><a href="/rider_list">Riders</a></div>
-        <div class="breadcrumb-item">Rider Detail</div>
+        <div class="breadcrumb-item"><a href="/admin/order_list">Orders</a></div>
+        <div class="breadcrumb-item">Order Details</div>
       </div>
     </div>
     <div class="section-body">
       <div class="card">
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="" method="get" enctype="multipart/form-data">
           <!-- Back Button -->
           <div class="form-group text-left ml-3 mt-2">
-            <a href="/admin/rider_list" class="btn btn-info">
+            <a href="/admin/order_list" class="btn btn-info">
               <i class="fas fa-arrow-left"></i> Back</a>
           </div>
           <div class="row mt-sm-4 justify-content-center">
-            
-          
-            <!-- Left Side - Rider Image & Basic Details -->
+            <!-- Left Side - Order Info -->
             <div class="col-12 col-md-12 col-lg-4">
               <div class="card profile-widget">
                 <div class="profile-widget-header text-center py-3">
-                  <img alt="Rider Image" width="200" height="200" id="blah" src="<%= viewrider.image ? viewrider.image : 'https://avatar.iran.liara.run/public/boy?ridername=Ash' %>" class="profile_img rounded-circle">
+                  <img
+                    alt="Order By Image"
+                    width="200"
+                    height="200"
+                    src="<%= order.orderBy?.image || 'https://avatar.iran.liara.run/public/boy?ordername=Ash' %>"
+                    class="profile_img rounded-circle">
                 </div>
               </div>
               <div class="card-body">
-                <h4 class="text-center">Basic Info</h4>
+                <h4 class="text-center">Order Info</h4>
                 <div class="form-group">
-                  <label class="col-form-label">Name</label>
-                  <input type="text" name="name" value="<%=viewrider.fullName%>" class="form-control" disabled>
+                  <label class="col-form-label">Order By</label>
+                  <input type="text" value="<%= order.orderBy?.name || 'Pending' %>" class="form-control" disabled>
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Email</label>
-                  <input type="email" name="email" value="<%=viewrider.email%>" class="form-control" disabled>
+                  <label class="col-form-label">Restaurant</label>
+                  <input type="text" value="<%= order.restaurant?.name || 'Pending' %>" class="form-control" disabled>
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Phone</label>
-                  <input type="text" name="phone" value="<%=viewrider.countryCode%> <%=viewrider.phoneNumber%>" class="form-control" disabled>
+                  <label class="col-form-label">Item</label>
+                  <input type="text" value="<%= order.item || 'N/A' %>" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Price</label>
+                  <input type="text" value="<%= order.price || 'N/A' %>" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Status</label>
+                  <input type="text" value="<%= getOrderStatus(order.status) %>" class="form-control" disabled>
                 </div>
               </div>
             </div>
 
-            <!-- Right Side - License & Vehicle Info -->
+            <!-- Right Side - Rider & Delivery Details -->
             <div class="col-12 col-md-12 col-lg-7">
               <div class="card-body">
-                <h4 class="text-center">License & Vehicle Info</h4>
-
-                <!-- License Details -->
-                <div class="form-group">
-                  <label class="col-form-label">License Number</label>
-                  <input type="text" name="licenseNumber" value="<%=viewrider?.licenceDetails?.licenceNumber%>" class="form-control" disabled>
-                </div>
-                <div class="form-group">
-                  <label class="col-form-label">License Type</label>
-                  <input type="text" name="licenseType" value="<%=viewrider?.licenceDetails?.licenceType%>" class="form-control" disabled>
-                </div>
-                <div class="form-group">
-                  <label class="col-form-label">License Issue Date</label>
-                  <input type="text" name="issueOn" value="<%=viewrider?.licenceDetails?.issueOn%>" class="form-control" disabled>
-                </div>
-                <div class="form-group">
-                  <label class="col-form-label">DOB</label>
-                  <input type="text" name="dob" value="<%=viewrider?.licenceDetails?.DOB%>" class="form-control" disabled>
-                </div>
-                <div class="form-group">
-                  <label class="col-form-label">License Nationality</label>
-                  <input type="text" name="nationality" value="<%=viewrider?.licenceDetails?.nationality%>" class="form-control" disabled>
-                </div>
-
-                <!-- Vehicle Info -->
-                <div class="form-group">
-                  <label class="col-form-label">Vehicle Type</label>
-                  <input type="text" name="typeOfVehicle" value="<%=viewrider?.vehicleInfo?.typeOfVehicle%>" class="form-control" disabled>
-                </div>
-                <div class="form-group">
-                  <label class="col-form-label">Vehicle Number</label>
-                  <input type="text" name="vehicleNumber" value="<%=viewrider?.vehicleInfo?.vehicleNumber%>" class="form-control" disabled>
-                </div>
-                <div class="form-group">
-                  <label class="col-form-label">Vehicle Registration Expiry Date</label>
-                  <input type="text" name="regExpDate" value="<%=viewrider?.vehicleInfo?.regExpDate%>" class="form-control" disabled>
-                </div>
-
-                <!-- Image Tabs -->
-                <div class="form-group">
-                  <div class="row">
-                    <!-- Vehicle Images Tab -->
-                    <div class="col-md-3">
-                      <button type="button" class="btn btn-sm btn-primary" onclick="showImages('vehicleImages')">Vehicle Images</button>
-                    </div>
-                    <!-- Vehicle Registration Tab -->
-                    <div class="col-md-3">
-                      <button type="button" class="btn btn-sm btn-primary" onclick="showImages('vehicleRegistration')">Vehicle Registration</button>
-                    </div>
-                    <!-- Insurance Policy Tab -->
-                    <div class="col-md-3">
-                      <button type="button" class="btn btn-sm btn-primary" onclick="showImages('insurancePolicy')">Insurance Policy</button>
-                    </div>
-                    <!-- License Images Tab -->
-                    <div class="col-md-3">
-                      <button type="button" class="btn btn-sm btn-primary" onclick="showImages('licenceImage')">License Images</button>
-                    </div>
+                <h4 class="text-center">Delivery Details</h4>
+                <% if (order.status > 1) { %>
+                  <!-- Rider Info -->
+                  <div class="form-group">
+                    <label class="col-form-label">Rider</label>
+                    <input type="text" value="<%= order.rider?.name || 'Not Assigned' %>" class="form-control" disabled>
                   </div>
-
-                  <!-- Tab Content: Vehicle Images -->
-                  <div id="vehicleImages" class="image-tab mt-2" style="display:none;">
-                    <% if (viewrider?.vehicleInfo?.picOfVehicle) { %>
-                      <div class="row">
-                        <% viewrider.vehicleInfo.picOfVehicle.forEach(function(image) { %>
-                          <div class="col-4 mb-3">
-                            <img src="<%= image %>" class="vehicle-image" width="100%" alt="Vehicle Image">
-                          </div>
-                        <% }) %>
-                      </div>
-                    <% } %>
+                  <div class="form-group">
+                    <label class="col-form-label">Rider Tip</label>
+                    <input type="text" value="<%= order.riderTip || 'No Tip' %>" class="form-control" disabled>
                   </div>
-
-                  <!-- Tab Content: Vehicle Registration -->
-                  <div id="vehicleRegistration" class="image-tab mt-2" style="display:none;">
-                    <% if (viewrider?.vehicleInfo?.picOfVehicleRegistration) { %>
-                      <div class="row">
-                        <% viewrider.vehicleInfo.picOfVehicleRegistration.forEach(function(image) { %>
-                          <div class="col-4 mb-3">
-                            <img src="<%= image %>" class="vehicle-image" width="100%" alt="Vehicle Registration">
-                          </div>
-                        <% }) %>
-                      </div>
-                    <% } %>
+                  <!-- Pickup Details -->
+                  <div class="form-group">
+                    <label class="col-form-label">Pickup Time</label>
+                    <input type="text" value="<%= formatDateTime(order.orderPickUpDate, order.orderPickUpTime) || 'Not Picked Up' %>" class="form-control" disabled>
                   </div>
-
-                  <!-- Tab Content: Insurance Policy -->
-                  <div id="insurancePolicy" class="image-tab mt-2" style="display:none;">
-                    <% if (viewrider?.vehicleInfo?.insurancePolicy) { %>
-                      <div class="row">
-                        <% viewrider.vehicleInfo.insurancePolicy.forEach(function(image) { %>
-                          <div class="col-4 mb-3">
-                            <img src="<%= image %>" class="vehicle-image" width="100%" alt="Insurance Policy">
-                          </div>
-                        <% }) %>
-                      </div>
-                    <% } %>
+                  <!-- Delivery Details -->
+                  <div class="form-group">
+                    <label class="col-form-label">Delivered Time</label>
+                    <input type="text" value="<%= formatDateTime(order.orderDeliveredDate, order.orderDeliveredTime) || 'Not Delivered' %>" class="form-control" disabled>
                   </div>
-
-                  <!-- Tab Content: License Images -->
-                  <div id="licenceImage" class="image-tab mt-2" style="display:none;">
-                    <% if (viewrider?.licenceDetails?.licenceImage?.length > 0) { %>
-                      <div class="row">
-                        <% viewrider.licenceDetails.licenceImage.forEach(function (image) { %>
-                          <div class="col-4 mb-3">
-                            <img src="<%= image %>" class="license-image" alt="License Image">
-                          </div>
-                        <% }) %>
-                      </div>
-                    <% } else { %>
-                      <p class="text-center">No license images available.</p>
-                    <% } %>
-                  </div>
-                </div>
+                <% } else { %>
+                  <p class="text-center">Delivery details will be available once the rider is assigned and updates are provided.</p>
+                <% } %>
               </div>
             </div>
           </div>
-
         </form>
       </div>
     </div>
   </section>
 </div>
 
-<!-- JavaScript to Toggle Image Visibility -->
 <script>
-  function showImages(tabId) {
-  // Get all tabs
-  const tabs = document.querySelectorAll('.image-tab');
+  function getOrderStatus(status) {
+    const statuses = {
+      1: 'Pending',
+      2: 'Success',
+      3: 'Rejected',
+      4: 'Ongoing',
+      5: 'Returned'
+    };
+    return statuses[status] || 'Unknown';
+  }
 
-  tabs.forEach((tab) => {
-    if (tab.id === tabId) {
-      // If the tab is already visible, hide it
-      if (tab.style.maxHeight && tab.style.maxHeight !== '0px') {
-        tab.style.opacity = '0';
-        tab.style.maxHeight = '0';
-        setTimeout(() => (tab.style.display = 'none'), 300); // Matches transition duration
-      } else {
-        // Show the selected tab with animation
-        tab.style.display = 'block';
-        setTimeout(() => {
-          tab.style.opacity = '1';
-          tab.style.maxHeight = tab.scrollHeight + 'px'; // Adjusts to content height
-        }, 0);
-      }
-    } else {
-      // Hide other tabs
-      tab.style.opacity = '0';
-      tab.style.maxHeight = '0';
-      setTimeout(() => (tab.style.display = 'none'), 300);
-    }
-  });
-}
-
-
-  
-</script>
-
-<script>
-  function showImages(tabId) {
-    // Get all tabs
-    const tabs = document.querySelectorAll('.image-tab');
-
-    tabs.forEach((tab) => {
-      if (tab.id === tabId) {
-        // If the tab is already visible, hide it
-        if (tab.style.maxHeight && tab.style.maxHeight !== '0px') {
-          tab.style.opacity = '0';
-          tab.style.maxHeight = '0';
-          setTimeout(() => (tab.style.display = 'none'), 300); // Matches transition duration
-        } else {
-          // Show the selected tab with animation
-          tab.style.display = 'block';
-          setTimeout(() => {
-            tab.style.opacity = '1';
-            tab.style.maxHeight = tab.scrollHeight + 'px'; // Adjusts to content height
-          }, 0);
-        }
-      } else {
-        // Hide other tabs
-        tab.style.opacity = '0';
-        tab.style.maxHeight = '0';
-        setTimeout(() => (tab.style.display = 'none'), 300);
-      }
-    });
-
-    // Add event listener to close tab when clicking outside
-    document.addEventListener('click', (event) => {
-      const tabContent = document.getElementById(tabId);
-
-      // Close if click is outside the tab and not on a button
-      if (
-        tabContent &&
-        !tabContent.contains(event.target) &&
-        !event.target.closest('button')
-      ) {
-        tabContent.style.opacity = '0';
-        tabContent.style.maxHeight = '0';
-        setTimeout(() => (tabContent.style.display = 'none'), 300);
-
-        // Remove this event listener after closing
-        document.removeEventListener('click', arguments.callee);
-      }
-    });
+  function formatDateTime(date, time) {
+    if (!date || !time) return null;
+    return `${new Date(date).toLocaleDateString()} ${new Date(time).toLocaleTimeString()}`;
   }
 </script>
 
-
-<!-- CSS for Hover Zoom Effect -->
 <style>
-  .image-tab {
-  display: none;
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out;
-}
-
-.license-image, .vehicle-image {
-  position: relative;
-  transition: transform 0.3s ease;
-  cursor: pointer;
-}
-
-.license-image:hover, .vehicle-image:hover {
-  transform: scale(2.5); /* Adjust the scale for the zoom effect */
-  z-index: 10; /* Bring the image on top of other content */
-}
-
-.license-image, .vehicle-image {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
-  .btn-sm {
-    padding: 6px 12px;
-    font-size: 12px;
+  .profile_img {
+    object-fit: cover;
   }
 
-  /* For smooth fade-in/out */
-  .image-tab {
-  display: none; /* Initially hidden */
-  opacity: 0;
-  max-height: 0;
-  overflow: visible; /* Prevent content from spilling */
-  transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out;
-}
-
-
+  .form-group {
+    margin-bottom: 15px;
+  }
 </style>
-

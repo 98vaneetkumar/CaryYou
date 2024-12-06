@@ -29,6 +29,11 @@ router.get('/add_vehicleType', session, controllers.adminController.add_vehicleT
 router.post('/create_vehicleType', session, controllers.adminController.create_vehicleType);
 router.post('/update_vehicleType', session, controllers.adminController.update_vehicleType);
 
+
+router.get('/order_list', session, controllers.adminController.order_list);
+router.get('/view_order', session, controllers.adminController.view_order);
+
+
 //<------------------------------ ADMIN ------------------------->
 router.get('/admin_profile', session, controllers.adminController.admin_profile)
 router.post('/update_admin_profile', controllers.adminController.update_admin_profile)

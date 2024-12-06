@@ -389,6 +389,117 @@ module.exports = {
     }
   },
 
+
+  //----------------order api-----------------------
+
+
+  order_list: async (req, res) => {
+    try {
+      const title = "order_list";
+      const orders = await Models.orderModel
+        .find({})
+        .populate("orderBy", "name") // Fetching only the 'name' field of the user
+        .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+        .sort({ createdAt: -1 });
+  
+      const formattedOrders = orders.map((order, index) => ({
+        sNo: index + 1,
+        orderBy: order.orderBy?.name || "N/A",
+        restaurant: order.restaurant?.name || "N/A",
+        item: order.item || "N/A",
+        orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+        id: order._id,
+      }));
+  
+      // Pass the order count as well
+      const orderCount = orders.length;
+  
+      res.render("Admin/orders/order_list", {
+        title,
+        orders: formattedOrders,
+        orderCount, // Pass the count here
+        session: req.session.user, // Ensure session data is passed here
+        msg: req.flash("msg") || '', // Flash message
+      });
+  
+    } catch (error) {
+      console.error("Error fetching order list:", error);
+      req.flash("msg", "Error fetching order list");
+      res.redirect("/admin/dashboard");
+    }
+  },
+  
+  
+
+  view_order: async (req, res) => {
+    try {
+      // Fetch the order details by its ID from the database
+      const order = await Models.orderModel
+        .findById(req.params.id)
+        .populate("orderBy", "name") // Populate the orderBy field with only the name of the user
+        .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
+        .populate("rider", "name"); // Populate the rider field with only the name of the rider
+  
+      // If the order is not found, return a 404 error
+      if (!order) {
+        return res.status(404).json({
+          success: false,
+          message: "Order not found",
+        });
+      }
+  
+      // Function to map order status to a readable format
+      function getOrderStatus(status) {
+        const statuses = {
+          1: "Pending",  // Order is pending
+          2: "Success",  // Order is successful
+          3: "Rejected", // Order was rejected
+          4: "Ongoing",  // Order is ongoing
+          5: "Returned", // Order has been returned
+        };
+        return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
+      }
+  
+      // Send the order details in the response
+      res.status(200).json({
+        success: true,
+        data: {
+          orderBy: order.orderBy?.name || "Pending", // If no orderBy, show "Pending"
+          restaurant: order.restaurant?.name || "Pending", // If no restaurant, show "Pending"
+          item: order.item || "N/A", // If no item, show "N/A"
+          price: order.price || "N/A", // If no price, show "N/A"
+          status: getOrderStatus(order.status), // Get the status of the order
+          rider: order.rider?.name || "Pending", // If no rider, show "Pending"
+          riderTip: order.riderTip || "N/A", // If no riderTip, show "N/A"
+          orderPickUpDate: order.orderPickUpDate
+            ? order.orderPickUpDate.toLocaleDateString() // Format the pickup date if present
+            : "Pending",
+          orderPickUpTime: order.orderPickUpTime
+            ? order.orderPickUpTime.toLocaleTimeString() // Format the pickup time if present
+            : "Pending",
+          orderDeliveredDate: order.orderDeliveredDate
+            ? order.orderDeliveredDate.toLocaleDateString() // Format the delivery date if present
+            : "Pending",
+          orderDeliveredTime: order.orderDeliveredTime
+            ? order.orderDeliveredTime.toLocaleTimeString() // Format the delivery time if present
+            : "Pending",
+          createdAt: order.createdAt.toLocaleString(), // Format the creation date of the order
+        },
+      });
+    } catch (error) {
+      // Log any errors and send a 500 response in case of an internal server error
+      console.error("Error fetching order details:", error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  },
+  
+  
+  
+  
+
   //---------------------------------------
 
   admin_profile: async (req, res) => {
