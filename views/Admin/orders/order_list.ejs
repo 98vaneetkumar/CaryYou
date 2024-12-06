@@ -1,10 +1,10 @@
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1> orders</h1>
+      <h1>Orders</h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="/admin/dashboard">Dashboard</a></div>
-        <div class="breadcrumb-item">orders</div>
+        <div class="breadcrumb-item">Orders</div>
       </div>
     </div>
     <div class="col-12 col-mt-5">
@@ -14,13 +14,11 @@
             <thead>
               <tr style="background-color: #ebf2f2;">
                 <th scope="col">S No.</th>
-                <th scope="col">Image</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Status</th>
-                <th scope="col">order Status</th>
-                <th scope="col">Action</th>
+                <th scope="col">Order By</th>
+                <th scope="col">Restaurant</th>
+                <th scope="col">Item</th>
+                <th scope="col">Order D/T</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -35,27 +33,13 @@
                       class="profile_img rounded-circle border" 
                       style="cursor:pointer;">
                   </td>
-                  <td><%= data.fullName %></td>
-                  <td><%= data.email %></td>
-                  <td><%= data.countryCode %>-<%= data.phoneNumber %></td>
+                  <td><%= data.restaurantName %></td>
+                  <td><%= data.itemName %></td>
+                  <td><%= data.orderDateTime %></td>
                   <td>
-                    <% if (data.status == 1) { %>
-                      <button onclick="changeStatus(this)" id="orderId_<%= data.id %>"
-                        class="btn btn-sm btn-success status" data-id="<%= data._id %>" value="0">Active</button>
-                    <% } else { %>
-                      <button onclick="changeStatus(this)" id="orderId_<%= data.id %>"
-                        class="btn btn-sm btn-danger status" data-id="<%= data._id %>" value="1">In-Active</button>
-                    <% } %>
-                  </td>
-                  <td>
-                    <!-- Show 'On' if logged in, otherwise 'Off' -->
-                    <span>
-                      <%= data.loggedIn ? 'On' : 'Off' %>
-                    </span>
-                  </td>
-                  <td>
-                    <a href="/admin/view_order/<%= data._id %>" class="btn btn-sm bg-warning"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                    <button onclick="confirmDelete('<%= data._id %>')" class="btn btn-sm bg-danger"> <i class="fa fa-trash"></i> </button>
+                    <a href="/admin/view_order/<%= data._id %>" class="btn btn-sm bg-warning">
+                      <i class="fa fa-eye" aria-hidden="true"></i> View
+                    </a>
                   </td>
                 </tr>
               <% }) %>
@@ -81,49 +65,6 @@
     $("div.msg").fadeOut();
   }, 2000);
 
-  function confirmDelete(id) {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: 'btn btn-warning',
-        cancelButton: 'btn btn-info'
-      },
-      buttonsStyling: true
-    });
-
-    swalWithBootstrapButtons.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, cancel!',
-      reverseButtons: true
-    }).then((isConfirm) => {
-      if (isConfirm.isConfirmed) {
-        $.ajax({
-          url: "/admin/delete_order/:id",
-          type: 'delete',
-          data: {
-            id: id
-          },
-          success: function (result) { }
-        });
-        swalWithBootstrapButtons.fire(
-          'Deleted!',
-          'The order has been deleted.',
-          'success'
-        ).then(() => {
-          location.reload();
-        });
-      } else {
-        swalWithBootstrapButtons.fire(
-          'Cancelled',
-          'The order is safe :)',
-          'error'
-        );
-      }
-    });
-  }
 
   const changeStatus = (val) => {
     let id = val.getAttribute('data-id');

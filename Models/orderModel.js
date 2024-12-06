@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema(
       ref: "user",
     },
     price: { type: String },
-    product: { type: String },
+    item: { type: String },
     status: {
       type: Number,
       enum: [1, 2, 3, 4, 5], // 1-pending 2-success 3-reject 4-ongoing 5-return
