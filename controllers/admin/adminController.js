@@ -55,7 +55,6 @@ module.exports = {
       let rider = await Models.userModel.countDocuments({ role: 3 });
       let vehicleType = await Models.vehicleTypeModel.countDocuments();
 
-
       console.log("Flash msg:", req.flash("msg"));
 
       res.render("Admin/dashboard", {
@@ -215,7 +214,7 @@ module.exports = {
   // List Vehicle Types
   vehicleType_list: async (req, res) => {
     try {
-      const title = "Vehicle Type List";
+      const title = "vehicleType_list";
       const vehicleTypes = await Models.vehicleTypeModel
         .find({})
         .sort({ createdAt: -1 });
@@ -236,7 +235,7 @@ module.exports = {
   // View Vehicle Type Details
   edit_vehicleType: async (req, res) => {
     try {
-      const title = "View Vehicle Type";
+      const title = "vehicleType_list";
       const editData = await Models.vehicleTypeModel.findById(req.params.id);
 
       if (!editData) {
@@ -269,8 +268,17 @@ module.exports = {
         return res.redirect("/admin/vehicleType_list");
       }
 
-      req.flash("msg", "Vehicle Type deleted successfully");
-      res.redirect("/admin/vehicleType_list");
+      const title = "vehicleType_list";
+      const vehicleTypes = await Models.vehicleTypeModel
+        .find({})
+        .sort({ createdAt: -1 });
+
+      res.render("Admin/vehicleType/vehicleType_list", {
+        title,
+        vehicleTypes,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
     } catch (error) {
       console.error("Error deleting vehicle type:", error);
       req.flash("msg", "Error deleting Vehicle Type");
@@ -296,6 +304,7 @@ module.exports = {
         .find({})
         .sort({ createdAt: -1 });
 
+      const title = "vehicleType_list";
       req.flash("msg", "Status updated successfully");
       res.render("Admin/vehicleType/vehicleType_list", {
         title,
@@ -303,7 +312,6 @@ module.exports = {
         session: req.session.user,
         msg: req.flash("msg"),
       });
-
     } catch (error) {
       console.error("Error updating vehicle type status:", error);
       req.flash("msg", "Error updating status");
@@ -313,7 +321,7 @@ module.exports = {
 
   add_vehicleType: async (req, res) => {
     try {
-      let title = "Add Vehicle Type";
+      let title = "vehicleType_list";
       let msg = req.flash("msg");
       let session = req.session.user;
       res.render("Admin/vehicleType/add_vehicleType", { title, msg, session });
@@ -350,11 +358,11 @@ module.exports = {
     try {
       const { id } = req.body;
       const { name, category, fuelType } = req.body;
-      const title = "View Vehicle Type";
+      const title = "vehicleType_list";
 
       const updatedVehicleType =
         await Models.vehicleTypeModel.findByIdAndUpdate(
-          {_id :id},
+          { _id: id },
           { name, category, fuelType },
           { new: true }
         );
@@ -364,8 +372,8 @@ module.exports = {
         return res.redirect("/admin/vehicleType_list");
       }
       const vehicleTypes = await Models.vehicleTypeModel
-      .find({})
-      .sort({ createdAt: -1 });
+        .find({})
+        .sort({ createdAt: -1 });
 
       req.flash("msg", "Vehicle Type updated successfully");
       res.render("Admin/vehicleType/vehicleType_list", {

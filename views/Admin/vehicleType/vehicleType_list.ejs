@@ -40,10 +40,10 @@
                     <% } %>
                   </td>
                   <td class="text-center">
-                    <a href="/admin/edit_vehicleType/<%= data._id %>" class="btn btn-sm btn-warning">
-                      <i class="fas fa-edit"></i>
+                    <a href="/admin/edit_vehicleType/<%= data._id %>" class="btn btn-sm bg-warning" style="padding: 5px 10px; font-size: 14px; line-height: 1.2;">
+                      <i class="fa fa-edit"></i>
                     </a>
-                    <button onclick="confirmDelete('<%= data._id %>')" class="btn btn-sm btn-danger">
+                    <button onclick="confirmDelete('<%= data._id %>')" class="btn btn-sm bg-danger" style="padding: 5px 10px; font-size: 14px; line-height: 1.2;">
                       <i class="fa fa-trash"></i>
                     </button>
                   </td>
@@ -119,8 +119,11 @@
     }).then((isConfirm) => {
       if (isConfirm.isConfirmed) {
         $.ajax({
-          url: "/admin/delete_vehicleType/" + id,
-          type: 'DELETE',
+          url: "/admin/delete_vehicleType",
+            data: {
+              id: id,
+            },
+          type: 'post',
           success: function (result) {
             swalWithBootstrapButtons.fire(
               'Deleted!',
