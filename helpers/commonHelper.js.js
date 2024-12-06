@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const emailTamplate = require("../helpers/emailTemplate/forgetPassword");
+const stripe = require("stripe")(process.env.STRIPE_SK);
 const fs = require("fs");
 module.exports = {
   success: async (res, message, body = {}) => {
@@ -176,4 +177,44 @@ module.exports = {
       return res.redirect("/subadmin/login");
     }
   },
+
+  createCard: async(customerId, cardToken)=>{
+    try {
+      const response = await stripe.customers.createSource(
+        customerId,
+        {
+          source: cardToken,
+        }
+      );
+
+      // Retrieve customer details to check existing default source
+      const customer = await stripe.customers.retrieve(customerId);
+
+      if (!customer.default_source) {
+        await stripe.customers.update(customerId, {
+            default_source: addedCard.id,
+        });
+    }
+      return response;
+    } catch (err) {
+      // Prepare an error object with relevant information
+      let errorMessage = 'An unknown error occurred.';
+
+      // Check the type of the error and customize the message
+      switch (err.type) {
+        case 'StripeCardError':
+          errorMessage = `A payment error occurred: ${err.message}`;
+          break;
+        case 'StripeInvalidRequestError':
+          errorMessage = 'An invalid request occurred.';
+          break;
+        default:
+          errorMessage = 'Another problem occurred, maybe unrelated to Stripe.';
+          break;
+      }
+  
+      // Return the error message so the caller can handle it
+      return { error: true, message: errorMessage };
+    }
+  }
 };

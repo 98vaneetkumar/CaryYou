@@ -8,7 +8,7 @@ const otpManager = require("node-twillo-otp-manager")(
   process.env.TWILIO_SERVICE_SID
 );
 const stripe = require("stripe")(process.env.STRIPE_SK);
-const commonHelper = require("../helpers/commonHelper.js.js");
+const commonHelper = require("../helpers/commonHelper.js");
 const helper = require("../helpers/validation.js");
 const Models = require("../Models/index");
 const Response = require("../config/responses.js");
@@ -648,42 +648,15 @@ module.exports = {
   },
   createCard: async (req, res) => {
     try {
-      const { cardToken } = req.body;
-      const response = await stripe.customers.createSource(
-        req.user.customerId,
-        {
-          source: cardToken,
-        }
-      );
-
-      // Retrieve customer details to check existing default source
-      const customer = await stripe.customers.retrieve(req.user.customerId);
-
-      if (!customer.default_source) {
-        await stripe.customers.update(req.user.customerId, {
-            default_source: addedCard.id,
-        });
-    }
-      return commonHelper.success(res,Response.success_msg.card_add , response);
-    } catch (err) {
-      // Prepare an error object with relevant information
-      let errorMessage = 'An unknown error occurred.';
-
-      // Check the type of the error and customize the message
-      switch (err.type) {
-        case 'StripeCardError':
-          errorMessage = `A payment error occurred: ${err.message}`;
-          break;
-        case 'StripeInvalidRequestError':
-          errorMessage = 'An invalid request occurred.';
-          break;
-        default:
-          errorMessage = 'Another problem occurred, maybe unrelated to Stripe.';
-          break;
+      let response = await commonHelper.createCard(req.user.customerId, req.body.cardToken)
+      if(response.error){
+        return commonHelper.failed(res, response.message)
+      }else {
+        return commonHelper.success(res,Response.success_msg.card_add , response);
       }
-  
-      // Return the error message so the caller can handle it
-      return { error: true, message: errorMessage };
+    } catch (error) {
+      console.log(error)
+      throw error
     }
   },
   deleteCard: async (req, res) => {
