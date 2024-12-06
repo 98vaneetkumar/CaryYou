@@ -64,18 +64,18 @@ module.exports = {
       if (!fileName || fileName.trim() === "") {
         throw new Error("File name is required");
       }
-  
+
       // Create the path to the file
       const filePath = path.join(__dirname, "..", "public", fileName);
-  console.log("filePath:", filePath);
+      console.log("filePath:", filePath);
       // Check if the file exists
       if (!fs.existsSync(filePath)) {
         throw new Error("File does not exist");
       }
-  
+
       // Delete the file
       fs.unlinkSync(filePath);
-  
+
       console.log(`File ${fileName} has been deleted successfully.`);
       return true; // Indicate success
     } catch (error) {
@@ -178,43 +178,40 @@ module.exports = {
     }
   },
 
-  createCard: async(customerId, cardToken)=>{
+  createCard: async (customerId, cardToken) => {
     try {
-      const response = await stripe.customers.createSource(
-        customerId,
-        {
-          source: cardToken,
-        }
-      );
+      const response = await stripe.customers.createSource(customerId, {
+        source: cardToken,
+      });
 
       // Retrieve customer details to check existing default source
       const customer = await stripe.customers.retrieve(customerId);
 
       if (!customer.default_source) {
         await stripe.customers.update(customerId, {
-            default_source: addedCard.id,
+          default_source: addedCard.id,
         });
-    }
+      }
       return response;
     } catch (err) {
       // Prepare an error object with relevant information
-      let errorMessage = 'An unknown error occurred.';
+      let errorMessage = "An unknown error occurred.";
 
       // Check the type of the error and customize the message
       switch (err.type) {
-        case 'StripeCardError':
+        case "StripeCardError":
           errorMessage = `A payment error occurred: ${err.message}`;
           break;
-        case 'StripeInvalidRequestError':
-          errorMessage = 'An invalid request occurred.';
+        case "StripeInvalidRequestError":
+          errorMessage = "An invalid request occurred.";
           break;
         default:
-          errorMessage = 'Another problem occurred, maybe unrelated to Stripe.';
+          errorMessage = "Another problem occurred, maybe unrelated to Stripe.";
           break;
       }
-  
+
       // Return the error message so the caller can handle it
       return { error: true, message: errorMessage };
     }
-  }
+  },
 };

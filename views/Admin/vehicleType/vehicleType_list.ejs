@@ -4,17 +4,24 @@
     <div class="section-header">
       <h1>Vehicle Type</h1>
       <div class="section-header-breadcrumb">
-        <a href="/admin/add_vehicleType" class="btn btn-sm" style="background-color: rgba(6, 191, 12, 0.628);">
+        <a
+          href="/admin/add_vehicleType"
+          class="btn btn-sm"
+          style="background-color: rgba(6, 191, 12, 0.628)"
+        >
           <i class="fa fa-plus"></i> Add
-        </a>        
+        </a>
       </div>
     </div>
     <div class="section-body">
       <div class="col-12">
         <div class="table-responsive">
-          <table id="vehicleTypeTable" class="table table-bordered table-hover table-md">
+          <table
+            id="vehicleTypeTable"
+            class="table table-bordered table-hover table-md"
+          >
             <thead class="text-center">
-              <tr style="background-color: #ebf2f2;">
+              <tr style="background-color: #ebf2f2">
                 <th>S No.</th>
                 <th>Name</th>
                 <th>Category</th>
@@ -25,29 +32,51 @@
             </thead>
             <tbody>
               <% vehicleTypes.forEach(function(data, i) { %>
-                <tr>
-                  <td class="text-center"><%= 1 + i %></td>
-                  <td class="text-center"><%= data.name %></td>
-                  <td class="text-center"><%= data.category %></td>
-                  <td class="text-center"><%= data.fuelType %></td>
-                  <td class="text-center">
-                    <% if (data.status == 1) { %>
-                      <button onclick="changeStatus(this)" id="status_<%- data.id %>"
-                        class="btn btn-sm btn-success" data-id="<%= data._id %>" value="0">Active</button>
-                    <% } else { %>
-                      <button onclick="changeStatus(this)" id="status_<%- data.id %>"
-                        class="btn btn-sm btn-danger" data-id="<%= data._id %>" value="1">Inactive</button>
-                    <% } %>
-                  </td>
-                  <td class="text-center">
-                    <a href="/admin/edit_vehicleType/<%= data._id %>" class="btn btn-sm bg-warning" style="padding: 5px 10px; font-size: 14px; line-height: 1.2;">
-                      <i class="fa fa-edit"></i>
-                    </a>
-                    <button onclick="confirmDelete('<%= data._id %>')" class="btn btn-sm bg-danger" style="padding: 5px 10px; font-size: 14px; line-height: 1.2;">
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+              <tr>
+                <td class="text-center"><%= 1 + i %></td>
+                <td class="text-center"><%= data.name %></td>
+                <td class="text-center"><%= data.category %></td>
+                <td class="text-center"><%= data.fuelType %></td>
+                <td class="text-center">
+                  <% if (data.status == 1) { %>
+                  <button
+                    onclick="changeStatus(this)"
+                    id="status_<%- data.id %>"
+                    class="btn btn-sm btn-success"
+                    data-id="<%= data._id %>"
+                    value="0"
+                  >
+                    Active
+                  </button>
+                  <% } else { %>
+                  <button
+                    onclick="changeStatus(this)"
+                    id="status_<%- data.id %>"
+                    class="btn btn-sm btn-danger"
+                    data-id="<%= data._id %>"
+                    value="1"
+                  >
+                    Inactive
+                  </button>
+                  <% } %>
+                </td>
+                <td class="text-center">
+                  <a
+                    href="/admin/edit_vehicleType/<%= data._id %>"
+                    class="btn btn-sm bg-warning"
+                    style="padding: 5px 10px; font-size: 14px; line-height: 1.2"
+                  >
+                    <i class="fa fa-edit"></i>
+                  </a>
+                  <button
+                    onclick="confirmDelete('<%= data._id %>')"
+                    class="btn btn-sm bg-danger"
+                    style="padding: 5px 10px; font-size: 14px; line-height: 1.2"
+                  >
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
               <% }); %>
             </tbody>
           </table>
@@ -57,31 +86,58 @@
   </section>
 </div>
 
-
 <!-- Include DataTables and Export Button Libraries -->
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"
+/>
 
 <!-- DataTables Buttons CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"
+/>
 
 <!-- DataTables JS -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"
+></script>
 
 <!-- DataTables Buttons JS -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"
+></script>
 
 <!-- JSZip (for Excel export) -->
-<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"
+></script>
 
 <!-- PDFMake (for PDF export) -->
-<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"
+></script>
 
 <!-- vfs_fonts (for PDF export) -->
-<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.min.js"></script>
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.min.js"
+></script>
 
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -89,87 +145,91 @@
 <script>
   $(document).ready(function () {
     // Initialize DataTable with buttons for export options
-    $('#vehicleTypeTable').DataTable({
-      dom: 'Bfrtip',
+    $("#vehicleTypeTable").DataTable({
+      dom: "Bfrtip",
       buttons: [
-        'excelHtml5',  // Export to Excel
-        'pdfHtml5',    // Export to PDF
-        'print'         // Print table
-      ]
+        "excelHtml5", // Export to Excel
+        "pdfHtml5", // Export to PDF
+        "print", // Print table
+      ],
     });
   });
 
   function confirmDelete(id) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
-        confirmButton: 'btn btn-warning',
-        cancelButton: 'btn btn-info'
+        confirmButton: "btn btn-warning",
+        cancelButton: "btn btn-info",
       },
-      buttonsStyling: true
+      buttonsStyling: true,
     });
 
-    swalWithBootstrapButtons.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, cancel!',
-      reverseButtons: true
-    }).then((isConfirm) => {
-      if (isConfirm.isConfirmed) {
-        $.ajax({
-          url: "/admin/delete_vehicleType",
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((isConfirm) => {
+        if (isConfirm.isConfirmed) {
+          $.ajax({
+            url: "/admin/delete_vehicleType",
             data: {
               id: id,
             },
-          type: 'post',
-          success: function (result) {
-            swalWithBootstrapButtons.fire(
-              'Deleted!',
-              'The vehicle type has been deleted.',
-              'success'
-            ).then(() => {
-              location.reload();
-            });
-          }
-        });
-      } else {
-        swalWithBootstrapButtons.fire(
-          'Cancelled',
-          'The vehicle type is safe :)',
-          'error'
-        );
-      }
-    });
+            type: "post",
+            success: function (result) {
+              swalWithBootstrapButtons
+                .fire(
+                  "Deleted!",
+                  "The vehicle type has been deleted.",
+                  "success"
+                )
+                .then(() => {
+                  location.reload();
+                });
+            },
+          });
+        } else {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "The vehicle type is safe :)",
+            "error"
+          );
+        }
+      });
   }
 
   const changeStatus = (val) => {
-    let id = val.getAttribute('data-id')
-    let value = val.getAttribute('value')
-    let elemID = val.getAttribute('id')
-    elemID = document.getElementById(elemID)
+    let id = val.getAttribute("data-id");
+    let value = val.getAttribute("value");
+    let elemID = val.getAttribute("id");
+    elemID = document.getElementById(elemID);
 
     $.ajax({
       type: "post",
       url: "/admin/vehicleType_status",
       data: {
         id: id,
-        status: value
+        status: value,
       },
       success: function (response) {
         if (value == 1) {
-          elemID.classList.remove('btn-success')
-          elemID.classList.add('btn-danger')
-          elemID.setAttribute('value', 0)
-          elemID.innerText = "Inactive"
+          elemID.classList.remove("btn-success");
+          elemID.classList.add("btn-danger");
+          elemID.setAttribute("value", 0);
+          elemID.innerText = "Inactive";
         } else {
-          elemID.classList.remove('btn-danger')
-          elemID.classList.add('btn-success')
-          elemID.setAttribute('value', 1)
-          elemID.innerText = "Active"
+          elemID.classList.remove("btn-danger");
+          elemID.classList.add("btn-success");
+          elemID.setAttribute("value", 1);
+          elemID.innerText = "Active";
         }
-      }
-    })
-  }
+      },
+    });
+  };
 </script>

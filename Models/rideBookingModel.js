@@ -18,8 +18,8 @@ const rideBookingSchema = new mongoose.Schema(
         enum: ["Point"],
         default: "Point",
       },
-      location:{
-        type: String
+      location: {
+        type: String,
       },
       coordinates: {
         type: [Number], // [longitude, latitude]
@@ -34,8 +34,8 @@ const rideBookingSchema = new mongoose.Schema(
         enum: ["Point"],
         default: "Point",
       },
-      location:{
-        type: String
+      location: {
+        type: String,
       },
       coordinates: {
         type: [Number], // [longitude, latitude]
@@ -53,8 +53,8 @@ const rideBookingSchema = new mongoose.Schema(
         enum: ["Point"],
         default: "Point",
       },
-      location:{
-        type: String
+      location: {
+        type: String,
       },
       coordinates: {
         type: [Number], // [longitude, latitude]
@@ -63,21 +63,19 @@ const rideBookingSchema = new mongoose.Schema(
         required: false,
       },
     },
-    status:{
-        type: Number,
-        enum: [0, 1, 2, 3, 4, 5], // 0 for pending 1 for accept 2 for start 3 for onGoing 4 for complete 5 for cancel
+    status: {
+      type: Number,
+      enum: [0, 1, 2, 3, 4, 5], // 0 for pending 1 for accept 2 for start 3 for onGoing 4 for complete 5 for cancel
     },
-    reasonOfCancelation:{
-        type: String,
-    }
+    reasonOfCancelation: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
-rideBookingSchema.index({"userLocation": '2dsphere' });
-rideBookingSchema.index({"riderLocation": '2dsphere' });
-rideBookingSchema.index({"destinationLocation": '2dsphere' });
-
-
+rideBookingSchema.index({ userLocation: "2dsphere" });
+rideBookingSchema.index({ riderLocation: "2dsphere" });
+rideBookingSchema.index({ destinationLocation: "2dsphere" });
 
 module.exports =
   mongoose.models.rideBooking ||

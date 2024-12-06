@@ -11,17 +11,17 @@ module.exports = {
       token = token.startsWith("Bearer ") ? token.split(" ")[1] : token;
       jwt.verify(token, secretKey, async (err, authData) => {
         if (err) {
-          return commonHelper.failed(res,resp.failed_msg.invTok);
+          return commonHelper.failed(res, resp.failed_msg.invTok);
         }
         let userDetail = await Models.userModel.findOne({
-         _id: authData._id 
+          _id: authData._id,
         });
         req.user = userDetail;
         req.token = token;
         next();
       });
     } else {
-      return commonHelper.error(res,resp.error_msg.tokenNotPrv);
+      return commonHelper.error(res, resp.error_msg.tokenNotPrv);
     }
   },
 
@@ -35,7 +35,7 @@ module.exports = {
         resetToken: token, // Match the resetToken field
         resetTokenExpires: { $gt: new Date() }, // Ensure resetTokenExpires is greater than the current date
       });
-  
+
       if (!user) {
         return res.render("sessionExpire", resp.error_msg.pwdResTokExp, token);
       }

@@ -1,7 +1,7 @@
 var success_msg = {
   registered: "User registered successfully",
   login: "Login successful",
-  delete_account:"Account deleted successfully",
+  delete_account: "Account deleted successfully",
   alreadyExists: "Account already exists",
   passwordLink: "Password reset link has been sent to your email",
   passwordChange: "Password changed successfully",
@@ -13,26 +13,25 @@ var success_msg = {
   otpResend: "OTP resent successfully",
   address_add_success: "Address added successfully!",
   address_add_list: "User address list get successfully",
-  stripe_sk_pk:"Stripe sk and pk list get successfully",
-  card_add:"Card added successfully",
-  delete_card:"Card deleted successfully",
-  card_list:"Card list fetched successfully",
-  payment_success:"Payment done successfully",
-  external_bank_success:"External bank account added successfully",
-  external_bank_delete_success:"External bank account deleted successfully",
-  default_bank_success:"Default bank account added successfully",
+  stripe_sk_pk: "Stripe sk and pk list get successfully",
+  card_add: "Card added successfully",
+  delete_card: "Card deleted successfully",
+  card_list: "Card list fetched successfully",
+  payment_success: "Payment done successfully",
+  external_bank_success: "External bank account added successfully",
+  external_bank_delete_success: "External bank account deleted successfully",
+  default_bank_success: "Default bank account added successfully",
   bankAccountList: "Bank account list get successfully",
   fundTransfer: "Fund transfer get successfully",
   defaultCard_success: "Default card updated successfully",
   licenceDetailsAdd: "License details add successfully",
-  licenceDetailsUpdated:"License details updated successfully",
-  feedBack_send_success:"Feedback sent successfully"
-
+  licenceDetailsUpdated: "License details updated successfully",
+  feedBack_send_success: "Feedback sent successfully",
 };
 
 var failed_msg = {
   userNotFound: "User not found",
-  notActiveAccountYet:"Account is not active yet",
+  notActiveAccountYet: "Account is not active yet",
   invalidPassword: "Invalid password",
   noAccWEmail: "No account exists with this email",
   pwdNoMatch: "Passwords do not match!",
@@ -57,9 +56,9 @@ var error_msg = {
   otpVerErr: "Error while verifying the otp",
   otpResErr: "Failed to resend OTP",
   address_failed_add: "Failed to add address",
-  payment_failed:"Payment not successful",
+  payment_failed: "Payment not successful",
   riderData_failed: "Error during entering rider's details",
-  licenceDetails_failed: "Error during entering licence details"
+  licenceDetails_failed: "Error during entering licence details",
 };
 
 module.exports = {

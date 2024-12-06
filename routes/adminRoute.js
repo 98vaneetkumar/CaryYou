@@ -29,9 +29,6 @@ router.get('/add_vehicleType', session, controllers.adminController.add_vehicleT
 router.post('/create_vehicleType', session, controllers.adminController.create_vehicleType);
 router.post('/update_vehicleType', session, controllers.adminController.update_vehicleType);
 
-
-
-
 //<------------------------------ ADMIN ------------------------->
 router.get('/admin_profile', session, controllers.adminController.admin_profile)
 router.post('/update_admin_profile', controllers.adminController.update_admin_profile)
@@ -40,7 +37,9 @@ router.post('/Update_password', controllers.adminController.Update_password)
 
 router.post('/update_commission',session,controllers.adminController.update_commission)
 router.get('/admin_commission', session, controllers.adminController.admin_commission)
+
 //CMS//
+
 router.post('/Create', controllers.cmsController.Create)
 router.get('/Aboutus', session,  controllers.cmsController.Aboutus)
 router.post('/Update_aboutus',  controllers.cmsController.Update_aboutus)

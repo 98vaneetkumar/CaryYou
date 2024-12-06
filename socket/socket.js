@@ -362,139 +362,138 @@ module.exports = function (io) {
     //Message send //Test pass
     socket.on("send_message", async function (data) {
       try {
-          let checkChatConstant = await Models.chatConstantModel.findOne({
-            $or: [
-              { senderId: data.senderId, receiverId: data.receiverId },
-              { senderId: data.receiverId, receiverId: data.senderId },
-            ],
+        let checkChatConstant = await Models.chatConstantModel.findOne({
+          $or: [
+            { senderId: data.senderId, receiverId: data.receiverId },
+            { senderId: data.receiverId, receiverId: data.senderId },
+          ],
+        });
+
+        if (checkChatConstant) {
+          let saveMsg = await Models.messageModel.create({
+            senderId: data.senderId,
+            receiverId: data.receiverId,
+            message: data.message,
+            message_type: data.message_type,
+            constantId: checkChatConstant.id,
+          });
+          await Models.chatConstantModel.updateOne(
+            { _id: checkChatConstant._id },
+            {
+              lastmessage: saveMsg._id,
+            }
+          );
+
+          let getMsg = await Models.messageModel
+            .findOne({
+              senderId: saveMsg.senderId,
+              receiverId: saveMsg.receiverId,
+              _id: saveMsg._id,
+            })
+            .populate([
+              {
+                path: "senderId",
+                select: "id fullName image",
+              },
+              {
+                path: "receiverId",
+                select: "id fullName image",
+              },
+            ]);
+          if (getMsg) {
+            getMsg = getMsg.length > 0 ? getMsg[0] : getMsg;
+
+            const get_socket_id = await Models.userModel.findOne({
+              userId: data.receiverId,
+            });
+            if (get_socket_id) {
+              io.to(get_socket_id.socketId).emit("send_message_emit", getMsg);
+            }
+            socket.emit("send_message_emit", getMsg);
+            let user = await Models.userModel.findOne({
+              _id: data.receiverId,
+            });
+            if (user && user.deviceToken) {
+              let deviceToken = user.deviceToken;
+              let deviceType = user.deviceType;
+              getMsg.deviceToken = deviceToken;
+              getMsg.deviceType = deviceType;
+              let datas = {
+                getMsg,
+                deviceToken,
+                deviceType,
+                chatType: 1,
+              };
+              await helper.sendPushToIosChat(datas);
+            }
+
+            // socket.emit ('send_message_emit', getMsg);
+          }
+        } else {
+          let createChatConstant = await Models.chatConstantModel.create({
+            senderId: data.senderId,
+            receiverId: data.receiverId,
+          });
+          let saveMsg = await Models.messageModel.create({
+            senderId: data.senderId,
+            receiverId: data.receiverId,
+            message: data.message,
+            message_type: data.message_type,
+            constantId: createChatConstant._id,
           });
 
-          if (checkChatConstant) {
-            let saveMsg = await Models.messageModel.create({
-              senderId: data.senderId,
-              receiverId: data.receiverId,
-              message: data.message,
-              message_type: data.message_type,
-              constantId: checkChatConstant.id,
-            });
-            await Models.chatConstantModel.updateOne(
-              { _id: checkChatConstant._id },
-              {
-                lastmessage: saveMsg._id,
-              }
-            );
-
-            let getMsg = await Models.messageModel
-              .findOne({
-                senderId: saveMsg.senderId,
-                receiverId: saveMsg.receiverId,
-                _id: saveMsg._id,
-              })
-              .populate([
-                {
-                  path: "senderId",
-                  select: "id fullName image",
-                },
-                {
-                  path: "receiverId",
-                  select: "id fullName image",
-                },
-              ]);
-            if (getMsg) {
-              getMsg = getMsg.length > 0 ? getMsg[0] : getMsg;
-
-              const get_socket_id = await Models.userModel.findOne({
-                userId: data.receiverId,
-              });
-              if (get_socket_id) {
-                io.to(get_socket_id.socketId).emit("send_message_emit", getMsg);
-              }
-              socket.emit("send_message_emit", getMsg);
-              let user = await Models.userModel.findOne({
-                _id: data.receiverId,
-              });
-              if (user && user.deviceToken) {
-                let deviceToken = user.deviceToken;
-                let deviceType = user.deviceType;
-                getMsg.deviceToken = deviceToken;
-                getMsg.deviceType = deviceType;
-                let datas = {
-                  getMsg,
-                  deviceToken,
-                  deviceType,
-                  chatType: 1,
-                };
-                await helper.sendPushToIosChat(datas);
-              }
-
-              // socket.emit ('send_message_emit', getMsg);
+          await Models.chatConstantModel.updateOne(
+            { _id: createChatConstant._id },
+            {
+              lastmessage: saveMsg._id,
             }
-          } else {
-            let createChatConstant = await Models.chatConstantModel.create({
-              senderId: data.senderId,
-              receiverId: data.receiverId,
-            });
-            let saveMsg = await Models.messageModel.create({
-              senderId: data.senderId,
-              receiverId: data.receiverId,
-              message: data.message,
-              message_type: data.message_type,
-              constantId: createChatConstant._id,
-            });
+          );
 
-            await Models.chatConstantModel.updateOne(
-              { _id: createChatConstant._id },
+          let getMsg = await Models.messageModel
+            .findOne({
+              senderId: data.senderId,
+              receiverId: data.receiverId,
+              _id: saveMsg._id,
+            })
+            .populate([
               {
-                lastmessage: saveMsg._id,
-              }
-            );
-
-            let getMsg = await Models.messageModel
-              .findOne({
-                senderId: data.senderId,
-                receiverId: data.receiverId,
-                _id: saveMsg._id,
-              })
-              .populate([
-                {
-                  path: "senderId",
-                  select: "id fullName image",
-                },
-                {
-                  path: "receiverId",
-                  select: "id fullName image",
-                },
-              ]);
-            if (getMsg) {
-              getMsg = getMsg.length > 0 ? getMsg[0] : getMsg;
-              const get_socket_id = await Models.userModel.findOne({
-                userId: data.receiverId,
-              });
-              if (get_socket_id) {
-                io.to(get_socket_id.socketId).emit("send_message_emit", getMsg);
-              }
-
-              socket.emit("send_message_emit", getMsg);
-              let user = await Models.userModel.findOne({
-                _id: data.receiverId,
-              });
-
-              if (user && user.deviceToken) {
-                let deviceToken = user.deviceToken;
-                let deviceType = user.deviceType;
-                getMsg.deviceToken = deviceToken;
-                getMsg.deviceType = deviceType;
-                let datas = {
-                  getMsg,
-                  deviceToken,
-                  deviceType,
-                  chatType: 1,
-                };
-                await helper.sendPushToIosChat(datas);
-              }
-              // socket.emit ('send_message_emit', getMsg);
+                path: "senderId",
+                select: "id fullName image",
+              },
+              {
+                path: "receiverId",
+                select: "id fullName image",
+              },
+            ]);
+          if (getMsg) {
+            getMsg = getMsg.length > 0 ? getMsg[0] : getMsg;
+            const get_socket_id = await Models.userModel.findOne({
+              userId: data.receiverId,
+            });
+            if (get_socket_id) {
+              io.to(get_socket_id.socketId).emit("send_message_emit", getMsg);
             }
-          
+
+            socket.emit("send_message_emit", getMsg);
+            let user = await Models.userModel.findOne({
+              _id: data.receiverId,
+            });
+
+            if (user && user.deviceToken) {
+              let deviceToken = user.deviceToken;
+              let deviceType = user.deviceType;
+              getMsg.deviceToken = deviceToken;
+              getMsg.deviceType = deviceType;
+              let datas = {
+                getMsg,
+                deviceToken,
+                deviceType,
+                chatType: 1,
+              };
+              await helper.sendPushToIosChat(datas);
+            }
+            // socket.emit ('send_message_emit', getMsg);
+          }
         }
       } catch (error) {
         throw error;
@@ -503,17 +502,17 @@ module.exports = function (io) {
     //read message
     socket.on("read_unread", async function (data) {
       try {
-          const updateResult = await Models.messageModel.updateMany(
-            {
-              _id: data.messageId,
-              is_read: 0,
-            },
-            {
-              $set: { is_read: 1 },
-            }
-          );
-          const datas = { is_read: 1 };
-          socket.emit("read_data_status", datas);
+        const updateResult = await Models.messageModel.updateMany(
+          {
+            _id: data.messageId,
+            is_read: 0,
+          },
+          {
+            $set: { is_read: 1 },
+          }
+        );
+        const datas = { is_read: 1 };
+        socket.emit("read_data_status", datas);
       } catch (error) {
         throw error;
       }
@@ -521,41 +520,41 @@ module.exports = function (io) {
     //clear chat need senderId receiverId and group id if delete form group
     socket.on("clear_chat", async (get_data) => {
       try {
-          // Find the message to be clear
-          const getMessage = await Models.messageModel.find({
-            $or: [
-              { senderId: get_data.senderId },
-              { receiverId: get_data.senderId },
-            ],
-            is_delete: { $exists: false },
-          });
-          if (getMessage) {
-            // Update the message's deletedId if it exists
-            await Models.messageModel.updateMany(
-              {
-                $or: [
-                  { senderId: get_data.senderId },
-                  { receiverId: get_data.senderId },
-                ],
-                is_delete: { $exists: false },
-              },
-              { is_delete: get_data.senderId }
-            );
-          } else {
-            // Delete the message if it doesn't exist or already marked as deleted
-            await Models.messageModel.deleteMany({
+        // Find the message to be clear
+        const getMessage = await Models.messageModel.find({
+          $or: [
+            { senderId: get_data.senderId },
+            { receiverId: get_data.senderId },
+          ],
+          is_delete: { $exists: false },
+        });
+        if (getMessage) {
+          // Update the message's deletedId if it exists
+          await Models.messageModel.updateMany(
+            {
               $or: [
                 { senderId: get_data.senderId },
                 { receiverId: get_data.senderId },
               ],
-              is_delete: { $ne: get_data.senderId },
-            });
-          }
-          // Send success response to the client
-          const success_message = {
-            success_message: "Message clear successfully",
-          };
-          socket.emit("clear_chat_listener", success_message);
+              is_delete: { $exists: false },
+            },
+            { is_delete: get_data.senderId }
+          );
+        } else {
+          // Delete the message if it doesn't exist or already marked as deleted
+          await Models.messageModel.deleteMany({
+            $or: [
+              { senderId: get_data.senderId },
+              { receiverId: get_data.senderId },
+            ],
+            is_delete: { $ne: get_data.senderId },
+          });
+        }
+        // Send success response to the client
+        const success_message = {
+          success_message: "Message clear successfully",
+        };
+        socket.emit("clear_chat_listener", success_message);
       } catch (error) {
         throw error;
       }

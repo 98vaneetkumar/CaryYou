@@ -3,7 +3,9 @@
     <div class="section-header">
       <h1>User Detail</h1>
       <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item active"><a href="/admin/dashboard">Dashboard</a></div>
+        <div class="breadcrumb-item active">
+          <a href="/admin/dashboard">Dashboard</a>
+        </div>
         <div class="breadcrumb-item"><a href="/user_list">Users</a></div>
         <div class="breadcrumb-item">User Detail</div>
       </div>
@@ -11,22 +13,37 @@
     <div class="section-body">
       <div class="card">
         <form action="" method="post" enctype="multipart/form-data">
-          <div class="row mt-sm-4 justify-content-center ">
+          <div class="row mt-sm-4 justify-content-center">
             <div class="col-12 col-md-12 col-lg-4">
               <div class="card profile-widget">
                 <div class="profile-widget-header text-center py-3">
-                  <img alt="image" width="200" height="200" id="blah"
-                   src="<%= viewuser.image ? viewuser.image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>" 
-                    class="profile_img rounded-circle">
+                  <img
+                    alt="image"
+                    width="200"
+                    height="200"
+                    id="blah"
+                    src="<%= viewuser.image ? viewuser.image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
+                    class="profile_img rounded-circle"
+                  />
                 </div>
               </div>
             </div>
             <div class="col-12 col-md-12 col-lg-7">
               <div class="card-body">
                 <div class="form-group">
-                  <label class="col-form-label text-md-right col-12 col-md-5 col-lg-3"> Name</label>
+                  <label
+                    class="col-form-label text-md-right col-12 col-md-5 col-lg-3"
+                  >
+                    Name</label
+                  >
                   <div class="col-sm-12 col-md-12">
-                    <input type="text" name="name" value="<%=viewuser.fullName%>" class="form-control" disabled>
+                    <input
+                      type="text"
+                      name="name"
+                      value="<%=viewuser.fullName%>"
+                      class="form-control"
+                      disabled
+                    />
                   </div>
                 </div>
                 <!-- <div class="form-group">
@@ -36,17 +53,34 @@
                     </div>
                 </div> -->
                 <div class="form-group">
-                  <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Email</label>
+                  <label
+                    class="col-form-label text-md-right col-12 col-md-3 col-lg-3"
+                    >Email</label
+                  >
                   <div class="col-sm-12 col-md-12">
-                    <input type="email" name="email" value="<%=viewuser.email%>" class="form-control" disabled>
+                    <input
+                      type="email"
+                      name="email"
+                      value="<%=viewuser.email%>"
+                      class="form-control"
+                      disabled
+                    />
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Phone</label>
+                  <label
+                    class="col-form-label text-md-right col-12 col-md-3 col-lg-3"
+                    >Phone</label
+                  >
                   <div class="col-sm-12 col-md-12">
-                    <input type="text" name="phone" value="<%=viewuser.countryCode%> <%=viewuser.phoneNumber%> "
-                      class="form-control" disabled>
-                  </div>  
+                    <input
+                      type="text"
+                      name="phone"
+                      value="<%=viewuser.countryCode%> <%=viewuser.phoneNumber%> "
+                      class="form-control"
+                      disabled
+                    />
+                  </div>
                 </div>
                 <!-- <div class="form-group">
                   <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Location</label>
@@ -60,7 +94,7 @@
                       <input type="text" name="location" value="<%=viewuser.location%>" class="form-control" disabled>
                     </div>
                 </div> -->
-                <br>
+                <br />
                 <div class="form-group">
                   <div class="col-sm-12 col-md-12 text-right">
                     <a href="/admin/user_list" class="btn btn-info">Back</a>
@@ -75,12 +109,11 @@
   </section>
 </div>
 
-
 <script>
-  imgInp.onchange = evt => {
-    const [file] = imgInp.files
+  imgInp.onchange = (evt) => {
+    const [file] = imgInp.files;
     if (file) {
-      blah.src = URL.createObjectURL(file)
+      blah.src = URL.createObjectURL(file);
     }
-  }
+  };
 </script>

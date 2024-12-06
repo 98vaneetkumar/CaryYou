@@ -4,5 +4,6 @@ module.exports={
     feedBackModel:require("./feedbackSupport"),
     chatConstantModel: require('./chatConstantModel'),
     messageModel: require('./messageModel'),
-    vehicleTypeModel: require('./vehicleTypeModel')
+    vehicleTypeModel: require('./vehicleTypeModel'),
+    orderModel: require('./orderModel')
 }

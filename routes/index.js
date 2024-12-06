@@ -30,5 +30,4 @@ router.get("/rider", async (req, res) => {
   return res.status(200).send(jsonData);
 });
 
-
 module.exports = router;

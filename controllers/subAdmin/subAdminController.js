@@ -1,6 +1,6 @@
 const Models = require("../../Models/index");
 const bcrypt = require("bcrypt");
-const helper=require("../../helpers/commonHelper.js")
+const helper = require("../../helpers/commonHelper.js");
 
 module.exports = {
   login_page: async (req, res) => {
@@ -29,9 +29,9 @@ module.exports = {
       } else {
         req.session.user = findUser;
         req.flash("msg", "Login Successfully");
-        setTimeout(()=>{
+        setTimeout(() => {
           res.redirect("/subadmin/dashboard");
-        }, 500)
+        }, 500);
       }
     } catch (error) {
       console.log(error);
@@ -39,7 +39,7 @@ module.exports = {
   },
   logout: async (req, res) => {
     try {
-      req.session.destroy((err) => { });
+      req.session.destroy((err) => {});
       res.redirect("/subadmin/login");
     } catch (error) {
       helper.error(res, error);
@@ -57,21 +57,21 @@ module.exports = {
         provider,
         servicesdata: 0,
         contactus: 0,
-        pendingorders:0,
-        activeorders:0,
-        deliveredorders:0,
-        cancelledorders:0,
-        vendors:0,
-        categories:0,
-        subcategories:0,
-        products:0,
-        returnrequests:0,
+        pendingorders: 0,
+        activeorders: 0,
+        deliveredorders: 0,
+        cancelledorders: 0,
+        vendors: 0,
+        categories: 0,
+        subcategories: 0,
+        products: 0,
+        returnrequests: 0,
         session: req.session.user,
         msg: req.flash("msg"),
       });
     } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
 
@@ -90,7 +90,7 @@ module.exports = {
       });
     } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
 
@@ -107,7 +107,7 @@ module.exports = {
       });
     } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
 
@@ -118,7 +118,7 @@ module.exports = {
       res.redirect("/subadmin/user_list");
     } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
 
@@ -134,17 +134,20 @@ module.exports = {
       if (req.body.value == 1) res.send(true);
     } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
 
-
   subAdmin_profile: async (req, res) => {
     try {
-      let title = "subAdmin_profile"
-      res.render('SubAdmin/SubAdmin/SubAdmin_profile', { title, session: req.session.user, msg: req.flash('msg') })
+      let title = "subAdmin_profile";
+      res.render("SubAdmin/SubAdmin/SubAdmin_profile", {
+        title,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -180,10 +183,14 @@ module.exports = {
 
   change_password: async (req, res) => {
     try {
-      let title = "change_password"
-      res.render('SubAdmin/SubAdmin/change_password', { title, session: req.session.user, msg: req.flash('msg') })
+      let title = "change_password";
+      res.render("SubAdmin/SubAdmin/change_password", {
+        title,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
 
@@ -208,44 +215,48 @@ module.exports = {
             { password: bcryptPassword }
           );
           req.session.user = create;
-          req.flash('msg', 'Update password successfully')
+          req.flash("msg", "Update password successfully");
           res.redirect("/subadmin/login");
         } else {
-          req.flash('msg', 'Old password do not match')
+          req.flash("msg", "Old password do not match");
           res.redirect("/subadmin/change_password");
         }
       }
     } catch (error) {
-      console.log(error)
-      throw error
+      console.log(error);
+      throw error;
     }
   },
   subAdmin_commission: async (req, res) => {
     try {
-      let title = "commission"
+      let title = "commission";
       let users = await Models.userModel.findOne({ _id: req.session.user._id });
-      res.render('SubAdmin/commission/commission', { title, users, session: req.session.user, msg: req.flash('msg') })
-    }
-    catch (error) {
+      res.render("SubAdmin/commission/commission", {
+        title,
+        users,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
       console.log(error);
-      throw error
+      throw error;
     }
   },
 
   update_commission: async (req, res) => {
     try {
-
-      await Models.userModel.updateOne({ _id: req.session.user._id },
+      await Models.userModel.updateOne(
+        { _id: req.session.user._id },
         {
-          subAdmincommission: req.body.subAdmincommission
-        });
+          subAdmincommission: req.body.subAdmincommission,
+        }
+      );
       let users = await Models.userModel.findOne({ _id: req.session.user._id });
-      req.flash("msg", "Updated successfully")
-      res.redirect('/subadmin/SubAdmin_commission')
-
+      req.flash("msg", "Updated successfully");
+      res.redirect("/subadmin/SubAdmin_commission");
     } catch (error) {
-      console.log(error)
-      throw error
+      console.log(error);
+      throw error;
     }
   },
 };

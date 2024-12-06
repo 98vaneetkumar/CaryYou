@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const cmsSchema = new mongoose.Schema(
   {
@@ -9,4 +9,4 @@ const cmsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.models.cms || mongoose.model('cms', cmsSchema);
+module.exports = mongoose.models.cms || mongoose.model("cms", cmsSchema);

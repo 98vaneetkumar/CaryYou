@@ -6,15 +6,14 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const fileUpload = require("express-fileupload");
 const http = require("http");
-const session = require('express-session')
+const session = require("express-session");
 const socketio = require("socket.io");
 const createError = require("http-errors");
-const flash = require('connect-flash');
-var expressLayouts = require('express-ejs-layouts');
+const flash = require("connect-flash");
+var expressLayouts = require("express-ejs-layouts");
 const indexRouter = require("./routes/index");
 
-
-const port = process.env.PORT || '3000';
+const port = process.env.PORT || "3000";
 
 // Initialize the Express app
 const app = express();
@@ -29,19 +28,19 @@ const io = socketio(server, {
 
 // Routes
 const usersRouter = require("./routes/usersRoute")(io); // Pass io to usersRouter if needed
-const riderRoute = require('./routes/ridersRoute')(io)
-const adminRouter = require('./routes/adminRoute')
-const subAdminRouter = require('./routes/subAdminRoute')
-let URL="mongodb+srv://vaneet3157:ADenwpW7RzcY1FIy@cluster0.5fvww.mongodb.net/Caryyou?retryWrites=true&w=majority&appName=Cluster0"
+const riderRoute = require("./routes/ridersRoute")(io);
+const adminRouter = require("./routes/adminRoute");
+const subAdminRouter = require("./routes/subAdminRoute");
+let URL =
+  "mongodb+srv://vaneet3157:ADenwpW7RzcY1FIy@cluster0.5fvww.mongodb.net/Caryyou?retryWrites=true&w=majority&appName=Cluster0";
 
 // MongoDB Connection
-mongoose 
+mongoose
   .connect(URL)
   .then(() => console.log("Connected to MongoDB!"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-
-app.use(expressLayouts)
+app.use(expressLayouts);
 // app.set('layout', './Admin/layouts/layout')
 // app.set('layout', './SubAdmin/layouts/layout')
 
@@ -63,16 +62,17 @@ app.use(
     tempFileDir: "/tmp/",
   })
 );
-app.use(session({
-	secret: 'keyboard cat',
-	resave: false,
-	saveUninitialized: true,
-	cookie: {
-		maxAge: 24 * 60 * 60 * 365 * 1000,
-	},
-}));
-app.use(flash())
-
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 365 * 1000,
+    },
+  })
+);
+app.use(flash());
 
 // Swagger UI Setup
 const swaggerUi = require("swagger-ui-express");
@@ -88,22 +88,29 @@ const swaggerOptions = {
 };
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerOptions));
 
-
 // Socket.IO Integration
 require("./socket/socket")(io);
 app.use("/", indexRouter);
 
-app.use("/admin", (req, res, next) => {
-  res.locals.layout = "./Admin/layouts/layout";
-  next();
-}, adminRouter);
+app.use(
+  "/admin",
+  (req, res, next) => {
+    res.locals.layout = "./Admin/layouts/layout";
+    next();
+  },
+  adminRouter
+);
 
-app.use("/subadmin", (req, res, next) => {
-  res.locals.layout = "./SubAdmin/layouts/layout";
-  next();
-}, subAdminRouter);
+app.use(
+  "/subadmin",
+  (req, res, next) => {
+    res.locals.layout = "./SubAdmin/layouts/layout";
+    next();
+  },
+  subAdminRouter
+);
 app.use("/users", usersRouter);
-app.use('/riders', riderRoute)
+app.use("/riders", riderRoute);
 
 // Catch 404 and Forward to Error Handler
 app.use((req, res, next) => {
@@ -117,10 +124,8 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render("error");
 });
- server.listen(port, ()=>{
-  console.log(`server is running on port ${port}`)
- })
-
-
+server.listen(port, () => {
+  console.log(`server is running on port ${port}`);
+});
 
 // https://chromewebstore.google.com/detail/firecamp-a-multi-protocol/eajaahbjpnhghjcdaclbkeamlkepinbl
