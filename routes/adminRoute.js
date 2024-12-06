@@ -7,6 +7,7 @@ const { session } = require('../helpers/commonHelper.js')
 router.get('/login',controllers.adminController.login_page)
 router.post('/Login', controllers.adminController.Login)
 router.get('/dashboard', session, controllers.adminController.dashboard)
+router.post('/dashboardFilter', session, controllers.adminController.dashboardFilter)
 router.get("/logout", controllers.adminController.logout)
 
 router.get('/user_list', session, controllers.adminController.user_list)
@@ -32,6 +33,15 @@ router.post('/update_vehicleType', session, controllers.adminController.update_v
 
 router.get('/order_list', session, controllers.adminController.order_list);
 router.get('/view_order', session, controllers.adminController.view_order);
+
+
+router.get('/active_order_list', session, controllers.adminController.active_order_list);
+router.get('/active_view_order', session, controllers.adminController.active_view_order);
+
+router.get('/delivered_order_list', session, controllers.adminController.delivered_order_list);
+
+router.get('/cancel_order_list', session, controllers.adminController.cancel_order_list);
+
 
 
 //<------------------------------ ADMIN ------------------------->

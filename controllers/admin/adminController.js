@@ -54,29 +54,114 @@ module.exports = {
       let provider = await Models.userModel.countDocuments({ role: 2 });
       let rider = await Models.userModel.countDocuments({ role: 3 });
       let vehicleType = await Models.vehicleTypeModel.countDocuments();
-
-      console.log("Flash msg:", req.flash("msg"));
-
+      const orders = await Models.orderModel.countDocuments();
+      const feedbacks = await Models.feedBackModel.countDocuments();
+      const activeOrders = await Models.orderModel.countDocuments({ status: 1 });
+      const deliveredOrders = await Models.orderModel.countDocuments({ status: 2});
+      const cancelledOrders = await Models.orderModel.countDocuments({ status: 3 });
       res.render("Admin/dashboard", {
         title,
         user,
-        provider: 100,
-        servicesdata: 0,
-        contactus: 0,
+        provider: provider,
+        servicesData: 0,
+        contactUs: 0,
         rider,
-        orders: 55,
+        orders: orders,
         vehicleType,
         payments: 2,
-        feedbacks: 4,
-        activeorders: 10,
-        deliveredorders: 5,
-        cancelledorders: 50,
+        feedbacks: feedbacks,
+        activeOrders: activeOrders,
+        deliveredOrders: deliveredOrders,
+        cancelledOrders: cancelledOrders,
         session: req.session.user,
         msg: req.flash("msg") || "",
       });
     } catch (error) {
       console.log(error);
       throw error;
+    }
+  },
+  dashboardFilter: async (req, res) => {
+    try {
+      const title = "dashboard";
+      const filter = req.body.filter || "all"; // Get the filter parameter from the query string
+  
+      // Calculate date range based on the filter
+      const now = new Date();
+      let startDate, endDate;
+  
+      switch (filter) {
+        case "today":
+          startDate = new Date(now.setHours(0, 0, 0, 0));
+          endDate = new Date(now.setHours(23, 59, 59, 999));
+          break;
+        case "weekly":
+          startDate = new Date(now.setDate(now.getDate() - 7));
+          endDate = new Date();
+          break;
+        case "monthly":
+          startDate = new Date(now.setMonth(now.getMonth() - 1));
+          endDate = new Date();
+          break;
+        case "3months":
+          startDate = new Date(now.setMonth(now.getMonth() - 3));
+          endDate = new Date();
+          break;
+        case "6months":
+          startDate = new Date(now.setMonth(now.getMonth() - 6));
+          endDate = new Date();
+          break;
+        case "1year":
+          startDate = new Date(now.setFullYear(now.getFullYear() - 1));
+          endDate = new Date();
+          break;
+        case "5years":
+          startDate = new Date(now.setFullYear(now.getFullYear() - 5));
+          endDate = new Date();
+          break;
+        default:
+          startDate = null; // No date filter
+          endDate = null;
+      }
+  
+      // Define the query object for date-based filtering
+      const dateQuery = startDate && endDate ? { createdAt: { $gte: startDate, $lte: endDate } } : {};
+  
+      // Fetch filtered data
+      const user = await Models.userModel.countDocuments({ role: 1, ...dateQuery });
+      const provider = await Models.userModel.countDocuments({ role: 2, ...dateQuery });
+      const rider = await Models.userModel.countDocuments({ role: 3, ...dateQuery });
+      const vehicleType = await Models.vehicleTypeModel.countDocuments(dateQuery);
+      const orders = await Models.orderModel.countDocuments(dateQuery);
+      // const payments = await Models.paymentModel.countDocuments(dateQuery);
+      const feedbacks = await Models.feedBackModel.countDocuments(dateQuery);
+      const activeOrders = await Models.orderModel.countDocuments({ status: 1, ...dateQuery });
+      const deliveredOrders = await Models.orderModel.countDocuments({ status: 2, ...dateQuery });
+      const cancelledOrders = await Models.orderModel.countDocuments({ status: 3, ...dateQuery });
+      // const contactUs = await Models.contactUsModel.countDocuments(dateQuery);
+      // const servicesdata = await Models.serviceModel.countDocuments(dateQuery);
+      console.log("user", user)
+
+      res.json({
+        user,
+        provider,
+        rider,
+        vehicleType,
+        orders,
+        payments: 0,
+        feedbacks,
+        activeOrders,
+        deliveredOrders,
+        cancelledOrders,
+        contactus: 0,
+        servicesData: 0,
+      });
+      // Render the dashboard with the filtered data
+
+     
+    } catch (error) {
+      console.error("Error in dashboard:", error);
+      res.status(500).send("Internal Server Error");
     }
   },
 
@@ -410,14 +495,10 @@ module.exports = {
         orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
         id: order._id,
       }));
-  
-      // Pass the order count as well
-      const orderCount = orders.length;
-  
+    
       res.render("Admin/orders/order_list", {
         title,
-        orders: formattedOrders,
-        orderCount, // Pass the count here
+        orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
         msg: req.flash("msg") || '', // Flash message
       });
@@ -428,9 +509,6 @@ module.exports = {
       res.redirect("/admin/dashboard");
     }
   },
-  
-  
-
   view_order: async (req, res) => {
     try {
       // Fetch the order details by its ID from the database
@@ -496,10 +574,170 @@ module.exports = {
     }
   },
   
-  
-  
-  
 
+    //----------------Active order api-----------------------
+
+
+    active_order_list: async (req, res) => {
+      try {
+        const title = "activeorders";
+        const orders = await Models.orderModel
+          .find({status:1})
+          .populate("orderBy", "name") // Fetching only the 'name' field of the user
+          .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+          .sort({ createdAt: -1 });
+    
+        const formattedOrders = orders.map((order, index) => ({
+          sNo: index + 1,
+          orderBy: order.orderBy?.name || "N/A",
+          restaurant: order.restaurant?.name || "N/A",
+          item: order.item || "N/A",
+          orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+          id: order._id,
+        }));
+      
+        res.render("Admin/activeOrders/active_order_list", {
+          title,
+          orderdata: formattedOrders,
+          session: req.session.user, // Ensure session data is passed here
+          msg: req.flash("msg") || '', // Flash message
+        });
+    
+      } catch (error) {
+        console.error("Error fetching order list:", error);
+        req.flash("msg", "Error fetching order list");
+        res.redirect("/admin/dashboard");
+      }
+    },
+    active_view_order: async (req, res) => {
+      try {
+        // Fetch the order details by its ID from the database
+        const order = await Models.orderModel
+          .findById(req.params.id)
+          .populate("orderBy", "name") // Populate the orderBy field with only the name of the user
+          .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
+          .populate("rider", "name"); // Populate the rider field with only the name of the rider
+    
+        // If the order is not found, return a 404 error
+        if (!order) {
+          return res.status(404).json({
+            success: false,
+            message: "Order not found",
+          });
+        }
+    
+        // Function to map order status to a readable format
+        function getOrderStatus(status) {
+          const statuses = {
+            1: "Pending",  // Order is pending
+            2: "Success",  // Order is successful
+            3: "Rejected", // Order was rejected
+            4: "Ongoing",  // Order is ongoing
+            5: "Returned", // Order has been returned
+          };
+          return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
+        }
+    
+        // Send the order details in the response
+        res.status(200).json({
+          success: true,
+          data: {
+            orderBy: order.orderBy?.name || "Pending", // If no orderBy, show "Pending"
+            restaurant: order.restaurant?.name || "Pending", // If no restaurant, show "Pending"
+            item: order.item || "N/A", // If no item, show "N/A"
+            price: order.price || "N/A", // If no price, show "N/A"
+            status: getOrderStatus(order.status), // Get the status of the order
+            rider: order.rider?.name || "Pending", // If no rider, show "Pending"
+            riderTip: order.riderTip || "N/A", // If no riderTip, show "N/A"
+            orderPickUpDate: order.orderPickUpDate
+              ? order.orderPickUpDate.toLocaleDateString() // Format the pickup date if present
+              : "Pending",
+            orderPickUpTime: order.orderPickUpTime
+              ? order.orderPickUpTime.toLocaleTimeString() // Format the pickup time if present
+              : "Pending",
+            orderDeliveredDate: order.orderDeliveredDate
+              ? order.orderDeliveredDate.toLocaleDateString() // Format the delivery date if present
+              : "Pending",
+            orderDeliveredTime: order.orderDeliveredTime
+              ? order.orderDeliveredTime.toLocaleTimeString() // Format the delivery time if present
+              : "Pending",
+            createdAt: order.createdAt.toLocaleString(), // Format the creation date of the order
+          },
+        });
+      } catch (error) {
+        // Log any errors and send a 500 response in case of an internal server error
+        console.error("Error fetching order details:", error);
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    },
+    
+  
+    delivered_order_list: async (req, res) => {
+      try {
+        const title = "deliveredorders";
+        const orders = await Models.orderModel
+          .find({status:1})
+          .populate("orderBy", "name") // Fetching only the 'name' field of the user
+          .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+          .sort({ createdAt: -1 });
+    
+        const formattedOrders = orders.map((order, index) => ({
+          sNo: index + 1,
+          orderBy: order.orderBy?.name || "N/A",
+          restaurant: order.restaurant?.name || "N/A",
+          item: order.item || "N/A",
+          orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+          id: order._id,
+        }));
+      
+        res.render("Admin/deliveredOrders/delivered_order_list", {
+          title,
+          orderdata: formattedOrders,
+          session: req.session.user, // Ensure session data is passed here
+          msg: req.flash("msg") || '', // Flash message
+        });
+    
+      } catch (error) {
+        console.error("Error fetching order list:", error);
+        req.flash("msg", "Error fetching order list");
+        res.redirect("/admin/dashboard");
+      }
+    },
+  
+    cancel_order_list: async (req, res) => {
+      try {
+        const title = "cancelledorders";
+        const orders = await Models.orderModel
+          .find({status:1})
+          .populate("orderBy", "name") // Fetching only the 'name' field of the user
+          .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+          .sort({ createdAt: -1 });
+    
+        const formattedOrders = orders.map((order, index) => ({
+          sNo: index + 1,
+          orderBy: order.orderBy?.name || "N/A",
+          restaurant: order.restaurant?.name || "N/A",
+          item: order.item || "N/A",
+          orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+          id: order._id,
+        }));
+      
+        res.render("Admin/deliveredOrders/delivered_order_list", {
+          title,
+          orderdata: formattedOrders,
+          session: req.session.user, // Ensure session data is passed here
+          msg: req.flash("msg") || '', // Flash message
+        });
+    
+      } catch (error) {
+        console.error("Error fetching order list:", error);
+        req.flash("msg", "Error fetching order list");
+        res.redirect("/admin/dashboard");
+      }
+    },
   //---------------------------------------
 
   admin_profile: async (req, res) => {
