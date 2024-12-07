@@ -521,7 +521,6 @@ module.exports = {
         .populate("orderBy", "fullName") // Populate with fullName for the user
         .populate("restaurant", "name") // Populate with name for the restaurant
         .populate("rider", "fullName"); // Populate with fullName for the rider
-  
       // If the order is not found, return a 404 error
       if (!order) {
         return res.status(404).json({
@@ -533,7 +532,7 @@ module.exports = {
       // Function to map order status to a readable format
       function getOrderStatus(status) {
         const statuses = {
-          1: "Pending",  // Order is pending
+          1: "Success",  // Order is pending
           2: "Success",  // Order is successful
           3: "Rejected", // Order was rejected
           4: "Ongoing",  // Order is ongoing
@@ -541,9 +540,8 @@ module.exports = {
         };
         return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
       }
-  
       // Render the view with order details
-      res.render("Admin/order/view_order", {
+      res.render("Admin/orders/view_order", {
         title, // Pass the title to the view
         order, // Pass the order details to the view
         orderStatus: getOrderStatus(order.status), // Pass the order status

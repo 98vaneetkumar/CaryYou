@@ -34,7 +34,7 @@ router.post('/update_vehicleType', session, controllers.adminController.update_v
 
 
 router.get('/order_list', session, controllers.adminController.order_list);
-router.get('/view_order', session, controllers.adminController.view_order);
+router.get('/view_order/:_id', session, controllers.adminController.view_order);
 
 
 router.get('/active_order_list', session, controllers.adminController.active_order_list);

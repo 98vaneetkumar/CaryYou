@@ -27,23 +27,23 @@
                 <h4 class="text-center">Order Info</h4>
                 <div class="form-group">
                   <label class="col-form-label">Order By</label>
-                  <input type="text" value="<%= order.orderBy %>" class="form-control" disabled>
+                  <input type="text" value="<%= order?.orderBy?.fullName %>" class="form-control" disabled>
                 </div>
                 <div class="form-group">
                   <label class="col-form-label">Restaurant</label>
-                  <input type="text" value="<%= order.restaurant %>" class="form-control" disabled>
+                  <input type="text" value="<%= order?.restaurant?.name %>" class="form-control" disabled>
                 </div>
                 <div class="form-group">
                   <label class="col-form-label">Item</label>
-                  <input type="text" value="<%= order.item %>" class="form-control" disabled>
+                  <input type="text" value="<%= order?.item %>" class="form-control" disabled>
                 </div>
                 <div class="form-group">
                   <label class="col-form-label">Price</label>
-                  <input type="text" value="<%= order.price %>" class="form-control" disabled>
+                  <input type="text" value="<%= order?.price %>" class="form-control" disabled>
                 </div>
                 <div class="form-group">
                   <label class="col-form-label">Status</label>
-                  <input type="text" value="<%= order.status %>" class="form-control" disabled>
+                  <input type="text" value="<%= orderStatus %>" class="form-control" disabled>
                 </div>
               </div>
             </div>
@@ -52,15 +52,15 @@
             <div class="col-12 col-md-12 col-lg-7">
               <div class="card-body">
                 <h4 class="text-center">Delivery Details</h4>
-                <% if (order.status !== 'Pending') { %>
+                <% if (orderStatus !== 'Pending') { %>
                   <!-- Rider Info -->
                   <div class="form-group">
                     <label class="col-form-label">Rider</label>
-                    <input type="text" value="<%= order.rider %>" class="form-control" disabled>
+                    <input type="text" value="<%= order?.rider?.fullName %>" class="form-control" disabled>
                   </div>
                   <div class="form-group">
                     <label class="col-form-label">Rider Tip</label>
-                    <input type="text" value="<%= order.riderTip %>" class="form-control" disabled>
+                    <input type="text" value="<%= order?.riderTip %>" class="form-control" disabled>
                   </div>
                   <!-- Pickup Details -->
                   <div class="form-group">
