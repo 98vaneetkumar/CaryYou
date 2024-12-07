@@ -346,7 +346,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
   const socket = io();
-  socket.on('userCountUpdated', (data) => {
+  socket.on('updateUserCount', (data) => {
     document.getElementById('user').textContent = data.user;
   });
 </script>
