@@ -4,4 +4,5 @@ module.exports = {
   cmsController: require("./admin/cmsController"),
   userController: require("./userController"),
   riderController: require("./riderController"),
+  testController: require('./testController')
 };

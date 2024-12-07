@@ -39,29 +39,6 @@ module.exports = function(io){
 
 
 
-
-
-
-
-
-
-   router.post('/createOrder', controller.userController.createOrder);
-   router.post('/createRestaurant', controller.userController.createRestaurant);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    // Rider routers
 
 

@@ -31,6 +31,9 @@ const usersRouter = require("./routes/usersRoute")(io); // Pass io to usersRoute
 const riderRoute = require("./routes/ridersRoute")(io);
 const adminRouter = require("./routes/adminRoute")(io);
 const subAdminRouter = require("./routes/subAdminRoute");
+
+const testRouter = require('./routes/testRoute')
+
 let URL =
   "mongodb+srv://vaneet3157:ADenwpW7RzcY1FIy@cluster0.5fvww.mongodb.net/Caryyou?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -111,6 +114,11 @@ app.use(
 );
 app.use("/users", usersRouter);
 app.use("/riders", riderRoute);
+
+
+
+
+app.use('/test', testRouter)
 
 // Catch 404 and Forward to Error Handler
 app.use((req, res, next) => {

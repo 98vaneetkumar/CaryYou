@@ -39,6 +39,9 @@ const orderSchema = new mongoose.Schema(
     orderDeliveredDate: {
       type: Date,
     },
+    cancelReason: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
