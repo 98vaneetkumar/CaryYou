@@ -8,6 +8,7 @@ const restaurantSchema = new mongoose.Schema(
       required: true,
       ref: "user",
     },
+    image:{type:String},
     address: { type: String},
     location:{
       type: {
@@ -22,8 +23,8 @@ const restaurantSchema = new mongoose.Schema(
         required: false,
       },
     },
-    category:[{type:String}],
-    subCategory:[{type:String}],
+    category:[{type:String},{image:String}],
+    subCategory:[{type:String},{image:String}],
     products:[{
       categoryId:{
         type: Schema.Types.ObjectId,
@@ -35,6 +36,7 @@ const restaurantSchema = new mongoose.Schema(
         required: true,
         ref: "restaurant"
       },
+      images:[{type:String}],
       itemName:{type: String, required: true},
       price:{type: String, required: true},
       size:{type: String}
