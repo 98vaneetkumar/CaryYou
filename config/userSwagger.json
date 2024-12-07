@@ -69,7 +69,7 @@
                         "required": true,
                         "enum": [1],
                         "type": "number",   
-                        "value": ""
+                        "value": "1"
                     },
                     {
                         "name": "profilePicture",
