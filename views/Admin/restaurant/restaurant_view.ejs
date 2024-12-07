@@ -17,10 +17,26 @@
           </div>
         </div>
       </div>
+      <div class="section-header">
+        <h1><%=viewuser.name%> </h1>
+        <div class="section-header-breadcrumb">
+          <div class="breadcrumb-item active">
+            <a href="/admin/dashboard">Dashboard</a>
+          </div>
+          <div class="breadcrumb-item">Restaurant</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <a href="/admin/restaurant_list" class="btn btn-dark">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </div>
       <div class="row">  
+
+      
     <!-- Orders Card -->
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-          <a href="/admin/order_list">
+          <a href="#">
             <div
               class="card card-statistic-1"
               style="background: linear-gradient(135deg, #33cc33, #66ff66)"
@@ -39,9 +55,9 @@
             </div>
           </a>
         </div>
-  
+    <!-- Active Order-->
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-          <a href="/admin/active_order_list">
+          <a href="#">
             <div
               class="card card-statistic-1"
               style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
@@ -60,9 +76,10 @@
             </div>
           </a>
         </div>
-  
+      <!-- delivered Orders -->
+
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-          <a href="/admin/delivered_order_list">
+          <a href="#">
             <div
               class="card card-statistic-1"
               style="background: linear-gradient(135deg, #33a1ff, #66c2ff)"
@@ -83,9 +100,10 @@
             </div>
           </a>
         </div>
-  
+      <!-- Cancel Order-->
+
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-          <a href="/admin/cancel_order_list">
+          <a href="#">
             <div
               class="card card-statistic-1"
               style="background: linear-gradient(135deg, #ffc300, #ffd966)"
@@ -106,6 +124,74 @@
             </div>
           </a>
         </div>
+
+           <!--Category -->
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+            <a href="#">
+            <div
+                class="card card-statistic-1"
+                style="background: linear-gradient(135deg, #6666ff, #9999ff)"
+            >
+                <div class="card-icon" style="background: rgba(56, 56, 187, 0.8)">
+                <i class="fas fa-users"></i>
+                </div>
+                <div class="card-wrap">
+                <div class="card-header">
+                    <h4 style="color: white; font-weight: bold"><b>Category</b></h4>
+                </div>
+                <div class="card-body" id="category" value="<%= category %>" style="color: white; font-weight: bold">
+                    <%= category %>
+                </div>
+                </div>
+            </div>
+            </a>
+        </div>
+
+      <!-- Subcategory-->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33cccc, #66cccc)"
+          >
+            <div class="card-icon" style="background: rgba(38, 152, 152, 0.8)">
+              <i class="fas fa-utensils"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold">
+                  <b>SubCategory</b>
+                </h4>
+              </div>
+              <div class="card-body" id="subCategory" value="<%= subCategory %>" style="color: white; font-weight: bold">
+                <%= subCategory %>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product -->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33cc99, #66cc99)"
+          >
+            <div class="card-icon" style="background: rgba(38, 151, 114, 0.8)">
+              <i class="fas fa-taxi"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold"><b>Products</b></h4>
+              </div>
+              <div class="card-body" id="products" value="<%= products %>" style="color: white; font-weight: bold">
+                <%= products %>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
       </div>
     </section>
   </div>
@@ -150,6 +236,10 @@
         document.getElementById("activeOrders").textContent=data.activeOrders;
         document.getElementById("deliveredOrders").textContent=data.deliveredOrders;
         document.getElementById("cancelledOrders").textContent=data.cancelledOrders;
+        document.getElementById("category").textContent=data.category
+        document.getElementById("subCategory").textContent=data.subCategory
+        document.getElementById("products").textContent=data.products
+
 
       });
     });

@@ -258,9 +258,15 @@ module.exports = {
       const activeOrders = await Models.orderModel.countDocuments({ status: 1 ,restaurant:req.params.id });
       const deliveredOrders = await Models.orderModel.countDocuments({ status: 2,restaurant:req.params.id});
       const cancelledOrders = await Models.orderModel.countDocuments({ status: 3,restaurant:req.params.id });
+      console.log("viewUser",viewuser.name);
+      console.log("viewUser",viewuser);
+
       res.render("Admin/restaurant/restaurant_view", {
         title,
         viewuser,
+        category:viewuser?.category?.length||0,
+        subCategory:viewuser?.subcategory?.length||0,
+        products:viewuser?.products?.length||0,
         orders,
         activeOrders,
         deliveredOrders,

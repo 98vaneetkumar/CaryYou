@@ -8,6 +8,7 @@ const restaurantSchema = new mongoose.Schema(
       required: true,
       ref: "user",
     },
+    name:{type:String},
     image: { type: String },
     address: { type: String },
     location: {
@@ -25,23 +26,27 @@ const restaurantSchema = new mongoose.Schema(
     },
     category: [
       {
-        type: { type: String, required: true },
+        name: { type: String, required: true },
         image: { type: String },
+        status:{type:Number,default:1}// 1 for acitve  and 0 for  not acitve
       },
     ],
     subCategory: [
       {
-        type: { type: String, required: true },
+        name: { type: String, required: true },
         image: { type: String },
-      },
-    ],
-    products: [
-      {
         categoryId: {
           type: Schema.Types.ObjectId,
           required: true,
           ref: "restaurant",
         },
+        status:{type:Number,default:1}// 1 for acitve  and 0 for  not acitve
+
+      },
+
+    ],
+    products: [
+      {
         subCategoryId: {
           type: Schema.Types.ObjectId,
           required: true,
@@ -51,6 +56,8 @@ const restaurantSchema = new mongoose.Schema(
         itemName: { type: String, required: true },
         price: { type: String, required: true },
         size: { type: String },
+        status:{type:Number,default:1}// 1 for acitve  and 0 for  not acitve
+
       },
     ],
     staffs: [
