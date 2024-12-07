@@ -2,31 +2,80 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title> Cary You </title>
-    <link rel="icon" type="image/x-icon" href="/assets/img/logo.png">
-    <%- include("./style") %>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>CaryYou</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/logo.png">
+  <%- include("./style") %>
+  <style>
+    .alert {
+      position: absolute;
+      z-index: 9999;
+      color: rgb(255, 255, 255);
+      background-color: #68b752ed;
+      right: 40px;
+      top: 75px;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+      overflow: hidden;
+    }
+
+    .alert .progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 5px;
+      background-color: #ffffff;
+      width: 100%;
+      animation: shrink 3s linear forwards;
+    }
+
+    @keyframes shrink {
+      from {
+        width: 100%;
+      }
+
+      to {
+        width: 0%;
+      }
+    }
+  </style>
 </head>
 
-<% if(msg !='' ) { %>
-    <div class="alert alert-success"
-        style="position: absolute; z-index: 9999; color:rgb(255, 255, 255); background-color: #68b752ed; right: 40px; top: 75px;">
-        <span style="font-size: 16px;">
-            <%= msg %>
-        </span>
-    </div>
-    <% } %>
+<% if (msg != '') { %>
+  <div class="alert">
+    <span><%= msg %></span>
+    <div class="progress-bar"></div>
+  </div>
+<% } %>
 
-        <body>
-            <div id="app">
-                <div class="main-wrapper">
-                    <div class="navbar-bg">
-                        <%- include("./navbar") %>
-                            <%- include("./sidebar") %>
-                            <%- body %>
-                                <%- include("./footer") %>
-                                    <%- include("./script") %>
-        </body>
+<body>
+  <div id="app">
+    <div class="main-wrapper">
+      <div class="navbar-bg">
+        <%- include("./navbar") %>
+        <%- include("./sidebar") %>
+        <%- body %>
+        <%- include("./footer") %>
+        <%- include("./script") %>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const alertElement = document.querySelector(".alert");
+      if (alertElement) {
+        setTimeout(() => {
+          alertElement.style.transition = "opacity 0.5s";
+          alertElement.style.opacity = "0";
+          setTimeout(() => alertElement.remove(), 500);
+        }, 3000);
+      }
+    });
+  </script>
+</body>
 
 </html>
