@@ -10,8 +10,8 @@ module.exports = {
       const demoOrder = {
         orderBy: "675449f250481a79e5d4ee95", // Replace with a valid user ID
         restaurant: "675479a8ba9c2d01336fb343", // Replace with a valid restaurant ID
-        price: "79.99",
-        item: "Pizza",
+        price: "2.99",
+        item: "Gulab Jamun",
         status: 1, // 1 for Pending
         rider: "675150c86b2e0e72def70281", // Replace with a valid rider ID
         riderTip: 1.0,

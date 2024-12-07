@@ -481,34 +481,40 @@ module.exports = {
   order_list: async (req, res) => {
     try {
       const title = "order_list";
+      
+      // Fetch orders and populate references
       const orders = await Models.orderModel
         .find({})
-        .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
+        .populate("orderBy", "fullName") // Fetching only the 'fullName' field of the user
         .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
         .sort({ createdAt: -1 });
-  
+      
+      // Format orders to include all necessary data for rendering
       const formattedOrders = orders.map((order, index) => ({
         sNo: index + 1,
         orderBy: order.orderBy?.fullName || "N/A",
         restaurant: order.restaurant?.name || "N/A",
         item: order.item || "N/A",
         orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+        status: order.status || 0, // Default to 0 if status is missing
         id: order._id,
       }));
   
+      // Render the EJS view with formatted order data
       res.render("Admin/orders/order_list", {
         title,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
         msg: req.flash("msg") || '', // Flash message
       });
-  
+      
     } catch (error) {
       console.error("Error fetching order list:", error);
       req.flash("msg", "Error fetching order list");
       res.redirect("/admin/dashboard");
     }
   },
+  
   
 
   view_order: async (req, res) => {
@@ -567,7 +573,7 @@ module.exports = {
       try {
         const title = "activeorders";
         const orders = await Models.orderModel
-          .find({status:1})
+          .find({status:4})
           .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
           .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
           .sort({ createdAt: -1 });
@@ -600,7 +606,7 @@ module.exports = {
         // Fetch the order details by its ID from the database
         const order = await Models.orderModel
           .findById(req.params._id)
-          .populate("orderBy", "name") // Populate the orderBy field with only the name of the user
+          .populate("orderBy", "fullName") // Populate the orderBy field with only the name of the user
           .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
           .populate("rider", "name"); // Populate the rider field with only the name of the rider
     
@@ -648,7 +654,7 @@ module.exports = {
       try {
         const title = "deliveredorders";
         const orders = await Models.orderModel
-          .find({status:1})
+          .find({status:2})
           .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
           .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
           .sort({ createdAt: -1 });
@@ -681,7 +687,7 @@ module.exports = {
         // Fetch the order details by its ID from the database
         const order = await Models.orderModel
           .findById(req.params._id)
-          .populate("orderBy", "name") // Populate the orderBy field with only the name of the user
+          .populate("orderBy", "fullName") // Populate the orderBy field with only the name of the user
           .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
           .populate("rider", "name"); // Populate the rider field with only the name of the rider
     console.log("order",order)
@@ -727,7 +733,7 @@ module.exports = {
       try {
         const title = "cancelledorders";
         const orders = await Models.orderModel
-          .find({status:1})
+          .find({status:3})
           .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
           .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
           .sort({ createdAt: -1 });
@@ -760,7 +766,7 @@ module.exports = {
         // Fetch the order details by its ID from the database
         const order = await Models.orderModel
           .findById(req.params._id)
-          .populate("orderBy", "name") // Populate the orderBy field with only the name of the user
+          .populate("orderBy", "fullName") // Populate the orderBy field with only the name of the user
           .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
           .populate("rider", "name"); // Populate the rider field with only the name of the rider
     
