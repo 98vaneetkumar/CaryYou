@@ -46,12 +46,12 @@ module.exports = {
       helper.error(res, error);
     }
   },
-
+//<------------------Dashboard---------------->
   dashboard: async (req, res) => {
     try {
       let title = "dashboard";
       let user = await Models.userModel.countDocuments({ role: 1 });
-      let provider = await Models.userModel.countDocuments({ role: 2 });
+      let provider = await Models.restaurantModel.countDocuments();
       let rider = await Models.userModel.countDocuments({ role: 3 });
       let vehicleType = await Models.vehicleTypeModel.countDocuments();
       const orders = await Models.orderModel.countDocuments();
@@ -129,7 +129,7 @@ module.exports = {
   
       // Fetch filtered data
       const user = await Models.userModel.countDocuments({ role: 1, ...dateQuery });
-      const provider = await Models.userModel.countDocuments({ role: 2, ...dateQuery });
+      const provider = await Models.restaurantModel.countDocuments({ ...dateQuery });
       const rider = await Models.userModel.countDocuments({ role: 3, ...dateQuery });
       const vehicleType = await Models.vehicleTypeModel.countDocuments(dateQuery);
       const orders = await Models.orderModel.countDocuments(dateQuery);
@@ -164,7 +164,7 @@ module.exports = {
       res.status(500).send("Internal Server Error");
     }
   },
-
+//<----------------------User------------------->
   user_list: async (req, res) => {
     try {
       let title = "user_list";
@@ -215,6 +215,78 @@ module.exports = {
   user_status: async (req, res) => {
     try {
       var check = await Models.userModel.updateOne(
+        { _id: req.body.id },
+        { status: req.body.value }
+      );
+      req.flash("msg", "Status update successfully");
+
+      if (req.body.value == 0) res.send(false);
+      if (req.body.value == 1) res.send(true);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
+
+  //<----------------------Restaurant------------------->
+  restaurant_list: async (req, res) => {
+    try {
+      let title = "provider_list";
+      let userdata = await Models.restaurantModel
+        .find()
+        .populate("userId")
+        .sort({ createdAt: -1 });
+      res.render("Admin/restaurant/restaurant_list", {
+        title,
+        userdata,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
+  view_restaurant: async (req, res) => {
+    try {
+      let title = "provider_list";
+      let viewuser = await Models.restaurantModel.findById({ _id: req.params.id }).populate("userId");
+      const orders = await Models.orderModel.countDocuments();
+      const activeOrders = await Models.orderModel.countDocuments({ status: 1 ,restaurant:req.params.id });
+      const deliveredOrders = await Models.orderModel.countDocuments({ status: 2,restaurant:req.params.id});
+      const cancelledOrders = await Models.orderModel.countDocuments({ status: 3,restaurant:req.params.id });
+      res.render("Admin/restaurant/restaurant_view", {
+        title,
+        viewuser,
+        orders,
+        activeOrders,
+        deliveredOrders,
+        cancelledOrders,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
+  delete_restaurant: async (req, res) => {
+    try {
+      let userid = req.body.id;
+      let remove = await Models.userModel.deleteOne({ _id: userid });
+      res.redirect("/admin/user_list");
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
+  restaurant_status: async (req, res) => {
+    try {
+      var check = await Models.restaurantModel.updateOne(
         { _id: req.body.id },
         { status: req.body.value }
       );

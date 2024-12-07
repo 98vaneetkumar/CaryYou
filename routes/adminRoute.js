@@ -11,19 +11,26 @@ router.post('/Login', controllers.adminController.Login)
 router.get('/dashboard', session, controllers.adminController.dashboard)
 router.post('/dashboardFilter', session, controllers.adminController.dashboardFilter)
 router.get("/logout", controllers.adminController.logout)
-
+//<------------------------------ User ------------------------->
 router.get('/user_list', session, controllers.adminController.user_list)
 router.get('/view_user/:id', session, controllers.adminController.view_user)
 router.delete('/delete_user/:id', controllers.adminController.delete_user)
 router.post('/user_status', controllers.adminController.user_status)
 
 
+//<------------------------------ User ------------------------->
+router.get('/restaurant_list', session, controllers.adminController.restaurant_list)
+router.get('/view_restaurant/:id', session, controllers.adminController.view_restaurant)
+router.delete('/delete_rastaurant/:id', controllers.adminController.delete_restaurant)
+router.post('/restaurant_status', controllers.adminController.restaurant_status)
+
+//<------------------------------ Rider ------------------------->
 router.get('/rider_list', session, controllers.adminController.rider_list)
 router.get('/view_rider/:id', session, controllers.adminController.view_rider)
 router.delete('/delete_rider/:id', controllers.adminController.delete_rider)
 router.post('/rider_status', controllers.adminController.rider_status)
 
-
+//<------------------------------ Vechicle ------------------------->
 router.get('/vehicleType_list', session, controllers.adminController.vehicleType_list);
 router.get('/edit_vehicleType/:id', session, controllers.adminController.edit_vehicleType);
 router.post('/delete_vehicleType', session, controllers.adminController.delete_vehicleType);
@@ -32,10 +39,9 @@ router.get('/add_vehicleType', session, controllers.adminController.add_vehicleT
 router.post('/create_vehicleType', session, controllers.adminController.create_vehicleType);
 router.post('/update_vehicleType', session, controllers.adminController.update_vehicleType);
 
-
+//<------------------------------ Orders ------------------------->
 router.get('/order_list', session, controllers.adminController.order_list);
 router.get('/view_order/:_id', session, controllers.adminController.view_order);
-
 
 router.get('/active_order_list', session, controllers.adminController.active_order_list);
 router.get('/active_view_order/:_id', session, controllers.adminController.active_view_order);
