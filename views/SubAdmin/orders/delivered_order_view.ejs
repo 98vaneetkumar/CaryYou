@@ -1,0 +1,166 @@
+<div class="main-content">
+    <section class="section">
+      <div class="section-header">
+        <h1>Delivered Order Details</h1>
+        <div class="section-header-breadcrumb">
+          <div class="breadcrumb-item active">
+            <a href="/subAdmin/dashboard">Dashboard</a>
+          </div>
+          <div class="breadcrumb-item">
+            <a href="/subAdmin/delivered_order_list">Delivered Orders</a>
+          </div>
+          <div class="breadcrumb-item">Delivered Order Details</div>
+        </div>
+      </div>
+  
+      <div class="section-body">
+        <div class="card shadow-lg rounded-lg">
+          <form action="" method="get" enctype="multipart/form-data">
+            <!-- Back Button -->
+            <div class="form-group text-left ml-3 mt-2">
+              <a href="/subAdmin/delivered_order_list" class="btn btn-dark rounded-pill">
+                <i class="fas fa-arrow-left"></i> Back
+              </a>
+            </div>
+  
+            <div class="row mt-sm-4 justify-content-center mx-0">
+              <!-- Left Side - Order Info -->
+              <div class="col-12 col-md-6 col-lg-5">
+                <h4 class="text-center text-primary mb-4">Order Information</h4>
+                <div class="form-group">
+                  <label class="col-form-label text-dark">Order By</label>
+                  <input type="text" value="<%= order?.orderBy?.fullName %>" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label text-dark">Restaurant</label>
+                  <input type="text" value="<%= order?.restaurant?.name %>" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label text-dark">Item</label>
+                  <input type="text" value="<%= order?.item %>" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label text-dark">Price</label>
+                  <input type="text" value="<%= order?.price %>" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label text-dark">Status</label>
+                  <input type="text" value="<%= orderStatus %>" class="form-control" disabled>
+                </div>
+              </div>
+  
+              <!-- Right Side - Rider & Delivery Details -->
+              <div class="col-12 col-md-6 col-lg-7">
+                  <h4 class="text-center text-primary mb-4">Delivery Information</h4>
+                  <% if (orderStatus !== 'Pending') { %>
+                    <!-- Rider Info -->
+                    <div class="form-group">
+                      <label class="col-form-label text-dark">Rider</label>
+                      <input type="text" value="<%= order?.rider?.fullName %>" class="form-control" disabled>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-form-label text-dark">Rider Tip</label>
+                      <input type="text" value="<%= order?.riderTip %>" class="form-control" disabled>
+                    </div>
+                    <!-- Pickup Details -->
+                    <div class="form-group">
+                      <label class="col-form-label text-dark">Pickup Date & Time</label>
+                      <input type="text" value="<%= order.orderPickUpDate %> <%= order.orderPickUpTime %>" class="form-control" disabled>
+                    </div>
+                    <!-- Delivery Details -->
+                    <div class="form-group">
+                      <label class="col-form-label text-dark">Delivered Date & Time</label>
+                      <input type="text" value="<%= order.orderDeliveredDate %> <%= order.orderDeliveredTime %>" class="form-control" disabled>
+                    </div>
+                  <% } else { %>
+                    <p class="text-center text-warning">Delivery details will be available once the rider is assigned and updates are provided.</p>
+                  <% } %>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <script>
+    function formatDateTime(date, time) {
+      if (!date || !time) return null;
+      return `${new Date(date).toLocaleDateString()} ${new Date(time).toLocaleTimeString()}`;
+    }
+  </script>
+  
+  <style>
+    .profile_img {
+      object-fit: cover;
+    }
+  
+    .form-group {
+      margin-bottom: 10px; /* Reduced margin to shorten space between fields */
+    }
+  
+    .card-body {
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      padding: 15px; /* Reduced padding */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  
+    .section-header h1 {
+      font-size: 28px;
+      color: #3d3d3d;
+      font-weight: bold;
+    }
+  
+    .breadcrumb-item a {
+      color: #007bff;
+      text-decoration: none;
+    }
+  
+    .breadcrumb-item.active a {
+      color: #6c757d;
+      text-decoration: none;
+    }
+  
+    .btn-dark {
+      background-color: #343a40;
+      border-color: #343a40;
+      border-radius: 25px;
+    }
+  
+    .btn-dark:hover {
+      background-color: #23272b;
+      border-color: #1d2124;
+    }
+  
+    .text-center h4 {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  
+    .form-control {
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  
+    .form-control:disabled {
+      background-color: #f2f2f2;
+    }
+  
+    .text-dark {
+      color: #343a40;
+    }
+  
+    .text-warning {
+      color: #ffc107;
+    }
+  
+    .text-success {
+      color: #28a745;
+    }
+  
+    .text-primary {
+      color: #007bff;
+    }
+  </style>
+  
