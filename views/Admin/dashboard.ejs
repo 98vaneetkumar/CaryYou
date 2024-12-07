@@ -1,9 +1,9 @@
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex justify-content-between align-items-center w-100">
         <h1>Admin Dashboard</h1>
-        <div class="filter-options" style= "padding-left: 570px;">
+        <div class="filter-options">
           <select id="filter" class="form-control">
             <option value="all">all</option>
             <option value="today">Today</option>
@@ -21,7 +21,10 @@
       <!-- Users Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/user_list">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #6666ff, #9999ff)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #6666ff, #9999ff)"
+          >
             <div class="card-icon" style="background: rgba(56, 56, 187, 0.8)">
               <i class="fas fa-users"></i>
             </div>
@@ -30,7 +33,11 @@
                 <h4 style="color: white; font-weight: bold"><b>Users</b></h4>
               </div>
               <span id="userCount" value="<%= user %>" hidden></span>
-              <div class="card-body" id="userCount" style="color: white; font-weight: bold">
+              <div
+                class="card-body"
+                id="userCount"
+                style="color: white; font-weight: bold"
+              >
                 <%= user %>
               </div>
             </div>
@@ -41,7 +48,10 @@
       <!-- Providers (Restaurants) Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cccc, #66cccc)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33cccc, #66cccc)"
+          >
             <div class="card-icon" style="background: rgba(38, 152, 152, 0.8)">
               <i class="fas fa-utensils"></i>
             </div>
@@ -63,7 +73,10 @@
       <!-- Rides Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/rider_list">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc99, #66cc99)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33cc99, #66cc99)"
+          >
             <div class="card-icon" style="background: rgba(38, 151, 114, 0.8)">
               <i class="fas fa-taxi"></i>
             </div>
@@ -83,7 +96,10 @@
       <!-- Vehicle Types Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/vehicleType_list">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc99, #66cc99)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33cc99, #66cc99)"
+          >
             <div class="card-icon" style="background: rgba(38, 152, 110, 0.8)">
               <i class="fas fa-car-side"></i>
             </div>
@@ -93,7 +109,11 @@
                   <b>Vehicle Types</b>
                 </h4>
               </div>
-              <span id="vehicleTypeCount" value="<%= vehicleType %>" hidden></span>
+              <span
+                id="vehicleTypeCount"
+                value="<%= vehicleType %>"
+                hidden
+              ></span>
               <div class="card-body" style="color: white; font-weight: bold">
                 <%= vehicleType %>
               </div>
@@ -105,7 +125,10 @@
       <!-- Payments Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="#">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #3399ff, #66ccff)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #3399ff, #66ccff)"
+          >
             <div class="card-icon" style="background: rgba(38, 151, 219, 0.8)">
               <i class="fas fa-credit-card"></i>
             </div>
@@ -125,7 +148,10 @@
       <!-- Orders Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/order_list">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc33, #66ff66)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33cc33, #66ff66)"
+          >
             <div class="card-icon" style="background: rgba(44, 176, 44, 0.8)">
               <i class="fas fa-box"></i>
             </div>
@@ -144,7 +170,10 @@
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/active_order_list">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #ff5733, #ff8c66)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
+          >
             <div class="card-icon" style="background: rgba(204, 85, 51, 0.8)">
               <i class="fas fa-shopping-cart"></i>
             </div>
@@ -162,7 +191,10 @@
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/delivered_order_list">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33a1ff, #66c2ff)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33a1ff, #66c2ff)"
+          >
             <div class="card-icon" style="background: rgba(51, 128, 204, 0.8)">
               <i class="fas fa-truck"></i>
             </div>
@@ -182,7 +214,10 @@
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/cancel_order_list">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #ffc300, #ffd966)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ffc300, #ffd966)"
+          >
             <div class="card-icon" style="background: rgba(204, 153, 51, 0.8)">
               <i class="fas fa-ban"></i>
             </div>
@@ -203,7 +238,10 @@
       <!-- Services Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/service_list">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #ff9966, #ffcc66)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ff9966, #ffcc66)"
+          >
             <div class="card-icon" style="background: rgba(255, 165, 0, 0.8)">
               <i class="fas fa-clipboard-list"></i>
             </div>
@@ -223,7 +261,10 @@
       <!-- Feedback Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/feedback_list">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #ff6699, #ff99cc)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ff6699, #ff99cc)"
+          >
             <div class="card-icon" style="background: rgba(255, 82, 129, 0.8)">
               <i class="fas fa-comment-alt"></i>
             </div>
@@ -243,7 +284,10 @@
       <!-- Contact Us Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/contact_us">
-          <div class="card card-statistic-1" style="background: linear-gradient(135deg, #33cc66, #66ff99)">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33cc66, #66ff99)"
+          >
             <div class="card-icon" style="background: rgba(44, 176, 44, 0.8)">
               <i class="far fa-address-book"></i>
             </div>
@@ -264,6 +308,24 @@
   </section>
 </div>
 
+<!-- External CSS -->
+<style>
+  .filter-options select {
+    width: auto;
+    max-width: 200px; /* Optional: Set a max width to ensure the dropdown doesn't get too wide */
+  }
+
+  @media (max-width: 768px) {
+    .filter-options {
+      justify-content: center; /* Centers the filter on smaller screens */
+      padding-right: 15px; /* Optional: Add some padding on smaller screens */
+    }
+
+    .filter-options select {
+      width: 100%; /* Makes the dropdown full-width on small screens */
+    }
+  }
+</style>
 
 <script>
   document.addEventListener("DOMContentLoaded", async () => {
@@ -281,14 +343,13 @@
       });
 
       const data = await response.json();
-      console.log("data", data)
+      console.log("data", data);
       var userCountElement = document.getElementById("userCount");
       if (userCountElement) {
         // Update the text content with the new data
-        console.log("insdie tet")
+        console.log("insdie tet");
         userCountElement.textContent = data.user;
       }
-
     });
   });
 </script>
