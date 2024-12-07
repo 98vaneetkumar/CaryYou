@@ -140,6 +140,7 @@ module.exports = {
       const cancelledOrders = await Models.orderModel.countDocuments({ status: 3, ...dateQuery });
       // const contactUs = await Models.contactUsModel.countDocuments(dateQuery);
       // const servicesdata = await Models.serviceModel.countDocuments(dateQuery);
+      console.log("user", user)
 
       res.json({
         user,
@@ -187,6 +188,7 @@ module.exports = {
     try {
       let title = "user_list";
       let viewuser = await Models.userModel.findById({ _id: req.params.id });
+      // console.log(viewuser,"viewuserviewuserviewuserviewuser");return
       res.render("Admin/user/view_user", {
         title,
         viewuser,
@@ -478,22 +480,22 @@ module.exports = {
 
   order_list: async (req, res) => {
     try {
-      const title = "order_list";
+      const title = "Order List";
       const orders = await Models.orderModel
         .find({})
-        .populate("orderBy", "name") // Fetching only the 'name' field of the user
+        .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
         .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
         .sort({ createdAt: -1 });
   
       const formattedOrders = orders.map((order, index) => ({
         sNo: index + 1,
-        orderBy: order.orderBy?.name || "N/A",
+        orderBy: order.orderBy?.fullName || "N/A",
         restaurant: order.restaurant?.name || "N/A",
         item: order.item || "N/A",
         orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
         id: order._id,
       }));
-    
+  
       res.render("Admin/orders/order_list", {
         title,
         orderdata: formattedOrders,
@@ -507,14 +509,18 @@ module.exports = {
       res.redirect("/admin/dashboard");
     }
   },
+  
+
   view_order: async (req, res) => {
     try {
+      let title = "Order Details";
+      
       // Fetch the order details by its ID from the database
       const order = await Models.orderModel
-        .findById(req.params.id)
-        .populate("orderBy", "name") // Populate the orderBy field with only the name of the user
-        .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
-        .populate("rider", "name"); // Populate the rider field with only the name of the rider
+        .findById(req.params._id )
+        .populate("orderBy", "fullName") // Populate with fullName for the user
+        .populate("restaurant", "name") // Populate with name for the restaurant
+        .populate("rider", "fullName"); // Populate with fullName for the rider
   
       // If the order is not found, return a 404 error
       if (!order) {
@@ -536,31 +542,13 @@ module.exports = {
         return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
       }
   
-      // Send the order details in the response
-      res.status(200).json({
-        success: true,
-        data: {
-          orderBy: order.orderBy?.name || "Pending", // If no orderBy, show "Pending"
-          restaurant: order.restaurant?.name || "Pending", // If no restaurant, show "Pending"
-          item: order.item || "N/A", // If no item, show "N/A"
-          price: order.price || "N/A", // If no price, show "N/A"
-          status: getOrderStatus(order.status), // Get the status of the order
-          rider: order.rider?.name || "Pending", // If no rider, show "Pending"
-          riderTip: order.riderTip || "N/A", // If no riderTip, show "N/A"
-          orderPickUpDate: order.orderPickUpDate
-            ? order.orderPickUpDate.toLocaleDateString() // Format the pickup date if present
-            : "Pending",
-          orderPickUpTime: order.orderPickUpTime
-            ? order.orderPickUpTime.toLocaleTimeString() // Format the pickup time if present
-            : "Pending",
-          orderDeliveredDate: order.orderDeliveredDate
-            ? order.orderDeliveredDate.toLocaleDateString() // Format the delivery date if present
-            : "Pending",
-          orderDeliveredTime: order.orderDeliveredTime
-            ? order.orderDeliveredTime.toLocaleTimeString() // Format the delivery time if present
-            : "Pending",
-          createdAt: order.createdAt.toLocaleString(), // Format the creation date of the order
-        },
+      // Render the view with order details
+      res.render("Admin/order/view_order", {
+        title, // Pass the title to the view
+        order, // Pass the order details to the view
+        orderStatus: getOrderStatus(order.status), // Pass the order status
+        session: req.session.user, // Pass session details (if needed)
+        msg: req.flash("msg"), // Pass any flash messages (if needed)
       });
     } catch (error) {
       // Log any errors and send a 500 response in case of an internal server error
@@ -571,6 +559,8 @@ module.exports = {
       });
     }
   },
+  
+  
   
 
     //----------------Active order api-----------------------

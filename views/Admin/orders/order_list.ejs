@@ -24,26 +24,20 @@
             <tbody>
               <% orderdata.forEach(function(data, i) { %>
                 <tr>
-                  <td><%= 1 + i %></td>
+                  <td><%= data.sNo %></td>
+                  <td><%= data.orderBy %></td> <!-- Display the 'name' of the user -->
+                  <td><%= data.restaurant %></td> <!-- Restaurant Name -->
+                  <td><%= data.item %></td> <!-- Item Name -->
+                  <td><%= data.orderDateTime %></td> <!-- Order Date/Time -->
                   <td>
-                    <img 
-                      src="<%= data.image || 'https://avatar.iran.liara.run/public/boy?ordername=Ash' %>" 
-                      width="50" 
-                      height="50" 
-                      class="profile_img rounded-circle border" 
-                      style="cursor:pointer;">
-                  </td>
-                  <td><%= data.restaurantName %></td>
-                  <td><%= data.itemName %></td>
-                  <td><%= data.orderDateTime %></td>
-                  <td>
-                    <a href="/admin/view_order/<%= data._id %>" class="btn btn-sm bg-warning">
+                    <a href="/admin/view_order/<%= data.id %>" class="btn btn-sm bg-warning">
                       <i class="fa fa-eye" aria-hidden="true"></i> View
                     </a>
-                  </td>
+                  </td>                  
                 </tr>
               <% }) %>
             </tbody>
+            
           </table>
         </div>
       </div>

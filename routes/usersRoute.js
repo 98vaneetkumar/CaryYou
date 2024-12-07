@@ -38,6 +38,30 @@ module.exports = function(io){
    router.post("/deleteExternalAccount",authentication,controller.userController.deleteExternalAccount)
 
 
+
+
+
+
+
+
+
+   router.post('/createOrder', controller.userController.createOrder);
+   router.post('/createRestaurant', controller.userController.createRestaurant);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    // Rider routers
 
 

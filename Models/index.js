@@ -5,5 +5,6 @@ module.exports={
     chatConstantModel: require('./chatConstantModel'),
     messageModel: require('./messageModel'),
     vehicleTypeModel: require('./vehicleTypeModel'),
-    orderModel: require('./orderModel')
+    orderModel: require('./orderModel'),
+    restaurantModel: require('./restaurantModel')
 }
