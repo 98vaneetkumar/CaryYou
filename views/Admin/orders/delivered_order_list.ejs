@@ -18,6 +18,8 @@
                 <th scope="col">Restaurant</th>
                 <th scope="col">Item</th>
                 <th scope="col">Order D/T</th>
+                <th scope="col">Action</th>
+
               </tr>
             </thead>  
             <tbody>
@@ -27,7 +29,12 @@
                   <td><%= data.orderBy %></td> <!-- Display the 'name' of the user -->
                   <td><%= data.restaurant %></td> <!-- Restaurant Name -->
                   <td><%= data.item %></td> <!-- Item Name -->
-                  <td><%= data.orderDateTime %></td> <!-- Order Date/Time -->                 
+                  <td><%= data.orderDateTime %></td> <!-- Order Date/Time --> 
+                  <td>
+                    <a href="/admin/delivered_view_order/<%= data.id %>" class="btn btn-sm bg-warning">
+                      <i class="fa fa-eye" aria-hidden="true"></i> View
+                    </a>
+                  </td>                   
                 </tr>
               <% }) %>
             </tbody>

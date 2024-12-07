@@ -38,11 +38,15 @@ router.get('/view_order/:_id', session, controllers.adminController.view_order);
 
 
 router.get('/active_order_list', session, controllers.adminController.active_order_list);
-router.get('/active_view_order', session, controllers.adminController.active_view_order);
+router.get('/active_view_order/:_id', session, controllers.adminController.active_view_order);
 
 router.get('/delivered_order_list', session, controllers.adminController.delivered_order_list);
+router.get('/delivered_view_order/:_id', session, controllers.adminController.delivered_view_order);
+
 
 router.get('/cancel_order_list', session, controllers.adminController.cancel_order_list);
+router.get('/cancel_view_order/:_id', session, controllers.adminController.cancel_view_order);
+
 
 
 
