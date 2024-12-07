@@ -480,7 +480,7 @@ module.exports = {
 
   order_list: async (req, res) => {
     try {
-      const title = "Order List";
+      const title = "order_list";
       const orders = await Models.orderModel
         .find({})
         .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
@@ -513,7 +513,7 @@ module.exports = {
 
   view_order: async (req, res) => {
     try {
-      let title = "Order Details";
+      let title = "order_list";
       
       // Fetch the order details by its ID from the database
       const order = await Models.orderModel
