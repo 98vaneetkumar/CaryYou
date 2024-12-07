@@ -182,4 +182,143 @@ module.exports = {
       });
     }
   },
+
+  updateRestaurant: async (req, res) => {
+    try {
+      const { restaurantId } = req.body;
+  
+      // Static data with random online images
+      const staticData = {
+        userId: "675449f250481a79e5d4ee95",
+        // image: "https://picsum.photos/200/300?random=1", // Random restaurant image
+        address: "456 Updated Street, New City",
+        category: [
+          { type: "Fast Food",
+            //  image: "https://picsum.photos/200/300?random=2"
+             },
+          { type: "Dessert",
+            //  image: "https://picsum.photos/200/300?random=3"
+             },
+        ],
+        subCategory: [
+          { type: "Pizza",
+            //  image: "https://picsum.photos/200/300?random=4" 
+            },
+          { type: "Ice Cream",
+            //  image: "https://picsum.photos/200/300?random=5"
+             },
+        ],
+        staffs: ["675449f250481a79e5d4ee95", "6753fd42efe5fd5b8963a3b8"],
+        openingTime: "09:00 AM",
+        closingTime: "11:00 PM",
+      };
+  
+      // Find the restaurant by ID
+      const restaurant = await Models.restaurantModel.findById(restaurantId);
+      if (!restaurant) {
+        return res.status(404).json({
+          success: false,
+          message: "Restaurant not found",
+        });
+      }
+  
+      // Update only the specified fields
+      restaurant.userId = staticData.userId;
+      restaurant.image = staticData.image;
+      restaurant.address = staticData.address;
+      restaurant.category = staticData.category;
+      restaurant.subCategory = staticData.subCategory;
+      restaurant.staffs = staticData.staffs;
+      restaurant.openingTime = staticData.openingTime;
+      restaurant.closingTime = staticData.closingTime;
+  
+      // Save the updated restaurant
+      const updatedRestaurant = await restaurant.save();
+  
+      // Return success response
+      res.status(200).json({
+        success: true,
+        message: "Restaurant updated successfully",
+        restaurant: updatedRestaurant,
+      });
+    } catch (error) {
+      console.error("Error updating restaurant:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error updating restaurant",
+      });
+    }
+  },
+  
+  
+  
+
+
+  createCategory: async (req, res) => {
+    try {
+      const testCategories = [
+        { type: "Fast Food", image: "https://picsum.photos/200/300?random=8" },
+        { type: "Desserts", image: "https://picsum.photos/200/300?random=9" },
+        { type: "Beverages", image: "https://picsum.photos/200/300?random=10" },
+      ];
+  
+      const categories = await Models.restaurantModel.insertMany(testCategories);
+  
+      res.status(201).json({
+        success: true,
+        message: "Test categories created successfully",
+        categories,
+      });
+    } catch (error) {
+      console.error("Error creating test categories:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error creating test categories",
+      });
+    }
+  },
+
+
+  createSubCategory: async (req, res) => {
+    try {
+      // Fetch available categories
+      const categories = await Models.restaurantModel.find();
+      if (!categories || categories.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "No categories found. Please create categories first.",
+        });
+      }
+  
+      // Generate subcategories for each category
+      const testSubCategories = categories.flatMap((category, index) => [
+        {
+          type: `${category.type} - Item ${index + 1}`,
+          image: `https://picsum.photos/200/300?random=${11 + index}`,
+          categoryId: category._id,
+        },
+        {
+          type: `${category.type} - Item ${index + 2}`,
+          image: `https://picsum.photos/200/300?random=${12 + index}`,
+          categoryId: category._id,
+        },
+      ]);
+  
+      const subCategories = await Models.restaurantModel.insertMany(testSubCategories);
+  
+      res.status(201).json({
+        success: true,
+        message: "Test subcategories created successfully",
+        subCategories,
+      });
+    } catch (error) {
+      console.error("Error creating test subcategories:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error creating test subcategories",
+      });
+    }
+  },
+  
+  
 };

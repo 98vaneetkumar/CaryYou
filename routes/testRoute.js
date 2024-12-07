@@ -6,10 +6,7 @@ const controller=require("../controllers/index")
 
 
 
-
-
 router.post('/createOrder', controller.testController.createOrder);
-router.post('/createRestaurant', controller.testController.createRestaurant);
 
 
 // Route to make an order active
@@ -20,6 +17,20 @@ router.post('/delivered', controller.testController.markOrderDelivered);
 
 // Route to cancel an order
 router.post('/cancel', controller.testController.cancelOrder);
+
+
+
+
+
+router.post('/createRestaurant', controller.testController.createRestaurant);
+
+router.post('/updateRestaurant', controller.testController.updateRestaurant);
+
+
+router.post('/createCategory', controller.testController.createCategory);
+
+router.post('/createSubCategory', controller.testController.createSubCategory);
+
 
 
 module.exports = router

@@ -235,18 +235,19 @@ module.exports = {
       let title = "provider_list";
       let userdata = await Models.restaurantModel
         .find()
-        .populate("userId")
-        .sort({ createdAt: -1 });
+        .populate("userId") // Populating the user details based on userId
+        .sort({ createdAt: -1 }); // Sorting by creation date, most recent first
       res.render("Admin/restaurant/restaurant_list", {
         title,
-        userdata,
-        session: req.session.user,
-        msg: req.flash("msg"),
+        userdata, // Passing the list of restaurants to the view
+        session: req.session.user, // Passing the session data for authentication purposes
+        msg: req.flash("msg"), // Flash message, if any
       });
     } catch (error) {
       console.log(error);
       throw error;
     }
+    
   },
 
   view_restaurant: async (req, res) => {
@@ -552,40 +553,40 @@ module.exports = {
 
   order_list: async (req, res) => {
     try {
-      const title = "order_list";
-      
-      // Fetch orders and populate references
-      const orders = await Models.orderModel
+      const title = "restaurant_list";
+  
+      // Fetch restaurant data and populate references (like userId for restaurant details)
+      const restaurants = await Models.restaurantModel
         .find({})
-        .populate("orderBy", "fullName") // Fetching only the 'fullName' field of the user
-        .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
-        .sort({ createdAt: -1 });
-      
-      // Format orders to include all necessary data for rendering
-      const formattedOrders = orders.map((order, index) => ({
+        .populate("userId", "name email countryCode phoneNumber") // Populating user data
+        .sort({ createdAt: -1 }); // Sorting by creation date
+  
+      // Format restaurant data to include all necessary data for rendering
+      const formattedRestaurants = restaurants.map((restaurant, index) => ({
         sNo: index + 1,
-        orderBy: order.orderBy?.fullName || "N/A",
-        restaurant: order.restaurant?.name || "N/A",
-        item: order.item || "N/A",
-        orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
-        status: order.status || 0, // Default to 0 if status is missing
-        id: order._id,
+        image: restaurant.image || "https://avatar.iran.liara.run/public/boy?username=Ash", // Default image if none exists
+        name: restaurant.userId?.fullName || "N/A", // Fallback to N/A if userId is not populated
+        email: restaurant.userId?.email || "N/A", // Fallback to N/A if email is missing
+        phone: `${restaurant.userId?.countryCode || ''}-${restaurant.userId?.phoneNumber || ''}` || "N/A",
+        status: restaurant.status || 0, // Default to 0 if status is missing
+        id: restaurant._id, // Restaurant ID for action links
       }));
   
-      // Render the EJS view with formatted order data
-      res.render("Admin/orders/order_list", {
+      // Render the EJS view with formatted restaurant data
+      res.render("Admin/restaurant/restaurant_list", {
         title,
-        orderdata: formattedOrders,
+        restaurantdata: formattedRestaurants, // Passing formatted restaurant data to the view
         session: req.session.user, // Ensure session data is passed here
-        msg: req.flash("msg") || '', // Flash message
+        msg: req.flash("msg") || '', // Flash message, if any
       });
-      
+  
     } catch (error) {
-      console.error("Error fetching order list:", error);
-      req.flash("msg", "Error fetching order list");
+      console.error("Error fetching restaurant list:", error);
+      req.flash("msg", "Error fetching restaurant list");
       res.redirect("/admin/dashboard");
     }
   },
+  
   
   
 

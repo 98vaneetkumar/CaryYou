@@ -3,14 +3,14 @@ const Schema = mongoose.Schema;
 
 const restaurantSchema = new mongoose.Schema(
   {
-    userId:{
+    userId: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: "user",
     },
-    image:{type:String},
-    address: { type: String},
-    location:{
+    image: { type: String },
+    address: { type: String },
+    location: {
       type: {
         type: String,
         enum: ["Point"],
@@ -23,33 +23,50 @@ const restaurantSchema = new mongoose.Schema(
         required: false,
       },
     },
-    category:[{type:String},{image:String}],
-    subCategory:[{type:String},{image:String}],
-    products:[{
-      categoryId:{
+    category: [
+      {
+        type: { type: String, required: true },
+        image: { type: String },
+      },
+    ],
+    subCategory: [
+      {
+        type: { type: String, required: true },
+        image: { type: String },
+      },
+    ],
+    products: [
+      {
+        categoryId: {
+          type: Schema.Types.ObjectId,
+          required: true,
+          ref: "restaurant",
+        },
+        subCategoryId: {
+          type: Schema.Types.ObjectId,
+          required: true,
+          ref: "restaurant",
+        },
+        images: [{ type: String }],
+        itemName: { type: String, required: true },
+        price: { type: String, required: true },
+        size: { type: String },
+      },
+    ],
+    staffs: [
+      {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: "restaurant",
+        ref: "user",
       },
-      subCategoryId:{
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "restaurant"
-      },
-      images:[{type:String}],
-      itemName:{type: String, required: true},
-      price:{type: String, required: true},
-      size:{type: String}
-    }],
-    staffs:[{
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: "user",
-    }],
-    openingTime:{type:String},
-    closingTime:{type:String}
+    ],
+    openingTime: { type: String },
+    closingTime: { type: String },
   },
   { timestamps: true }
 );
+
 restaurantSchema.index({ location: "2dsphere" });
-module.exports = mongoose.models.restaurant || mongoose.model("restaurant", restaurantSchema);
+
+module.exports =
+  mongoose.models.restaurant || mongoose.model("restaurant", restaurantSchema);
