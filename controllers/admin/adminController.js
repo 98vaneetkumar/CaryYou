@@ -571,13 +571,13 @@ module.exports = {
         const title = "activeorders";
         const orders = await Models.orderModel
           .find({status:1})
-          .populate("orderBy", "name") // Fetching only the 'name' field of the user
+          .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
           .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
           .sort({ createdAt: -1 });
     
         const formattedOrders = orders.map((order, index) => ({
           sNo: index + 1,
-          orderBy: order.orderBy?.name || "N/A",
+          orderBy: order.orderBy?.fullName || "N/A",
           restaurant: order.restaurant?.name || "N/A",
           item: order.item || "N/A",
           orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
@@ -668,13 +668,13 @@ module.exports = {
         const title = "deliveredorders";
         const orders = await Models.orderModel
           .find({status:1})
-          .populate("orderBy", "name") // Fetching only the 'name' field of the user
+          .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
           .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
           .sort({ createdAt: -1 });
     
         const formattedOrders = orders.map((order, index) => ({
           sNo: index + 1,
-          orderBy: order.orderBy?.name || "N/A",
+          orderBy: order.orderBy?.fullName || "N/A",
           restaurant: order.restaurant?.name || "N/A",
           item: order.item || "N/A",
           orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
@@ -700,13 +700,13 @@ module.exports = {
         const title = "cancelledorders";
         const orders = await Models.orderModel
           .find({status:1})
-          .populate("orderBy", "name") // Fetching only the 'name' field of the user
+          .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
           .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
           .sort({ createdAt: -1 });
     
         const formattedOrders = orders.map((order, index) => ({
           sNo: index + 1,
-          orderBy: order.orderBy?.name || "N/A",
+          orderBy: order.orderBy?.fullName || "N/A",
           restaurant: order.restaurant?.name || "N/A",
           item: order.item || "N/A",
           orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",

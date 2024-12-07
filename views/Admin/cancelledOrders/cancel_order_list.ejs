@@ -3,7 +3,9 @@
     <div class="section-header">
       <h1>Cancelled Orders</h1>
       <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item active"><a href="/admin/dashboard">Dashboard</a></div>
+        <div class="breadcrumb-item active">
+          <a href="/admin/dashboard">Dashboard</a>
+        </div>
         <div class="breadcrumb-item">Cancel Orders</div>
       </div>
     </div>
@@ -12,36 +14,23 @@
         <div class="table-responsive">
           <table id="myTable" class="table table-hover table-md">
             <thead>
-              <tr style="background-color: #ebf2f2;">
+              <tr style="background-color: #ebf2f2">
                 <th scope="col">S No.</th>
                 <th scope="col">Order By</th>
                 <th scope="col">Restaurant</th>
                 <th scope="col">Item</th>
                 <th scope="col">Order D/T</th>
-                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
               <% orderdata.forEach(function(data, i) { %>
-                <tr>
-                  <td><%= 1 + i %></td>
-                  <td>
-                    <img 
-                      src="<%= data.image || 'https://avatar.iran.liara.run/public/boy?ordername=Ash' %>" 
-                      width="50" 
-                      height="50" 
-                      class="profile_img rounded-circle border" 
-                      style="cursor:pointer;">
-                  </td>
-                  <td><%= data.restaurantName %></td>
-                  <td><%= data.itemName %></td>
-                  <td><%= data.orderDateTime %></td>
-                  <td>
-                    <a href="/admin/view_order/<%= data._id %>" class="btn btn-sm bg-warning">
-                      <i class="fa fa-eye" aria-hidden="true"></i> View
-                    </a>
-                  </td>
-                </tr>
+              <tr>
+                <td><%= data.sNo %></td>
+                  <td><%= data.orderBy %></td> <!-- Display the 'name' of the user -->
+                <td><%= data.restaurant %></td>
+                <td><%= data.item %></td>
+                <td><%= data.orderDateTime %></td>
+              </tr>
               <% }) %>
             </tbody>
           </table>
@@ -53,9 +42,9 @@
 
 <script>
   $(document).ready(function () {
-    $('#myTable').DataTable({
-      dom: 'Bfrtip',
-      buttons: ['excel', 'pdf', 'print']
+    $("#myTable").DataTable({
+      dom: "Bfrtip",
+      buttons: ["excel", "pdf", "print"],
     });
   });
 </script>
