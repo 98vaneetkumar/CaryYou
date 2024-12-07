@@ -5,7 +5,7 @@
         <h1>Admin Dashboard</h1>
         <div class="filter-options">
           <select id="filter" class="form-control">
-            <option value="all">all</option>
+            <option value="all">All</option>
             <option value="today">Today</option>
             <option value="weekly">This Week</option>
             <option value="monthly">This Month</option>
@@ -32,12 +32,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold"><b>Users</b></h4>
               </div>
-              <span id="userCount" value="<%= user %>" hidden></span>
-              <div
-                class="card-body"
-                id="userCount"
-                style="color: white; font-weight: bold"
-              >
+              <div class="card-body" id="user" value="<%= user %>" style="color: white; font-weight: bold">
                 <%= user %>
               </div>
             </div>
@@ -61,8 +56,7 @@
                   <b>Providers/Restaurant</b>
                 </h4>
               </div>
-              <span id="providerCount" value="<%= provider %>" hidden></span>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div class="card-body" id="provider" value="<%= provider %>" style="color: white; font-weight: bold">
                 <%= provider %>
               </div>
             </div>
@@ -84,8 +78,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold"><b>Riders</b></h4>
               </div>
-              <span id="ridersCount" value="<%= rider %>" hidden></span>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div class="card-body" id="rider" value="<%= rider %>" style="color: white; font-weight: bold">
                 <%= rider %>
               </div>
             </div>
@@ -109,12 +102,7 @@
                   <b>Vehicle Types</b>
                 </h4>
               </div>
-              <span
-                id="vehicleTypeCount"
-                value="<%= vehicleType %>"
-                hidden
-              ></span>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div class="card-body" id="vehicleType" value="<%= vehicleType %>" style="color: white; font-weight: bold">
                 <%= vehicleType %>
               </div>
             </div>
@@ -136,8 +124,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold"><b>Payments</b></h4>
               </div>
-              <span id="paymentCount" value="<%= payments %>" hidden></span>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div class="card-body" id="payments" value="<%= payments %>"  style="color: white; font-weight: bold">
                 <%= payments %>
               </div>
             </div>
@@ -159,8 +146,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold"><b>Orders</b></h4>
               </div>
-              <span id="orderCount" value="<%= orders %>" hidden></span>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div class="card-body" id="orders" value="<%= orders %>" style="color: white; font-weight: bold">
                 <%= orders %>
               </div>
             </div>
@@ -181,7 +167,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold">Active Orders</h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div class="card-body"  id="activeOrders" value="<%= activeOrders %>" style="color: white; font-weight: bold">
                 <%= activeOrders %>
               </div>
             </div>
@@ -204,7 +190,7 @@
                   Delivered Orders
                 </h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div class="card-body"   id="deliveredOrders" value="<%= deliveredOrders %>" style="color: white; font-weight: bold">
                 <%= deliveredOrders %>
               </div>
             </div>
@@ -227,7 +213,7 @@
                   Cancelled Orders
                 </h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div class="card-body" id="cancelledOrders" value="<%= cancelledOrders %>" style="color: white; font-weight: bold">
                 <%= cancelledOrders %>
               </div>
             </div>
@@ -249,8 +235,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold"><b>Services</b></h4>
               </div>
-              <span id="serviceCount" value="<%= servicesData %>" hidden></span>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div class="card-body" id="servicesData" value="<%= servicesData %>" style="color: white; font-weight: bold">
                 <%= servicesData %>
               </div>
             </div>
@@ -272,8 +257,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold"><b>Feedback</b></h4>
               </div>
-              <span id="feedbackCount" value="<%= feedbacks %>" hidden></span>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div class="card-body" id="feedbacks" value="<%= feedbacks %>" style="color: white; font-weight: bold">
                 <%= feedbacks %>
               </div>
             </div>
@@ -297,7 +281,7 @@
                   <b>Contact Us</b>
                 </h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div class="card-body" id="contactUs" value="<%= contactUs %>" style="color: white; font-weight: bold">
                 <%= contactUs %>
               </div>
             </div>
@@ -343,13 +327,26 @@
       });
 
       const data = await response.json();
-      console.log("data", data);
-      var userCountElement = document.getElementById("userCount");
-      if (userCountElement) {
-        // Update the text content with the new data
-        console.log("insdie tet");
-        userCountElement.textContent = data.user;
-      }
+      document.getElementById("user").textContent=data.user;
+      document.getElementById("provider").textContent=data.provider;
+      document.getElementById("rider").textContent=data.rider;
+      document.getElementById("vehicleType").textContent=data.vehicleType;
+      document.getElementById("orders").textContent=data.orders;
+      document.getElementById("payments").textContent=data.payments;
+      document.getElementById("feedbacks").textContent=data.feedbacks;
+      document.getElementById("activeOrders").textContent=data.activeOrders;
+      document.getElementById("deliveredOrders").textContent=data.deliveredOrders;
+      document.getElementById("cancelledOrders").textContent=data.cancelledOrders;
+      document.getElementById("contactus").textContent=data.contactus;
+      document.getElementById("servicesData").textContent=data.servicesData;
     });
+  });
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  socket.on('userCountUpdated', (data) => {
+    document.getElementById('user').textContent = data.user;
   });
 </script>

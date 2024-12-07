@@ -6,7 +6,7 @@ const {authentication,forgotPasswordVerify} = require('../middlewares/authentica
 
 
 module.exports = function(io){
-   router.post("/signUp",controller.userController.signUp);
+   router.post("/signUp",controller.userController.signUp(io));
    router.post('/login', controller.userController.login);
    router.post("/socialLogin", controller.userController.socialLogin);
    router.post("/deleteAccount",authentication,controller.userController.deleteAccount);

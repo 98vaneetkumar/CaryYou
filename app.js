@@ -29,7 +29,7 @@ const io = socketio(server, {
 // Routes
 const usersRouter = require("./routes/usersRoute")(io); // Pass io to usersRouter if needed
 const riderRoute = require("./routes/ridersRoute")(io);
-const adminRouter = require("./routes/adminRoute");
+const adminRouter = require("./routes/adminRoute")(io);
 const subAdminRouter = require("./routes/subAdminRoute");
 let URL =
   "mongodb+srv://vaneet3157:ADenwpW7RzcY1FIy@cluster0.5fvww.mongodb.net/Caryyou?retryWrites=true&w=majority&appName=Cluster0";

@@ -140,7 +140,6 @@ module.exports = {
       const cancelledOrders = await Models.orderModel.countDocuments({ status: 3, ...dateQuery });
       // const contactUs = await Models.contactUsModel.countDocuments(dateQuery);
       // const servicesdata = await Models.serviceModel.countDocuments(dateQuery);
-      console.log("user", user)
 
       res.json({
         user,
@@ -188,7 +187,6 @@ module.exports = {
     try {
       let title = "user_list";
       let viewuser = await Models.userModel.findById({ _id: req.params.id });
-      // console.log(viewuser,"viewuserviewuserviewuserviewuser");return
       res.render("Admin/user/view_user", {
         title,
         viewuser,

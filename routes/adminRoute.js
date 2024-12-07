@@ -3,6 +3,8 @@ var router = express.Router();
 const controllers = require('../controllers/index.js')
 const { session } = require('../helpers/commonHelper.js')
 
+
+module.exports=function(io){
 // router.get('*', adminController.login_page)
 router.get('/login',controllers.adminController.login_page)
 router.post('/Login', controllers.adminController.Login)
@@ -62,5 +64,7 @@ router.get('/terms_condition', session,  controllers.cmsController.terms_conditi
 router.post('/Update_terms',  controllers.cmsController.Update_terms)
 router.get('/privacy_policy', session,  controllers.cmsController.privacy_policy)
 
+return router;
+}
 
-module.exports = router;
+// module.exports = router;

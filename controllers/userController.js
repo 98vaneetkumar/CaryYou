@@ -42,7 +42,7 @@ async function addBankAccountToConnectedAccount(accountId, bankAccountDetails) {
 }
 
 module.exports = {
-  signUp: async (req, res) => {
+  signUp:(io)=> async (req, res) => {
     try {
       const schema = Joi.object().keys({
         fullName: Joi.string().required(),
@@ -101,7 +101,8 @@ module.exports = {
       );
       const userResponse = JSON.parse(JSON.stringify(user)); // Convert to plain object
       userResponse.token = token;
-
+      const userCount = await Models.userModel.countDocuments({ role: 1 });
+      io.emit('updateUserCount', { user:userCount });
       return commonHelper.success(
         res,
         Response.success_msg.registered,
