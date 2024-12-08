@@ -390,6 +390,8 @@
       document.getElementById("orders").textContent=data.orders;
       document.getElementById("payments").textContent=data.payments;
       document.getElementById("feedbacks").textContent=data.feedbacks;
+      document.getElementById("pendingOrders").textContent=data.pendingOrders;
+
       document.getElementById("activeOrders").textContent=data.activeOrders;
       document.getElementById("deliveredOrders").textContent=data.deliveredOrders;
       document.getElementById("cancelledOrders").textContent=data.cancelledOrders;
@@ -412,7 +414,13 @@
   document.addEventListener("DOMContentLoaded", async () => {
   const userGraphCtx = document.getElementById("userGraph").getContext("2d");
   const orderGraphCtx = document.getElementById("orderGraph").getContext("2d");
-
+  let userCount= document.getElementById("user").textContent
+  let riderCount= document.getElementById("rider").textContent 
+  let providerCount= document.getElementById("provider").textContent 
+  let pendindOrderCount=document.getElementById("pendingOrders").textContent
+  let activeOrderCount=document.getElementById("activeOrders").textContent
+  let deliveredOrderCount=document.getElementById("deliveredOrders").textContent
+  let cancelledOrderCount=document.getElementById("cancelledOrders").textContent
   // Initialize graphs with empty data
   let userGraph = new Chart(userGraphCtx, {
     type: "bar",
@@ -421,7 +429,7 @@
       datasets: [
         {
           label: "Count",
-          data: [10, 20, 40], // Initial data
+          data: [userCount, riderCount, providerCount], // Initial data
           backgroundColor: ["#6666ff", "#33cc99", "#33cccc"],
           borderColor: ["#4444ff", "#33aa99", "#33aaaa"],
           borderWidth: 1,
@@ -444,7 +452,7 @@
       datasets: [
         {
           label: "Orders",
-          data: [10, 30, 20, 50], // Initial data
+          data: [activeOrderCount, deliveredOrderCount, cancelledOrderCount, pendindOrderCount], // Initial data
           backgroundColor: ["#ff5733", "#33a1ff", "#ffc300", "#ffcc00"],
           borderColor: ["#cc4225", "#267fbf", "#bf9e00", "#cc9900"],
           borderWidth: 1,
