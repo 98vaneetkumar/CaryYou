@@ -33,8 +33,8 @@
       </div>
       <div class="row">  
 
-      
-    <!-- Orders Card -->
+        <div id="restaurant_id" data-value="<%= viewuser._id %>" hidden></div>
+        <!-- Orders Card -->
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
           <a href="#">
             <div
@@ -55,6 +55,34 @@
             </div>
           </a>
         </div>
+          <!-- Pending order -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+            <a href="/admin/pending_order_list">
+              <div
+                class="card card-statistic-1"
+                style="background: linear-gradient(135deg, #ffcc00, #ff6f00)"
+              >
+                <div class="card-icon" style="background: rgba(255, 153, 0, 0.8)">
+                  <i class="fas fa-clock"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4 style="color: white; font-weight: bold">
+                      <b>Pending Orders</b>
+                    </h4>
+                  </div>
+                  <div
+                    class="card-body"
+                    id="pendingOrders"
+                    value="<%= pendingOrders %>"
+                    style="color: white; font-weight: bold"
+                  >
+                    <%= pendingOrders %>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
     <!-- Active Order-->
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
           <a href="#">
@@ -194,8 +222,50 @@
       </div>
       </div>
     </section>
+    <div class="row">
+      <!-- Graph for Users, Riders, and Restaurants -->
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header">
+            <h4>Category, SubCatgory, and Products</h4>
+          </div>
+          <div class="card-body">
+            <canvas id="userGraph"></canvas>
+          </div>
+        </div>
+      </div>
+    
+         <!-- Additional Graph for Revenue -->
+         <div class="col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              <h4>Revenue Statistics</h4>
+            </div>
+            <div class="card-body">
+              <canvas id="revenueGraph"></canvas>
+            </div>
+          </div>
+        </div>
+        
+      <!-- Graph for Orders -->
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header">
+            <h4>Order Statistics</h4>
+          </div>
+          <div class="card-body">
+            <canvas id="orderGraph"></canvas>
+          </div>
+        </div>
+      </div>
+
+     
+    </div>
+
+    </div>
   </div>
-  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <!-- External CSS -->
   <style>
     .filter-options select {
@@ -222,17 +292,22 @@
       // Listen for dropdown changes
       filterDropdown.addEventListener("change", async () => {
         const selectedFilter = filterDropdown.value;
+        const id = document.getElementById("restaurant_id").dataset.value;
+        console.log("id",id)
         const response = await fetch("/admin/restaurantDashboardFilter", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ filter: selectedFilter }),
+          body: JSON.stringify({ filter: selectedFilter, id:id}),
         });
   
         const data = await response.json();
+        console.log("data",data)
     
         document.getElementById("orders").textContent=data.orders;
+        document.getElementById("pendingOrders").textContent=data.pendingOrders;
+
         document.getElementById("activeOrders").textContent=data.activeOrders;
         document.getElementById("deliveredOrders").textContent=data.deliveredOrders;
         document.getElementById("cancelledOrders").textContent=data.cancelledOrders;
@@ -252,4 +327,156 @@
     //   document.getElementById('user').textContent = data.user;
     });
   </script>
+  
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+  const userGraphCtx = document.getElementById("userGraph").getContext("2d");
+  const orderGraphCtx = document.getElementById("orderGraph").getContext("2d");
+  const revenueGraphCtx = document.getElementById("revenueGraph").getContext("2d");
+
+  // Initial data setup for graphs
+  let categoryCount = parseInt(document.getElementById("category").textContent) || 0;
+  let subCategoryCount = parseInt(document.getElementById("subCategory").textContent) || 0;
+  let productCount = parseInt(document.getElementById("products").textContent) || 0;
+  let pendingOrderCount = parseInt(document.getElementById("pendingOrders").textContent) || 0;
+  let activeOrderCount = parseInt(document.getElementById("activeOrders").textContent) || 0;
+  let deliveredOrderCount = parseInt(document.getElementById("deliveredOrders").textContent) || 0;
+  let cancelledOrderCount = parseInt(document.getElementById("cancelledOrders").textContent) || 0;
+
+  // User Graph setup
+  let userGraph = new Chart(userGraphCtx, {
+    type: "bar",
+    data: {
+      labels: ["Category", "SubCategory", "Products"],
+      datasets: [
+        {
+          label: "Count",
+          data: [categoryCount, subCategoryCount, productCount], // Initial data
+          backgroundColor: ["#6666ff", "#33cc99", "#33cccc"],
+          borderColor: ["#4444ff", "#33aa99", "#33aaaa"],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: "Category, SubCategory, and Product" },
+      },
+    },
+  });
+
+  // Order Graph setup
+  let orderGraph = new Chart(orderGraphCtx, {
+    type: "doughnut",
+    data: {
+      labels: ["Active Orders", "Delivered Orders", "Cancelled Orders", "Pending Orders"],
+      datasets: [
+        {
+          label: "Orders",
+          data: [10, 40, 20, 60], // Initial data
+          // data: [activeOrderCount, deliveredOrderCount, cancelledOrderCount, pendingOrderCount], // Initial data
+          backgroundColor: ["#ff5733", "#33a1ff", "#ffc300", "#ffcc00"],
+          borderColor: ["#cc4225", "#267fbf", "#bf9e00", "#cc9900"],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom" },
+        title: { display: true, text: "Order Statistics" },
+      },
+    },
+  });
+
+  // Revenue Graph setup
+  let revenueGraph = new Chart(revenueGraphCtx, {
+    type: "line",
+    data: {
+      labels: ["December 1", "December 2", "December 3", "December 4", "December 5", "December 6", "December 7", "December 8"],
+      datasets: [
+        {
+          label: "Revenue",
+          data: [100, 200, 150, 300, 250, 180, 210, 270], // Example data for revenue over time
+          backgroundColor: "rgba(76, 175, 80, 0.2)",
+          borderColor: "rgba(76, 175, 80, 1)",
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true },
+        title: { display: true, text: "Revenue Statistics Over Time" },
+      },
+    },
+  });
+
+  // Listen for filter changes and update graphs
+  document.getElementById("filter").addEventListener("change", async () => {
+    const selectedFilter = document.getElementById("filter").value;
+    const response = await fetch("/admin/dashboardFilter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ filter: selectedFilter }),
+    });
+
+    const data = await response.json();
+
+    // Update data for User graph
+    userGraph.data.datasets[0].data = [
+      data.category || 0,
+      data.subCategory || 0,
+      data.products || 0,
+    ];
+    userGraph.update();
+
+    // Update data for Order graph
+    orderGraph.data.datasets[0].data = [
+      data.activeOrders || 0,
+      data.deliveredOrders || 0,
+      data.cancelledOrders || 0,
+      data.pendingOrders || 0,
+    ];
+    orderGraph.update();
+
+    // Update data for Revenue graph
+    revenueGraph.data.datasets[0].data = [
+      data.revenueDataForGraph || [100, 200, 150, 300, 250, 180, 210, 270],
+    ];
+    revenueGraph.update();
+  });
+
+  // Listen for live updates via Socket.IO
+  const socket = io();
+  socket.on("updateDashboard", (dashboardData) => {
+    // Update data for User graph
+    userGraph.data.datasets[0].data = [
+      dashboardData.category || 0,
+      dashboardData.subCategory || 0,
+      dashboardData.products || 0,
+    ];
+    userGraph.update();
+
+    // Update data for Order graph
+    orderGraph.data.datasets[0].data = [
+      dashboardData.activeOrders || 0,
+      dashboardData.deliveredOrders || 0,
+      dashboardData.cancelledOrders || 0,
+      dashboardData.pendingOrders || 0,
+    ];
+    orderGraph.update();
+
+    // Update data for Revenue graph
+    revenueGraph.data.datasets[0].data = dashboardData.revenueDataForGraph || [100, 200, 150, 300, 250, 180, 210, 270];
+    revenueGraph.update();
+  });
+});
+
+    </script>
   

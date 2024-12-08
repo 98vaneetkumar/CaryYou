@@ -301,8 +301,12 @@ module.exports = {
         .findById({ _id: req.params.id })
         .populate("userId");
       const orders = await Models.orderModel.countDocuments();
-      const activeOrders = await Models.orderModel.countDocuments({
+      const pendingOrders = await Models.orderModel.countDocuments({
         status: 1,
+        restaurant: req.params.id,
+      });
+      const activeOrders = await Models.orderModel.countDocuments({
+        status: 4,
         restaurant: req.params.id,
       });
       const deliveredOrders = await Models.orderModel.countDocuments({
@@ -321,6 +325,7 @@ module.exports = {
         subCategory: viewuser?.subcategory?.length || 0,
         products: viewuser?.products?.length || 0,
         orders,
+        pendingOrders,
         activeOrders,
         deliveredOrders,
         cancelledOrders,
@@ -332,6 +337,99 @@ module.exports = {
       throw error;
     }
   },
+  restaurant_dashboard_filter: async (req, res) => {
+    try {
+      console.log("object,",req.body);
+      const title = "provider_list";
+      const filter = req.body.filter || "all"; // Get the filter parameter from the request body
+      const _id=req.body.id
+      // Calculate date range based on the filter
+      const now = new Date();
+      let startDate, endDate;
+  
+      switch (filter) {
+        case "today":
+          startDate = new Date(now.setHours(0, 0, 0, 0));
+          endDate = new Date(now.setHours(23, 59, 59, 999));
+          break;
+        case "weekly":
+          startDate = new Date(now.setDate(now.getDate() - 7));
+          endDate = new Date();
+          break;
+        case "monthly":
+          startDate = new Date(now.setMonth(now.getMonth() - 1));
+          endDate = new Date();
+          break;
+        case "3months":
+          startDate = new Date(now.setMonth(now.getMonth() - 3));
+          endDate = new Date();
+          break;
+        case "6months":
+          startDate = new Date(now.setMonth(now.getMonth() - 6));
+          endDate = new Date();
+          break;
+        case "1year":
+          startDate = new Date(now.setFullYear(now.getFullYear() - 1));
+          endDate = new Date();
+          break;
+        case "5years":
+          startDate = new Date(now.setFullYear(now.getFullYear() - 5));
+          endDate = new Date();
+          break;
+        default:
+          startDate = null; // No date filter
+          endDate = null;
+      }
+  
+      // Define the query object for date-based filtering
+      const dateQuery =
+        startDate && endDate
+          ? { createdAt: { $gte: new Date(startDate) , $lte: new Date(endDate) } }
+          : {};
+  console.log("dateQuery", dateQuery)
+      // Fetch filtered restaurant data
+      const userdata = await Models.restaurantModel
+        .find({_id, ...dateQuery })
+        .populate("userId") // Populating the user details based on userId
+        .sort({ createdAt: -1 }); // Sorting by creation date, most recent first
+        const orders = await Models.orderModel.countDocuments({restaurant: req.params.id,...dateQuery});
+      const pendingOrders = await Models.orderModel.countDocuments({
+        status: 1,
+        restaurant: req.params.id,
+        ...dateQuery
+      });
+      const activeOrders = await Models.orderModel.countDocuments({
+        status: 4,
+        restaurant: req.params.id,
+        ...dateQuery
+      });
+      const deliveredOrders = await Models.orderModel.countDocuments({
+        status: 2,
+        restaurant: req.params.id,
+        ...dateQuery
+      });
+      const cancelledOrders = await Models.orderModel.countDocuments({
+        status: 3,
+        restaurant: req.params.id,
+        ...dateQuery
+      });
+       return res.json({
+          userdata,
+          category: userdata?.category?.length || 0,
+          subCategory: userdata?.subcategory?.length || 0,
+          products: userdata?.products?.length || 0,
+          orders,
+          pendingOrders,
+          activeOrders,
+          deliveredOrders,
+          cancelledOrders,
+        })
+    } catch (error) {
+      console.error("Error in restaurant_view:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  },
+  
 
   delete_restaurant: async (req, res) => {
     try {

@@ -21,6 +21,7 @@ router.post('/user_status', controllers.adminController.user_status)
 //<------------------------------ User ------------------------->
 router.get('/restaurant_list', session, controllers.adminController.restaurant_list)
 router.get('/view_restaurant/:id', session, controllers.adminController.view_restaurant)
+router.post("/restaurantDashboardFilter",session, controllers.adminController.restaurant_dashboard_filter)
 router.delete('/delete_rastaurant/:id', controllers.adminController.delete_restaurant)
 router.post('/restaurant_status', controllers.adminController.restaurant_status)
 
