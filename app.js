@@ -30,7 +30,7 @@ const io = socketio(server, {
 const usersRouter = require("./routes/usersRoute")(io); // Pass io to usersRouter if needed
 const riderRoute = require("./routes/ridersRoute")(io);
 const adminRouter = require("./routes/adminRoute")(io);
-const subAdminRouter = require("./routes/subAdminRoute");
+const subAdminRouter = require("./routes/subAdminRoute")(io);
 
 const testRouter = require('./routes/testRoute')
 
