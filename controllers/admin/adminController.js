@@ -300,7 +300,7 @@ module.exports = {
       let viewuser = await Models.restaurantModel
         .findById({ _id: req.params.id })
         .populate("userId");
-      const orders = await Models.orderModel.countDocuments();
+      const orders = await Models.orderModel.countDocuments({restaurant: req.params.id,});
       const pendingOrders = await Models.orderModel.countDocuments({
         status: 1,
         restaurant: req.params.id,
@@ -387,11 +387,11 @@ module.exports = {
           : {};
       // Fetch filtered restaurant data
       const userdata = await Models.restaurantModel
-        .find({_id, ...dateQuery })
+        .findById({_id, ...dateQuery })
         .populate("userId") // Populating the user details based on userId
         .sort({ createdAt: -1 }); // Sorting by creation date, most recent first
         const orders = await Models.orderModel.countDocuments({restaurant: req.params.id,...dateQuery});
-      const pendingOrders = await Models.orderModel.countDocuments({
+        const pendingOrders = await Models.orderModel.countDocuments({
         status: 1,
         restaurant: req.params.id,
         ...dateQuery
@@ -411,6 +411,8 @@ module.exports = {
         restaurant: req.params.id,
         ...dateQuery
       });
+  console.log("userdata",userdata)
+
        return res.json({
           userdata,
           category: userdata?.category?.length || 0,
