@@ -39,8 +39,8 @@
                     />
                   </td>
                   <td><%= data.name %></td>
-                  <td><%= data.address %></td>
                   <td><%= data?.userId?.email %></td>
+                  <td><%= data.address %></td>
                   <td><%= data?.userId?.countryCode %>-<%= data?.userId?.phoneNumber %></td>
                   <td>
                     <% if (data?.userId?.status == 1) { %>
@@ -66,15 +66,17 @@
                     <% } %>
                   </td>
                   <td>
-                    <a href="/admin/view_restaurant/<%= data._id %>" class="btn btn-sm bg-warning">
-                      <i class="fa fa-eye" aria-hidden="true"></i>
-                    </a>
-                    <button
-                      onclick="confirmDelete('<%= data._id %>')"
-                      class="btn btn-sm bg-danger"
-                    >
-                      <i class="fa fa-trash"></i>
-                    </button>
+                    <div class="action-buttons">
+                      <a href="/admin/view_restaurant/<%= data._id %>" class="btn btn-sm bg-warning">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                      </a>
+                      <button
+                        onclick="confirmDelete('<%= data._id %>')"
+                        class="btn btn-sm bg-danger"
+                      >
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               <% }); %>
@@ -85,6 +87,16 @@
     </div>
   </section>
 </div>
+
+<style>
+  .action-buttons {
+    display: flex;
+    gap: 5px; /* Adjust spacing between buttons as needed */
+  }
+  .action-buttons .btn {
+    margin: 0; /* Remove any default margin */
+  }
+</style>
 
 <script>
   $(document).ready(function () {

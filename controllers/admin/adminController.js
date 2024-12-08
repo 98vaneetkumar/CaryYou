@@ -609,27 +609,26 @@ module.exports = {
     try {
       const title = "order_list";
       const orders = await Models.orderModel
-        .find({ status: 4 })
-        .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
-        .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+        .find({})
+        .populate("orderBy", "fullName") 
+        .populate("restaurant", "name")
         .sort({ createdAt: -1 });
-
+      
       const formattedOrders = orders.map((order, index) => ({
         sNo: index + 1,
         orderBy: order.orderBy?.fullName || "N/A",
         restaurant: order.restaurant?.name || "N/A",
         item: order.item || "N/A",
-        orderDateTime: order.createdAt
-          ? order.createdAt.toLocaleString()
-          : "N/A",
+        orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+        status: order.status || 0, // Default to 0 if status is missing
         id: order._id,
       }));
-
+  
       res.render("Admin/orders/order_list", {
         title,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
-        msg: req.flash("msg") || "", // Flash message
+        msg: req.flash("msg") || '', // Flash message
       });
     } catch (error) {
       console.error("Error fetching order list:", error);
