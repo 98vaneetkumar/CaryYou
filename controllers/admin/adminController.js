@@ -339,7 +339,6 @@ module.exports = {
   },
   restaurant_dashboard_filter: async (req, res) => {
     try {
-      console.log("object,",req.body);
       const title = "provider_list";
       const filter = req.body.filter || "all"; // Get the filter parameter from the request body
       const _id=req.body.id
@@ -386,7 +385,6 @@ module.exports = {
         startDate && endDate
           ? { createdAt: { $gte: new Date(startDate) , $lte: new Date(endDate) } }
           : {};
-  console.log("dateQuery", dateQuery)
       // Fetch filtered restaurant data
       const userdata = await Models.restaurantModel
         .find({_id, ...dateQuery })
