@@ -157,22 +157,85 @@ module.exports = {
     }
   },
 
+
+
+
+
   createRestaurant: async (req, res) => {
     try {
       // Define the title (only for response purposes)
-      const title = "Create Demo restaurant";
-
+      const title = "Create Demo Restaurant";
+  
+      // Static data for demo restaurant
       const demoRes = {
-        name: "3b2 restaurant",
+        userId: "6753fd42efe5fd5b8963a3b8", // Replace with a valid ObjectId if needed
+        name: "3B2 Restaurant",
+        image: "/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg",
+        address: "123 Example Street, City, Country",
+        location: {
+          type: "Point",
+          coordinates: [77.5946, 12.9716], // Longitude, Latitude (example: Bangalore, India)
+        },
+        category: [
+          {
+            name: "Indian Cuisine",
+            image: "/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg",
+            status: 1,
+          },
+          {
+            name: "Chinese Cuisine",
+            image: "/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg",
+            status: 1,
+          },
+        ],
+        subCategory: [
+          {
+            name: "Biryani",
+            image: "/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg",
+            categoryId: "6755ad29e06a54c71363062a", // Replace with a valid ObjectId
+            status: 1,
+          },
+          {
+            name: "Noodles",
+            image: "/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg",
+            categoryId: "6755ad29e06a54c71363062a", // Replace with a valid ObjectId
+            status: 1,
+          },
+        ],
+        products: [
+          {
+            subCategoryId: "6755ae955c9411210bb36d0e", // Replace with a valid ObjectId
+            images: [
+              "/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg",
+              "/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg",
+            ],
+            itemName: "Hyderabadi Biryani",
+            price: "12.99",
+            size: "Large",
+            status: 1,
+          },
+          {
+            subCategoryId: "6755ae955c9411210bb36d0e", // Replace with a valid ObjectId
+            images: ["/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg"],
+            itemName: "Hakka Noodles",
+            price: "8.99",
+            size: "Medium",
+            status: 1,
+          },
+        ],
+        staffs: ["6753fd42efe5fd5b8963a3b8", "675449f250481a79e5d4ee95"], // Replace with valid ObjectIds
+        openingTime: "09:00 AM",
+        closingTime: "11:00 PM",
       };
-
+  
+      // Create restaurant in the database
       const resData = await Models.restaurantModel.create(demoRes);
-
+  
       // Return success response
       res.status(201).json({
         success: true,
         message: "Demo restaurant created successfully",
-        order: resData,
+        data: resData,
       });
     } catch (error) {
       console.error("Error creating demo restaurant:", error);
@@ -182,6 +245,9 @@ module.exports = {
       });
     }
   },
+  
+
+
 
   updateRestaurant: async (req, res) => {
     try {
@@ -256,10 +322,12 @@ module.exports = {
 
   createCategory: async (req, res) => {
     try {
+      const userId = "6753fd42efe5fd5b8963a3b8"; // Replace with a valid ObjectId from your users collection
+  
       const testCategories = [
-        { type: "Fast Food", image: "https://picsum.photos/200/300?random=8" },
-        { type: "Desserts", image: "https://picsum.photos/200/300?random=9" },
-        { type: "Beverages", image: "https://picsum.photos/200/300?random=10" },
+        { userId, name: "Fast Food", image: "/images/fc524550-9222-4931-a84a-896e34ebad64.jpg", status: 1 },
+        { userId, name: "Desserts", image: "/images/fc524550-9222-4931-a84a-896e34ebad64.jpg", status: 1 },
+        { userId, name: "Beverages", image: "/images/fc524550-9222-4931-a84a-896e34ebad64.jpg", status: 1 },
       ];
   
       const categories = await Models.restaurantModel.insertMany(testCategories);
@@ -277,12 +345,17 @@ module.exports = {
       });
     }
   },
+  
+  
 
 
   createSubCategory: async (req, res) => {
     try {
-      // Fetch available categories
-      const categories = await Models.restaurantModel.find();
+      // Define a static userId
+      const userId = "6753fd42efe5fd5b8963a3b8"; // Replace with your static userId
+  
+      // Fetch available categories from the correct model
+      const categories = await Models.restaurantModel.find(); // Fetch categories from the appropriate collection
       if (!categories || categories.length === 0) {
         return res.status(400).json({
           success: false,
@@ -293,17 +366,22 @@ module.exports = {
       // Generate subcategories for each category
       const testSubCategories = categories.flatMap((category, index) => [
         {
-          type: `${category.type} - Item ${index + 1}`,
-          image: `https://picsum.photos/200/300?random=${11 + index}`,
+          name: `${category.name} - Item ${index + 1}`,
+          image: "/images/fc524550-9222-4931-a84a-896e34ebad64.jpg",
           categoryId: category._id,
+          userId, // Static userId
+          status: 1,
         },
         {
-          type: `${category.type} - Item ${index + 2}`,
-          image: `https://picsum.photos/200/300?random=${12 + index}`,
+          name: `${category.name} - Item ${index + 2}`,
+          image: "/images/fc524550-9222-4931-a84a-896e34ebad64.jpg",
           categoryId: category._id,
+          userId, // Static userId
+          status: 1,
         },
       ]);
   
+      // Insert subcategories into the database using the correct model
       const subCategories = await Models.restaurantModel.insertMany(testSubCategories);
   
       res.status(201).json({
@@ -319,6 +397,10 @@ module.exports = {
       });
     }
   },
+  
+  
+  
+  
   
   
 };
