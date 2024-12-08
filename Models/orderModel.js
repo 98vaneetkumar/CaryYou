@@ -17,7 +17,7 @@ const orderSchema = new mongoose.Schema(
     item: { type: String },
     status: {
       type: Number,
-      enum: [1, 2, 3, 4], // 1-pending 2-success 3-cancel 4-ongoing
+      enum: [1, 2, 3, 4], // 1-pending 2-success 3-cancel 4-ongoing 5-return
     },
     rider: {
       type: Schema.Types.ObjectId,

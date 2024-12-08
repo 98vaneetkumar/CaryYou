@@ -54,7 +54,12 @@ router.get('/cancel_order_list', session, controllers.adminController.cancel_ord
 router.get('/cancel_view_order/:_id', session, controllers.adminController.cancel_view_order);
 
 
+router.get('/pending_order_list', session, controllers.adminController.pending_order_list);
+router.get('/pending_view_order/:_id', session, controllers.adminController.pending_view_order);
 
+
+router.get('/return_order_list', session, controllers.adminController.return_order_list);
+router.get('/return_view_order/:_id', session, controllers.adminController.return_view_order);
 
 //<------------------------------ ADMIN ------------------------->
 router.get('/admin_profile', session, controllers.adminController.admin_profile)

@@ -56,9 +56,11 @@ module.exports = {
       let vehicleType = await Models.vehicleTypeModel.countDocuments();
       const feedbacks = await Models.feedBackModel.countDocuments();
       const orders = await Models.orderModel.countDocuments();
-      const activeOrders = await Models.orderModel.countDocuments({ status: 1 });
+      const pendingOrders = await Models.orderModel.countDocuments({ status: 1})
       const deliveredOrders = await Models.orderModel.countDocuments({ status: 2});
       const cancelledOrders = await Models.orderModel.countDocuments({ status: 3 });
+      const activeOrders = await Models.orderModel.countDocuments({ status: 4 });
+      const returnOrders = await Models.orderModel.countDocuments({ status:5})
       res.render("Admin/dashboard", {
         title,
         user,
@@ -70,6 +72,8 @@ module.exports = {
         vehicleType,
         payments: 2,
         feedbacks: feedbacks,
+        pendingOrders: pendingOrders,
+        returnOrders: returnOrders,
         activeOrders: activeOrders,
         deliveredOrders: deliveredOrders,
         cancelledOrders: cancelledOrders,
@@ -135,9 +139,13 @@ module.exports = {
       const orders = await Models.orderModel.countDocuments(dateQuery);
       // const payments = await Models.paymentModel.countDocuments(dateQuery);
       const feedbacks = await Models.feedBackModel.countDocuments(dateQuery);
-      const activeOrders = await Models.orderModel.countDocuments({ status: 1, ...dateQuery });
+      const pendingOrders = await Models.pandingsModel.countDocuments({status:1,...dateQuery});
       const deliveredOrders = await Models.orderModel.countDocuments({ status: 2, ...dateQuery });
       const cancelledOrders = await Models.orderModel.countDocuments({ status: 3, ...dateQuery });
+      const activeOrders = await Models.orderModel.countDocuments({ status: 4, ...dateQuery });
+      const returnOrders = await Models.orderModel.countDocuments({ status: 5, ...dateQuery });
+
+
       // const contactUs = await Models.contactUsModel.countDocuments(dateQuery);
       // const servicesdata = await Models.serviceModel.countDocuments(dateQuery);
       console.log("user", user)
@@ -150,6 +158,8 @@ module.exports = {
         orders,
         payments: 0,
         feedbacks,
+        pendingOrders,
+        returnOrders,
         activeOrders,
         deliveredOrders,
         cancelledOrders,
@@ -258,8 +268,6 @@ module.exports = {
       const activeOrders = await Models.orderModel.countDocuments({ status: 1 ,restaurant:req.params.id });
       const deliveredOrders = await Models.orderModel.countDocuments({ status: 2,restaurant:req.params.id});
       const cancelledOrders = await Models.orderModel.countDocuments({ status: 3,restaurant:req.params.id });
-      console.log("viewUser",viewuser.name);
-      console.log("viewUser",viewuser);
 
       res.render("Admin/restaurant/restaurant_view", {
         title,
@@ -872,6 +880,166 @@ module.exports = {
 
          // Render the view with order details
           res.render("Admin/orders/cancel_order_view", {
+            title, // Pass the title to the view
+            order, // Pass the order details to the view
+            orderStatus: getOrderStatus(order.status), // Pass the order status
+            session: req.session.user, // Pass session details (if needed)
+            msg: req.flash("msg"), // Pass any flash messages (if needed)
+          });
+      } catch (error) {
+        // Log any errors and send a 500 response in case of an internal server error
+        console.error("Error fetching order details:", error);
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    },
+
+    pending_order_list: async (req, res) => {
+      try {
+        const title = "pending_orders";
+        const orders = await Models.orderModel
+          .find({status:1})
+          .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
+          .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+          .sort({ createdAt: -1 });
+    
+        const formattedOrders = orders.map((order, index) => ({
+          sNo: index + 1,
+          orderBy: order.orderBy?.fullName || "N/A",
+          restaurant: order.restaurant?.name || "N/A",
+          item: order.item || "N/A",
+          orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+          id: order._id,
+        }));
+      
+        res.render("Admin/orders/pending_order_list", {
+          title,
+          orderdata: formattedOrders,
+          session: req.session.user, // Ensure session data is passed here
+          msg: req.flash("msg") || '', // Flash message
+        });
+    
+      } catch (error) {
+        console.error("Error fetching order list:", error);
+        req.flash("msg", "Error fetching order list");
+        res.redirect("/admin/dashboard");
+      }
+    },
+    pending_view_order: async (req, res) => {
+      try {
+        let title = "pending_orders";
+        // Fetch the order details by its ID from the database
+        const order = await Models.orderModel
+          .findById(req.params._id)
+          .populate("orderBy", "fullName") // Populate the orderBy field with only the name of the user
+          .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
+          .populate("rider", "name"); // Populate the rider field with only the name of the rider
+    
+        // If the order is not found, return a 404 error
+        if (!order) {
+          return res.status(404).json({
+            success: false,
+            message: "Order not found",
+          });
+        }
+    
+        // Function to map order status to a readable format
+        function getOrderStatus(status) {
+          const statuses = {
+            1: "Pending",  // Order is pending
+            2: "Success",  // Order is successful
+            3: "Rejected", // Order was rejected
+            4: "Ongoing",  // Order is ongoing
+            5: "Returned", // Order has been returned
+          };
+          return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
+        }
+    
+
+         // Render the view with order details
+          res.render("Admin/orders/pending_order_view", {
+            title, // Pass the title to the view
+            order, // Pass the order details to the view
+            orderStatus: getOrderStatus(order.status), // Pass the order status
+            session: req.session.user, // Pass session details (if needed)
+            msg: req.flash("msg"), // Pass any flash messages (if needed)
+          });
+      } catch (error) {
+        // Log any errors and send a 500 response in case of an internal server error
+        console.error("Error fetching order details:", error);
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    },
+
+    return_order_list: async (req, res) => {
+      try {
+        const title = "return_orders";
+        const orders = await Models.orderModel
+          .find({status:5})
+          .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
+          .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+          .sort({ createdAt: -1 });
+    
+        const formattedOrders = orders.map((order, index) => ({
+          sNo: index + 1,
+          orderBy: order.orderBy?.fullName || "N/A",
+          restaurant: order.restaurant?.name || "N/A",
+          item: order.item || "N/A",
+          orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+          id: order._id,
+        }));
+      
+        res.render("Admin/orders/pending_order_list", {
+          title,
+          orderdata: formattedOrders,
+          session: req.session.user, // Ensure session data is passed here
+          msg: req.flash("msg") || '', // Flash message
+        });
+    
+      } catch (error) {
+        console.error("Error fetching order list:", error);
+        req.flash("msg", "Error fetching order list");
+        res.redirect("/admin/dashboard");
+      }
+    },
+    return_view_order: async (req, res) => {
+      try {
+        let title = "return_orders";
+        // Fetch the order details by its ID from the database
+        const order = await Models.orderModel
+          .findById(req.params._id)
+          .populate("orderBy", "fullName") // Populate the orderBy field with only the name of the user
+          .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
+          .populate("rider", "name"); // Populate the rider field with only the name of the rider
+    
+        // If the order is not found, return a 404 error
+        if (!order) {
+          return res.status(404).json({
+            success: false,
+            message: "Order not found",
+          });
+        }
+    
+        // Function to map order status to a readable format
+        function getOrderStatus(status) {
+          const statuses = {
+            1: "Pending",  // Order is pending
+            2: "Success",  // Order is successful
+            3: "Rejected", // Order was rejected
+            4: "Ongoing",  // Order is ongoing
+            5: "Returned", // Order has been returned
+          };
+          return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
+        }
+    
+
+         // Render the view with order details
+          res.render("Admin/orders/pending_order_view", {
             title, // Pass the title to the view
             order, // Pass the order details to the view
             orderStatus: getOrderStatus(order.status), // Pass the order status

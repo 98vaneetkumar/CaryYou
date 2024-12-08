@@ -82,6 +82,13 @@
           ><span><b>Orders</b></span></a
         >
       </li>
+       <!-- Pending Orders -->
+       <li class="<%=(title =='pending_orders'?'active':'') %>">
+        <a class="nav-link" href="/admin/pending_order_list"
+          ><i class="fas fa-clock" style="font-size: large"></i
+          ><span><b>Pending Orders</b></span></a
+        >
+      </li>
 
       <!-- Active Orders -->
       <li class="<%=(title =='activeorders'?'active':'') %>">
@@ -106,6 +113,16 @@
           ><span><b>Cancelled Orders</b></span></a
         >
       </li>
+
+       
+  
+        <!-- Return Orders -->
+        <li class="<%=(title =='return_orders'?'active':'') %>">
+          <a class="nav-link" href="/admin/return_order_list"
+            ><i class="fas fa-undo-alt" style="font-size: large"></i>
+            <span><b>Return Orders</b></span></a
+          >
+        </li>
 
       <!-- Services -->
       <li class="<%=(title =='service_list'?'active':'') %>">

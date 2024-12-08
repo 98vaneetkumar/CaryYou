@@ -153,7 +153,35 @@
           </div>
         </a>
       </div>
-
+        <!-- Pending order -->
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+          <a href="/admin/pending_order_list">
+            <div
+              class="card card-statistic-1"
+              style="background: linear-gradient(135deg, #ffcc00, #ff6f00)"
+            >
+              <div class="card-icon" style="background: rgba(255, 153, 0, 0.8)">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="card-wrap">
+                <div class="card-header">
+                  <h4 style="color: white; font-weight: bold">
+                    <b>Pending Orders</b>
+                  </h4>
+                </div>
+                <div
+                  class="card-body"
+                  id="pendingOrders"
+                  value="<%= pendingOrders %>"
+                  style="color: white; font-weight: bold"
+                >
+                  <%= pendingOrders %>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      <!----------------------Active Order------------------------------------->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/active_order_list">
           <div
@@ -174,7 +202,7 @@
           </div>
         </a>
       </div>
-
+      <!-------------------Deliverd Order------------------------------------->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/delivered_order_list">
           <div
@@ -197,7 +225,7 @@
           </div>
         </a>
       </div>
-
+      <!------------------Cancel Order------------------------------------->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <a href="/admin/cancel_order_list">
           <div
@@ -220,6 +248,37 @@
           </div>
         </a>
       </div>
+
+      
+        
+  
+        <!-- Retrun Card -->
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+          <a href="/admin/return_order_list">
+            <div
+              class="card card-statistic-1"
+              style="background: linear-gradient(135deg, #6bcf6e, #36b555)"
+            >
+              <div class="card-icon" style="background: rgba(54, 181, 85, 0.8)">
+                <i class="fas fa-undo-alt"></i>
+              </div>
+              <div class="card-wrap">
+                <div class="card-header">
+                  <h4 style="color: white; font-weight: bold"><b>Return Orders</b></h4>
+                </div>
+                <div
+                  class="card-body"
+                  id="returnOrders"
+                  value="<%= returnOrders %>"
+                  style="color: white; font-weight: bold"
+                >
+                  <%= returnOrders %>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        
 
       <!-- Services Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
@@ -290,7 +349,34 @@
       </div>
     </div>
   </section>
+  <div class="row">
+    <!-- Graph for Users, Riders, and Restaurants -->
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Users, Riders, and Restaurants</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="userGraph"></canvas>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Graph for Orders -->
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Order Statistics</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="orderGraph"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- External CSS -->
 <style>
@@ -349,4 +435,110 @@
   socket.on('updateUserCount', (data) => {
     document.getElementById('user').textContent = data.user;
   });
+</script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+  const userGraphCtx = document.getElementById("userGraph").getContext("2d");
+  const orderGraphCtx = document.getElementById("orderGraph").getContext("2d");
+
+  // Initialize graphs with empty data
+  let userGraph = new Chart(userGraphCtx, {
+    type: "bar",
+    data: {
+      labels: ["Users", "Riders", "Restaurants"],
+      datasets: [
+        {
+          label: "Count",
+          data: [10, 20, 40], // Initial data
+          backgroundColor: ["#6666ff", "#33cc99", "#33cccc"],
+          borderColor: ["#4444ff", "#33aa99", "#33aaaa"],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: "Users, Riders, and Restaurants" },
+      },
+    },
+  });
+
+  let orderGraph = new Chart(orderGraphCtx, {
+    type: "doughnut",
+    data: {
+      labels: ["Active Orders", "Delivered Orders", "Cancelled Orders", "Pending Orders"],
+      datasets: [
+        {
+          label: "Orders",
+          data: [10, 30, 20, 50], // Initial data
+          backgroundColor: ["#ff5733", "#33a1ff", "#ffc300", "#ffcc00"],
+          borderColor: ["#cc4225", "#267fbf", "#bf9e00", "#cc9900"],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom" },
+        title: { display: true, text: "Order Statistics" },
+      },
+    },
+  });
+
+  // Fetch and update graphs when the filter dropdown changes
+  document.getElementById("filter").addEventListener("change", async () => {
+    const selectedFilter = document.getElementById("filter").value;
+    const response = await fetch("/admin/dashboardFilter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ filter: selectedFilter }),
+    });
+
+    const data = await response.json();
+
+    // Update data for Users, Riders, and Restaurants
+    userGraph.data.datasets[0].data = [
+      data.user || 0,
+      data.rider || 0,
+      data.provider || 0,
+    ];
+    userGraph.update();
+
+    // Update data for Orders
+    orderGraph.data.datasets[0].data = [
+      data.activeOrders || 0,
+      data.deliveredOrders || 0,
+      data.cancelledOrders || 0,
+      data.pendingOrders || 0,
+    ];
+    orderGraph.update();
+  });
+
+  // Listen for live updates via Socket.IO
+  const socket = io();
+  socket.on("updateDashboard", (dashboardData) => {
+    // Update data for Users, Riders, and Restaurants
+    userGraph.data.datasets[0].data = [
+      dashboardData.user || 0,
+      dashboardData.rider || 0,
+      dashboardData.provider || 0,
+    ];
+    userGraph.update();
+
+    // Update data for Orders
+    orderGraph.data.datasets[0].data = [
+      dashboardData.activeOrders || 0,
+      dashboardData.deliveredOrders || 0,
+      dashboardData.cancelledOrders || 0,
+      dashboardData.pendingOrders || 0,
+    ];
+    orderGraph.update();
+  });
+});
+
 </script>
