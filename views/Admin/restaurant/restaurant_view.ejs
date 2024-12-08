@@ -1,179 +1,203 @@
 <div class="main-content">
-    <section class="section">
-      <div class="section-header">
-        <div class="d-flex justify-content-between align-items-center w-100">
-          <h1>Restaurant Dashboard</h1>
-          <div class="filter-options">
-            <select id="filter" class="form-control">
-              <option value="all">All</option>
-              <option value="today">Today</option>
-              <option value="weekly">This Week</option>
-              <option value="monthly">This Month</option>
-              <option value="3months">Last 3 Months</option>
-              <option value="6months">Last 6 Months</option>
-              <option value="1year">Last 1 Year</option>
-              <option value="5years">Last 5 Years</option>
-            </select>
-          </div>
+  <section class="section">
+    <div class="section-header">
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <h1>Restaurant Dashboard</h1>
+        <div class="filter-options">
+          <select id="filter" class="form-control">
+            <option value="all">All</option>
+            <option value="today">Today</option>
+            <option value="weekly">This Week</option>
+            <option value="monthly">This Month</option>
+            <option value="3months">Last 3 Months</option>
+            <option value="6months">Last 6 Months</option>
+            <option value="1year">Last 1 Year</option>
+            <option value="5years">Last 5 Years</option>
+          </select>
         </div>
       </div>
-      <div class="section-header">
-        <h1><%=viewuser.name%> </h1>
-        <div class="section-header-breadcrumb">
-          <div class="breadcrumb-item active">
-            <a href="/admin/dashboard">Dashboard</a>
-          </div>
-          <div class="breadcrumb-item">Restaurant</div>
+    </div>
+    <div class="section-header">
+      <h1><%=viewuser.name%></h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active">
+          <a href="/admin/dashboard">Dashboard</a>
         </div>
+        <div class="breadcrumb-item">Restaurant</div>
       </div>
-      <div class="mb-3">
-        <a href="/admin/restaurant_list" class="btn btn-dark">
-          <i class="fas fa-arrow-left"></i> Back
+    </div>
+    <div class="mb-3">
+      <a href="/admin/restaurant_list" class="btn btn-dark">
+        <i class="fas fa-arrow-left"></i> Back
+      </a>
+    </div>
+    <div class="row">
+      <div id="restaurant_id" data-value="<%= viewuser._id %>" hidden></div>
+      <!-- Orders Card -->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33cc33, #66ff66)"
+          >
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8)">
+              <i class="fas fa-box"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold"><b>Orders</b></h4>
+              </div>
+              <div
+                class="card-body"
+                id="orders"
+                value="<%= orders %>"
+                style="color: white; font-weight: bold"
+              >
+                <%= orders %>
+              </div>
+            </div>
+          </div>
         </a>
       </div>
-      <div class="row">  
-
-        <div id="restaurant_id" data-value="<%= viewuser._id %>" hidden></div>
-        <!-- Orders Card -->
-        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-          <a href="#">
-            <div
-              class="card card-statistic-1"
-              style="background: linear-gradient(135deg, #33cc33, #66ff66)"
-            >
-              <div class="card-icon" style="background: rgba(44, 176, 44, 0.8)">
-                <i class="fas fa-box"></i>
-              </div>
-              <div class="card-wrap">
-                <div class="card-header">
-                  <h4 style="color: white; font-weight: bold"><b>Orders</b></h4>
-                </div>
-                <div class="card-body" id="orders" value="<%= orders %>" style="color: white; font-weight: bold">
-                  <%= orders %>
-                </div>
-              </div>
+      <!-- Pending order -->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="/admin/pending_order_list">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ffcc00, #ff6f00)"
+          >
+            <div class="card-icon" style="background: rgba(255, 153, 0, 0.8)">
+              <i class="fas fa-clock"></i>
             </div>
-          </a>
-        </div>
-          <!-- Pending order -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <a href="/admin/pending_order_list">
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold">
+                  <b>Pending Orders</b>
+                </h4>
+              </div>
               <div
-                class="card card-statistic-1"
-                style="background: linear-gradient(135deg, #ffcc00, #ff6f00)"
+                class="card-body"
+                id="pendingOrders"
+                value="<%= pendingOrders %>"
+                style="color: white; font-weight: bold"
               >
-                <div class="card-icon" style="background: rgba(255, 153, 0, 0.8)">
-                  <i class="fas fa-clock"></i>
-                </div>
-                <div class="card-wrap">
-                  <div class="card-header">
-                    <h4 style="color: white; font-weight: bold">
-                      <b>Pending Orders</b>
-                    </h4>
-                  </div>
-                  <div
-                    class="card-body"
-                    id="pendingOrders"
-                    value="<%= pendingOrders %>"
-                    style="color: white; font-weight: bold"
-                  >
-                    <%= pendingOrders %>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-    <!-- Active Order-->
-        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-          <a href="#">
-            <div
-              class="card card-statistic-1"
-              style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
-            >
-              <div class="card-icon" style="background: rgba(204, 85, 51, 0.8)">
-                <i class="fas fa-shopping-cart"></i>
-              </div>
-              <div class="card-wrap">
-                <div class="card-header">
-                  <h4 style="color: white; font-weight: bold">Active Orders</h4>
-                </div>
-                <div class="card-body"  id="activeOrders" value="<%= activeOrders %>" style="color: white; font-weight: bold">
-                  <%= activeOrders %>
-                </div>
+                <%= pendingOrders %>
               </div>
             </div>
-          </a>
-        </div>
+          </div>
+        </a>
+      </div>
+      <!-- Active Order-->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
+          >
+            <div class="card-icon" style="background: rgba(204, 85, 51, 0.8)">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold">Active Orders</h4>
+              </div>
+              <div
+                class="card-body"
+                id="activeOrders"
+                value="<%= activeOrders %>"
+                style="color: white; font-weight: bold"
+              >
+                <%= activeOrders %>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
       <!-- delivered Orders -->
 
-        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-          <a href="#">
-            <div
-              class="card card-statistic-1"
-              style="background: linear-gradient(135deg, #33a1ff, #66c2ff)"
-            >
-              <div class="card-icon" style="background: rgba(51, 128, 204, 0.8)">
-                <i class="fas fa-truck"></i>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33a1ff, #66c2ff)"
+          >
+            <div class="card-icon" style="background: rgba(51, 128, 204, 0.8)">
+              <i class="fas fa-truck"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold">
+                  Delivered Orders
+                </h4>
               </div>
-              <div class="card-wrap">
-                <div class="card-header">
-                  <h4 style="color: white; font-weight: bold">
-                    Delivered Orders
-                  </h4>
-                </div>
-                <div class="card-body"   id="deliveredOrders" value="<%= deliveredOrders %>" style="color: white; font-weight: bold">
-                  <%= deliveredOrders %>
-                </div>
+              <div
+                class="card-body"
+                id="deliveredOrders"
+                value="<%= deliveredOrders %>"
+                style="color: white; font-weight: bold"
+              >
+                <%= deliveredOrders %>
               </div>
             </div>
-          </a>
-        </div>
+          </div>
+        </a>
+      </div>
       <!-- Cancel Order-->
 
-        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-          <a href="#">
-            <div
-              class="card card-statistic-1"
-              style="background: linear-gradient(135deg, #ffc300, #ffd966)"
-            >
-              <div class="card-icon" style="background: rgba(204, 153, 51, 0.8)">
-                <i class="fas fa-ban"></i>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ffc300, #ffd966)"
+          >
+            <div class="card-icon" style="background: rgba(204, 153, 51, 0.8)">
+              <i class="fas fa-ban"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold">
+                  Cancelled Orders
+                </h4>
               </div>
-              <div class="card-wrap">
-                <div class="card-header">
-                  <h4 style="color: white; font-weight: bold">
-                    Cancelled Orders
-                  </h4>
-                </div>
-                <div class="card-body" id="cancelledOrders" value="<%= cancelledOrders %>" style="color: white; font-weight: bold">
-                  <%= cancelledOrders %>
-                </div>
+              <div
+                class="card-body"
+                id="cancelledOrders"
+                value="<%= cancelledOrders %>"
+                style="color: white; font-weight: bold"
+              >
+                <%= cancelledOrders %>
               </div>
             </div>
-          </a>
-        </div>
+          </div>
+        </a>
+      </div>
 
-           <!--Category -->
-        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <a href="#">
-            <div
-                class="card card-statistic-1"
-                style="background: linear-gradient(135deg, #6666ff, #9999ff)"
-            >
-                <div class="card-icon" style="background: rgba(56, 56, 187, 0.8)">
-                <i class="fas fa-users"></i>
-                </div>
-                <div class="card-wrap">
-                <div class="card-header">
-                    <h4 style="color: white; font-weight: bold"><b>Category</b></h4>
-                </div>
-                <div class="card-body" id="category" value="<%= category %>" style="color: white; font-weight: bold">
-                    <%= category %>
-                </div>
-                </div>
+      <!--Category -->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="#">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #6666ff, #9999ff)"
+          >
+            <div class="card-icon" style="background: rgba(56, 56, 187, 0.8)">
+              <i class="fas fa-users"></i>
             </div>
-            </a>
-        </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold"><b>Category</b></h4>
+              </div>
+              <div
+                class="card-body"
+                id="category"
+                value="<%= category %>"
+                style="color: white; font-weight: bold"
+              >
+                <%= category %>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
 
       <!-- Subcategory-->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
@@ -191,7 +215,12 @@
                   <b>SubCategory</b>
                 </h4>
               </div>
-              <div class="card-body" id="subCategory" value="<%= subCategory %>" style="color: white; font-weight: bold">
+              <div
+                class="card-body"
+                id="subCategory"
+                value="<%= subCategory %>"
+                style="color: white; font-weight: bold"
+              >
                 <%= subCategory %>
               </div>
             </div>
@@ -213,270 +242,296 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold"><b>Products</b></h4>
               </div>
-              <div class="card-body" id="products" value="<%= products %>" style="color: white; font-weight: bold">
+              <div
+                class="card-body"
+                id="products"
+                value="<%= products %>"
+                style="color: white; font-weight: bold"
+              >
                 <%= products %>
               </div>
             </div>
           </div>
         </a>
       </div>
-      </div>
-    </section>
-    <div class="row">
-      <!-- Graph for Users, Riders, and Restaurants -->
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="card-header">
-            <h4>Category, SubCatgory, and Products</h4>
-          </div>
-          <div class="card-body">
-            <canvas id="userGraph"></canvas>
-          </div>
+    </div>
+  </section>
+  <div class="row">
+    <!-- Graph for Users, Riders, and Restaurants -->
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Category, SubCatgory, and Products</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="userGraph"></canvas>
         </div>
       </div>
-    
-         <!-- Additional Graph for Revenue -->
-         <div class="col-lg-6">
-          <div class="card">
-            <div class="card-header">
-              <h4>Revenue Statistics</h4>
-            </div>
-            <div class="card-body">
-              <canvas id="revenueGraph"></canvas>
-            </div>
-          </div>
-        </div>
-        
-      <!-- Graph for Orders -->
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="card-header">
-            <h4>Order Statistics</h4>
-          </div>
-          <div class="card-body">
-            <canvas id="orderGraph"></canvas>
-          </div>
-        </div>
-      </div>
-
-     
     </div>
 
+    <!-- Additional Graph for Revenue -->
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Revenue Statistics</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="revenueGraph"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graph for Orders -->
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Order Statistics</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="orderGraph"></canvas>
+        </div>
+      </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- External CSS -->
-  <style>
+<!-- External CSS -->
+<style>
+  .filter-options select {
+    width: auto;
+    max-width: 200px; /* Optional: Set a max width to ensure the dropdown doesn't get too wide */
+  }
+
+  @media (max-width: 768px) {
+    .filter-options {
+      justify-content: center; /* Centers the filter on smaller screens */
+      padding-right: 15px; /* Optional: Add some padding on smaller screens */
+    }
+
     .filter-options select {
-      width: auto;
-      max-width: 200px; /* Optional: Set a max width to ensure the dropdown doesn't get too wide */
+      width: 100%; /* Makes the dropdown full-width on small screens */
     }
-  
-    @media (max-width: 768px) {
-      .filter-options {
-        justify-content: center; /* Centers the filter on smaller screens */
-        padding-right: 15px; /* Optional: Add some padding on smaller screens */
-      }
-  
-      .filter-options select {
-        width: 100%; /* Makes the dropdown full-width on small screens */
-      }
-    }
-  </style>
-  
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const filterDropdown = document.getElementById("filter");
-  
-      // Listen for dropdown changes
-      filterDropdown.addEventListener("change", async () => {
-        const selectedFilter = filterDropdown.value;
-        const id = document.getElementById("restaurant_id").dataset.value;
-        console.log("id",id)
-        const response = await fetch("/admin/restaurantDashboardFilter", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ filter: selectedFilter, id:id}),
-        });
-  
-        const data = await response.json();
-        console.log("data",data)
-    
-        document.getElementById("orders").textContent=data.orders;
-        document.getElementById("pendingOrders").textContent=data.pendingOrders;
+  }
+</style>
 
-        document.getElementById("activeOrders").textContent=data.activeOrders;
-        document.getElementById("deliveredOrders").textContent=data.deliveredOrders;
-        document.getElementById("cancelledOrders").textContent=data.cancelledOrders;
-        document.getElementById("category").textContent=data.category
-        document.getElementById("subCategory").textContent=data.subCategory
-        document.getElementById("products").textContent=data.products
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const filterDropdown = document.getElementById("filter");
 
-
+    // Listen for dropdown changes
+    filterDropdown.addEventListener("change", async () => {
+      const selectedFilter = filterDropdown.value;
+      const id = document.getElementById("restaurant_id").dataset.value;
+      console.log("id", id);
+      const response = await fetch("/admin/restaurantDashboardFilter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ filter: selectedFilter, id: id }),
       });
+
+      const data = await response.json();
+      console.log("data", data);
+
+      document.getElementById("orders").textContent = data.orders;
+      document.getElementById("pendingOrders").textContent = data.pendingOrders;
+
+      document.getElementById("activeOrders").textContent = data.activeOrders;
+      document.getElementById("deliveredOrders").textContent =
+        data.deliveredOrders;
+      document.getElementById("cancelledOrders").textContent =
+        data.cancelledOrders;
+      document.getElementById("category").textContent = data.category;
+      document.getElementById("subCategory").textContent = data.subCategory;
+      document.getElementById("products").textContent = data.products;
     });
-  </script>
-  
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const socket = io();
-    socket.on('updateUserCount', (data) => {
-    //   document.getElementById('user').textContent = data.user;
-    });
-  </script>
-  
-
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-  const userGraphCtx = document.getElementById("userGraph").getContext("2d");
-  const orderGraphCtx = document.getElementById("orderGraph").getContext("2d");
-  const revenueGraphCtx = document.getElementById("revenueGraph").getContext("2d");
-
-  // Initial data setup for graphs
-  let categoryCount = parseInt(document.getElementById("category").textContent) || 0;
-  let subCategoryCount = parseInt(document.getElementById("subCategory").textContent) || 0;
-  let productCount = parseInt(document.getElementById("products").textContent) || 0;
-  let pendingOrderCount = parseInt(document.getElementById("pendingOrders").textContent) || 0;
-  let activeOrderCount = parseInt(document.getElementById("activeOrders").textContent) || 0;
-  let deliveredOrderCount = parseInt(document.getElementById("deliveredOrders").textContent) || 0;
-  let cancelledOrderCount = parseInt(document.getElementById("cancelledOrders").textContent) || 0;
-
-  // User Graph setup
-  let userGraph = new Chart(userGraphCtx, {
-    type: "bar",
-    data: {
-      labels: ["Category", "SubCategory", "Products"],
-      datasets: [
-        {
-          label: "Count",
-          data: [categoryCount, subCategoryCount, productCount], // Initial data
-          backgroundColor: ["#6666ff", "#33cc99", "#33cccc"],
-          borderColor: ["#4444ff", "#33aa99", "#33aaaa"],
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        title: { display: true, text: "Category, SubCategory, and Product" },
-      },
-    },
   });
+</script>
 
-  // Order Graph setup
-  let orderGraph = new Chart(orderGraphCtx, {
-    type: "doughnut",
-    data: {
-      labels: ["Active Orders", "Delivered Orders", "Cancelled Orders", "Pending Orders"],
-      datasets: [
-        {
-          label: "Orders",
-          data: [10, 40, 20, 60], // Initial data
-          // data: [activeOrderCount, deliveredOrderCount, cancelledOrderCount, pendingOrderCount], // Initial data
-          backgroundColor: ["#ff5733", "#33a1ff", "#ffc300", "#ffcc00"],
-          borderColor: ["#cc4225", "#267fbf", "#bf9e00", "#cc9900"],
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: "bottom" },
-        title: { display: true, text: "Order Statistics" },
-      },
-    },
-  });
-
-  // Revenue Graph setup
-  let revenueGraph = new Chart(revenueGraphCtx, {
-    type: "line",
-    data: {
-      labels: ["December 1", "December 2", "December 3", "December 4", "December 5", "December 6", "December 7", "December 8"],
-      datasets: [
-        {
-          label: "Revenue",
-          data: [100, 200, 150, 300, 250, 180, 210, 270], // Example data for revenue over time
-          backgroundColor: "rgba(76, 175, 80, 0.2)",
-          borderColor: "rgba(76, 175, 80, 1)",
-          borderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: true },
-        title: { display: true, text: "Revenue Statistics Over Time" },
-      },
-    },
-  });
-
-  // Listen for filter changes and update graphs
-  document.getElementById("filter").addEventListener("change", async () => {
-    const selectedFilter = document.getElementById("filter").value;
-    const response = await fetch("/admin/dashboardFilter", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ filter: selectedFilter }),
-    });
-
-    const data = await response.json();
-
-    // Update data for User graph
-    userGraph.data.datasets[0].data = [
-      data.category || 0,
-      data.subCategory || 0,
-      data.products || 0,
-    ];
-    userGraph.update();
-
-    // Update data for Order graph
-    orderGraph.data.datasets[0].data = [
-      data.activeOrders || 0,
-      data.deliveredOrders || 0,
-      data.cancelledOrders || 0,
-      data.pendingOrders || 0,
-    ];
-    orderGraph.update();
-
-    // Update data for Revenue graph
-    revenueGraph.data.datasets[0].data = [
-      data.revenueDataForGraph || [100, 200, 150, 300, 250, 180, 210, 270],
-    ];
-    revenueGraph.update();
-  });
-
-  // Listen for live updates via Socket.IO
+<script src="/socket.io/socket.io.js"></script>
+<script>
   const socket = io();
-  socket.on("updateDashboard", (dashboardData) => {
-    // Update data for User graph
-    userGraph.data.datasets[0].data = [
-      dashboardData.category || 0,
-      dashboardData.subCategory || 0,
-      dashboardData.products || 0,
-    ];
-    userGraph.update();
-
-    // Update data for Order graph
-    orderGraph.data.datasets[0].data = [
-      dashboardData.activeOrders || 0,
-      dashboardData.deliveredOrders || 0,
-      dashboardData.cancelledOrders || 0,
-      dashboardData.pendingOrders || 0,
-    ];
-    orderGraph.update();
-
-    // Update data for Revenue graph
-    revenueGraph.data.datasets[0].data = dashboardData.revenueDataForGraph || [100, 200, 150, 300, 250, 180, 210, 270];
-    revenueGraph.update();
+  socket.on("updateUserCount", (data) => {
+    //   document.getElementById('user').textContent = data.user;
   });
-});
+</script>
 
-    </script>
-  
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const userGraphCtx = document.getElementById("userGraph").getContext("2d");
+    const orderGraphCtx = document
+      .getElementById("orderGraph")
+      .getContext("2d");
+    const revenueGraphCtx = document
+      .getElementById("revenueGraph")
+      .getContext("2d");
+
+    // Initial data setup for graphs
+    let categoryCount =
+      parseInt(document.getElementById("category").textContent) || 0;
+    let subCategoryCount =
+      parseInt(document.getElementById("subCategory").textContent) || 0;
+    let productCount =
+      parseInt(document.getElementById("products").textContent) || 0;
+    let pendingOrderCount =
+      parseInt(document.getElementById("pendingOrders").textContent) || 0;
+    let activeOrderCount =
+      parseInt(document.getElementById("activeOrders").textContent) || 0;
+    let deliveredOrderCount =
+      parseInt(document.getElementById("deliveredOrders").textContent) || 0;
+    let cancelledOrderCount =
+      parseInt(document.getElementById("cancelledOrders").textContent) || 0;
+
+    // User Graph setup
+    let userGraph = new Chart(userGraphCtx, {
+      type: "bar",
+      data: {
+        labels: ["Category", "SubCategory", "Products"],
+        datasets: [
+          {
+            label: "Count",
+            data: [categoryCount, subCategoryCount, productCount], // Initial data
+            backgroundColor: ["#6666ff", "#33cc99", "#33cccc"],
+            borderColor: ["#4444ff", "#33aa99", "#33aaaa"],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: "Category, SubCategory, and Product" },
+        },
+      },
+    });
+
+    // Order Graph setup
+    let orderGraph = new Chart(orderGraphCtx, {
+      type: "doughnut",
+      data: {
+        labels: [
+          "Active Orders",
+          "Delivered Orders",
+          "Cancelled Orders",
+          "Pending Orders",
+        ],
+        datasets: [
+          {
+            label: "Orders",
+            data: [10, 40, 20, 60], // Initial data
+            // data: [activeOrderCount, deliveredOrderCount, cancelledOrderCount, pendingOrderCount], // Initial data
+            backgroundColor: ["#ff5733", "#33a1ff", "#ffc300", "#ffcc00"],
+            borderColor: ["#cc4225", "#267fbf", "#bf9e00", "#cc9900"],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: "bottom" },
+          title: { display: true, text: "Order Statistics" },
+        },
+      },
+    });
+
+    // Revenue Graph setup
+    let revenueGraph = new Chart(revenueGraphCtx, {
+      type: "line",
+      data: {
+        labels: [
+          "December 1",
+          "December 2",
+          "December 3",
+          "December 4",
+          "December 5",
+          "December 6",
+          "December 7",
+          "December 8",
+        ],
+        datasets: [
+          {
+            label: "Revenue",
+            data: [100, 200, 150, 300, 250, 180, 210, 270], // Example data for revenue over time
+            backgroundColor: "rgba(76, 175, 80, 0.2)",
+            borderColor: "rgba(76, 175, 80, 1)",
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true },
+          title: { display: true, text: "Revenue Statistics Over Time" },
+        },
+      },
+    });
+
+    // Listen for filter changes and update graphs
+    document.getElementById("filter").addEventListener("change", async () => {
+      const selectedFilter = document.getElementById("filter").value;
+      const response = await fetch("/admin/dashboardFilter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filter: selectedFilter }),
+      });
+
+      const data = await response.json();
+
+      // Update data for User graph
+      userGraph.data.datasets[0].data = [
+        data.category || 0,
+        data.subCategory || 0,
+        data.products || 0,
+      ];
+      userGraph.update();
+
+      // Update data for Order graph
+      orderGraph.data.datasets[0].data = [
+        data.activeOrders || 0,
+        data.deliveredOrders || 0,
+        data.cancelledOrders || 0,
+        data.pendingOrders || 0,
+      ];
+      orderGraph.update();
+
+      // Update data for Revenue graph
+      revenueGraph.data.datasets[0].data = [
+        data.revenueDataForGraph || [100, 200, 150, 300, 250, 180, 210, 270],
+      ];
+      revenueGraph.update();
+    });
+
+    // Listen for live updates via Socket.IO
+    const socket = io();
+    socket.on("updateDashboard", (dashboardData) => {
+      // Update data for User graph
+      userGraph.data.datasets[0].data = [
+        dashboardData.category || 0,
+        dashboardData.subCategory || 0,
+        dashboardData.products || 0,
+      ];
+      userGraph.update();
+
+      // Update data for Order graph
+      orderGraph.data.datasets[0].data = [
+        dashboardData.activeOrders || 0,
+        dashboardData.deliveredOrders || 0,
+        dashboardData.cancelledOrders || 0,
+        dashboardData.pendingOrders || 0,
+      ];
+      orderGraph.update();
+
+      // Update data for Revenue graph
+      revenueGraph.data.datasets[0].data =
+        dashboardData.revenueDataForGraph || [
+          100, 200, 150, 300, 250, 180, 210, 270,
+        ];
+      revenueGraph.update();
+    });
+  });
+</script>
