@@ -87,6 +87,7 @@ module.exports = {
   },
   dashboardFilter: async (req, res) => {
     try {
+      console.log("object",req.body.filter)
       const title = "dashboard";
       const filter = req.body.filter || "all"; // Get the filter parameter from the query string
   
@@ -139,7 +140,7 @@ module.exports = {
       const orders = await Models.orderModel.countDocuments(dateQuery);
       // const payments = await Models.paymentModel.countDocuments(dateQuery);
       const feedbacks = await Models.feedBackModel.countDocuments(dateQuery);
-      const pendingOrders = await Models.pandingsModel.countDocuments({status:1,...dateQuery});
+      const pendingOrders = await Models.orderModel.countDocuments({status:1,...dateQuery});
       const deliveredOrders = await Models.orderModel.countDocuments({ status: 2, ...dateQuery });
       const cancelledOrders = await Models.orderModel.countDocuments({ status: 3, ...dateQuery });
       const activeOrders = await Models.orderModel.countDocuments({ status: 4, ...dateQuery });
