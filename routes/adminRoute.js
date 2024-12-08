@@ -18,12 +18,36 @@ router.delete('/delete_user/:id', controllers.adminController.delete_user)
 router.post('/user_status', controllers.adminController.user_status)
 
 
-//<------------------------------ User ------------------------->
+//<------------------------------ Restaurant ------------------------->
 router.get('/restaurant_list', session, controllers.adminController.restaurant_list)
 router.get('/view_restaurant/:id', session, controllers.adminController.view_restaurant)
 router.post("/restaurantDashboardFilter",session, controllers.adminController.restaurant_dashboard_filter)
 router.delete('/delete_rastaurant/:id', controllers.adminController.delete_restaurant)
 router.post('/restaurant_status', controllers.adminController.restaurant_status)
+
+
+//<------------------------------ Restaurant Orders ------------------------->
+
+router.get('/restaurant_order_list/:_id', session, controllers.adminController.restaurant_order_list);
+router.get('/restaurant_view_order/:_id', session, controllers.adminController.restaurant_view_order);
+
+router.get('/restaurant_active_order_list/:_id', session, controllers.adminController.restaurant_active_order_list);
+router.get('/restaurant_active_view_order/:_id', session, controllers.adminController.restaurant_active_view_order);
+
+router.get('/restaurant_delivered_order_list/:_id', session, controllers.adminController.restaurant_delivered_order_list);
+router.get('/restaurant_delivered_view_order/:_id', session, controllers.adminController.restaurant_delivered_view_order);
+
+router.get('/restaurant_cancel_order_list/:_id', session, controllers.adminController.restaurant_cancel_order_list);
+router.get('/restaurant_cancel_view_order/:_id', session, controllers.adminController.restaurant_cancel_view_order);
+
+
+router.get('/restaurant_pending_order_list/:_id', session, controllers.adminController.restaurant_pending_order_list);
+router.get('/restaurant_pending_view_order/:_id', session, controllers.adminController.restaurant_pending_view_order);
+
+
+router.get('/restaurant_return_order_list/:_id', session, controllers.adminController.restaurant_return_order_list);
+router.get('/restaurant_return_view_order/:_id', session, controllers.adminController.restaurant_return_view_order);
+
 
 //<------------------------------ Rider ------------------------->
 router.get('/rider_list', session, controllers.adminController.rider_list)
@@ -49,7 +73,6 @@ router.get('/active_view_order/:_id', session, controllers.adminController.activ
 
 router.get('/delivered_order_list', session, controllers.adminController.delivered_order_list);
 router.get('/delivered_view_order/:_id', session, controllers.adminController.delivered_view_order);
-
 
 router.get('/cancel_order_list', session, controllers.adminController.cancel_order_list);
 router.get('/cancel_view_order/:_id', session, controllers.adminController.cancel_view_order);
