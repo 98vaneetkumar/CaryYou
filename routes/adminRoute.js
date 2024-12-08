@@ -49,6 +49,11 @@ router.get('/restaurant_return_order_list/:_id', session, controllers.adminContr
 router.get('/restaurant_return_view_order/:_id', session, controllers.adminController.restaurant_return_view_order);
 
 
+router.get("/restaurant_category/:_id",session, controllers.adminController.restaurant_category)
+router.get("/restaurant_subCategory/:_id",session, controllers.adminController.restaurant_subCategory)
+router.get("/restaurant_product/:_id",session, controllers.adminController.restaurant_product)
+router.get("/restaurant_product_view/:_id",session, controllers.adminController.restaurant_product_view)
+
 //<------------------------------ Rider ------------------------->
 router.get('/rider_list', session, controllers.adminController.rider_list)
 router.get('/view_rider/:id', session, controllers.adminController.view_rider)

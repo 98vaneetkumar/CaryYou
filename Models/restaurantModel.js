@@ -37,8 +37,6 @@ const restaurantSchema = new mongoose.Schema(
         image: { type: String },
         categoryId: {
           type: Schema.Types.ObjectId,
-          required: true,
-          ref: "restaurant",
         },
         status:{type:Number,default:1}// 1 for acitve  and 0 for  not acitve
 
@@ -50,7 +48,6 @@ const restaurantSchema = new mongoose.Schema(
         subCategoryId: {
           type: Schema.Types.ObjectId,
           required: true,
-          ref: "restaurant",
         },
         images: [{ type: String }],
         itemName: { type: String, required: true },

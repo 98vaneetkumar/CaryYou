@@ -322,7 +322,7 @@ module.exports = {
         title,
         viewuser,
         category: viewuser?.category?.length || 0,
-        subCategory: viewuser?.subcategory?.length || 0,
+        subCategory: viewuser?.subCategory?.length || 0,
         products: viewuser?.products?.length || 0,
         orders,
         pendingOrders,
@@ -938,7 +938,149 @@ module.exports = {
       });
     }
   },
+  restaurant_category: async (req, res) => {
+    try {
+      let title = "provider_list";
+      let viewuser = await Models.restaurantModel
+        .findById({ _id: req.params._id })
+        .populate("userId");
+    
+      res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_category_list", {
+        title,
+        viewuser,
+        restaurant:req.params._id,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  restaurant_subCategory: async (req, res) => {
+    try {
+      let title = "provider_list";
+      const viewuser = await Models.restaurantModel
+      .findById(req.params._id)
+      .populate("userId") // Populate user information
+      .lean(); // Use `.lean()` to get a plain JavaScript object
+    
+    if (viewuser) {
+      // Map subCategories with corresponding category data
+      viewuser.subCategory = viewuser.subCategory.map((subCat) => {
+        const matchedCategory = viewuser.category.find(
+          (cat) => cat._id.toString() === subCat.categoryId.toString()
+        );
+    
+        return {
+          ...subCat,
+          categoryName: matchedCategory ? matchedCategory.name : null,
+          categoryImage: matchedCategory ? matchedCategory.image : null,
+        };
+      });
+    }
+    
+    console.log(viewuser);
+    
 
+        res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_subCategory_list", {
+        title,
+        viewuser,
+        restaurant:req.params._id,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  restaurant_product: async (req, res) => {
+    try {
+      let title = "provider_list";
+      let viewuser = await Models.restaurantModel
+        .findById({ _id: req.params.id })
+        .populate("userId");
+      const orders = await Models.orderModel.countDocuments({restaurant: req.params.id,});
+      const pendingOrders = await Models.orderModel.countDocuments({
+        status: 1,
+        restaurant: req.params.id,
+      });
+      const activeOrders = await Models.orderModel.countDocuments({
+        status: 4,
+        restaurant: req.params.id,
+      });
+      const deliveredOrders = await Models.orderModel.countDocuments({
+        status: 2,
+        restaurant: req.params.id,
+      });
+      const cancelledOrders = await Models.orderModel.countDocuments({
+        status: 3,
+        restaurant: req.params.id,
+      });
+
+      res.render("Admin/restaurant/restaurant_view", {
+        title,
+        viewuser,
+        category: viewuser?.category?.length || 0,
+        subCategory: viewuser?.subcategory?.length || 0,
+        products: viewuser?.products?.length || 0,
+        orders,
+        pendingOrders,
+        activeOrders,
+        deliveredOrders,
+        cancelledOrders,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  restaurant_product_view: async (req, res) => {
+    try {
+      let title = "provider_list";
+      let viewuser = await Models.restaurantModel
+        .findById({ _id: req.params.id })
+        .populate("userId");
+      const orders = await Models.orderModel.countDocuments({restaurant: req.params.id,});
+      const pendingOrders = await Models.orderModel.countDocuments({
+        status: 1,
+        restaurant: req.params.id,
+      });
+      const activeOrders = await Models.orderModel.countDocuments({
+        status: 4,
+        restaurant: req.params.id,
+      });
+      const deliveredOrders = await Models.orderModel.countDocuments({
+        status: 2,
+        restaurant: req.params.id,
+      });
+      const cancelledOrders = await Models.orderModel.countDocuments({
+        status: 3,
+        restaurant: req.params.id,
+      });
+
+      res.render("Admin/restaurant/restaurant_view", {
+        title,
+        viewuser,
+        category: viewuser?.category?.length || 0,
+        subCategory: viewuser?.subcategory?.length || 0,
+        products: viewuser?.products?.length || 0,
+        orders,
+        pendingOrders,
+        activeOrders,
+        deliveredOrders,
+        cancelledOrders,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
   //---------riders list apis--------------
 
   rider_list: async (req, res) => {
