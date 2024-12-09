@@ -4420,3 +4420,50 @@ td,th{
   object-fit: cover;
   border: 1px solid #ddd;
 }
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;  /* Reduced width */
+  height: 24px; /* Reduced height */
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;  /* Reduced height */
+  width: 16px;   /* Reduced width */
+  border-radius: 50%;
+  left: 4px;     /* Reduced padding */
+  bottom: 4px;   /* Reduced padding */
+  background-color: white;
+  transition: .4s;
+}
+
+/* When the checkbox is checked, change the background */
+input:checked + .slider {
+  background-color: #4CAF50;
+}
+
+/* When the checkbox is checked, move the slider to the right */
+input:checked + .slider:before {
+  transform: translateX(16px);  /* Adjusted translation */
+}
