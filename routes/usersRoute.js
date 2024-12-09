@@ -28,6 +28,7 @@ module.exports = function(io){
    router.post("/createCard",authentication,controller.userController.createCard)
    router.post("/deleteCard",authentication,controller.userController.deleteCard)
    router.get("/cardsList",authentication,controller.userController.cardsList)
+   router.post("/setDefaultCard",authentication,controller.userController.setDefaultCard)
    router.post("/createPaymentUsingCard",authentication,controller.userController.createPaymentUsingCard)
    router.post("/transfer_payment",authentication,controller.userController.transfer_payment)
    router.post("/stripeConnect",authentication,controller.userController.stripeConnect)

@@ -35,7 +35,6 @@
         overflow: hidden;
       }
 
-      /* Left side content */
       .login-container {
         position: absolute;
         left: 0;
@@ -112,11 +111,7 @@
       }
 
       .btn-info {
-        background: linear-gradient(
-          135deg,
-          #ffafbd,
-          #ffc3a0
-        ); /* Pastel gradient */
+        background: linear-gradient(135deg, #ffafbd, #ffc3a0);
         border: none;
         width: 100%;
         max-width: 250px;
@@ -142,7 +137,6 @@
         text-decoration: none;
       }
 
-      /* Right side: Static content */
       .animation-container {
         position: absolute;
         top: 0;
@@ -174,22 +168,15 @@
   </head>
 
   <body>
-    <!-- Left Side: Form -->
     <div class="login-container">
       <div class="login-box">
         <div class="login-brand">
-          <img src="/assets/img/logo.png" alt="Logo" class="w-25" />
+          <img src="/assets/img/logo.png" alt="Logo" />
         </div>
         <div class="card card-primary shadow-none overflow-hidden">
           <div class="card-header">Sign in</div>
           <div class="card-body">
-            <form
-              method="POST"
-              action="/admin/Login"
-              id="addForm"
-              class="needs-validation"
-              novalidate=""
-            >
+            <form method="POST" action="/admin/login" id="addForm">
               <div class="form-group">
                 <label for="email">Email</label>
                 <input
@@ -197,49 +184,120 @@
                   type="email"
                   class="form-control"
                   name="email"
-                  tabindex="1"
                   required
                   autofocus
                 />
               </div>
-
               <div class="form-group">
                 <label>Password</label>
-                <div>
-                  <input
-                    id="password"
-                    type="password"
-                    class="form-control"
-                    name="password"
-                    tabindex="2"
-                    required
-                  />
-                </div>
+                <input
+                  id="password"
+                  type="password"
+                  class="form-control"
+                  name="password"
+                  required
+                />
               </div>
               <br />
-
+              <div type="hidden" name="deviceToken" id="deviceToken" value=""></div>
               <div class="form-group text-center">
-                <button type="submit" class="btn btn-info btn-lg" tabindex="4">
-                  Login
-                </button>
+                <button type="submit" class="btn btn-info btn-lg">Login</button>
               </div>
             </form>
-            <div class="footer-left mt-4">
-              <b>Design By</b>
-              <a href="https://github.com/98vaneetkumar"
-                >Developer Vaneet Kumar</a
-              >
-            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Right Side: Static Content -->
     <div class="animation-container">
       <div class="caryYou">CaryYou</div>
       <div class="slogan">Your Needs, Delivered with Ease!</div>
     </div>
   </body>
 </html>
-`
+
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-messaging.js"></script> 
+<script>
+  // Check if Service Workers are supported
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("/firebase-messaging-sw.js")
+        .then((registration) => {
+          console.log("Service Worker registered successfully:", registration);
+          // Pass registration to Firebase Messaging
+          messaging.useServiceWorker(registration);
+        })
+        .catch((error) => {
+          console.error("Service Worker registration failed:", error);
+        });
+    });
+  } else {
+    console.error("Service Workers are not supported in this browser.");
+  }
+
+  // Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyC_4Bx0RchfzAdkpVYwv0pZFIIrswy82vs",
+    authDomain: "caryyou-b45f5.firebaseapp.com",
+    projectId: "caryyou-b45f5",
+    storageBucket: "caryyou-b45f5.firebasestorage.app",
+    messagingSenderId: "683558202016",
+    appId: "1:683558202016:web:8e30f1c19fcfd49846f7c5",
+    measurementId: "G-8XGFLN1313",
+  };
+  firebase.initializeApp(firebaseConfig);
+  const messaging = firebase.messaging();
+
+  // Request Notification Permission
+  function requestNotificationPermission() {
+    return Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        console.log("Notification permission granted.");
+        return messaging.getToken();
+      } else {
+        console.error("Notification permission denied.");
+        throw new Error("Notification permission not granted.");
+      }
+    });
+  }
+
+  // Check and request permission
+  if (Notification.permission === "default" || Notification.permission === "denied") {
+    requestNotificationPermission()
+      .then((token) => {
+        console.log("Firebase Token:", token);
+        document.getElementById("deviceToken").textContent = token;
+      })
+      .catch((err) => {
+        console.error("Error getting permission:", err);
+      });
+  } else if (Notification.permission === "granted") {
+    messaging.getToken().then((token) => {
+      console.log("Firebase Token:", token);
+      document.getElementById("deviceToken").textContent = token;
+    });
+  }
+
+  // Handle incoming messages
+  let enableForegroundNotification = true;
+  messaging.onMessage((payload) => {
+    if (enableForegroundNotification) {
+      const { title, body, icon } = payload.data;
+      const options = {
+        body,
+        icon: icon || "../../assets/images/ch2.png",
+        data: payload.data,
+      };
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        if (registrations.length > 0) {
+          registrations[0].showNotification(title, options);
+        } else {
+          console.error("No service worker registration found.");
+        }
+      });
+    }
+  });
+</script>
+
