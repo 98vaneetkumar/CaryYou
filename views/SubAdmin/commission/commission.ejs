@@ -1,7 +1,7 @@
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1>subAdmin Commission</h1>
+      <h1>SubAdmin Commission</h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="/subAdmin/dashboard">Dashboard</a></div>
         <div class="breadcrumb-item">Commission</div>
@@ -11,30 +11,30 @@
       <div class="card-body">
         <form action="/subAdmin/update_commission" id="addForm" enctype="multipart/form-data" method="post">
           <div class="row mt-sm-4 justify-content-center">
-
-            <div class="col-12 col-md-12 col-lg-10 offset-lg-0 ">
+            <div class="col-12 col-md-12 col-lg-10 offset-lg-0">
               <div class="card-body p-0">
                 <div class="form-group w-100 floating-addon">
-                  <label for="name">subAdmin Commission </label>
+                  <label for="subAdmincommission">SubAdmin Commission</label>
                   <div class="input-group">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <i class="fas fa-percent"></i>
-                      </div>
+                    <input 
+                      id="subAdmincommission" 
+                      type="text" 
+                      class="form-control" 
+                      name="subAdmincommission"
+                      value="<%=users.subAdmincommission%>" 
+                      placeholder="Commission" 
+                      required>
+                    <div class="input-group-append">
+                      <span class="input-group-text"><i class="fas fa-percent"></i></span>
                     </div>
                   </div>
-                  <input id="name" type="text" class="form-control" name="subAdmincommission"
-                    value="<%=users.subAdmincommission%>" placeholder="Commission" required>
                 </div>
-
                 <div class="text-right mt-4">
                   <button type="submit" class="btn btn-info">
                     Submit
                   </button>
                 </div>
               </div>
-
-
             </div>
           </div>
         </form>
@@ -43,13 +43,11 @@
   </section>
 </div>
 
-
-
 <script>
   imgInp.onchange = evt => {
-    const [file] = imgInp.files
+    const [file] = imgInp.files;
     if (file) {
-      blah.src = URL.createObjectURL(file)
+      blah.src = URL.createObjectURL(file);
     }
   }
 </script>
@@ -62,94 +60,34 @@
 
 <script>
   $(document).ready(function () {
-
     jQuery.validator.addMethod("noSpace", function (value, element) {
       return value == '' || value.trim().length != 0;
-    },
+    }, "Spaces are not allowed.");
 
-      jQuery.validator.addMethod("emailExt", function (value, element, param) {
-        return value.match(/^[a-zA-Z0-9_\.%\+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/);
-      }, 'Your e-mail is wrong'),
+    jQuery.validator.addMethod("emailExt", function (value, element) {
+      return value.match(/^[a-zA-Z0-9_\.%\+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/);
+    }, "Please enter a valid email address.");
 
-
-      $('form[id="addForm"]').validate({
-
-
-        keypress: function (element) {
-
-          var element_id = $(element).attr('id');
-          if (this.settings.rules[element_id].keypress !== false) {
-            $(element).valid();
-          }
+    $('form[id="addForm"]').validate({
+      rules: {
+        admincommission: {
+          required: true,
+          number: true,
+          min: 0,
+          max: 100
         },
-
-        rules: {
-          firstname: {
-            required: true,
-            noSpace: true,
-            maxlength: 20
-          },
-          lastname: {
-            required: true,
-            noSpace: true,
-            maxlength: 20
-          },
-          email: {
-            required: true,
-            noSpace: true,
-            emailExt: true
-          },
-          password: {
-            noSpace: true,
-            required: true,
-            minlength: 5
-          },
-          phone: {
-            digits: true,
-            required: true,
-            noSpace: true,
-            minlength: 10,
-            maxlength: 12
-          },
-          location: {
-            required: true,
-            noSpace: true,
-            maxlength: 20
-          },
-
+      },
+      messages: {
+        admincommission: {
+          required: "Commission is required.",
+          number: "Please enter a valid number.",
+          min: "Commission must be at least 0.",
+          max: "Commission must be at most 100."
         },
-        messages: {
-
-          firstname: {
-            required: "This field is required.",
-            noSpace: "Space not allowed",
-            maxlength: "First name should be 20 charcater"
-          },
-
-          lastname: {
-            required: "This field is required.",
-            noSpace: "Space not allowed",
-            maxlength: "Last name should be 20 charcater"
-          },
-
-          email: {
-            required: " This filed is required"
-          },
-          phone: {
-            required: "This field is required.",
-            noSpace: "Space not allowed",
-            maxlength: "Phone Number should be 12 charcater"
-          },
-          location: {
-            required: "This field is required.",
-            noSpace: "Space not allowed",
-            maxlength: "Location should be 20 charcater"
-          },
-
-        },
-        submitHandler: function (form) {
-          form.submit();
-        }
-      }));
+      },
+      submitHandler: function (form) {
+        form.submit();
+      }
+    });
   });
 </script>
