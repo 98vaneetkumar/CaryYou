@@ -199,8 +199,8 @@
                 />
               </div>
               <br />
-              <div type="hidden" name="deviceToken" id="deviceToken" value=""></div>
-              <div class="form-group text-center">
+                <!-- Hidden input for deviceToken -->
+                <input type="hidden" name="deviceToken" id="deviceToken" value="" />              <div class="form-group text-center">
                 <button type="submit" class="btn btn-info btn-lg">Login</button>
               </div>
             </form>
@@ -268,7 +268,7 @@
     requestNotificationPermission()
       .then((token) => {
         console.log("Firebase Token:", token);
-        document.getElementById("deviceToken").textContent = token;
+        document.getElementById("deviceToken").value = token;
       })
       .catch((err) => {
         console.error("Error getting permission:", err);
@@ -276,7 +276,7 @@
   } else if (Notification.permission === "granted") {
     messaging.getToken().then((token) => {
       console.log("Firebase Token:", token);
-      document.getElementById("deviceToken").textContent = token;
+      document.getElementById("deviceToken").value = token;
     });
   }
 

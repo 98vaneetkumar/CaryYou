@@ -11,7 +11,6 @@ module.exports = {
   Login: async (req, res) => {
     try {
       console.log('=========', req.body)
-      return
       let findUser = await Models.userModel.findOne({
         role: 0,
         email: req.body.email,
@@ -31,7 +30,7 @@ module.exports = {
         res.redirect("/admin/login");
       } else {
         if(req.body&&req.body.deviceToken){
-          await Models.userModel.updateOne({deviceToken:deviceToken},{_id:findUser._id})
+          await Models.userModel.updateOne({deviceToken:req.body.deviceToken},{_id:findUser._id})
 
         }
         req.session.user = findUser;
