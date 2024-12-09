@@ -39,13 +39,15 @@
                   <td><%= data.email %></td>
                   <td><%= data.countryCode %>-<%= data.phoneNumber %></td>
                   <td>
-                    <% if (data.status == 1) { %>
-                      <button onclick="changeStatus(this)" id="riderId_<%= data.id %>"
-                        class="btn btn-sm btn-success status" data-id="<%= data._id %>" value="0">Active</button>
-                    <% } else { %>
-                      <button onclick="changeStatus(this)" id="riderId_<%= data.id %>"
-                        class="btn btn-sm btn-danger status" data-id="<%= data._id %>" value="1">In-Active</button>
-                    <% } %>
+                    <!-- Toggle switch for active/inactive status -->
+                    <label class="switch">
+                      <input type="checkbox" 
+                             id="riderStatusToggle_<%= data.id %>" 
+                             <% if (data.status == 1) { %> checked <% } %>
+                             onchange="changeStatus(this)" 
+                             data-id="<%= data._id %>">
+                      <span class="slider round"></span>
+                    </label>
                   </td>
                   <td>
                     <!-- Show 'On' if logged in, otherwise 'Off' -->
@@ -66,6 +68,8 @@
     </div>
   </section>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
   $(document).ready(function () {
@@ -127,9 +131,7 @@
 
   const changeStatus = (val) => {
     let id = val.getAttribute('data-id');
-    let value = val.getAttribute('value');
-    let elemID = val.getAttribute('id');
-    elemID = document.getElementById(elemID);
+    let value = val.checked ? 1 : 0; // 1 for active, 0 for inactive
 
     $.ajax({
       type: "post",
@@ -140,18 +142,77 @@
       },
       success: function (data) {
         if (data) {
-          elemID.setAttribute('value', 0);
-          elemID.innerText = `Active`;
-          elemID.classList.remove('btn-danger');
-          elemID.classList.add('btn-success');
-        } else {
-          elemID.setAttribute('value', 1);
-          elemID.innerText = `In-Active`;
-          elemID.classList.remove('btn-success');
-          elemID.classList.add('btn-danger');
+          // Show SweetAlert2 success toaster
+          Swal.fire({
+            icon: 'success',
+            title: 'Status Updated',
+            text: 'Rider status has been successfully updated.',
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
-        window.location.reload();
+      },
+      error: function (error) {
+        // Handle error with an error toaster
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'There was a problem updating the status.',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     });
   };
 </script>
+
+<!-- Add the toggle switch CSS -->
+<style>
+  /* Style the toggle switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;  /* Reduced width */
+    height: 24px; /* Reduced height */
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;  /* Reduced height */
+    width: 16px;   /* Reduced width */
+    border-radius: 50%;
+    left: 4px;     /* Reduced padding */
+    bottom: 4px;   /* Reduced padding */
+    background-color: white;
+    transition: .4s;
+  }
+
+  /* When the checkbox is checked, change the background */
+  input:checked + .slider {
+    background-color: #4CAF50;
+  }
+
+  /* When the checkbox is checked, move the slider to the right */
+  input:checked + .slider:before {
+    transform: translateX(16px);  /* Adjusted translation */
+  }
+</style>

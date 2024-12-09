@@ -6,9 +6,9 @@ const bcrypt = require("bcrypt");
 const emailTamplate = require("../helpers/emailTemplate/forgetPassword");
 const stripe = require("stripe")(process.env.STRIPE_SK);
 const fs = require("fs");
-// const admin = require("firebase-admin");
+const admin = require("firebase-admin");
 
-// // Initialize Firebase Admin with Service Account
+// Initialize Firebase Admin with Service Account
 // const serviceAccount = require("./path/to/ecoupon-90aa5-firebase-adminsdk-dojhx-a9db2517ba.json");
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),

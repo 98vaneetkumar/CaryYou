@@ -46,12 +46,7 @@
                     />
                   </div>
                 </div>
-                <!-- <div class="form-group">
-                  <label class="col-form-label text-md-right col-12 col-md-5 col-lg-3">Last Name</label>
-                    <div class="col-sm-12 col-md-12">
-                      <input type="text" name="lastname" value="<%=viewuser.lastname%>" class="form-control" disabled>
-                    </div>
-                </div> -->
+           
                 <div class="form-group">
                   <label
                     class="col-form-label text-md-right col-12 col-md-3 col-lg-3"
@@ -82,18 +77,7 @@
                     />
                   </div>
                 </div>
-                <!-- <div class="form-group">
-                  <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Location</label>
-                  <div class="col-sm-12 col-md-12">
-                    <input type="text" name="phone" value="<%=viewuser.location%>" class="form-control" disabled>
-                  </div>
-                </div> -->
-                <!-- <div class="form-group">
-                  <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Location </label>
-                    <div class="col-sm-12 col-md-12">
-                      <input type="text" name="location" value="<%=viewuser.location%>" class="form-control" disabled>
-                    </div>
-                </div> -->
+              
                 <br />
                 <div class="form-group">
                   <div class="col-sm-12 col-md-12 text-right">
@@ -108,12 +92,338 @@
     </div>
   </section>
 </div>
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <h1>user Dashboard</h1>
+        <div class="filter-options">
+          <select id="filter" class="form-control">
+            <option value="all">All</option>
+            <option value="today">Today</option>
+            <option value="weekly">This Week</option>
+            <option value="monthly">This Month</option>
+            <option value="3months">Last 3 Months</option>
+            <option value="6months">Last 6 Months</option>
+            <option value="1year">Last 1 Year</option>
+            <option value="5years">Last 5 Years</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="section-header">
+      <h1><%=viewuser.name%></h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active">
+          <a href="/admin/user_list">User Listing</a>
+        </div>
+        <div class="breadcrumb-item">User</div>
+      </div>
+    </div> -->
+    <div class="mb-3">
+      <a href="/admin/user_list" class="btn btn-dark">
+        <i class="fas fa-arrow-left"></i> Back
+      </a>
+    </div>
+    <div class="row">
+      <div id="user_id" data-value="<%= viewuser._id %>" hidden></div>
+      <!-- Orders Card -->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="/admin/user_order_list/<%= viewuser._id %>">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33cc33, #66ff66)"
+          >
+            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8)">
+              <i class="fas fa-box"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold"><b>Orders</b></h4>
+              </div>
+              <div
+                class="card-body"
+                id="orders"
+                value="<%= orders %>"
+                style="color: white; font-weight: bold"
+              >
+                <%= orders %>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+  
+
+
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="/admin/user_success_order_list/<%= viewuser._id %>">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
+          >
+            <div class="card-icon" style="background: rgba(204, 85, 51, 0.8)">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold">Success Orders</h4>
+              </div>
+              <div
+                class="card-body"
+                id="successOrders"
+                value="<%= successOrders %>"
+                style="color: white; font-weight: bold"
+              >
+                <%= successOrders %>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="/admin/user_cancel_order_list/<%= viewuser._id %>">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
+          >
+            <div class="card-icon" style="background: rgba(204, 85, 51, 0.8)">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold">Cancelled Orders</h4>
+              </div>
+              <div
+                class="card-body"
+                id="cancelledOrders"
+                value="<%= cancelledOrders %>"
+                style="color: white; font-weight: bold"
+              >
+                <%= cancelledOrders %>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="/admin/user_all_rides_list/<%= viewuser._id %>">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
+          >
+            <div class="card-icon" style="background: rgba(204, 85, 51, 0.8)">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold">Total Rides</h4>
+              </div>
+              <div
+                class="card-body"
+                id="totalRides"
+                value="<%= totalRides %>"
+                style="color: white; font-weight: bold"
+              >
+                <%= totalRides %>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <a href="/admin/user_all_spend_list/<%= viewuser._id %>">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
+          >
+            <div class="card-icon" style="background: rgba(204, 85, 51, 0.8)">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold">Total Spend</h4>
+              </div>
+              <div
+                class="card-body"
+                id="totalSpend"
+                value="<%= totalSpend %>"
+                style="color: white; font-weight: bold"
+              >
+                <%= totalSpend %>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+     
+    </div>
+  </section>
+
+ <!-- Main Container -->
+<div class="container-fluid">
+  <div class="row">
+    <!-- User Graph -->
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>User Statistics</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="userGraph"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Graph for Revenue -->
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Revenue Statistics</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="revenueGraph"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graph for Orders -->
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Order Statistics</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="orderGraph"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- External CSS -->
+<style>
+  .filter-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+  }
+
+  .filter-options select {
+    height: auto !important;
+    width: 120px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 13px;
+    background-color: #f4f4f9;
+    color: #333;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+</style>
 
 <script>
-  imgInp.onchange = (evt) => {
-    const [file] = imgInp.files;
-    if (file) {
-      blah.src = URL.createObjectURL(file);
-    }
-  };
+  document.addEventListener("DOMContentLoaded", () => {
+    // Context for each graph
+    const userGraphCtx = document.getElementById("userGraph").getContext("2d");
+    const orderGraphCtx = document.getElementById("orderGraph").getContext("2d");
+    const revenueGraphCtx = document.getElementById("revenueGraph").getContext("2d");
+
+    // User Graph setup (Static Data)
+    const userGraph = new Chart(userGraphCtx, {
+      type: "bar",
+      data: {
+        labels: ["Success Orders", "Cancelled Orders"],
+        datasets: [
+          {
+            label: "Count",
+            data: [15, 5], // Static data
+            backgroundColor: ["#6666ff", "#33cc99"],
+            borderColor: ["#4444ff", "#33aa99"],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: "User Order Statistics" },
+        },
+      },
+    });
+
+    // Order Graph setup (Static Data)
+    const orderGraph = new Chart(orderGraphCtx, {
+      type: "doughnut",
+      data: {
+        labels: [
+          "Active Orders",
+          "Delivered Orders",
+          "Cancelled Orders",
+          "Pending Orders",
+        ],
+        datasets: [
+          {
+            label: "Orders",
+            data: [20, 40, 10, 30], // Static data
+            backgroundColor: ["#28a745", "#007bff", "#dc3545", "#ffc107"],
+            borderColor: ["#1d7a34", "#0056b3", "#a71d2a", "#d39e00"],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: "bottom" },
+          title: { display: true, text: "Order Statistics" },
+        },
+      },
+    });
+
+    // Revenue Graph setup (Static Data)
+    const revenueGraph = new Chart(revenueGraphCtx, {
+      type: "line",
+      data: {
+        labels: [
+          "December 1",
+          "December 2",
+          "December 3",
+          "December 4",
+          "December 5",
+          "December 6",
+          "December 7",
+        ],
+        datasets: [
+          {
+            label: "Revenue",
+            data: [100, 200, 150, 300, 250, 180, 210], // Static data
+            backgroundColor: "rgba(76, 175, 80, 0.2)",
+            borderColor: "rgba(76, 175, 80, 1)",
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true },
+          title: { display: true, text: "Revenue Over Time" },
+        },
+      },
+    });
+  });
 </script>

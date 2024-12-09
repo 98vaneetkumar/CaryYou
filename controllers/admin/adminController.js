@@ -243,6 +243,11 @@ module.exports = {
       res.render("Admin/user/view_user", {
         title,
         viewuser,
+        orders: 0,
+        successOrders: 0,
+        cancelledOrders:0,
+        totalRides:0,
+        totalSpend:0,
         session: req.session.user,
         msg: req.flash("msg"),
       });

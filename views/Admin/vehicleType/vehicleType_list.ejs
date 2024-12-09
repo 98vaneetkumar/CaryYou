@@ -38,27 +38,15 @@
                 <td class="text-center"><%= data.category %></td>
                 <td class="text-center"><%= data.fuelType %></td>
                 <td class="text-center">
-                  <% if (data.status == 1) { %>
-                  <button
-                    onclick="changeStatus(this)"
-                    id="status_<%- data.id %>"
-                    class="btn btn-sm btn-success"
-                    data-id="<%= data._id %>"
-                    value="0"
-                  >
-                    Active
-                  </button>
-                  <% } else { %>
-                  <button
-                    onclick="changeStatus(this)"
-                    id="status_<%- data.id %>"
-                    class="btn btn-sm btn-danger"
-                    data-id="<%= data._id %>"
-                    value="1"
-                  >
-                    Inactive
-                  </button>
-                  <% } %>
+                  <label class="switch">
+                    <input
+                      type="checkbox"
+                      onchange="changeStatus(this)"
+                      <%= data.status == 1 ? 'checked' : '' %>
+                      data-id="<%= data._id %>"
+                    />
+                    <span class="slider round"></span>
+                  </label>
                 </td>
                 <td class="text-center">
                   <a
@@ -87,59 +75,42 @@
 </div>
 
 <!-- Include DataTables and Export Button Libraries -->
-<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- DataTables CSS -->
 <link
   rel="stylesheet"
   type="text/css"
   href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"
 />
-
-<!-- DataTables Buttons CSS -->
 <link
   rel="stylesheet"
   type="text/css"
   href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"
 />
-
-<!-- DataTables JS -->
 <script
   type="text/javascript"
   charset="utf8"
   src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"
 ></script>
-
-<!-- DataTables Buttons JS -->
 <script
   type="text/javascript"
   charset="utf8"
   src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"
 ></script>
-
-<!-- JSZip (for Excel export) -->
 <script
   type="text/javascript"
   charset="utf8"
   src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"
 ></script>
-
-<!-- PDFMake (for PDF export) -->
 <script
   type="text/javascript"
   charset="utf8"
   src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"
 ></script>
-
-<!-- vfs_fonts (for PDF export) -->
 <script
   type="text/javascript"
   charset="utf8"
   src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.min.js"
 ></script>
-
-<!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -204,32 +175,72 @@
       });
   }
 
-  const changeStatus = (val) => {
-    let id = val.getAttribute("data-id");
-    let value = val.getAttribute("value");
-    let elemID = val.getAttribute("id");
-    elemID = document.getElementById(elemID);
+  const changeStatus = (checkbox) => {
+    let id = checkbox.getAttribute("data-id");
+    let status = checkbox.checked ? 1 : 0;
 
     $.ajax({
       type: "post",
       url: "/admin/vehicleType_status",
       data: {
         id: id,
-        status: value,
+        status: status,
       },
       success: function (response) {
-        if (value == 1) {
-          elemID.classList.remove("btn-success");
-          elemID.classList.add("btn-danger");
-          elemID.setAttribute("value", 0);
-          elemID.innerText = "Inactive";
-        } else {
-          elemID.classList.remove("btn-danger");
-          elemID.classList.add("btn-success");
-          elemID.setAttribute("value", 1);
-          elemID.innerText = "Active";
-        }
+        // Optionally, you can show a success message here
       },
     });
   };
 </script>
+
+<!-- Toggle Button CSS -->
+<style>
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 50px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    border-radius: 50px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+  }
+
+  input:checked + .slider {
+    background-color: #4caf50;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(14px);
+  }
+
+  .slider.round {
+    border-radius: 50px;
+  }
+</style>

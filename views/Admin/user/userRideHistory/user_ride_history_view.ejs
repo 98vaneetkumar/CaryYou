@@ -1,0 +1,95 @@
+<div class="main-content">
+    <section class="section">
+      <div class="section-header">
+        <h1>Ride History</h1>
+        <div class="section-header-breadcrumb">
+          <div class="breadcrumb-item active">
+            <a href="/admin/dashboard">Dashboard</a>
+          </div>
+          <div class="breadcrumb-item"><a href="/admin/rider_list">Riders</a></div>
+          <div class="breadcrumb-item">Ride History</div>
+        </div>
+      </div>
+  
+      <div class="section-body">
+        <!-- Rider Info Card -->
+        <div class="card">
+          <div class="card-header">
+            <h4>Rider Information</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <!-- Rider Image and Details -->
+              <div class="col-md-4 text-center">
+                <img 
+                  src="<%= rider.image ? rider.image : 'https://avatar.iran.liara.run/public/boy?ridername=' + rider.fullName %>" 
+                  alt="Rider Image" 
+                  class="img-fluid rounded-circle mb-3"
+                  style="width: 150px; height: 150px;">
+                <h5><%= rider.fullName %></h5>
+                <p><strong>Email:</strong> <%= rider.email %></p>
+                <p><strong>Phone:</strong> <%= rider.countryCode %>-<%= rider.phoneNumber %></p>
+              </div>
+              <!-- Vehicle Info -->
+              <div class="col-md-8">
+                <h5>Vehicle Information</h5>
+                <p><strong>Type:</strong> <%= rider.vehicleInfo?.typeOfVehicle || 'N/A' %></p>
+                <p><strong>Number:</strong> <%= rider.vehicleInfo?.vehicleNumber || 'N/A' %></p>
+                <p><strong>Registration Expiry:</strong> <%= rider.vehicleInfo?.regExpDate || 'N/A' %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Ride History Table -->
+        <div class="card mt-4">
+          <div class="card-header">
+            <h4>Ride History</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Pickup Location</th>
+                    <th>Drop Location</th>
+                    <th>Ride Date</th>
+                    <th>Fare Charges</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (rides && rides.length > 0) { %>
+                    <% rides.forEach((ride, index) => { %>
+                      <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= ride.pickupLocation %></td>
+                        <td><%= ride.dropLocation %></td>
+                        <td><%= new Date(ride.date).toLocaleString() %></td>
+                        <td><%= ride.fare %></td>
+                        <td>
+                          <% if (ride.status === 'completed') { %>
+                            <span class="badge badge-success">Completed</span>
+                          <% } else if (ride.status === 'canceled') { %>
+                            <span class="badge badge-danger">Canceled</span>
+                          <% } else { %>
+                            <span class="badge badge-warning">In Progress</span>
+                          <% } %>
+                        </td>
+                      </tr>
+                    <% }) %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="6" class="text-center">No ride history available</td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  
