@@ -6,6 +6,14 @@ const bcrypt = require("bcrypt");
 const emailTamplate = require("../helpers/emailTemplate/forgetPassword");
 const stripe = require("stripe")(process.env.STRIPE_SK);
 const fs = require("fs");
+// const admin = require("firebase-admin");
+
+// // Initialize Firebase Admin with Service Account
+// const serviceAccount = require("./path/to/ecoupon-90aa5-firebase-adminsdk-dojhx-a9db2517ba.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+// });
+
 module.exports = {
   success: async (res, message, body = {}) => {
     try {
@@ -214,4 +222,62 @@ module.exports = {
       return { error: true, message: errorMessage };
     }
   },
+
+  // sendFirebasePush : async (deviceToken, bodyData, type) => {
+  //   try {
+  //     console.log("Body Data:", bodyData);
+  //     console.log("Device Token:", deviceToken);
+  
+  //     // Add additional payload details
+  //     bodyData.priority = "high";
+  //     bodyData.sound = "default";
+  //     bodyData.title = bodyData.message;
+  
+  //     // Construct the FCM message
+  //     const message = {
+  //       token: deviceToken,
+  //       data: {
+  //         ...bodyData,
+  //         type: type, // Optional: Additional metadata
+  //       },
+  //       android: {
+  //         priority: "high",
+  //         notification: {
+  //           title: bodyData.title,
+  //           body: bodyData.message,
+  //           sound: "default",
+  //         },
+  //       },
+  //       apns: {
+  //         payload: {
+  //           aps: {
+  //             alert: {
+  //               title: bodyData.title,
+  //               body: bodyData.message,
+  //             },
+  //             sound: "default",
+  //           },
+  //         },
+  //       },
+  //       webpush: {
+  //         notification: {
+  //           title: bodyData.title,
+  //           body: bodyData.message,
+  //           icon: "https://yourwebsite.com/path-to-icon.png", // Add an icon URL
+  //         },
+  //         fcm_options: {
+  //           link: "https://yourwebsite.com", // Optional: Link to open on click
+  //         },
+  //       },
+  //     };
+  
+  //     // Send the notification
+  //     const response = await admin.messaging().send(message);
+  //     console.log("Notification sent successfully:", response);
+  //   } catch (error) {
+  //     console.error("Error sending notification:", error);
+  //   }
+  // },
 };
+
+

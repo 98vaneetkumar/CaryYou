@@ -15,13 +15,13 @@
               <div class="card profile-widget">
                 <div class="profile-widget-header text-center py-3">
                   <% if(session.image !='' ) { %>
-                    <img alt="image" width="200" height="200" id="blah" src="<%=session.image%>"
+                    <img alt="image" width="200" height="200" id="blah" src="<%=session.user.image%>"
                       class="profile_img rounded-circle"></td>
                     <% } else { %>
                       <img src="/assets/img/defaultimage.jpg" width="200" height="200" id="blah"
                         class="profile_img rounded-circle" alt=""></td>
                       <% } %>
-                        <input type="file" name="image" title="" value="<%=session.image%>" id="imgInp" accept=""
+                        <input type="file" name="image" title="" value="<%=session.image%>" id="imgInp" accept="image/*"
                           style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
                 </div>
 
@@ -31,14 +31,14 @@
               <div class="card-body">
                 <div class="form-group col-12 floating-addon">
                   <label>Name</label>
-                  <input type="text" class="form-control" name="name" value="<%=session.fullName%>" required>
+                  <input type="text" class="form-control" name="name" value="<%=session.user.fullName%>" required>
                   <input type="hidden" name="hiddenid" value="">
                 </div>
 
                 <div class="form-group col-12 floating-addon">
                   <label>Email</label>
                   <div class="input-group">
-                    <input type="email" class="form-control" name="email" value="<%=session.email%>" disabled>
+                    <input type="email" class="form-control" name="email" value="<%=session.user.email%>" disabled>
                     <input type="hidden" name="" value="">
                     <div class="invalid-feedback">
                       Please fill in the email
@@ -55,7 +55,7 @@
                       name="phone"
                       oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                       maxlength="12"
-                      value="<%=session.phoneNumber%>"
+                      value="<%=session.user.phoneNumber%>"
                       required
                     />
                     <div class="invalid-feedback">
@@ -63,6 +63,16 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- New Organisation Name Field -->
+                <div class="form-group col-12 floating-addon">
+                  <label>Organisation Name</label>
+                  <input type="text" class="form-control" name="organisation" value="<%= session.restaurant?.name %>" required>
+                  <div class="invalid-feedback">
+                    Please fill in the organisation name
+                  </div>
+                </div>
+
                 
                 <div class="form-group">
                   <div class="col-sm-12 col-md-12 text-right">
@@ -70,21 +80,19 @@
                   </div>
                 </div>
                 
+              </div>
             </div>
-          </div>
         </form>
       </div>
     </div>
   </section>
 </div>
 
-
-
 <script>
   imgInp.onchange = evt => {
-    const [file] = imgInp.files
+    const [file] = imgInp.files;
     if (file) {
-      blah.src = URL.createObjectURL(file)
+      blah.src = URL.createObjectURL(file);
     }
   }
 </script>
@@ -99,90 +107,70 @@
   $(document).ready(function () {
 
     jQuery.validator.addMethod("noSpace", function (value, element) {
-      console.log(value,"MMMMMMMMMMM")
       return value == '' || value.trim().length != 0;
-    },
+    });
 
-      jQuery.validator.addMethod("emailExt", function (value, element, param) {
-        return value.match(/^[a-zA-Z0-9_\.%\+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/);
-      }, 'Your e-mail is wrong'),
+    jQuery.validator.addMethod("emailExt", function (value, element, param) {
+      return value.match(/^[a-zA-Z0-9_\.%\+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/);
+    }, 'Your e-mail is wrong');
 
-
-      $('form[id="addForm"]').validate({
-        keypress: function (element) {
-          var element_id = $(element).attr('id');
-          if (this.settings.rules[element_id].keypress !== false) {
-            $(element).valid();
-          }
-        },
-
-        rules: {
-          name: {
-            required: true,
-            noSpace: true,
-            maxlength: 30
-          },
-          lastname: {
-            required: true,
-            noSpace: true,
-            maxlength: 20
-          },
-          email: {
-            required: true,
-            noSpace: true,
-            emailExt: true
-          },
-          password: {
-            noSpace: true,
-            required: true,
-            minlength: 5
-          },
-          phone: {
-            digits: true,
-            required: true,
-            noSpace: true,
-            minlength: 10,
-            maxlength: 12
-          },
-          location: {
-            required: true,
-            noSpace: true,
-            maxlength: 20
-          },
-
-        },
-        messages: {
-
-          name: {
-            required: "This field is required.",
-            noSpace: "Space not allowed",
-            maxlength: "First name should be 30 charcater"
-          },
-
-          lastname: {
-            required: "This field is required.",
-            noSpace: "Space not allowed",
-            maxlength: "Last name should be 20 charcater"
-          },
-
-          email: {
-            required: " This filed is required"
-          },
-          phone: {
-            required: "This field is required.",
-            noSpace: "Space not allowed",
-            maxlength: "Phone Number should be 12 charcater"
-          },
-          location: {
-            required: "This field is required.",
-            noSpace: "Space not allowed",
-            maxlength: "Location should be 20 charcater"
-          },
-
-        },
-        submitHandler: function (form) {
-          form.submit();
+    $('form[id="addForm"]').validate({
+      keypress: function (element) {
+        var element_id = $(element).attr('id');
+        if (this.settings.rules[element_id].keypress !== false) {
+          $(element).valid();
         }
-      }));
+      },
+
+      rules: {
+        name: {
+          required: true,
+          noSpace: true,
+          maxlength: 30
+        },
+        email: {
+          required: true,
+          noSpace: true,
+          emailExt: true
+        },
+        phone: {
+          digits: true,
+          required: true,
+          noSpace: true,
+          minlength: 10,
+          maxlength: 12
+        },
+        organisation: {
+          required: true,
+          noSpace: true,
+          maxlength: 50
+        }
+      },
+
+      messages: {
+        name: {
+          required: "This field is required.",
+          noSpace: "Space not allowed",
+          maxlength: "Name should be 30 characters"
+        },
+        email: {
+          required: "This field is required"
+        },
+        phone: {
+          required: "This field is required.",
+          noSpace: "Space not allowed",
+          maxlength: "Phone number should be 12 characters"
+        },
+        organisation: {
+          required: "This field is required.",
+          noSpace: "Space not allowed",
+          maxlength: "Organisation name should be 50 characters"
+        }
+      },
+      
+      submitHandler: function (form) {
+        form.submit();
+      }
+    });
   });
 </script>

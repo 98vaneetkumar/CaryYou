@@ -9,34 +9,48 @@ module.exports = {
 
   Login: async (req, res) => {
     try {
+      // Step 1: Find user by email and role
       let findUser = await Models.userModel.findOne({
         role: 1,
         email: req.body.email,
       });
+  
+      // Step 2: If user not found, send a flash message and redirect
       if (!findUser) {
-        console.log("Please enter valid email");
+        console.log("Please enter a valid email");
         req.flash("msg", "Incorrect email");
-        res.redirect("/subadmin/login");
+        return res.redirect("/subadmin/login");  // Use return to exit the function early
       }
-
-      let checkPassword = await bcrypt.compare(
-        req.body.password,
-        findUser.password
-      );
+  
+      // Step 3: Check if the password is correct
+      let checkPassword = await bcrypt.compare(req.body.password, findUser.password);
       if (!checkPassword) {
         req.flash("msg", "Incorrect password");
-        res.redirect("/subadmin/login");
-      } else {
-        req.session.user = findUser;
-        req.flash("msg", "Login Successfully");
-        setTimeout(() => {
-          res.redirect("/subadmin/dashboard");
-        }, 500);
+        return res.redirect("/subadmin/login");  // Again, use return to exit early
       }
+  
+      let restaurantDetail = await Models.restaurantModel.findOne({ userId: findUser._id })
+        .populate('userId')
+        .exec();
+
+        console.log('=====', restaurantDetail)
+  
+      req.session.user = findUser;
+      if(restaurantDetail) {
+        req.session.restaurant = restaurantDetail
+      }
+      req.flash("msg", "Login Successfully");
+  
+      setTimeout(() => {
+        res.redirect("/subadmin/dashboard");
+      }, 500);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      req.flash("msg", "An error occurred, please try again later.");
+      res.redirect("/subadmin/login");  // Redirect to login in case of error
     }
   },
+  
   logout: async (req, res) => {
     try {
       req.session.destroy((err) => {});
@@ -143,7 +157,7 @@ module.exports = {
       let title = "subAdmin_profile";
       res.render("SubAdmin/SubAdmin/SubAdmin_profile", {
         title,
-        session: req.session.user,
+        session: req.session,
         msg: req.flash("msg"),
       });
     } catch (error) {
