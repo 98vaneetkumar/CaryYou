@@ -276,42 +276,701 @@ module.exports = {
 
 
 
-    //<----------------------Restaurant------------------->
-    restaurant_list: async (req, res) => {
-      try {
-        let title = "provider_list";
-        let userdata = await Models.restaurantModel
-          .find()
-          .populate("userId") // Populating the user details based on userId
-          .sort({ createdAt: -1 }); // Sorting by creation date, most recent first
-        res.render("subAdmin/restaurant/restaurant_list", {
-          title,
-          userdata, // Passing the list of restaurants to the view
-          session: req.session.user, // Passing the session data for authentication purposes
-          msg: req.flash("msg"), // Flash message, if any
-        });
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
-      
-    },
+
+
+  //---------------restaurant apis-------------------
+
+  restaurant_list: async (req, res) => {
+    try {
+      let title = "provider_list";
+      let userdata = await Models.restaurantModel
+        .find()
+        .populate("userId") // Populating the user details based on userId
+        .sort({ createdAt: -1 }); // Sorting by creation date, most recent first
+      res.render("subAdmin/restaurant/restaurant_list", {
+        title,
+        userdata, // Passing the list of restaurants to the view
+        session: req.session.user, // Passing the session data for authentication purposes
+        msg: req.flash("msg"), // Flash message, if any
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
+  view_restaurant: async (req, res) => {
+    try {
+      let title = "provider_list";
+      let viewuser = await Models.restaurantModel
+        .findById({ _id: req.params.id })
+        .populate("userId");
+      const orders = await Models.orderModel.countDocuments({restaurant: req.params.id,});
+      const pendingOrders = await Models.orderModel.countDocuments({
+        status: 1,
+        restaurant: req.params.id,
+      });
+      const activeOrders = await Models.orderModel.countDocuments({
+        status: 4,
+        restaurant: req.params.id,
+      });
+      const deliveredOrders = await Models.orderModel.countDocuments({
+        status: 2,
+        restaurant: req.params.id,
+      });
+      const cancelledOrders = await Models.orderModel.countDocuments({
+        status: 3,
+        restaurant: req.params.id,
+      });
+
+      res.render("subAdmin/restaurant/restaurant_view", {
+        title,
+        viewuser,
+        category: viewuser?.category?.length || 0,
+        subCategory: viewuser?.subCategory?.length || 0,
+        products: viewuser?.products?.length || 0,
+        orders,
+        pendingOrders,
+        activeOrders,
+        deliveredOrders,
+        cancelledOrders,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  restaurant_dashboard_filter: async (req, res) => {
+    try {
+      const title = "provider_list";
+      const filter = req.body.filter || "all"; // Get the filter parameter from the request body
+      const _id=req.body.id
+      // Calculate date range based on the filter
+      const now = new Date();
+      let startDate, endDate;
   
-    view_restaurant: async (req, res) => {
-      try {
-        let title = "provider_list";
-        let viewuser = await Models.restaurantModel.findById({ _id: req.params.id }).populate("userId");
-        const orders = await Models.orderModel.countDocuments();
-        const activeOrders = await Models.orderModel.countDocuments({ status: 1 ,restaurant:req.params.id });
-        const deliveredOrders = await Models.orderModel.countDocuments({ status: 2,restaurant:req.params.id});
-        const cancelledOrders = await Models.orderModel.countDocuments({ status: 3,restaurant:req.params.id });
-        res.render("subAdmin/restaurant/restaurant_view", {
-          title,
-          viewuser,
+      switch (filter) {
+        case "today":
+          startDate = new Date(now.setHours(0, 0, 0, 0));
+          endDate = new Date(now.setHours(23, 59, 59, 999));
+          break;
+        case "weekly":
+          startDate = new Date(now.setDate(now.getDate() - 7));
+          endDate = new Date();
+          break;
+        case "monthly":
+          startDate = new Date(now.setMonth(now.getMonth() - 1));
+          endDate = new Date();
+          break;
+        case "3months":
+          startDate = new Date(now.setMonth(now.getMonth() - 3));
+          endDate = new Date();
+          break;
+        case "6months":
+          startDate = new Date(now.setMonth(now.getMonth() - 6));
+          endDate = new Date();
+          break;
+        case "1year":
+          startDate = new Date(now.setFullYear(now.getFullYear() - 1));
+          endDate = new Date();
+          break;
+        case "5years":
+          startDate = new Date(now.setFullYear(now.getFullYear() - 5));
+          endDate = new Date();
+          break;
+        default:
+          startDate = null; // No date filter
+          endDate = null;
+      }
+  
+      // Define the query object for date-based filtering
+      const dateQuery =
+        startDate && endDate
+          ? { createdAt: { $gte: new Date(startDate) , $lte: new Date(endDate) } }
+          : {};
+      // Fetch filtered restaurant data
+      const userdata = await Models.restaurantModel
+        .findById({_id, ...dateQuery })
+        .populate("userId") // Populating the user details based on userId
+        .sort({ createdAt: -1 }); // Sorting by creation date, most recent first
+        const orders = await Models.orderModel.countDocuments({restaurant: req.params.id,...dateQuery});
+        const pendingOrders = await Models.orderModel.countDocuments({
+        status: 1,
+        restaurant: req.params.id,
+        ...dateQuery
+      });
+      const activeOrders = await Models.orderModel.countDocuments({
+        status: 4,
+        restaurant: req.params.id,
+        ...dateQuery
+      });
+      const deliveredOrders = await Models.orderModel.countDocuments({
+        status: 2,
+        restaurant: req.params.id,
+        ...dateQuery
+      });
+      const cancelledOrders = await Models.orderModel.countDocuments({
+        status: 3,
+        restaurant: req.params.id,
+        ...dateQuery
+      });
+  console.log("userdata",userdata)
+
+       return res.json({
+          userdata,
+          category: userdata?.category?.length || 0,
+          subCategory: userdata?.subcategory?.length || 0,
+          products: userdata?.products?.length || 0,
           orders,
+          pendingOrders,
           activeOrders,
           deliveredOrders,
           cancelledOrders,
+        })
+    } catch (error) {
+      console.error("Error in restaurant_view:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  },
+  delete_restaurant: async (req, res) => {
+    try {
+      let userid = req.body.id;
+      let remove = await Models.userModel.deleteOne({ _id: userid });
+      res.redirect("/subAdmin/user_list");
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  restaurant_status: async (req, res) => {
+    try {
+      // Update the restaurant status
+      const updateRestaurant = await Models.restaurantModel.updateOne(
+        { _id: req.body.id },
+        { status: req.body.value }
+      );
+  
+      if (updateRestaurant.nModified > 0) {
+        const restaurant = await Models.restaurantModel.findById(req.body.id);
+  
+        if (restaurant && restaurant.userId) {
+          await Models.userModel.updateOne(
+            { _id: restaurant.userId },
+            { status: req.body.value }
+          );
+        }
+  
+        req.flash("msg", "Status updated successfully");
+        
+        // Send explicit boolean based on the updated status
+        return res.status(200).send(req.body.value == 1); // `true` for active, `false` for inactive
+      } else {
+        // Handle no modification
+        return res.status(404).send({ error: "No changes made or restaurant not found." });
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+      res.status(500).send({ error: "Internal Server Error" });
+    }
+  },
+
+
+
+    //<----------------------order apis------------------->
+    restaurant_order_list: async (req, res) => {
+      try {
+        const title = "provider_list";
+        const orders = await Models.orderModel
+          .find({restaurant:req.params._id})
+          .populate("orderBy", "fullName") 
+          .populate("restaurant", "name")
+          .sort({ createdAt: -1 });
+        
+        const formattedOrders = orders.map((order, index) => ({
+          sNo: index + 1,
+          orderBy: order.orderBy?.fullName || "N/A",
+          restaurant: order.restaurant?.name || "N/A",
+          item: order.item || "N/A",
+          orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+          status: order.status || 0, // Default to 0 if status is missing
+          id: order._id,
+        }));
+    
+        res.render("subAdmin/restaurant/restaurantOrders/order_list", {
+          title,
+          restaurant:req.params._id,
+          orderdata: formattedOrders,
+          session: req.session.user, // Ensure session data is passed here
+          msg: req.flash("msg") || '', // Flash message
+        });
+      } catch (error) {
+        console.error("Error fetching order list:", error);
+        req.flash("msg", "Error fetching order list");
+        res.redirect("/subAdmin/dashboard");
+      }
+    },
+    restaurant_view_order: async (req, res) => {
+      try {
+        let title = "provider_list";
+        // Fetch the order details by its ID from the database
+        const order = await Models.orderModel
+          .findById(req.params._id)
+          .populate("orderBy", "fullName") // Populate with fullName for the user
+          .populate("restaurant", "name") // Populate with name for the restaurant
+          .populate("rider", "fullName"); // Populate with fullName for the rider
+        // If the order is not found, return a 404 error
+        if (!order) {
+          return res.status(404).json({
+            success: false,
+            message: "Order not found",
+          });
+        }
+  
+        // Function to map order status to a readable format
+        function getOrderStatus(status) {
+          const statuses = {
+            1: "Pending", // Order is pending
+            2: "Success", // Order is successful
+            3: "Rejected", // Order was rejected
+            4: "Ongoing", // Order is ongoing
+            5: "Returned", // Order has been returned
+          };
+          return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
+        }
+        // Render the view with order details
+        res.render("subAdmin/restaurant/restaurantOrders/view_order", {
+          title, // Pass the title to the view
+          order, // Pass the order details to the view
+          orderStatus: getOrderStatus(order.status), // Pass the order status
+          session: req.session.user, // Pass session details (if needed)
+          msg: req.flash("msg"), // Pass any flash messages (if needed)
+        });
+      } catch (error) {
+        // Log any errors and send a 500 response in case of an internal server error
+        console.error("Error fetching order details:", error);
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    },
+  
+    restaurant_active_order_list: async (req, res) => {
+      try {
+        const title = "provider_list";
+        const orders = await Models.orderModel
+          .find({ status: 4 ,restaurant:req.params._id})
+          .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
+          .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+          .sort({ createdAt: -1 });
+  
+        const formattedOrders = orders.map((order, index) => ({
+          sNo: index + 1,
+          orderBy: order.orderBy?.fullName || "N/A",
+          restaurant: order.restaurant?.name || "N/A",
+          item: order.item || "N/A",
+          orderDateTime: order.createdAt
+            ? order.createdAt.toLocaleString()
+            : "N/A",
+          id: order._id,
+        }));
+  
+        res.render("subAdmin/restaurant/restaurantOrders/active_order_list", {
+          title,
+          restaurant:req.params._id,
+          orderdata: formattedOrders,
+          session: req.session.user, // Ensure session data is passed here
+          msg: req.flash("msg") || "", // Flash message
+        });
+      } catch (error) {
+        console.error("Error fetching order list:", error);
+        req.flash("msg", "Error fetching order list");
+        res.redirect("/subAdmin/dashboard");
+      }
+    },
+    restaurant_active_view_order: async (req, res) => {
+      try {
+        let title = "provider_list";
+        // Fetch the order details by its ID from the database
+        const order = await Models.orderModel
+          .findById(req.params._id)
+          .populate("orderBy", "fullName") // Populate the orderBy field with only the name of the user
+          .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
+          .populate("rider", "name"); // Populate the rider field with only the name of the rider
+  
+        // If the order is not found, return a 404 error
+        if (!order) {
+          return res.status(404).json({
+            success: false,
+            message: "Order not found",
+          });
+        }
+  
+        // Function to map order status to a readable format
+        function getOrderStatus(status) {
+          const statuses = {
+            1: "Pending", // Order is pending
+            2: "Success", // Order is successful
+            3: "Rejected", // Order was rejected
+            4: "Ongoing", // Order is ongoing
+            5: "Returned", // Order has been returned
+          };
+          return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
+        }
+  
+        // Render the view with order details
+        res.render("subAdmin/restaurant/restaurantOrders/active_order_view", {
+          title, // Pass the title to the view
+          order, // Pass the order details to the view
+          orderStatus: getOrderStatus(order.status), // Pass the order status
+          session: req.session.user, // Pass session details (if needed)
+          msg: req.flash("msg"), // Pass any flash messages (if needed)
+        });
+      } catch (error) {
+        // Log any errors and send a 500 response in case of an internal server error
+        console.error("Error fetching order details:", error);
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    },
+  
+    restaurant_delivered_order_list: async (req, res) => {
+      try {
+        const title = "provider_list";
+        const orders = await Models.orderModel
+          .find({ status: 2 ,restaurant:req.params._id})
+          .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
+          .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+          .sort({ createdAt: -1 });
+  
+        const formattedOrders = orders.map((order, index) => ({
+          sNo: index + 1,
+          orderBy: order.orderBy?.fullName || "N/A",
+          restaurant: order.restaurant?.name || "N/A",
+          item: order.item || "N/A",
+          orderDateTime: order.createdAt
+            ? order.createdAt.toLocaleString()
+            : "N/A",
+          id: order._id,
+        }));
+  
+        res.render("subAdmin/restaurant/restaurantOrders/delivered_order_list", {
+          title,
+          restaurant:req.params._id,
+          orderdata: formattedOrders,
+          session: req.session.user, // Ensure session data is passed here
+          msg: req.flash("msg") || "", // Flash message
+        });
+      } catch (error) {
+        console.error("Error fetching order list:", error);
+        req.flash("msg", "Error fetching order list");
+        res.redirect("/subAdmin/dashboard");
+      }
+    },
+    restaurant_delivered_view_order: async (req, res) => {
+      try {
+        let title = "provider_list";
+        // Fetch the order details by its ID from the database
+        const order = await Models.orderModel
+          .findById(req.params._id)
+          .populate("orderBy", "fullName") // Populate the orderBy field with only the name of the user
+          .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
+          .populate("rider", "name"); // Populate the rider field with only the name of the rider
+        console.log("order", order);
+        // If the order is not found, return a 404 error
+        if (!order) {
+          return res.status(404).json({
+            success: false,
+            message: "Order not found",
+          });
+        }
+  
+        // Function to map order status to a readable format
+        function getOrderStatus(status) {
+          const statuses = {
+            1: "Pending", // Order is pending
+            2: "Success", // Order is successful
+            3: "Rejected", // Order was rejected
+            4: "Ongoing", // Order is ongoing
+            5: "Returned", // Order has been returned
+          };
+          return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
+        }
+  
+        // Render the view with order details
+        res.render("subAdmin/restaurant/restaurantOrders/delivered_order_view", {
+          title, // Pass the title to the view
+          order, // Pass the order details to the view
+          orderStatus: getOrderStatus(order.status), // Pass the order status
+          session: req.session.user, // Pass session details (if needed)
+          msg: req.flash("msg"), // Pass any flash messages (if needed)
+        });
+      } catch (error) {
+        // Log any errors and send a 500 response in case of an internal server error
+        console.error("Error fetching order details:", error);
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    },
+    restaurant_cancel_order_list: async (req, res) => {
+      try {
+        const title = "provider_list";
+        const orders = await Models.orderModel
+          .find({ status: 3 ,restaurant:req.params._id})
+          .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
+          .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+          .sort({ createdAt: -1 });
+  
+        const formattedOrders = orders.map((order, index) => ({
+          sNo: index + 1,
+          orderBy: order.orderBy?.fullName || "N/A",
+          restaurant: order.restaurant?.name || "N/A",
+          item: order.item || "N/A",
+          orderDateTime: order.createdAt
+            ? order.createdAt.toLocaleString()
+            : "N/A",
+          id: order._id,
+        }));
+  
+        res.render("subAdmin/restaurant/restaurantOrders/cancel_order_list", {
+          title,
+          restaurant:req.params._id,
+          orderdata: formattedOrders,
+          session: req.session.user, // Ensure session data is passed here
+          msg: req.flash("msg") || "", // Flash message
+        });
+      } catch (error) {
+        console.error("Error fetching order list:", error);
+        req.flash("msg", "Error fetching order list");
+        res.redirect("/subAdmin/dashboard");
+      }
+    },
+    restaurant_cancel_view_order: async (req, res) => {
+      try {
+        let title = "provider_list";
+        // Fetch the order details by its ID from the database
+        const order = await Models.orderModel
+          .findById(req.params._id)
+          .populate("orderBy", "fullName") // Populate the orderBy field with only the name of the user
+          .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
+          .populate("rider", "name"); // Populate the rider field with only the name of the rider
+  
+        // If the order is not found, return a 404 error
+        if (!order) {
+          return res.status(404).json({
+            success: false,
+            message: "Order not found",
+          });
+        }
+  
+        // Function to map order status to a readable format
+        function getOrderStatus(status) {
+          const statuses = {
+            1: "Pending", // Order is pending
+            2: "Success", // Order is successful
+            3: "Rejected", // Order was rejected
+            4: "Ongoing", // Order is ongoing
+            5: "Returned", // Order has been returned
+          };
+          return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
+        }
+  
+        // Render the view with order details
+        res.render("subAdmin/restaurant/restaurantOrders/cancel_order_view", {
+          title, // Pass the title to the view
+          order, // Pass the order details to the view
+          orderStatus: getOrderStatus(order.status), // Pass the order status
+          session: req.session.user, // Pass session details (if needed)
+          msg: req.flash("msg"), // Pass any flash messages (if needed)
+        });
+      } catch (error) {
+        // Log any errors and send a 500 response in case of an internal server error
+        console.error("Error fetching order details:", error);
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    },
+  
+    restaurant_pending_order_list: async (req, res) => {
+      try {
+        const title = "provider_list";
+        const orders = await Models.orderModel
+          .find({ status: 1,restaurant:req.params._id })
+          .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
+          .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+          .sort({ createdAt: -1 });
+  
+        const formattedOrders = orders.map((order, index) => ({
+          sNo: index + 1,
+          orderBy: order.orderBy?.fullName || "N/A",
+          restaurant: order.restaurant?.name || "N/A",
+          item: order.item || "N/A",
+          orderDateTime: order.createdAt
+            ? order.createdAt.toLocaleString()
+            : "N/A",
+          id: order._id,
+        }));
+  
+        res.render("subAdmin/restaurant/restaurantOrders/pending_order_list", {
+          title,
+          restaurant:req.params._id,
+          orderdata: formattedOrders,
+          session: req.session.user, // Ensure session data is passed here
+          msg: req.flash("msg") || "", // Flash message
+        });
+      } catch (error) {
+        console.error("Error fetching order list:", error);
+        req.flash("msg", "Error fetching order list");
+        res.redirect("/subAdmin/dashboard");
+      }
+    },
+    restaurant_pending_view_order: async (req, res) => {
+      try {
+        let title = "provider_list";
+        // Fetch the order details by its ID from the database
+        const order = await Models.orderModel
+          .findById(req.params._id)
+          .populate("orderBy", "fullName") // Populate the orderBy field with only the name of the user
+          .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
+          .populate("rider", "name"); // Populate the rider field with only the name of the rider
+  
+        // If the order is not found, return a 404 error
+        if (!order) {
+          return res.status(404).json({
+            success: false,
+            message: "Order not found",
+          });
+        }
+  
+        // Function to map order status to a readable format
+        function getOrderStatus(status) {
+          const statuses = {
+            1: "Pending", // Order is pending
+            2: "Success", // Order is successful
+            3: "Rejected", // Order was rejected
+            4: "Ongoing", // Order is ongoing
+            5: "Returned", // Order has been returned
+          };
+          return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
+        }
+  
+        // Render the view with order details
+        res.render("subAdmin/restaurant/restaurantOrders/pending_order_view", {
+          title, // Pass the title to the view
+          order, // Pass the order details to the view
+          orderStatus: getOrderStatus(order.status), // Pass the order status
+          session: req.session.user, // Pass session details (if needed)
+          msg: req.flash("msg"), // Pass any flash messages (if needed)
+        });
+      } catch (error) {
+        // Log any errors and send a 500 response in case of an internal server error
+        console.error("Error fetching order details:", error);
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    },
+  
+    restaurant_return_order_list: async (req, res) => {
+      try {
+        const title = "provider_list";
+        const orders = await Models.orderModel
+          .find({ status: 5 ,restaurant:req.params._id})
+          .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
+          .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
+          .sort({ createdAt: -1 });
+  
+        const formattedOrders = orders.map((order, index) => ({
+          sNo: index + 1,
+          orderBy: order.orderBy?.fullName || "N/A",
+          restaurant: order.restaurant?.name || "N/A",
+          item: order.item || "N/A",
+          orderDateTime: order.createdAt
+            ? order.createdAt.toLocaleString()
+            : "N/A",
+          id: order._id,
+        }));
+  
+        res.render("subAdmin/restaurant/restaurantOrders/pending_order_list", {
+          title,
+          restaurant:req.params._id,
+          orderdata: formattedOrders,
+          session: req.session.user, // Ensure session data is passed here
+          msg: req.flash("msg") || "", // Flash message
+        });
+      } catch (error) {
+        console.error("Error fetching order list:", error);
+        req.flash("msg", "Error fetching order list");
+        res.redirect("/subAdmin/dashboard");
+      }
+    },
+    restaurant_return_view_order: async (req, res) => {
+      try {
+        let title = "provider_list";
+        // Fetch the order details by its ID from the database
+        const order = await Models.orderModel
+          .findById(req.params._id)
+          .populate("orderBy", "fullName") // Populate the orderBy field with only the name of the user
+          .populate("restaurant", "name") // Populate the restaurant field with only the name of the restaurant
+          .populate("rider", "name"); // Populate the rider field with only the name of the rider
+  
+        // If the order is not found, return a 404 error
+        if (!order) {
+          return res.status(404).json({
+            success: false,
+            message: "Order not found",
+          });
+        }
+  
+        // Function to map order status to a readable format
+        function getOrderStatus(status) {
+          const statuses = {
+            1: "Pending", // Order is pending
+            2: "Success", // Order is successful
+            3: "Rejected", // Order was rejected
+            4: "Ongoing", // Order is ongoing
+            5: "Returned", // Order has been returned
+          };
+          return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
+        }
+  
+        // Render the view with order details
+        res.render("subAdmin/restaurant/restaurantOrders/pending_order_view", {
+          title, // Pass the title to the view
+          order, // Pass the order details to the view
+          orderStatus: getOrderStatus(order.status), // Pass the order status
+          session: req.session.user, // Pass session details (if needed)
+          msg: req.flash("msg"), // Pass any flash messages (if needed)
+        });
+      } catch (error) {
+        // Log any errors and send a 500 response in case of an internal server error
+        console.error("Error fetching order details:", error);
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    },
+    restaurant_category: async (req, res) => {
+      try {
+        let title = "provider_list";
+        let viewuser = await Models.restaurantModel
+          .findById({ _id: req.params._id })
+          .populate("userId");
+      
+        res.render("subAdmin/restaurant/restaurantCatSubCatProduct/restaurant_category_list", {
+          title,
+          viewuser,
+          restaurant:req.params._id,
           session: req.session.user,
           msg: req.flash("msg"),
         });
@@ -320,28 +979,113 @@ module.exports = {
         throw error;
       }
     },
-  
-    delete_restaurant: async (req, res) => {
+    restaurant_subCategory: async (req, res) => {
       try {
-        let userid = req.body.id;
-        let remove = await Models.userModel.deleteOne({ _id: userid });
-        res.redirect("/subAdmin/user_list");
+        let title = "provider_list";
+        const viewuser = await Models.restaurantModel
+        .findById(req.params._id)
+        .populate("userId") // Populate user information
+        .lean(); // Use `.lean()` to get a plain JavaScript object
+      
+      if (viewuser) {
+        // Map subCategories with corresponding category data
+        viewuser.subCategory = viewuser.subCategory.map((subCat) => {
+          const matchedCategory = viewuser.category.find(
+            (cat) => cat._id.toString() === subCat.categoryId.toString()
+          );
+      
+          return {
+            ...subCat,
+            categoryName: matchedCategory ? matchedCategory.name : null,
+            categoryImage: matchedCategory ? matchedCategory.image : null,
+          };
+        });
+      }
+          
+  
+          res.render("subAdmin/restaurant/restaurantCatSubCatProduct/restaurant_subCategory_list", {
+          title,
+          viewuser,
+          restaurant:req.params._id,
+          session: req.session.user,
+          msg: req.flash("msg"),
+        });
       } catch (error) {
         console.log(error);
         throw error;
       }
     },
-  
-    restaurant_status: async (req, res) => {
+    restaurant_product: async (req, res) => {
       try {
-        var check = await Models.restaurantModel.updateOne(
-          { _id: req.body.id },
-          { status: req.body.value }
-        );
-        req.flash("msg", "Status update successfully");
+        let title = "provider_list";
+        const viewuser = await Models.restaurantModel
+        .findById(req.params._id)
+        .populate("userId") // Populate user information
+        .lean(); // Use `.lean()` to get a plain JavaScript object
+      
+      if (viewuser) {
+        // Map subCategories with corresponding category data
+        viewuser.products = viewuser.products.map((subCat) => {
+          const matchedSubCategory = viewuser.subCategory.find(
+            (cat) => cat._id.toString() === subCat.subCategoryId.toString()
+          );
+      
+          return {
+            ...subCat,
+            subCategoryName: matchedSubCategory ? matchedSubCategory.name : null,
+            subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
+          };
+        });
+      }
+      
+      console.log(viewuser);
+      
   
-        if (req.body.value == 0) res.send(false);
-        if (req.body.value == 1) res.send(true);
+          res.render("subAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
+          title,
+          viewuser,
+          restaurant:req.params._id,
+          session: req.session.user,
+          msg: req.flash("msg"),
+        });
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    },
+    restaurant_product_view: async (req, res) => {
+      try {
+        let title = "provider_list";
+        const viewuser = await Models.restaurantModel
+        .findById(req.params._id)
+        .populate("userId") // Populate user information
+        .lean(); // Use `.lean()` to get a plain JavaScript object
+      
+      if (viewuser) {
+        // Map subCategories with corresponding category data
+        viewuser.products = viewuser.products.map((subCat) => {
+          const matchedSubCategory = viewuser.subCategory.find(
+            (cat) => cat._id.toString() === subCat.subCategoryId.toString()
+          );
+      
+          return {
+            ...subCat,
+            subCategoryName: matchedSubCategory ? matchedSubCategory.name : null,
+            subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
+          };
+        });
+      }
+      
+      console.log(viewuser);
+      
+  
+          res.render("subAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
+          title,
+          viewuser,
+          restaurant:req.params._id,
+          session: req.session.user,
+          msg: req.flash("msg"),
+        });
       } catch (error) {
         console.log(error);
         throw error;

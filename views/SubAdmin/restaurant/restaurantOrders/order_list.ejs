@@ -1,0 +1,196 @@
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <h1>Restaurant Orders</h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="/subAdmin/view_restaurant/<%=restaurant%>">Restaurant Dashboard</a></div>
+        <div class="breadcrumb-item">Restaurant Orders</div>
+      </div>
+    </div>
+       <!-- Back Button -->
+       <div class="form-group text-left ml-3 mt-2">
+        <a href="/subAdmin/view_restaurant/<%=restaurant%>" class="btn btn-dark rounded-pill">
+          <i class="fas fa-arrow-left"></i> Back
+        </a>
+      </div>
+    <div class="col-12 col-mt-5">
+      <div class="card-datatable">
+        <div class="table-responsive">
+          <table id="myTable" class="table table-hover table-md">
+            <thead>
+              <tr style="background-color: #ebf2f2;">
+                <th scope="col">S No.</th>
+                <th scope="col">Order By</th>
+                <th scope="col">Restaurant</th>
+                <th scope="col">Item</th>
+                <th scope="col">Order D/T</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% orderdata.forEach(function(data, i) { %>
+                <tr>
+                  <td><%= data.sNo %></td>
+                  <td><%= data.orderBy %></td>
+                  <td><%= data.restaurant %></td>
+                  <td><%= data.item %></td>
+                  <td><%= data.orderDateTime %></td>
+                  
+                  <!-- Status Column with Dynamic Colors -->
+                  <td>
+                    <% 
+                      let statusText = "";
+                      let statusClass = "";
+                      switch (data.status) {
+                        case 1: 
+                          statusText = "Pending";
+                          statusClass = "bg-warning"; // yellow
+                          break;
+                        case 2: 
+                          statusText = "Success";
+                          statusClass = "bg-primary"; // blue
+                          break;
+                        case 3: 
+                          statusText = "Canceled";
+                          statusClass = "bg-danger"; // red
+                          break;
+                        case 4: 
+                          statusText = "Ongoing";
+                          statusClass = "bg-success"; // green
+                          break;
+                        default:
+                          statusText = "Unknown";
+                          statusClass = "bg-secondary"; // gray
+                          break;
+                      }
+                    %>
+                    <span class="badge <%= statusClass %>">
+                      <%= statusText %>
+                    </span>
+                  </td>
+                  
+                  <td>
+                    <a href="/subAdmin/restaurant_view_order/<%= data.id %>" class="btn btn-sm bg-warning">
+                      <i class="fa fa-eye" aria-hidden="true"></i> View
+                    </a>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#myTable').DataTable({
+      dom: 'Bfrtip',
+      buttons: ['excel', 'pdf', 'print']
+    });
+  });
+</script>
+
+<style>
+  .badge {
+    padding: 5px 10px;
+    font-size: 14px;
+    color: white;
+    border-radius: 15px;
+  }
+
+  .bg-warning {
+    background-color: #ffc107;
+  }
+
+  .bg-primary {
+    background-color: #007bff;
+  }
+
+  .bg-success {
+    background-color: #28a745;
+  }
+
+  .bg-danger {
+    background-color: #dc3545;
+  }
+
+  .bg-secondary {
+    background-color: #6c757d;
+  }
+
+  .profile_img {
+    object-fit: cover;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  .card-body {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .section-header h1 {
+    font-size: 28px;
+    color: #3d3d3d;
+    font-weight: bold;
+  }
+
+  .breadcrumb-item a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .breadcrumb-item.active a {
+    color: #6c757d;
+    text-decoration: none;
+  }
+
+  .btn-dark {
+    background-color: #343a40;
+    border-color: #343a40;
+    border-radius: 25px;
+  }
+
+  .btn-dark:hover {
+    background-color: #23272b;
+    border-color: #1d2124;
+  }
+
+  .text-center h4 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .form-control {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-control:disabled {
+    background-color: #f2f2f2;
+  }
+
+  .text-dark {
+    color: #343a40;
+  }
+
+  .text-warning {
+    color: #ffc107;
+  }
+
+  .text-success {
+    color: #28a745;
+  }
+
+  .text-primary {
+    color: #007bff;
+  }
+</style>
