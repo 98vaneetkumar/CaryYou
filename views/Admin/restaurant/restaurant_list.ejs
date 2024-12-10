@@ -27,58 +27,49 @@
             </thead>
             <tbody>
               <% userdata.forEach(function(data, i) { %>
-                <tr>
-                  <td><%= 1 + i %></td>
-                  <td>
-                    <img
-                      src="<%= data.image ? data.image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
-                      width="50"
-                      height="50"
-                      class="profile_img rounded-circle border"
-                      style="cursor: pointer"
-                    />
-                  </td>
-                  <td><%= data.name %></td>
-                  <td><%= data?.userId?.email %></td>
-                  <td><%= data.address %></td>
-                  <td><%= data?.userId?.countryCode %>-<%= data?.userId?.phoneNumber %></td>
-                  <td>
-                    <% if (data?.userId?.status == 1) { %>
-                      <button
-                        onclick="changeStatus(this)"
-                        id="restaurantId_<%= data._id %>"
-                        class="btn btn-sm btn-success status"
-                        data-id="<%= data._id %>"
-                        value="0"
-                      >
-                        Active
-                      </button>
-                    <% } else { %>
-                      <button
-                        onclick="changeStatus(this)"
-                        id="restaurantId_<%= data._id %>"
-                        class="btn btn-sm btn-danger status"
-                        data-id="<%= data._id %>"
-                        value="1"
-                      >
-                        In-Active
-                      </button>
-                    <% } %>
-                  </td>
-                  <td>
-                    <div class="action-buttons">
-                      <a href="/admin/view_restaurant/<%= data._id %>" class="btn btn-sm bg-warning">
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                      </a>
-                      <button
-                        onclick="confirmDelete('<%= data._id %>')"
-                        class="btn btn-sm bg-danger"
-                      >
-                        <i class="fa fa-trash"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+              <tr>
+                <td><%= 1 + i %></td>
+                <td>
+                  <img
+                    src="<%= data.image ? data.image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
+                    width="50"
+                    height="50"
+                    class="profile_img rounded-circle border"
+                    style="cursor: pointer"
+                  />
+                </td>
+                <td><%= data.name %></td>
+                <td><%= data?.userId?.email %></td>
+                <td><%= data.address %></td>
+                <td>
+                  <%= data?.userId?.countryCode %>-<%= data?.userId?.phoneNumber %>
+                </td>
+                <td>
+                  <!-- Toggle switch for active/inactive status -->
+                  <label class="switch">
+                    <input type="checkbox" id="restaurantId_<%= data.id %>" <%
+                    if (data.status == 1) { %> checked <% } %>
+                    onchange="changeStatus(this)" data-id="<%= data._id %>">
+                    <span class="slider round"></span>
+                  </label>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <a
+                      href="/admin/view_restaurant/<%= data._id %>"
+                      class="btn btn-sm bg-warning"
+                    >
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </a>
+                    <button
+                      onclick="confirmDelete('<%= data._id %>')"
+                      class="btn btn-sm bg-danger"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
               <% }); %>
             </tbody>
           </table>
@@ -105,15 +96,12 @@
       buttons: ["excel", "pdf", "print"],
     });
   });
-</script>
 
-<script>
   setTimeout(function () {
     $("div.msg").fadeOut();
   }, 2000);
-</script>
 
-<script>
+  // Function to confirm and handle restaurant deletion
   function confirmDelete(id) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -142,48 +130,66 @@
               swalWithBootstrapButtons
                 .fire("Deleted!", "The restaurant has been deleted.", "success")
                 .then(() => {
-                  location.reload();
+                  location.reload(); // Reload page after successful deletion
                 });
+            },
+            error: function (error) {
+              swalWithBootstrapButtons.fire(
+                "Error",
+                "There was a problem deleting the restaurant.",
+                "error"
+              );
             },
           });
         } else {
           swalWithBootstrapButtons.fire(
             "Cancelled",
             "The restaurant is safe :)",
-            "error"
+            "info"
           );
         }
       });
   }
-</script>
 
-<script>
+  // Function to change the restaurant's status
   const changeStatus = (val) => {
     let id = val.getAttribute("data-id");
-    let value = val.getAttribute("value");
-    let elemID = val.getAttribute("id");
-    elemID = document.getElementById(elemID);
+    let value = val.checked ? 1 : 0; // 1 for active, 0 for inactive
 
     $.ajax({
-      type: "POST",
+      type: "post",
       url: "/admin/restaurant_status",
       data: {
         id: id,
         value: value,
       },
       success: function (data) {
-        if (data) {
-          elemID.setAttribute("value", 0);
-          elemID.innerText = `Active`;
-          elemID.classList.remove("btn-danger");
-          elemID.classList.add("btn-success");
-        } else {
-          elemID.setAttribute("value", 1);
-          elemID.innerText = `In-Active`;
-          elemID.classList.remove("btn-success");
-          elemID.classList.add("btn-danger");
-        }
-        window.location.reload();
+        console.log("Server Response:", data); // Log the response for debugging
+
+        // Always show the success popup
+        let statusMessage =
+          value === 1
+            ? "Restaurant is now Active."
+            : "Restaurant is now Inactive.";
+
+        Swal.fire({
+          icon: "success",
+          title: "Status Updated",
+          text: statusMessage,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      },
+      error: function (error) {
+        console.error("Error Response:", error); // Log error response for debugging
+
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "There was a problem updating the status.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       },
     });
   };

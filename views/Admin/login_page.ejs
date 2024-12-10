@@ -152,17 +152,44 @@
       }
 
       .caryYou {
-        font-size: 60px;
+        font-size: 80px;
         font-weight: bold;
         color: #ff6f61;
         letter-spacing: 10px;
+        opacity: 0;
+        animation: slideUp 2s forwards;
       }
 
       .slogan {
-        font-size: 24px;
+        font-size: 35px;
         font-weight: normal;
         color: #ccc;
         margin-top: 20px;
+        opacity: 0;
+        animation: slideDown 2s forwards;
+        animation-delay: 0.5s;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideDown {
+        from {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
       }
     </style>
   </head>
@@ -199,8 +226,13 @@
                 />
               </div>
               <br />
-                <!-- Hidden input for deviceToken -->
-                <input type="hidden" name="deviceToken" id="deviceToken" value="" />              <div class="form-group text-center">
+              <input
+                type="hidden"
+                name="deviceToken"
+                id="deviceToken"
+                value=""
+              />
+              <div class="form-group text-center">
                 <button type="submit" class="btn btn-info btn-lg">Login</button>
               </div>
             </form>
@@ -215,6 +247,8 @@
     </div>
   </body>
 </html>
+
+
 
 <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-messaging.js"></script> 

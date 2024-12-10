@@ -451,19 +451,37 @@ module.exports = {
   },
   restaurant_status: async (req, res) => {
     try {
-      var check = await Models.restaurantModel.updateOne(
+      // Update the restaurant status
+      const updateRestaurant = await Models.restaurantModel.updateOne(
         { _id: req.body.id },
         { status: req.body.value }
       );
-      req.flash("msg", "Status update successfully");
-
-      if (req.body.value == 0) res.send(false);
-      if (req.body.value == 1) res.send(true);
+  
+      if (updateRestaurant.nModified > 0) {
+        const restaurant = await Models.restaurantModel.findById(req.body.id);
+  
+        if (restaurant && restaurant.userId) {
+          await Models.userModel.updateOne(
+            { _id: restaurant.userId },
+            { status: req.body.value }
+          );
+        }
+  
+        req.flash("msg", "Status updated successfully");
+        
+        // Send explicit boolean based on the updated status
+        return res.status(200).send(req.body.value == 1); // `true` for active, `false` for inactive
+      } else {
+        // Handle no modification
+        return res.status(404).send({ error: "No changes made or restaurant not found." });
+      }
     } catch (error) {
-      console.log(error);
-      throw error;
+      console.error("Error updating status:", error);
+      res.status(500).send({ error: "Internal Server Error" });
     }
   },
+  
+  
 
    //----------------Dashboard order api-----------------------
 

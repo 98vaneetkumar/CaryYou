@@ -19,11 +19,11 @@
     </div>
     <div class="row">
       <!-- Users Card -->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-top">
         <a href="/admin/user_list">
           <div
             class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #6666ff, #9999ff)"
+            style="background: linear-gradient(135deg, #66e8ff, #9999ff)"
           >
             <div class="card-icon" style="background: rgba(56, 56, 187, 0.8)">
               <i class="fas fa-users"></i>
@@ -41,7 +41,7 @@
       </div>
 
       <!-- Providers (Restaurants) Card -->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-top">
         <a href="/admin/restaurant_list">
           <div
             class="card card-statistic-1"
@@ -65,7 +65,7 @@
       </div>
 
       <!-- Riders Card -->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-top">
         <a href="/admin/rider_list">
           <div
             class="card card-statistic-1"
@@ -87,13 +87,13 @@
       </div>
 
       <!-- Vehicle Types Card -->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-top">
         <a href="/admin/vehicleType_list">
           <div
             class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #3fa797, #3a9367)"
+            style="background: linear-gradient(135deg, #3399ff, #66ccff)"
           >
-            <div class="card-icon" style="background: rgba(38, 152, 110, 0.8)">
+            <div class="card-icon" style="background: rgba(38, 151, 219, 0.8)">
               <i class="fas fa-car-side"></i>
             </div>
             <div class="card-wrap">
@@ -111,11 +111,11 @@
       </div>
 
       <!-- Payments Card -->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-left">
         <a href="#">
           <div
             class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #3399ff, #66ccff)"
+            style="background: linear-gradient(135deg, #db952d, #66ccff)"
           >
             <div class="card-icon" style="background: rgba(38, 151, 219, 0.8)">
               <i class="fas fa-credit-card"></i>
@@ -133,7 +133,7 @@
       </div>
 
       <!-- Orders Card -->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-left">
         <a href="/admin/order_list">
           <div
             class="card card-statistic-1"
@@ -153,36 +153,38 @@
           </div>
         </a>
       </div>
-        <!-- Pending order -->
-        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-          <a href="/admin/pending_order_list">
-            <div
-              class="card card-statistic-1"
-              style="background: linear-gradient(135deg, #ffcc00, #ff6f00)"
-            >
-              <div class="card-icon" style="background: rgba(255, 153, 0, 0.8)">
-                <i class="fas fa-clock"></i>
+
+      <!-- Pending order -->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right ">
+        <a href="/admin/pending_order_list">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #ffcc00, #ff6f00)"
+          >
+            <div class="card-icon" style="background: rgba(255, 153, 0, 0.8)">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold">
+                  <b>Pending Orders</b>
+                </h4>
               </div>
-              <div class="card-wrap">
-                <div class="card-header">
-                  <h4 style="color: white; font-weight: bold">
-                    <b>Pending Orders</b>
-                  </h4>
-                </div>
-                <div
-                  class="card-body"
-                  id="pendingOrders"
-                  value="<%= pendingOrders %>"
-                  style="color: white; font-weight: bold"
-                >
-                  <%= pendingOrders %>
-                </div>
+              <div
+                class="card-body"
+                id="pendingOrders"
+                value="<%= pendingOrders %>"
+                style="color: white; font-weight: bold"
+              >
+                <%= pendingOrders %>
               </div>
             </div>
-          </a>
-        </div>
-      <!----------------------Active Order------------------------------------->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+          </div>
+        </a>
+      </div>
+
+      <!-- Active Orders -->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
         <a href="/admin/active_order_list">
           <div
             class="card card-statistic-1"
@@ -202,8 +204,9 @@
           </div>
         </a>
       </div>
-      <!-------------------Deliverd Order------------------------------------->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+
+      <!-- Delivered Orders -->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-down">
         <a href="/admin/delivered_order_list">
           <div
             class="card card-statistic-1"
@@ -225,8 +228,9 @@
           </div>
         </a>
       </div>
-      <!------------------Cancel Order------------------------------------->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+
+      <!-- Cancelled Orders -->
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-down">
         <a href="/admin/cancel_order_list">
           <div
             class="card card-statistic-1"
@@ -241,7 +245,7 @@
                   Cancelled/Rejected Orders
                 </h4>
               </div>
-              <div class="card-body" id="cancelledOrders" value="<%= cancelledOrders %>" style="color: white; font-weight: bold">
+              <div class="card-body" id="cancelledOrders" style="color: white; font-weight: bold">
                 <%= cancelledOrders %>
               </div>
             </div>
@@ -249,82 +253,82 @@
         </a>
       </div>
 
-      
       <!-- Services Card -->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <a href="/admin/service_list">
-          <div
-            class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #ff9966, #ffcc66)"
-          >
-            <div class="card-icon" style="background: rgba(255, 165, 0, 0.8)">
-              <i class="fas fa-clipboard-list"></i>
-            </div>
-            <div class="card-wrap">
-              <div class="card-header">
-                <h4 style="color: white; font-weight: bold"><b>Services</b></h4>
-              </div>
-              <div class="card-body" id="servicesData" value="<%= servicesData %>" style="color: white; font-weight: bold">
-                <%= servicesData %>
-              </div>
-            </div>
-          </div>
-        </a>
+<div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-down">
+  <a href="/admin/service_list">
+    <div
+      class="card card-statistic-1"
+      style="background: linear-gradient(135deg, #ff9966, #ffcc66)"
+    >
+      <div class="card-icon" style="background: rgba(255, 165, 0, 0.8)">
+        <i class="fas fa-clipboard-list"></i>
       </div>
-
-      <!-- Feedback Card -->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <a href="/admin/feedback_list">
-          <div
-            class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #ff6699, #ff99cc)"
-          >
-            <div class="card-icon" style="background: rgba(255, 82, 129, 0.8)">
-              <i class="fas fa-comment-alt"></i>
-            </div>
-            <div class="card-wrap">
-              <div class="card-header">
-                <h4 style="color: white; font-weight: bold"><b>Feedback</b></h4>
-              </div>
-              <div class="card-body" id="feedbacks" value="<%= feedbacks %>" style="color: white; font-weight: bold">
-                <%= feedbacks %>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <!-- Contact Us Card -->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <a href="/admin/contact_us">
-          <div
-            class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #33cc66, #66ff99)"
-          >
-            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8)">
-              <i class="far fa-address-book"></i>
-            </div>
-            <div class="card-wrap">
-              <div class="card-header">
-                <h4 style="color: white; font-weight: bold">
-                  <b>Contact Us</b>
-                </h4>
-              </div>
-              <div class="card-body" id="contactUs" value="<%= contactUs %>" style="color: white; font-weight: bold">
-                <%= contactUs %>
-              </div>
-            </div>
-          </div>
-        </a>
+      <div class="card-wrap">
+        <div class="card-header">
+          <h4 style="color: white; font-weight: bold"><b>Services</b></h4>
+        </div>
+        <div class="card-body" id="servicesData" style="color: white; font-weight: bold">
+          <%= servicesData %>
+        </div>
       </div>
     </div>
+  </a>
+</div>
+
+<!-- Feedback Card -->
+<div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-down">
+  <a href="/admin/feedback_list">
+    <div
+      class="card card-statistic-1"
+      style="background: linear-gradient(135deg, #ff6699, #ff99cc)"
+    >
+      <div class="card-icon" style="background: rgba(255, 82, 129, 0.8)">
+        <i class="fas fa-comment-alt"></i>
+      </div>
+      <div class="card-wrap">
+        <div class="card-header">
+          <h4 style="color: white; font-weight: bold"><b>Feedback</b></h4>
+        </div>
+        <div class="card-body" id="feedbacks" style="color: white; font-weight: bold">
+          <%= feedbacks %>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- Contact Us Card -->
+<div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-down">
+  <a href="/admin/contact_us">
+    <div
+      class="card card-statistic-1"
+      style="background: linear-gradient(135deg, #33cc66, #66ff99)"
+    >
+      <div class="card-icon" style="background: rgba(44, 176, 44, 0.8)">
+        <i class="far fa-address-book"></i>
+      </div>
+      <div class="card-wrap">
+        <div class="card-header">
+          <h4 style="color: white; font-weight: bold">
+            <b>Contact Us</b>
+          </h4>
+        </div>
+        <div class="card-body" id="contactUs" style="color: white; font-weight: bold">
+          <%= contactUs %>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+    </div>
   </section>
+
   <div class="row">
     <!-- Graph for Users, Riders, and Restaurants -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4>Users, Riders, and Restaurants</h4>
+          <h4 style="font-weight: bold; color: #333">Users, Riders, and Restaurants</h4>
         </div>
         <div class="card-body">
           <canvas id="userGraph"></canvas>
@@ -332,93 +336,92 @@
       </div>
     </div>
   
-    <!-- Graph for Orders -->
-    <div class="col-lg-6">
+    <!-- Graph for Order Status (Pending, Delivered, Cancelled) -->
+    <div class="col-lg-6 col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4>Order Statistics</h4>
+          <h4 style="font-weight: bold; color: #333">Order Status</h4>
         </div>
         <div class="card-body">
-          <canvas id="orderGraph"></canvas>
+          <canvas id="orderStatusGraph"></canvas>
         </div>
       </div>
     </div>
   </div>
   
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Example of setting up a chart for Users, Riders, and Restaurants
+    var ctx1 = document.getElementById('userGraph').getContext('2d');
+    var userGraph = new Chart(ctx1, {
+      type: 'bar', // You can change to 'line', 'pie', etc.
+      data: {
+        labels: ['Users', 'Riders', 'Restaurants'],
+        datasets: [{
+          label: 'Count',
+          data: [1200, 800, 400], // Example data
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  
+    // Example of setting up a chart for Order Status (Pending, Delivered, Cancelled)
+    var ctx2 = document.getElementById('orderStatusGraph').getContext('2d');
+    var orderStatusGraph = new Chart(ctx2, {
+      type: 'pie', // You can change to 'bar', 'line', etc.
+      data: {
+        labels: ['Pending', 'Delivered', 'Cancelled'],
+        datasets: [{
+          label: 'Order Status',
+          data: [500, 1200, 200], // Example data
+          backgroundColor: [
+            'rgba(255, 159, 64, 0.6)', // Pending (orange)
+            'rgba(75, 192, 192, 0.6)', // Delivered (green)
+            'rgba(255, 99, 132, 0.6)'  // Cancelled (red)
+          ],
+          borderColor: [
+            'rgba(255, 159, 64, 1)', // Pending
+            'rgba(75, 192, 192, 1)', // Delivered
+            'rgba(255, 99, 132, 1)'  // Cancelled
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top'
+          },
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                return tooltipItem.label + ': ' + tooltipItem.raw + ' Orders';
+              }
+            }
+          }
+        }
+      }
+    });
+  </script>
+  
 
 <!-- External CSS -->
 <style>
-.filter-options {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Arial', sans-serif;
-  max-width: 100%; /* Ensures the container doesn’t get too wide */
-}
-
-.filter-options select {
-  height: auto !important;
-  width: 120px; /* Smaller width to ensure the box is compact */
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 25px;
-  font-size: 13px; /* Reduced font size to make the dropdown compact */
-  background-color: #f4f4f9;
-  color: #333;
-  appearance: none;
-  outline: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.filter-options select:hover {
-  border-color: #4CAF50; /* Green border on hover */
-}
-
-.filter-options select:focus {
-  border-color: #4CAF50;
-  box-shadow: 0 0 10px rgba(76, 175, 80, 0.2); /* Green glow on focus */
-}
-
-.filter-options select option {
-  padding: 8px;
-}
-
-.filter-options select::-ms-expand {
-  display: none;
-}
-
-.filter-options {
-  position: relative;
-}
-
-.filter-options::after {
-  content: '▼';
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 13px;
-  color: #333;
-  pointer-events: none;
-}
-
-@media (max-width: 768px) {
-  .filter-options {
-    padding: 5px;
-  }
-
-  .filter-options select {
-    width: 100%; /* Ensures it expands in mobile view */
-    max-width: 100%;
-    font-size: 14px;
-  }
-}
 
 </style>
+
+
 
 <script>
   document.addEventListener("DOMContentLoaded", async () => {

@@ -4467,3 +4467,71 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(16px);  /* Adjusted translation */
 }
+
+
+/* Animation for sliding in from left */
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animation for sliding in from right */
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Apply animations to the cards */
+.animate-left {
+  animation: slideInLeft 1s ease-out;
+}
+
+@keyframes slideInTop {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-top {
+  animation: slideInTop 1s ease-out;
+}
+
+@keyframes slideInDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.animate-down {
+  animation: slideInDown 1s ease-out;
+}
+
+.animate-top {
+  animation: slideInTop 1s ease-out;
+}
+
+
+.animate-right {
+  animation: slideInRight 1s ease-out;
+}

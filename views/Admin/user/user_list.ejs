@@ -43,27 +43,15 @@
                 <td><%=data.countryCode%>-<%=data.phoneNumber%></td>
 
                 <td>
-                  <% if(data.status==1) { %>
-                  <button
-                    onclick="changeStatus(this)"
-                    id="userId_<%-data.id%>"
-                    class="btn btn-sm btn-success status"
-                    data-id="<%=data._id%>"
-                    value="0"
-                  >
-                    Active
-                  </button>
-                  <% } else { %>
-                  <button
-                    onclick="changeStatus(this)"
-                    id="userId_<%-data.id%>"
-                    class="btn btn-sm btn-danger status"
-                    data-id="<%=data._id%>"
-                    value="1"
-                  >
-                    In-Active
-                  </button>
-                  <% } %>
+                  <!-- Toggle switch for active/inactive status -->
+                  <label class="switch">
+                    <input type="checkbox" 
+                           id="userStatusToggle_<%= data.id %>" 
+                           <% if (data.status == 1) { %> checked <% } %>
+                           onchange="changeStatus(this)" 
+                           data-id="<%= data._id %>">
+                    <span class="slider round"></span>
+                  </label>
                 </td>
                 <td>
                   <a
@@ -163,33 +151,38 @@
 
 <script>
   const changeStatus = (val) => {
-    console.log(val);
-    let id = val.getAttribute("data-id");
-    let value = val.getAttribute("value");
-    let elemID = val.getAttribute("id");
-    elemID = document.getElementById(elemID);
+    let id = val.getAttribute('data-id');
+    let value = val.checked ? 1 : 0; // 1 for active, 0 for inactive
 
     $.ajax({
       type: "post",
       url: "/admin/user_status",
       data: {
         id: id,
-        value: value,
+        value: value
       },
       success: function (data) {
         if (data) {
-          elemID.setAttribute("value", 0);
-          elemID.innerText = `Active`;
-          elemID.classList.remove("btn-danger");
-          elemID.classList.add("btn-success");
-        } else {
-          elemID.setAttribute("value", 1);
-          elemID.innerText = `In-Active`;
-          elemID.classList.remove("btn-success");
-          elemID.classList.add("btn-danger");
+          // Show SweetAlert2 success toaster
+          Swal.fire({
+            icon: 'success',
+            title: 'Status Updated',
+            text: 'User status has been successfully updated.',
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
-        window.location.reload();
       },
+      error: function (error) {
+        // Handle error with an error toaster
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'There was a problem updating the status.',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
     });
   };
 </script>

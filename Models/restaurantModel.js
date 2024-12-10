@@ -66,6 +66,10 @@ const restaurantSchema = new mongoose.Schema(
     ],
     openingTime: { type: String },
     closingTime: { type: String },
+    status:{
+      type: Number,
+      default: 0
+    }
   },
   { timestamps: true }
 );
