@@ -989,9 +989,7 @@ module.exports = {
         };
       });
     }
-    
-    console.log(viewuser);
-    
+        
 
         res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_subCategory_list", {
         title,
@@ -1008,38 +1006,33 @@ module.exports = {
   restaurant_product: async (req, res) => {
     try {
       let title = "provider_list";
-      let viewuser = await Models.restaurantModel
-        .findById({ _id: req.params.id })
-        .populate("userId");
-      const orders = await Models.orderModel.countDocuments({restaurant: req.params.id,});
-      const pendingOrders = await Models.orderModel.countDocuments({
-        status: 1,
-        restaurant: req.params.id,
+      const viewuser = await Models.restaurantModel
+      .findById(req.params._id)
+      .populate("userId") // Populate user information
+      .lean(); // Use `.lean()` to get a plain JavaScript object
+    
+    if (viewuser) {
+      // Map subCategories with corresponding category data
+      viewuser.products = viewuser.products.map((subCat) => {
+        const matchedSubCategory = viewuser.subCategory.find(
+          (cat) => cat._id.toString() === subCat.subCategoryId.toString()
+        );
+    
+        return {
+          ...subCat,
+          subCategoryName: matchedSubCategory ? matchedSubCategory.name : null,
+          subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
+        };
       });
-      const activeOrders = await Models.orderModel.countDocuments({
-        status: 4,
-        restaurant: req.params.id,
-      });
-      const deliveredOrders = await Models.orderModel.countDocuments({
-        status: 2,
-        restaurant: req.params.id,
-      });
-      const cancelledOrders = await Models.orderModel.countDocuments({
-        status: 3,
-        restaurant: req.params.id,
-      });
+    }
+    
+    console.log(viewuser);
+    
 
-      res.render("Admin/restaurant/restaurant_view", {
+        res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
         title,
         viewuser,
-        category: viewuser?.category?.length || 0,
-        subCategory: viewuser?.subcategory?.length || 0,
-        products: viewuser?.products?.length || 0,
-        orders,
-        pendingOrders,
-        activeOrders,
-        deliveredOrders,
-        cancelledOrders,
+        restaurant:req.params._id,
         session: req.session.user,
         msg: req.flash("msg"),
       });
@@ -1051,38 +1044,33 @@ module.exports = {
   restaurant_product_view: async (req, res) => {
     try {
       let title = "provider_list";
-      let viewuser = await Models.restaurantModel
-        .findById({ _id: req.params.id })
-        .populate("userId");
-      const orders = await Models.orderModel.countDocuments({restaurant: req.params.id,});
-      const pendingOrders = await Models.orderModel.countDocuments({
-        status: 1,
-        restaurant: req.params.id,
+      const viewuser = await Models.restaurantModel
+      .findById(req.params._id)
+      .populate("userId") // Populate user information
+      .lean(); // Use `.lean()` to get a plain JavaScript object
+    
+    if (viewuser) {
+      // Map subCategories with corresponding category data
+      viewuser.products = viewuser.products.map((subCat) => {
+        const matchedSubCategory = viewuser.subCategory.find(
+          (cat) => cat._id.toString() === subCat.subCategoryId.toString()
+        );
+    
+        return {
+          ...subCat,
+          subCategoryName: matchedSubCategory ? matchedSubCategory.name : null,
+          subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
+        };
       });
-      const activeOrders = await Models.orderModel.countDocuments({
-        status: 4,
-        restaurant: req.params.id,
-      });
-      const deliveredOrders = await Models.orderModel.countDocuments({
-        status: 2,
-        restaurant: req.params.id,
-      });
-      const cancelledOrders = await Models.orderModel.countDocuments({
-        status: 3,
-        restaurant: req.params.id,
-      });
+    }
+    
+    console.log(viewuser);
+    
 
-      res.render("Admin/restaurant/restaurant_view", {
+        res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
         title,
         viewuser,
-        category: viewuser?.category?.length || 0,
-        subCategory: viewuser?.subcategory?.length || 0,
-        products: viewuser?.products?.length || 0,
-        orders,
-        pendingOrders,
-        activeOrders,
-        deliveredOrders,
-        cancelledOrders,
+        restaurant:req.params._id,
         session: req.session.user,
         msg: req.flash("msg"),
       });

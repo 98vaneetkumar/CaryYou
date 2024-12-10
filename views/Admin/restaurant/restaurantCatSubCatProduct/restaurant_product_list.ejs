@@ -17,16 +17,14 @@
               <tr style="background-color: #ebf2f2">
                 <th scope="col">S No.</th>
                 <th scope="col">Image</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Address</th>
-                <th scope="col">Phone</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">SubCateory</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
-              <% userdata.forEach(function(data, i) { %>
+              <% viewuser.products.forEach(function(data, i) { %>
                 <tr>
                   <td><%= 1 + i %></td>
                   <td>
@@ -38,12 +36,10 @@
                       style="cursor: pointer"
                     />
                   </td>
-                  <td><%= data.name %></td>
-                  <td><%= data?.userId?.email %></td>
-                  <td><%= data.address %></td>
-                  <td><%= data?.userId?.countryCode %>-<%= data?.userId?.phoneNumber %></td>
+                  <td><%= data.itemName %></td>
+                  <td><%= data?.subCategoryName %></td>
                   <td>
-                    <% if (data?.userId?.status == 1) { %>
+                    <% if (data?.status == 1) { %>
                       <button
                         onclick="changeStatus(this)"
                         id="restaurantId_<%= data._id %>"
@@ -67,7 +63,7 @@
                   </td>
                   <td>
                     <div class="action-buttons">
-                      <a href="/admin/view_restaurant/<%= data._id %>" class="btn btn-sm bg-warning">
+                      <a href="/admin/restaurant_product_view/<%= data._id %>" class="btn btn-sm bg-warning">
                         <i class="fa fa-eye" aria-hidden="true"></i>
                       </a>
                       <button
