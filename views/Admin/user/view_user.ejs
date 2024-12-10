@@ -128,139 +128,112 @@
     <div class="row">
       <div id="user_id" data-value="<%= viewuser._id %>" hidden></div>
       <!-- Orders Card -->
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-left">
         <a href="/admin/user_order_list/<%= viewuser._id %>">
           <div
             class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #33cc33, #66ff66)"
+            style="background: linear-gradient(135deg, #e7b17c, #ff6600)"
           >
-            <div class="card-icon" style="background: rgba(44, 176, 44, 0.8)">
-              <i class="fas fa-box"></i>
+            <div class="card-icon" style="background: rgba(255, 102, 0, 0.8)">
+              <i class="fas fa-box-open"></i> <!-- Changed to 'fa-box-open' -->
             </div>
             <div class="card-wrap">
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold"><b>Orders</b></h4>
               </div>
-              <div
-                class="card-body"
-                id="orders"
-                value="<%= orders %>"
-                style="color: white; font-weight: bold"
-              >
+              <div class="card-body" id="orders" value="<%= orders %>" style="color: white; font-weight: bold">
                 <%= orders %>
               </div>
             </div>
           </div>
         </a>
       </div>
-  
-
-
-
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-left">
         <a href="/admin/user_success_order_list/<%= viewuser._id %>">
           <div
             class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
+            style="background: linear-gradient(135deg, #66ff66, #33cc33)"
           >
-            <div class="card-icon" style="background: rgba(204, 85, 51, 0.8)">
-              <i class="fas fa-shopping-cart"></i>
+            <div class="card-icon" style="background: rgba(51, 204, 51, 0.8)">
+              <i class="fas fa-check-circle"></i> <!-- Changed to 'fa-check-circle' -->
             </div>
             <div class="card-wrap">
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold">Success Orders</h4>
               </div>
-              <div
-                class="card-body"
-                id="successOrders"
-                value="<%= successOrders %>"
-                style="color: white; font-weight: bold"
-              >
+              <div class="card-body" id="successOrders" value="<%= successOrders %>" style="color: white; font-weight: bold">
                 <%= successOrders %>
               </div>
             </div>
           </div>
         </a>
       </div>
-
-
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
         <a href="/admin/user_cancel_order_list/<%= viewuser._id %>">
           <div
             class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
+            style="background: linear-gradient(135deg, #ff6666, #ff3333)"
           >
-            <div class="card-icon" style="background: rgba(204, 85, 51, 0.8)">
-              <i class="fas fa-shopping-cart"></i>
+            <div class="card-icon" style="background: rgba(231, 57, 26, 0.8)">
+              <i class="fas fa-times-circle"></i> <!-- Changed to 'fa-times-circle' -->
             </div>
             <div class="card-wrap">
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold">Cancelled Orders</h4>
               </div>
-              <div
-                class="card-body"
-                id="cancelledOrders"
-                value="<%= cancelledOrders %>"
-                style="color: white; font-weight: bold"
-              >
+              <div class="card-body" id="cancelledOrders" value="<%= cancelledOrders %>" style="color: white; font-weight: bold">
                 <%= cancelledOrders %>
               </div>
             </div>
           </div>
         </a>
       </div>
-
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
         <a href="/admin/user_all_rides_list/<%= viewuser._id %>">
           <div
             class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
+            style="background: linear-gradient(135deg, #ffcc00, #ff9900)"
           >
-            <div class="card-icon" style="background: rgba(204, 85, 51, 0.8)">
-              <i class="fas fa-shopping-cart"></i>
+            <div class="card-icon" style="background: rgba(255, 140, 0, 0.8)">
+              <i class="fas fa-car-side"></i> <!-- Changed to 'fa-car-side' -->
             </div>
             <div class="card-wrap">
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold">Total Rides</h4>
               </div>
-              <div
-                class="card-body"
-                id="totalRides"
-                value="<%= totalRides %>"
-                style="color: white; font-weight: bold"
-              >
+              <div class="card-body" id="totalRides" value="<%= totalRides %>" style="color: white; font-weight: bold">
                 <%= totalRides %>
               </div>
             </div>
           </div>
         </a>
       </div>
-
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-left">
         <a href="/admin/user_all_spend_list/<%= viewuser._id %>">
           <div
             class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
+            style="background: linear-gradient(135deg, #3399ff, #66ccff)"
           >
-            <div class="card-icon" style="background: rgba(204, 85, 51, 0.8)">
-              <i class="fas fa-shopping-cart"></i>
+            <div class="card-icon" style="background: rgba(0, 123, 255, 0.8)">
+              <i class="fas fa-wallet"></i> <!-- Changed to 'fa-wallet' -->
             </div>
             <div class="card-wrap">
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold">Total Spend</h4>
               </div>
-              <div
-                class="card-body"
-                id="totalSpend"
-                value="<%= totalSpend %>"
-                style="color: white; font-weight: bold"
-              >
+              <div class="card-body" id="totalSpend" value="<%= totalSpend %>" style="color: white; font-weight: bold">
                 <%= totalSpend %>
               </div>
             </div>
           </div>
         </a>
       </div>
+      
+      
      
     </div>
   </section>
