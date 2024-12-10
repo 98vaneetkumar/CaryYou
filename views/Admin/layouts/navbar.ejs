@@ -2,14 +2,58 @@
   <form class="form-inline mr-auto">
     <ul class="navbar-nav mr-3">
       <li>
-        <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"
-          ><i class="fas fa-bars"></i
-        ></a>
+        <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg">
+          <i class="fas fa-bars"></i>
+        </a>
       </li>
     </ul>
   </form>
 
   <ul class="navbar-nav navbar-right">
+    <!-- WhatsApp Icon -->
+    <li class="nav-item">
+      <a
+        href="https://web.whatsapp.com/"
+        target="_blank"
+        class="nav-link nav-link-lg"
+        id="whatsapp-icon"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="WhatsApp Messages"
+      >
+        <i class="fab fa-whatsapp"></i>
+        <span class="badge badge-success" id="whatsapp-count" style="display: none;">0</span>
+      </a>
+    </li>
+
+    <!-- Notification Icon -->
+    <li class="nav-item dropdown">
+      <a
+        href="#"
+        class="nav-link nav-link-lg dropdown-toggle"
+        id="notification-icon"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+        title="Notifications"
+      >
+        <i class="fas fa-bell"></i>
+        <span class="badge badge-warning" id="notification-count" style="display: none;">0</span>
+      </a>
+      <div
+        class="dropdown-menu dropdown-menu-right"
+        aria-labelledby="notification-icon"
+        id="notification-dropdown"
+        style="width: 300px; max-height: 400px; overflow-y: auto;"
+      >
+        <p class="dropdown-header">Notifications</p>
+        <div id="notification-list" class="dropdown-list-content">
+          <p class="dropdown-item text-muted"></p>
+        </div>
+      </div>
+    </li>
+
+    <!-- Admin Dropdown -->
     <li class="dropdown">
       <a
         href="#"
@@ -46,3 +90,95 @@
     </li>
   </ul>
 </nav>
+
+<script>
+  // Fetch WhatsApp messages
+  async function fetchWhatsAppMessages() {
+    try {
+      const response = await fetch('/api/whatsapp-messages'); // Replace with your API endpoint
+      const data = await response.json();
+
+      const count = data.messages.length;
+      const icon = document.getElementById('whatsapp-icon');
+      const countBadge = document.getElementById('whatsapp-count');
+
+      countBadge.textContent = count;
+      countBadge.style.display = count > 0 ? 'inline-block' : 'none';
+
+      if (count > 0) {
+        icon.classList.add('vibrate');
+      } else {
+        icon.classList.remove('vibrate');
+      }
+    } catch (error) {
+      console.error('Error fetching WhatsApp messages:', error);
+    }
+  }
+
+  // Fetch notifications
+  async function fetchNotifications() {
+    try {
+      const response = await fetch('/api/notifications'); // Replace with your API endpoint
+      const data = await response.json();
+
+      const count = data.notifications.length;
+      const icon = document.getElementById('notification-icon');
+      const countBadge = document.getElementById('notification-count');
+      const listContainer = document.getElementById('notification-list');
+
+      countBadge.textContent = count;
+      countBadge.style.display = count > 0 ? 'inline-block' : 'none';
+
+      if (count > 0) {
+        icon.classList.add('vibrate');
+        listContainer.innerHTML = data.notifications
+          .map(
+            (notification) =>
+              `<a href="${notification.link || '#'}" class="dropdown-item">
+                ${notification.text}
+              </a>`
+          )
+          .join('');
+      } else {
+        icon.classList.remove('vibrate');
+        listContainer.innerHTML = '<p class="dropdown-item text-muted">No new notifications</p>';
+      }
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    }
+  }
+
+  // Refresh data periodically
+  setInterval(() => {
+    fetchWhatsAppMessages();
+    fetchNotifications();
+  }, 5000);
+
+  // Add CSS for vibration effect
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .vibrate {
+      animation: vibrate 0.2s linear infinite;
+    }
+
+    @keyframes vibrate {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      50% { transform: translateX(2px); }
+      75% { transform: translateX(-2px); }
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 12px;
+      border-radius: 50%;
+    }
+
+    .dropdown-list-content {
+      padding: 10px;
+    }
+  `;
+  document.head.appendChild(style);
+</script>
