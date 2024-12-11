@@ -1,0 +1,139 @@
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <h1>Create Subadmin</h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active">
+          <a href="/admin/dashboard">Dashboard</a>
+        </div>
+        <div class="breadcrumb-item">Create Subadmin</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="card">
+        <form action="/admin/add-subadmin" method="POST" id="addSubadminForm">
+          <div class="row mt-sm-4 justify-content-center">
+            <div class="col-16 col-md-12 col-lg-7">
+              <div class="card-body">
+                <div class="form-group col-16 floating-addon">
+                  <label for="name">Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    required
+                  />
+                  <div class="invalid-feedback">Please fill in the name.</div>
+                </div>
+
+                <div class="form-group col-16 floating-addon">
+                  <label for="email">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    required
+                  />
+                  <div class="invalid-feedback">Please fill in the email.</div>
+                </div>
+
+                <div class="form-group col-16 floating-addon">
+                  <label for="phone">Phone</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phone"
+                    name="phone"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                    maxlength="12"
+                    required
+                  />
+                  <div class="invalid-feedback">
+                    Please fill in the phone number.
+                  </div>
+                </div>
+
+                <div class="form-group col-16 floating-addon">
+                  <label for="password">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required
+                  />
+                  <div class="invalid-feedback">
+                    Please fill in the password.
+                  </div>
+                </div>
+
+                <div class="form-group text-right">
+                  <button type="submit" class="btn btn-success">
+                    Create
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  $(document).ready(function () {
+    // Form validation
+    $('form[id="addSubadminForm"]').validate({
+      rules: {
+        name: {
+          required: true,
+          maxlength: 30,
+        },
+        email: {
+          required: true,
+          email: true,
+        },
+        phone: {
+          required: true,
+          digits: true,
+          maxlength: 12,
+        },
+        password: {
+          required: true,
+          minlength: 5,
+        },
+      },
+      messages: {
+        name: {
+          required: "Please enter the name.",
+          maxlength: "Name should be less than 30 characters.",
+        },
+        email: {
+          required: "Please enter the email address.",
+          email: "Please enter a valid email address.",
+        },
+        phone: {
+          required: "Please enter the phone number.",
+          digits: "Please enter only digits.",
+          maxlength: "Phone number should be 12 digits.",
+        },
+        password: {
+          required: "Please enter the password.",
+          minlength: "Password should be at least 5 characters.",
+        },
+      },
+      submitHandler: function (form) {
+        form.submit();
+      },
+    });
+  });
+</script>
+
+<style>
+  .error {
+    color: red !important;
+  }
+</style>

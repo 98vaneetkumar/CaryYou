@@ -1819,6 +1819,19 @@ module.exports = {
   },
   //---------------------------------------
 
+  create_subadmin: async(req, res)=>{
+    try {
+      let title = "create_subadmin";
+      res.render("Admin/admin/create_subadmin", {
+        title,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   admin_profile: async (req, res) => {
     try {
       let title = "admin_profile";

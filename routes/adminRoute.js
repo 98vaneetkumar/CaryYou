@@ -91,6 +91,7 @@ router.get('/return_order_list', session, controllers.adminController.return_ord
 router.get('/return_view_order/:_id', session, controllers.adminController.return_view_order);
 
 //<------------------------------ ADMIN ------------------------->
+router.get('/create_subadmin', session, controllers.adminController.create_subadmin)
 router.get('/admin_profile', session, controllers.adminController.admin_profile)
 router.post('/update_admin_profile', controllers.adminController.update_admin_profile)
 router.get('/change_password', session, controllers.adminController.change_password)
