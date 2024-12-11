@@ -70,6 +70,24 @@ module.exports=function(io){
     router.get("/restaurant_product_view/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_product_view)
 
 
+    //<------------------------------ Orders ------------------------->
+    router.get('/order_list', sessionSubAdmin, controllers.subAdminController.order_list);
+    router.get('/view_order/:_id', sessionSubAdmin, controllers.subAdminController.view_order);
+
+    router.get('/active_order_list', sessionSubAdmin, controllers.subAdminController.active_order_list);
+    router.get('/active_view_order/:_id', sessionSubAdmin, controllers.subAdminController.active_view_order);
+
+    router.get('/delivered_order_list', sessionSubAdmin, controllers.subAdminController.delivered_order_list);
+    router.get('/delivered_view_order/:_id', sessionSubAdmin, controllers.subAdminController.delivered_view_order);
+
+    router.get('/cancel_order_list', sessionSubAdmin, controllers.subAdminController.cancel_order_list);
+    router.get('/cancel_view_order/:_id', sessionSubAdmin, controllers.subAdminController.cancel_view_order);
+
+
+    router.get('/pending_order_list', sessionSubAdmin, controllers.subAdminController.pending_order_list);
+    router.get('/pending_view_order/:_id', sessionSubAdmin, controllers.subAdminController.pending_view_order);
+
+
     return router
 }
 
