@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const Schema = mongoose.Schema;
 const rideBookingSchema = new mongoose.Schema(
   {
     userId: {

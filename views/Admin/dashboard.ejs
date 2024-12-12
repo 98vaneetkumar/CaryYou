@@ -543,6 +543,7 @@
   let activeOrderCount=document.getElementById("activeOrders").textContent
   let deliveredOrderCount=document.getElementById("deliveredOrders").textContent
   let cancelledOrderCount=document.getElementById("cancelledOrders").textContent
+  console.log("userCount: ", userCount)
   // Initialize graphs with empty data
   let userGraph = new Chart(userGraphCtx, {
     type: "bar",
@@ -600,6 +601,7 @@
     });
 
     const data = await response.json();
+    console.log("data data",data)
 
     // Update data for Users, Riders, and Restaurants
     userGraph.data.datasets[0].data = [

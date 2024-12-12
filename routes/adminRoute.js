@@ -17,6 +17,21 @@ router.get('/view_user/:id', session, controllers.adminController.view_user)
 router.delete('/delete_user/:id', controllers.adminController.delete_user)
 router.post('/user_status', controllers.adminController.user_status)
 
+//<------------------------------ User Orders------------------------->
+router.post('/user_dashboardFilter', session, controllers.adminController.user_dashboardFilter)
+
+router.get("/user_order_list/:userId",session, controllers.adminController.total_user_order_list);
+router.get('/user_view_order/:_id', session, controllers.adminController.total_user_view_order);
+
+router.get("/user_success_order_list/:userId",session, controllers.adminController.user_success_order_list)
+router.get('/user_success_view_order/:_id', session, controllers.adminController.user_success_view_order);
+
+router.get("/user_pending_order_list/:userId",session, controllers.adminController.user_pending_order_list)
+router.get('/user_pending_view_order/:_id', session, controllers.adminController.user_pending_view_order);
+
+
+router.get("/user_cancel_order_list/:userId",session, controllers.adminController.user_cancel_order_list)
+router.get('/user_cancel_view_order/:_id', session, controllers.adminController.user_cancel_view_order);
 
 //<------------------------------ Restaurant ------------------------->
 router.get('/restaurant_list', session, controllers.adminController.restaurant_list)

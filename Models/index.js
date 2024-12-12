@@ -6,5 +6,6 @@ module.exports={
     messageModel: require('./messageModel'),
     vehicleTypeModel: require('./vehicleTypeModel'),
     orderModel: require('./orderModel'),
-    restaurantModel: require('./restaurantModel')
+    restaurantModel: require('./restaurantModel'),
+    rideBookingModel:require("./rideBookingModel")
 }

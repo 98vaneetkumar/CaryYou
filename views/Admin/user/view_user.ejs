@@ -111,15 +111,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="section-header">
-      <h1><%=viewuser.name%></h1>
-      <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item active">
-          <a href="/admin/user_list">User Listing</a>
-        </div>
-        <div class="breadcrumb-item">User</div>
-      </div>
-    </div> -->
     <div class="mb-3">
       <a href="/admin/user_list" class="btn btn-dark">
         <i class="fas fa-arrow-left"></i> Back
@@ -143,6 +134,27 @@
               </div>
               <div class="card-body" id="orders" value="<%= orders %>" style="color: white; font-weight: bold">
                 <%= orders %>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-left">
+        <a href="/admin/user_pending_order_list/<%= viewuser._id %>">
+          <div
+            class="card card-statistic-1"
+            style="background: linear-gradient(135deg, #33cc99, #66cc99)"
+          >
+          <div class="card-icon" style="background: rgba(38, 151, 114, 0.8)">
+            <i class="fas fa-clock"></i>
+          </div>
+            <div class="card-wrap">
+              <div class="card-header">
+                <h4 style="color: white; font-weight: bold">Pending Orders</h4>
+              </div>
+              <div class="card-body" id="pendingOrders" value="<%= pendingOrders %>" style="color: white; font-weight: bold">
+                <%= pendingOrders %>
               </div>
             </div>
           </div>
@@ -192,7 +204,8 @@
       </div>
       
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
-        <a href="/admin/user_all_rides_list/<%= viewuser._id %>">
+        <!-- <a href="/admin/user_all_rides_list/<%= viewuser._id %>"> -->
+        <a href="#">
           <div
             class="card card-statistic-1"
             style="background: linear-gradient(135deg, #ffcc00, #ff9900)"
@@ -213,7 +226,8 @@
       </div>
       
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-left">
-        <a href="/admin/user_all_spend_list/<%= viewuser._id %>">
+        <!-- <a href="/admin/user_all_spend_list/<%= viewuser._id %>"> -->
+          <a href="#">
           <div
             class="card card-statistic-1"
             style="background: linear-gradient(135deg, #3399ff, #66ccff)"
@@ -314,15 +328,19 @@
     const orderGraphCtx = document.getElementById("orderGraph").getContext("2d");
     const revenueGraphCtx = document.getElementById("revenueGraph").getContext("2d");
 
+    let Orders= parseInt(document.getElementById("orders").textContent)||0
+    let cancelledOrders= parseInt(document.getElementById("cancelledOrders").textContent)||0
+    let successOrders=parseInt(document.getElementById("successOrders").textContent)||0
+    let pendingOrders=parseInt(document.getElementById("pendingOrders").textContent)||0
     // User Graph setup (Static Data)
     const userGraph = new Chart(userGraphCtx, {
       type: "bar",
       data: {
-        labels: ["Success Orders", "Cancelled Orders"],
+        labels: ["Total Orders", "Cancelled Orders"],
         datasets: [
           {
             label: "Count",
-            data: [15, 5], // Static data
+            data: [Orders, cancelledOrders], // Static data
             backgroundColor: ["#6666ff", "#33cc99"],
             borderColor: ["#4444ff", "#33aa99"],
             borderWidth: 1,
@@ -343,17 +361,17 @@
       type: "doughnut",
       data: {
         labels: [
-          "Active Orders",
-          "Delivered Orders",
+          "Success Orders",
           "Cancelled Orders",
           "Pending Orders",
         ],
         datasets: [
           {
             label: "Orders",
-            data: [20, 40, 10, 30], // Static data
-            backgroundColor: ["#28a745", "#007bff", "#dc3545", "#ffc107"],
-            borderColor: ["#1d7a34", "#0056b3", "#a71d2a", "#d39e00"],
+            // date:[successOrders,cancelledOrders,pendingOrders],
+            data: [40, 10, 30], // Static data
+            backgroundColor: ["#007bff", "#dc3545", "#ffc107"],
+            borderColor: ["#0056b3", "#a71d2a", "#d39e00"],
             borderWidth: 1,
           },
         ],
@@ -397,6 +415,34 @@
           title: { display: true, text: "Revenue Over Time" },
         },
       },
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const filterDropdown = document.getElementById("filter");
+    const userId = document.getElementById("user_id").getAttribute("data-value");
+
+    // Listen for dropdown changes
+    filterDropdown.addEventListener("change", async () => {
+      const selectedFilter = filterDropdown.value;
+      const response = await fetch("/admin/user_dashboardFilter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ filter: selectedFilter,id:userId }),
+      });
+
+      const data = await response.json();
+
+      document.getElementById("orders").textContent=data.orders;
+      document.getElementById("pendingOrders").textContent=data.pendingOrders;
+      document.getElementById("successOrders").textContent=data.successOrders;
+      document.getElementById("cancelledOrders").textContent=data.cancelledOrders;
+      document.getElementById("totalRides").textContent=data.totalRides;
+      document.getElementById("totalSpend").textContent=data.totalSpend;
     });
   });
 </script>

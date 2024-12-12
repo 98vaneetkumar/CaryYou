@@ -98,7 +98,7 @@
   // Fetch WhatsApp messages
   async function fetchWhatsAppMessages() {
     try {
-      const response = await fetch('/api/whatsapp-messages'); // Replace with your API endpoint
+      const response = await fetch(''); // Replace with your API endpoint
       const data = await response.json();
 
       const count = data.messages.length;
@@ -121,7 +121,7 @@
   // Fetch notifications
   async function fetchNotifications() {
     try {
-      const response = await fetch('/api/notifications'); // Replace with your API endpoint
+      const response = await fetch(''); // Replace with your API endpoint
       const data = await response.json();
 
       const count = data.notifications.length;
@@ -151,11 +151,12 @@
     }
   }
 
+
   // Refresh data periodically
-  setInterval(() => {
-    fetchWhatsAppMessages();
-    fetchNotifications();
-  }, 5000);
+  // setInterval(() => {
+  //   fetchWhatsAppMessages();
+  //   fetchNotifications();
+  // }, 5000);
 
   // Add CSS for vibration effect
   const style = document.createElement('style');
