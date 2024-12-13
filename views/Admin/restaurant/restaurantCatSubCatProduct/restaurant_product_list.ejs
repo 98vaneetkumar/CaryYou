@@ -9,90 +9,201 @@
         <div class="breadcrumb-item">Restaurant</div>
       </div>
     </div>
-    <div class="col-12 col-mt-5">
-      <div class="card-datatable">
-        <div class="table-responsive">
-          <table id="myTable" class="table table-hover table-md">
-            <thead>
-              <tr style="background-color: #ebf2f2">
-                <th scope="col">S No.</th>
-                <th scope="col">Image</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">SubCateory</th>
-                <th scope="col">Status</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% viewuser.products.forEach(function(data, i) { %>
-                <tr>
-                  <td><%= 1 + i %></td>
-                  <td>
-                    <img
-                      src="<%= data.image ? data.image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
-                      width="50"
-                      height="50"
-                      class="profile_img rounded-circle border"
-                      style="cursor: pointer"
-                    />
-                  </td>
-                  <td><%= data.itemName %></td>
-                  <td><%= data?.subCategoryName %></td>
-                  <td>
-                    <% if (data?.status == 1) { %>
-                      <button
-                        onclick="changeStatus(this)"
-                        id="restaurantId_<%= data._id %>"
-                        class="btn btn-sm btn-success status"
-                        data-id="<%= data._id %>"
-                        value="0"
-                      >
-                        Active
-                      </button>
-                    <% } else { %>
-                      <button
-                        onclick="changeStatus(this)"
-                        id="restaurantId_<%= data._id %>"
-                        class="btn btn-sm btn-danger status"
-                        data-id="<%= data._id %>"
-                        value="1"
-                      >
-                        In-Active
-                      </button>
-                    <% } %>
-                  </td>
-                  <td>
-                    <div class="action-buttons">
-                      <a href="/admin/restaurant_product_view/<%= data._id %>" class="btn btn-sm bg-warning">
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                      </a>
-                      <button
-                        onclick="confirmDelete('<%= data._id %>')"
-                        class="btn btn-sm bg-danger"
-                      >
-                        <i class="fa fa-trash"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+
+    <!-- Grid Container -->
+    <div class="restaurant-grid">
+      <% viewuser.products.forEach(function(data, i) { %>
+        <div class="restaurant-item">
+          <div class="restaurant-image-container">
+            <div class="restaurant-images">
+              <% data.images.forEach(function(image, index) { %> <!-- Assuming "images" is an array of image URLs -->
+                <div class="restaurant-image">
+                  <img
+                    src="<%= image ? image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
+                    alt="<%= data.itemName %>"
+                    class="img-fluid"
+                  />
+                </div>
               <% }); %>
-            </tbody>
-          </table>
+            </div>
+
+            <!-- Show carousel buttons only if there are more than one image -->
+            <% if (data.images.length > 1) { %>
+              <button class="carousel-arrow left-arrow" onclick="moveSlide('left', '<%= i %>')">&#10094;</button>
+              <button class="carousel-arrow right-arrow" onclick="moveSlide('right', '<%= i %>')">&#10095;</button>
+            <% } %>
+          </div>
+
+          <div class="restaurant-info">
+            <h5><%= data.itemName %></h5>
+            <p><%= data?.subCategoryName %></p>
+            <div class="status-btn">
+              <% if (data?.status == 1) { %>
+                <button
+                  onclick="changeStatus(this)"
+                  id="restaurantId_<%= data._id %>"
+                  class="btn btn-sm btn-success status"
+                  data-id="<%= data._id %>"
+                  value="0"
+                >
+                  Active
+                </button>
+              <% } else { %>
+                <button
+                  onclick="changeStatus(this)"
+                  id="restaurantId_<%= data._id %>"
+                  class="btn btn-sm btn-danger status"
+                  data-id="<%= data._id %>"
+                  value="1"
+                >
+                  In-Active
+                </button>
+              <% } %>
+            </div>
+            <div class="action-buttons">
+              <a href="/admin/restaurant_product_view/<%= data._id %>" class="btn btn-sm bg-warning">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </a>
+              <button
+                onclick="confirmDelete('<%= data._id %>')"
+                class="btn btn-sm bg-danger"
+              >
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      <% }); %>
     </div>
   </section>
 </div>
 
 <style>
+  .restaurant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .restaurant-item {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+  }
+
+  .restaurant-item:hover {
+    transform: translateY(-5px);
+  }
+
+  .restaurant-image-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .restaurant-images {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+
+  .restaurant-image {
+    min-width: 100%;
+    transition: opacity 0.5s ease;
+  }
+
+  .restaurant-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 25px;
+    cursor: pointer;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    outline: none;
+  }
+
+  .left-arrow {
+    left: 10px;
+  }
+
+  .right-arrow {
+    right: 10px;
+  }
+
+  .restaurant-info {
+    padding: 15px;
+  }
+
+  .restaurant-info h5 {
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .restaurant-info p {
+    font-size: 14px;
+    color: #777;
+  }
+
+  .status-btn {
+    margin: 10px 0;
+  }
+
   .action-buttons {
     display: flex;
-    gap: 5px; /* Adjust spacing between buttons as needed */
+    justify-content: space-between;
+    margin-top: 10px;
   }
+
   .action-buttons .btn {
-    margin: 0; /* Remove any default margin */
+    margin: 0;
   }
 </style>
+
+<script>
+  let currentSlideIndex = {};
+
+  function moveSlide(direction, index) {
+    const imagesContainer = document.querySelectorAll('.restaurant-images')[index];
+    const totalImages = imagesContainer.children.length;
+
+    if (!currentSlideIndex[index]) {
+      currentSlideIndex[index] = 0;  // Initialize the slide index if not already set
+    }
+
+    if (direction === 'left') {
+      // Prevent moving left if at the first image
+      if (currentSlideIndex[index] > 0) {
+        currentSlideIndex[index] -= 1;
+      }
+    } else if (direction === 'right') {
+      // Prevent moving right if at the last image
+      if (currentSlideIndex[index] < totalImages - 1) {
+        currentSlideIndex[index] += 1;
+      }
+    }
+
+    // Slide the images based on the current index
+    imagesContainer.style.transform = `translateX(-${currentSlideIndex[index] * 100}%)`;
+  }
+</script>
+
+
 
 <script>
   $(document).ready(function () {
