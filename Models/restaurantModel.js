@@ -53,7 +53,8 @@ const restaurantSchema = new mongoose.Schema(
         itemName: { type: String, required: true },
         price: { type: String, required: true },
         size: { type: String },
-        status:{type:Number,default:1}// 1 for acitve  and 0 for  not acitve
+        status:{type:Number,default:1},// 1 for acitve  and 0 for  not acitve
+        description:{type: String}
 
       },
     ],

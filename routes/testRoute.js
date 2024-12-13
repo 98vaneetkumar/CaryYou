@@ -31,6 +31,8 @@ router.post('/createCategory', controller.testController.createCategory);
 
 router.post('/createSubCategory', controller.testController.createSubCategory);
 
+router.get("/restaurantProduct",controller.testController.restaurantProduct);
+
 
 
 module.exports = router

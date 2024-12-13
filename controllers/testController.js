@@ -401,6 +401,55 @@ module.exports = {
   
   
   
-  
+  restaurantProduct:async(req,res)=>{
+    try {
+      let objToUpdate = [
+        {
+          subCategoryId: "6755aeede7becf5dcd7c0782",
+          images: ["/images/b0863955-94c8-43dc-bd68-2cfbbdd1f04c.jpg", "/images/fc524550-9222-4931-a84a-896e34ebad64.jpg"], // Example images
+          itemName: "Sample",
+          price: "100",
+          size: "Large",
+          status: 1,
+          description:"Sample Item quantity"
+        },
+        {
+          subCategoryId: "6755aeede7becf5dcd7c0783",
+          images: ["/images/975fe7ab-ddf8-4f64-82d1-669f3d3035dd.jpeg", "/images/fc524550-9222-4931-a84a-896e34ebad64.jpg"], // Example images
+          itemName: "Sample Item",
+          price: "100",
+          size: "Small",
+          status: 1,
+          description:"Sample Item Description"
+        },
+        {
+          subCategoryId: "6755aeede7becf5dcd7c0782",
+          images: ["/images/b0863955-94c8-43dc-bd68-2cfbbdd1f04c.jpg", "/images/fc524550-9222-4931-a84a-896e34ebad64.jpg"], // Example images
+          itemName: "Test",
+          price: "10",
+          size: "XL",
+          status: 1,
+          description:"Test description"
+        },
+        {
+          subCategoryId: "6755aeede7becf5dcd7c0783",
+          images: ["/images/975fe7ab-ddf8-4f64-82d1-669f3d3035dd.jpeg", "/images/fc524550-9222-4931-a84a-896e34ebad64.jpg"], // Example images
+          itemName: "Sample Item",
+          price: "100",
+          size: "Small",
+          status: 1,
+          description:"Sample Item"
+        },
+      ];
+
+      await Models.restaurantModel.updateOne(
+        { _id: "6755aeede7becf5dcd7c077f" },
+        { $push: { products: { $each: objToUpdate } } } // Use $each to add multiple items
+      );
+      return true
+    } catch (error) {
+      throw error
+    }
+  }
   
 };

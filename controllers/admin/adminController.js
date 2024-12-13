@@ -1437,11 +1437,7 @@ module.exports = {
           subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
         };
       });
-    }
-    
-    console.log(viewuser);
-    
-
+    }    
         res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
         title,
         viewuser,
@@ -1516,7 +1512,6 @@ module.exports = {
     try {
       let title = "rider_list";
       let viewrider = await Models.userModel.findById({ _id: req.params.id });
-      // console.log(viewrider,"viewriderviewriderviewriderviewrider");return
       res.render("Admin/rider/view_rider", {
         title,
         viewrider,
