@@ -1,0 +1,98 @@
+<div class="main-content">
+    <section class="section">
+      <div class="section-header">
+        <h1>Ride Detail</h1>
+        <div class="section-header-breadcrumb">
+          <div class="breadcrumb-item active"><a href="/admin/dashboard">Dashboard</a></div>
+          <div class="breadcrumb-item"><a href="/rider_list">Riders</a></div>
+          <div class="breadcrumb-item">Ride Detail</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="card">
+          <form action="" method="post" enctype="multipart/form-data">
+            <!-- Back Button -->
+            <div class="form-group text-left ml-3 mt-2">
+              <a href="/admin/view_rider/<%=riderId%>" class="btn btn-info">
+                <i class="fas fa-arrow-left"></i> Back</a>
+            </div>
+            <div class="row mt-sm-4 justify-content-center">
+              
+            
+              <!-- Left Side - Rider Image & Basic Details -->
+              <div class="col-12 col-md-12 col-lg-4">
+                <div class="card profile-widget">
+                  <div class="profile-widget-header text-center py-3">
+                    <img alt="Rider Image" width="200" height="200" id="blah" src="<%= viewrider.image ? viewrider.image : 'https://avatar.iran.liara.run/public/boy?ridername=Ash' %>" class="profile_img rounded-circle">
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h4 class="text-center">Basic Info</h4>
+                  <div class="form-group">
+                    <label class="col-form-label">Name</label>
+                    <input type="text" name="name" value="<%=viewrider.fullName%>" class="form-control" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Email</label>
+                    <input type="email" name="email" value="<%=viewrider.email%>" class="form-control" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Phone</label>
+                    <input type="text" name="phone" value="<%=viewrider.countryCode%> <%=viewrider.phoneNumber%>" class="form-control" disabled>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Right Side - License & Vehicle Info -->
+              <div class="col-12 col-md-12 col-lg-7">
+                <div class="card-body">
+                  <h4 class="text-center">User Info</h4>
+  
+                  <!-- License Details -->
+                  <div class="form-group">
+                    <label class="col-form-label">User Name</label>
+                    <input type="text" name="userName" value="<%=riderHistory?.userId?.fullName%>" class="form-control" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">PickUpLocation</label>
+                    <input type="text" name="pickUpLocation" value="<%=viewrider?.userLocation?.location%>" class="form-control" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Desitnation Location</label>
+                    <input type="text" name="destinationLocation" value="<%=viewrider?.destinationLocation?.location%>" class="form-control" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Ride Fair</label>
+                    <input type="text" name="riderFair" value="<%=viewrider?.riderFair%>" class="form-control" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Admin Commission</label>
+                    <input type="text" name="adminCommission" value="<%=viewrider?.adminCommission%>" class="form-control" disabled>
+                  </div>
+  
+                  <!-- Vehicle Info -->
+                  <div class="form-group">
+                    <label class="col-form-label">Total Distance</label>
+                    <input type="text" name="totalDistance" value="<%=viewrider?.totalDistance%>" class="form-control" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Total Time taken to Reached the location</label>
+                    <input type="text" name="totalTimeTaken" value="<%=viewrider?.totalTimeTaken%>" class="form-control" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Extra Charges due to user reached pickup location late</label>
+                    <input type="text" name="extraCharges" value="<%=viewrider?.extraCharges%>" class="form-control" disabled>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+  
+  

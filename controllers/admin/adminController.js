@@ -1493,9 +1493,11 @@ module.exports = {
     try {
       let title = "rider_list";
       let viewrider = await Models.userModel.findById({ _id: req.params.id });
+      let riderHistory=await Models.rideBookingModel.find({riderId:req.params.id}).populate("userId")
       res.render("Admin/rider/view_rider", {
         title,
         viewrider,
+        riderHistory,
         session: req.session.user,
         msg: req.flash("msg"),
       });
@@ -1505,6 +1507,22 @@ module.exports = {
     }
   },
 
+  view_ride_detial: async (req, res) => {
+    try {
+      let title = "rider_list";
+      let riderHistory=await Models.rideBookingModel.findById({_id:req.params.id}).populate("userId")
+      res.render("Admin/rider/view_rider", {
+        title,
+        riderHistory,
+        riderId:riderHistory.riderId,
+        session: req.session.user,
+        msg: req.flash("msg"),
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
   delete_rider: async (req, res) => {
     try {
       let riderid = req.body.id;

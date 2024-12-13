@@ -70,6 +70,22 @@ const rideBookingSchema = new mongoose.Schema(
     reasonOfCancelation: {
       type: String,
     },
+    riderFair:{
+      type:Number,
+    },
+    adminCommission:{
+      type:Number,
+    },
+    totalDistance:{
+      type:String
+    },
+    totalTimeTaken:{
+      type:String
+    },
+    extraCharges:{
+      type:Number,
+      default:0
+    }
   },
   { timestamps: true }
 );

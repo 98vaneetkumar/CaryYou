@@ -167,6 +167,54 @@
       </div>
     </div>
   </section>
+
+
+  <section class="section">
+    <div class="section-header">
+      <h1> Riders History</h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="/admin/dashboard">Dashboard</a></div>
+        <div class="breadcrumb-item">Riders History</div>
+      </div>
+    </div>
+    <div class="col-12 col-mt-5">
+      <div class="card-datatable">
+        <div class="table-responsive">
+          <table id="myTable" class="table table-hover table-md">
+            <thead>
+              <tr style="background-color: #ebf2f2;">
+                <th scope="col">S No.</th>
+                <th scope="col">User Name</th>
+                <th scope="col">User pickUp location</th>
+                <th scope="col">User destination location</th>
+                <th scope="col">Rider Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% riderHistory.forEach(function(data, i) { %>
+                <tr>
+                  <td><%= 1 + i %></td>
+                  <td><%= data?.userId?.fullName %></td>
+                  <td><%= data?.userLocation?.location %></td>
+                  <td><%= data?.destinationLocation?.location %></td>
+                  <td>
+                    <span>
+                      <%= data.status==4 ? 'Success' : 'Cancel' %>
+                    </span>
+                  </td>
+                  <td>
+                    <a href="/admin/view_ride_deatail/<%= data._id %>" class="btn btn-sm bg-warning"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>
 
 <!-- JavaScript to Toggle Image Visibility -->
