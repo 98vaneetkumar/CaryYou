@@ -1,7 +1,7 @@
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1>Restaurant</h1>
+      <h1><%= viewuser.name %></h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active">
           <a href="/admin/dashboard">Dashboard</a>
@@ -16,7 +16,7 @@
         <div class="restaurant-item">
           <div class="restaurant-image-container">
             <div class="restaurant-images">
-              <% data.images.forEach(function(image, index) { %> <!-- Assuming "images" is an array of image URLs -->
+              <% data.images.forEach(function(image, index) { %>
                 <div class="restaurant-image">
                   <img
                     src="<%= image ? image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
@@ -27,7 +27,6 @@
               <% }); %>
             </div>
 
-            <!-- Show carousel buttons only if there are more than one image -->
             <% if (data.images.length > 1) { %>
               <button class="carousel-arrow left-arrow" onclick="moveSlide('left', '<%= i %>')">&#10094;</button>
               <button class="carousel-arrow right-arrow" onclick="moveSlide('right', '<%= i %>')">&#10095;</button>
@@ -36,40 +35,35 @@
 
           <div class="restaurant-info">
             <h5><%= data.itemName %></h5>
-            <p><%= data?.subCategoryName %></p>
-            <div class="status-btn">
-              <% if (data?.status == 1) { %>
-                <button
-                  onclick="changeStatus(this)"
-                  id="restaurantId_<%= data._id %>"
-                  class="btn btn-sm btn-success status"
-                  data-id="<%= data._id %>"
-                  value="0"
-                >
-                  Active
-                </button>
-              <% } else { %>
-                <button
-                  onclick="changeStatus(this)"
-                  id="restaurantId_<%= data._id %>"
-                  class="btn btn-sm btn-danger status"
-                  data-id="<%= data._id %>"
-                  value="1"
-                >
-                  In-Active
-                </button>
-              <% } %>
-            </div>
-            <div class="action-buttons">
-              <a href="/admin/restaurant_product_view/<%= data._id %>" class="btn btn-sm bg-warning">
-                <i class="fa fa-eye" aria-hidden="true"></i>
-              </a>
-              <button
-                onclick="confirmDelete('<%= data._id %>')"
-                class="btn btn-sm bg-danger"
-              >
-                <i class="fa fa-trash"></i>
-              </button>
+            <p class="sub-category"><%= data?.subCategoryName %></p>
+            <p class="price">$<%= data.price %></p> <!-- Add the price here -->
+            <div class="buttons-container">
+              <div class="status-btn">
+                <% if (data?.status == 1) { %>
+                  <button
+                    id="restaurantId_<%= data._id %>"
+                    class="btn btn-sm btn-success status"
+                    data-id="<%= data._id %>"
+                    value="0"
+                  >
+                    Active
+                  </button>
+                <% } else { %>
+                  <button
+                    id="restaurantId_<%= data._id %>"
+                    class="btn btn-sm btn-danger status"
+                    data-id="<%= data._id %>"
+                    value="1"
+                  >
+                    In-Active
+                  </button>
+                <% } %>
+              </div>
+              <div class="view-btn">
+                <a href="/admin/restaurant_product_view/<%= data._id %>" class="btn btn-sm bg-warning">
+                  <i class="fa fa-eye" aria-hidden="true"></i>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -81,29 +75,31 @@
 <style>
   .restaurant-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 20px;
-    padding: 20px;
+    padding: 15px;
   }
 
   .restaurant-item {
     background: #fff;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
   .restaurant-item:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
   }
 
   .restaurant-image-container {
     position: relative;
     width: 100%;
     overflow: hidden;
+    border-radius: 12px 12px 0 0;
   }
 
   .restaurant-images {
@@ -120,22 +116,29 @@
     width: 100%;
     height: 200px;
     object-fit: cover;
+    border-radius: 12px 12px 0 0;
   }
 
-  .carousel-arrow {
-    position: absolute;
-    top: 50%;
-    z-index: 10;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 15px;
-    font-size: 25px;
-    cursor: pointer;
-    transform: translateY(-50%);
-    border-radius: 50%;
-    outline: none;
-  }
+  .carousel-arrow:focus {
+  outline: none;  /* Removes the focus outline */
+  border: none;   /* Removes any border */
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  outline: none; /* Prevents default outline */
+}
+
 
   .left-arrow {
     left: 10px;
@@ -146,34 +149,86 @@
   }
 
   .restaurant-info {
-    padding: 15px;
+    padding: 12px 10px;
+    text-align: center;
   }
 
   .restaurant-info h5 {
-    margin: 10px 0;
+    margin: 8px 0;
     font-size: 18px;
     font-weight: bold;
+    color: #333;
   }
 
-  .restaurant-info p {
+  .restaurant-info .sub-category {
     font-size: 14px;
     color: #777;
+    margin-bottom: 8px;
+  }
+
+  .price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1e9e35; /* Green color for price */
+    margin: 8px 0;
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
   }
 
   .status-btn {
-    margin: 10px 0;
+    margin-right: 5px;
+  }
+
+  .view-btn {
+    margin-left: 5px;
   }
 
   .action-buttons {
     display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+    justify-content: center;
+    margin-top: 12px;
   }
 
   .action-buttons .btn {
-    margin: 0;
+    margin: 0 5px;
   }
+
+  .btn {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+
+  .btn.bg-warning {
+    background-color: #ff9800;
+    color: white;
+  }
+
+  .btn.bg-warning:hover {
+    background-color: #e68900;
+  }
+
+  .btn.bg-danger {
+    background-color: #f44336;
+    color: white;
+  }
+
+  .btn.bg-danger:hover {
+    background-color: #d32f2f;
+  }
+
+  .btn.btn-sm {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
 </style>
+
+
 
 <script>
   let currentSlideIndex = {};
