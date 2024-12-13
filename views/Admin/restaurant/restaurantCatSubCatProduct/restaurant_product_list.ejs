@@ -36,7 +36,7 @@
           <div class="restaurant-info">
             <h5><%= data.itemName %></h5>
             <p class="sub-category"><%= data?.subCategoryName %></p>
-            <p class="price">$<%= data.price %></p> <!-- Add the price here -->
+            <p class="price">$<%= data.price %></p>
             <div class="buttons-container">
               <div class="status-btn">
                 <% if (data?.status == 1) { %>
@@ -60,9 +60,13 @@
                 <% } %>
               </div>
               <div class="view-btn">
-                <a href="/admin/restaurant_product_view/<%= data._id %>" class="btn btn-sm bg-warning">
+                <button 
+                  class="btn btn-sm bg-warning view-product-btn" 
+                  data-id="<%= data._id %>" 
+                  data-toggle="modal" 
+                  data-target="#productDetailModal">
                   <i class="fa fa-eye" aria-hidden="true"></i>
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -72,7 +76,13 @@
   </section>
 </div>
 
+<!-- "Top Up" Button -->
+<button id="topUpButton" class="topup-btn">
+  ↑
+</button>
+
 <style>
+  /* Grid Styles */
   .restaurant-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -95,6 +105,37 @@
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
   }
 
+ /* "Top Up" Button Styles */
+.topup-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #00000094; /* Green color for a more inviting look */
+  color: white;
+  border: none;
+  border-radius: 100%;
+  padding: 15px;
+  font-size: 24px; /* Larger font size */
+  cursor: pointer;
+  z-index: 1000;
+  display: none;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Softer shadow */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  transform: scale(1); /* Start with normal size */
+}
+
+.topup-btn:hover {
+  background-color: #000000; /* Darker green on hover */
+  transform: scale(1.1); /* Slightly enlarge the button on hover */
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
+}
+
+.topup-btn:active {
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Restore shadow on click */
+}
+
+
+  /* Restaurant Grid Styles */
   .restaurant-image-container {
     position: relative;
     width: 100%;
@@ -120,25 +161,24 @@
   }
 
   .carousel-arrow:focus {
-  outline: none;  /* Removes the focus outline */
-  border: none;   /* Removes any border */
-}
+    outline: none;
+    border: none;
+  }
 
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  z-index: 10;
-  background-color: transparent;
-  color: white;
-  border: none;
-  padding: 15px;
-  font-size: 20px;
-  cursor: pointer;
-  transform: translateY(-50%);
-  border-radius: 50%;
-  outline: none; /* Prevents default outline */
-}
-
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    outline: none;
+  }
 
   .left-arrow {
     left: 10px;
@@ -169,7 +209,7 @@
   .price {
     font-size: 16px;
     font-weight: bold;
-    color: #1e9e35; /* Green color for price */
+    color: #1e9e35;
     margin: 8px 0;
   }
 
@@ -187,48 +227,81 @@
     margin-left: 5px;
   }
 
-  .action-buttons {
-    display: flex;
-    justify-content: center;
-    margin-top: 12px;
-  }
-
-  .action-buttons .btn {
-    margin: 0 5px;
-  }
-
   .btn {
     font-size: 12px;
     padding: 5px 10px;
     border-radius: 20px;
   }
 
-  .btn.bg-warning {
-    background-color: #ff9800;
-    color: white;
+  /* Modal Styles */
+  .modal-lg {
+    max-width: 80% !important;
   }
 
-  .btn.bg-warning:hover {
-    background-color: #e68900;
+  .modal-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .btn.bg-danger {
-    background-color: #f44336;
-    color: white;
+  .modal-content {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
   }
 
-  .btn.bg-danger:hover {
-    background-color: #d32f2f;
+  .modal-header {
+    border-bottom: 1px solid #ddd;
   }
 
-  .btn.btn-sm {
-    font-size: 12px;
-    padding: 5px 8px;
+  .modal-footer {
+    border-top: 1px solid #ddd;
   }
-
 </style>
 
+<script>
+  // Handle Top Up Button visibility and smooth scroll to top
+  window.onscroll = function() {
+    // Show the button after scrolling 100px down
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+      document.getElementById("topUpButton").style.display = "block";
+    } else {
+      document.getElementById("topUpButton").style.display = "none";
+    }
+  };
 
+  // When the button is clicked, smoothly scroll to the top
+  document.getElementById("topUpButton").onclick = function() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+</script>
+
+<script>
+  $(document).on('click', '.view-product-btn', function () {
+    const productId = $(this).data('id');
+
+    $.ajax({
+      url: `/admin/restaurant_product_view/${productId}`,
+      method: 'GET',
+      success: function (response) {
+        $('#productDetailContent').html(`
+          <div class="text-center">
+            <h4>${response.itemName}</h4>
+            <p>${response.description || 'No description available.'}</p>
+            <img src="${response.image}" alt="${response.itemName}" class="img-fluid">
+            <p class="price">$${response.price}</p>
+          </div>
+        `);
+      },
+      error: function () {
+        $('#productDetailContent').html('<p class="text-danger">Failed to load product details.</p>');
+      },
+    });
+  });
+</script>
 
 <script>
   let currentSlideIndex = {};
@@ -238,27 +311,22 @@
     const totalImages = imagesContainer.children.length;
 
     if (!currentSlideIndex[index]) {
-      currentSlideIndex[index] = 0;  // Initialize the slide index if not already set
+      currentSlideIndex[index] = 0;
     }
 
     if (direction === 'left') {
-      // Prevent moving left if at the first image
       if (currentSlideIndex[index] > 0) {
         currentSlideIndex[index] -= 1;
       }
     } else if (direction === 'right') {
-      // Prevent moving right if at the last image
       if (currentSlideIndex[index] < totalImages - 1) {
         currentSlideIndex[index] += 1;
       }
     }
 
-    // Slide the images based on the current index
     imagesContainer.style.transform = `translateX(-${currentSlideIndex[index] * 100}%)`;
   }
 </script>
-
-
 
 <script>
   $(document).ready(function () {
@@ -292,28 +360,25 @@
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
+        cancelButtonText: "No, keep it",
         reverseButtons: true,
       })
-      .then((isConfirm) => {
-        if (isConfirm.isConfirmed) {
+      .then((result) => {
+        if (result.isConfirmed) {
           $.ajax({
-            url: `/admin/delete_restaurant/${id}`,
-            type: "DELETE",
+            url: `/admin/restaurant_product_delete/${id}`,
+            method: "POST",
             success: function () {
-              swalWithBootstrapButtons
-                .fire("Deleted!", "The restaurant has been deleted.", "success")
-                .then(() => {
-                  location.reload();
-                });
+              location.reload();
+            },
+            error: function () {
+              swalWithBootstrapButtons.fire(
+                "Error!",
+                "There was an issue deleting the product.",
+                "error"
+              );
             },
           });
-        } else {
-          swalWithBootstrapButtons.fire(
-            "Cancelled",
-            "The restaurant is safe :)",
-            "error"
-          );
         }
       });
   }

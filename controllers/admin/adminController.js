@@ -1452,42 +1452,23 @@ module.exports = {
   },
   restaurant_product_view: async (req, res) => {
     try {
-      let title = "provider_list";
-      const viewuser = await Models.restaurantModel
-      .findById(req.params._id)
-      .populate("userId") // Populate user information
-      .lean(); // Use `.lean()` to get a plain JavaScript object
-    
-    if (viewuser) {
-      // Map subCategories with corresponding category data
-      viewuser.products = viewuser.products.map((subCat) => {
-        const matchedSubCategory = viewuser.subCategory.find(
-          (cat) => cat._id.toString() === subCat.subCategoryId.toString()
-        );
-    
-        return {
-          ...subCat,
-          subCategoryName: matchedSubCategory ? matchedSubCategory.name : null,
-          subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
-        };
-      });
-    }
-    
-    console.log(viewuser);
-    
-
-        res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
-        title,
-        viewuser,
-        restaurant:req.params._id,
-        session: req.session.user,
-        msg: req.flash("msg"),
-      });
+      const product = await Models.restaurantModel.findOne(
+        { "products._id": req.params._id },
+        { "products.$": 1 }
+      ).lean();
+  
+      if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+  
+      // Extract and send the product details
+      res.json(product.products[0]);
     } catch (error) {
       console.log(error);
-      throw error;
+      res.status(500).json({ message: "Internal server error" });
     }
   },
+  
   //---------riders list apis--------------
 
   rider_list: async (req, res) => {

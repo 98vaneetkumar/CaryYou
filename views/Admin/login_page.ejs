@@ -31,7 +31,10 @@
         align-items: center;
         justify-content: center;
         font-family: "Arial", sans-serif;
-        background: linear-gradient(135deg, #1b1b1b, #2e2e2e);
+        background: url("https://img.freepik.com/premium-photo/restaurant-blur-background-design-resource_236836-16729.jpg?w=740");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
         overflow: hidden;
       }
 
@@ -148,7 +151,6 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-        background: linear-gradient(135deg, #181818, #232323);
       }
 
       .caryYou {
@@ -248,10 +250,8 @@
   </body>
 </html>
 
-
-
 <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-messaging.js"></script> 
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-messaging.js"></script>
 <script>
   // Check if Service Workers are supported
   if ("serviceWorker" in navigator) {
@@ -298,7 +298,10 @@
   }
 
   // Check and request permission
-  if (Notification.permission === "default" || Notification.permission === "denied") {
+  if (
+    Notification.permission === "default" ||
+    Notification.permission === "denied"
+  ) {
     requestNotificationPermission()
       .then((token) => {
         console.log("Firebase Token:", token);
@@ -334,4 +337,3 @@
     }
   });
 </script>
-
