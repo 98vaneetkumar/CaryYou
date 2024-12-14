@@ -707,6 +707,10 @@ module.exports = {
   view_restaurant: async (req, res) => {
     try {
       let title = "provider_list";
+       // Start of the month
+       const currentDate = new Date();
+       const startOfMonth = currentDate.getMonth() + 1;
+       const endOfMonth = currentDate.getFullYear();;
       let viewuser = await Models.restaurantModel
         .findById({ _id: req.params.id })
         .populate("userId");
@@ -727,7 +731,16 @@ module.exports = {
         status: 3,
         restaurant: req.params.id,
       });
-
+      const revenueData = await Models.transactionModel.find({
+        createdAt: { $gte: startOfMonth, $lte: endOfMonth },
+      });
+  
+      // Format the response
+      const labels = revenueData.map((entry) => entry.day); // e.g., [1, 2, 3, ...]
+      const revenue = revenueData.map((entry) => entry.amount); // e.g., [100, 200, ...]
+  
+      console.log("labels", labels)
+      console.log("revenue", revenue)
       res.render("Admin/restaurant/restaurant_view", {
         title,
         viewuser,
@@ -739,6 +752,8 @@ module.exports = {
         activeOrders,
         deliveredOrders,
         cancelledOrders,
+        labels,
+        revenue,
         session: req.session.user,
         msg: req.flash("msg"),
       });
@@ -749,13 +764,17 @@ module.exports = {
   },
   restaurant_dashboard_filter: async (req, res) => {
     try {
+
       const title = "provider_list";
       const filter = req.body.filter || "all"; // Get the filter parameter from the request body
       const _id=req.body.id
+      const { year, month } = req.body;
       // Calculate date range based on the filter
       const now = new Date();
       let startDate, endDate;
-  
+      // Query the database for revenue data
+      const startOfMonth = new Date(year, month - 1, 1); // Start date
+      const endOfMonth = new Date(year, month, 0); // End date
       switch (filter) {
         case "today":
           startDate = new Date(now.setHours(0, 0, 0, 0));
@@ -822,6 +841,15 @@ module.exports = {
         ...dateQuery
       });
 
+      // const revenueData = await Models.transactionModel.find({
+      //   createdAt: { $gte: startOfMonth, $lte: endOfMonth },
+      // });
+  
+      // // Format the response
+      // const labels = revenueData.map((entry) => entry.day); // e.g., [1, 2, 3, ...]
+      // const revenue = revenueData.map((entry) => entry.amount); // e.g., [100, 200, ...]
+  
+
        return res.json({
           userdata,
           category: userdata?.category?.length || 0,
@@ -832,6 +860,8 @@ module.exports = {
           activeOrders,
           deliveredOrders,
           cancelledOrders,
+          // labels,
+          // revenue
         })
     } catch (error) {
       console.error("Error in restaurant_view:", error);
