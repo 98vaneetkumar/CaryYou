@@ -35,28 +35,61 @@
         >
       </li>
 
-      <!-- Users -->
-      <li class="<%=(title =='user_list'?'active':'') %>">
-        <a class="nav-link" href="/admin/user_list"
+      <!-- Users Dropdown -->
+      <li class="dropdown <%=(title.startsWith('user')?'active':'') %>">
+        <a href="#" class="nav-link has-dropdown"
           ><i class="fas fa-users" style="font-size: large"></i
           ><span><b>Users</b></span></a
         >
+        <ul class="dropdown-menu" style="background-color: transparent;">
+          <li class="<%=(title =='user_list'?'active':'') %>">
+            <a class="nav-link" href="/admin/user_list">All Users</a>
+          </li>
+          <li class="<%=(title =='terms_condition_user'?'active':'') %>">
+            <a class="nav-link" href="/admin/terms_condition_user">User T&C</a>
+          </li>
+          <li class="<%=(title =='privacy_policy_user'?'active':'') %>">
+            <a class="nav-link" href="/admin/privacy_policy_user">User Privacy Policy</a>
+          </li>
+        </ul>
       </li>
 
-      <!-- Providers (Restaurants) -->
-      <li class="<%=(title =='provider_list'?'active':'') %>">
-        <a class="nav-link" href="/admin/restaurant_list"
-          ><i class="fas fa-utensils" style="font-size: large"></i
-          ><span><b>Providers/Restaurants </b></span></a
-        >
-      </li>
-
-      <!-- Riders -->
-      <li class="<%=(title =='rider_list'?'active':'') %>">
-        <a class="nav-link" href="/admin/rider_list"
+      <!-- Riders Dropdown -->
+      <li class="dropdown <%=(title.startsWith('rider')?'active':'') %>">
+        <a href="#" class="nav-link has-dropdown"
           ><i class="fas fa-taxi" style="font-size: large"></i
           ><span><b>Riders</b></span></a
         >
+        <ul class="dropdown-menu" style="background-color: transparent;">
+          <li class="<%=(title =='rider_list'?'active':'') %>">
+            <a class="nav-link" href="/admin/rider_list">All Riders</a>
+          </li>
+          <li class="<%=(title =='terms_condition_rider'?'active':'') %>">
+            <a class="nav-link" href="/admin/terms_condition_rider">Rider T&C</a>
+          </li>
+          <li class="<%=(title =='privacy_policy_rider'?'active':'') %>">
+            <a class="nav-link" href="/admin/privacy_policy_rider">Rider Privacy Policy</a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Providers/Restaurants Dropdown -->
+      <li class="dropdown <%=(title.startsWith('provider')?'active':'') %>">
+        <a href="#" class="nav-link has-dropdown"
+          ><i class="fas fa-utensils" style="font-size: large"></i
+          ><span><b>Providers/Restaurants</b></span></a
+        >
+        <ul class="dropdown-menu" style="background-color: transparent;">
+          <li class="<%=(title =='provider_list'?'active':'') %>">
+            <a class="nav-link" href="/admin/restaurant_list">All Providers</a>
+          </li>
+          <li class="<%=(title =='terms_condition_provider'?'active':'') %>">
+            <a class="nav-link" href="/admin/terms_condition_provider">Provider T&C</a>
+          </li>
+          <li class="<%=(title =='privacy_policy_provider'?'active':'') %>">
+            <a class="nav-link" href="/admin/privacy_policy_provider">Provider Privacy Policy</a>
+          </li>
+        </ul>
       </li>
 
       <!-- Vehicle Types -->
@@ -66,15 +99,6 @@
           ><span><b>Vehicle Types</b></span></a
         >
       </li>
-      
-
-      <!-- Payments -->
-      <!-- <li class="<%=(title =='payment_list'?'active':'') %>">
-        <a class="nav-link" href="#"
-          ><i class="fas fa-credit-card" style="font-size: large"></i
-          ><span><b>Payments</b></span></a
-        >
-      </li> -->
 
       <!-- Orders -->
       <li class="<%=(title =='order_list'?'active':'') %>">
@@ -83,6 +107,7 @@
           ><span><b>Orders</b></span></a
         >
       </li>
+
        <!-- Pending Orders -->
        <li class="<%=(title =='pending_orders'?'active':'') %>">
         <a class="nav-link" href="/admin/pending_order_list"
@@ -114,6 +139,16 @@
           ><span><b>Cancelled Orders</b></span></a
         >
       </li>
+
+
+
+      <!-- Payments -->
+      <!-- <li class="<%=(title =='payment_list'?'active':'') %>">
+        <a class="nav-link" href="#"
+          ><i class="fas fa-credit-card" style="font-size: large"></i
+          ><span><b>Payments</b></span></a
+        >
+      </li> -->
 
       <!-- Services -->
       <!-- <li class="<%=(title =='service_list'?'active':'') %>">
@@ -165,3 +200,27 @@
     </ul>
   </aside>
 </div>
+
+<style>
+/* Ensure active item has black background */
+.sidebar-menu .dropdown-menu .nav-link.active {
+  background-color: #000 !important; /* Black background for active item */
+  color: #fff !important; /* White text color for the active item */
+}
+
+/* Make the dropdown background transparent */
+.sidebar-menu .dropdown-menu {
+  background-color: transparent !important;
+}
+
+/* Ensure the dropdown items do not have a white background */
+.sidebar-menu .dropdown-menu .nav-link {
+  background-color: transparent !important;
+}
+
+/* On hover, apply light grey background */
+.sidebar-menu .dropdown-menu .nav-link:hover {
+  background-color: #f0f0f0 !important; /* Light grey background on hover */
+  color: #000 !important; /* Darken text color on hover */
+}
+</style>
