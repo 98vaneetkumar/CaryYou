@@ -502,8 +502,8 @@ module.exports = {
           extraCharges: 15,
         },
         {
-          userId: "64efc8d0f4d5b77e09c12347",
-          riderId: "64efc8d0f4d5b77e09c67892",
+          userId: "674edd5e0594874f497bc8df",
+          riderId: "675150c86b2e0e72def70281",
           userLocation: {
             location: "Yet another user's location",
             coordinates: [77.4444, 28.9999],
@@ -525,7 +525,7 @@ module.exports = {
           extraCharges: 20,
         },
       ];
-      // await Models.rideBookingModel.create(dummyRideBookings)
+      await Models.rideBookingModel.create(dummyRideBookings)
       return true
     } catch (error) {
       throw error 
