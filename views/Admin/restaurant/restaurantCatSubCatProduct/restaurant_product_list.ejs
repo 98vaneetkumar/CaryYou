@@ -15,7 +15,7 @@
       <% viewuser.products.forEach(function(data, i) { %>
         <div class="restaurant-item">
           <div class="restaurant-image-container">
-            <div class="restaurant-images">
+            <div class="restaurant-images" id="carousel-<%= i %>">
               <% data.images.forEach(function(image, index) { %>
                 <div class="restaurant-image">
                   <img
@@ -35,8 +35,8 @@
 
           <div class="restaurant-info">
             <h5><%= data.itemName %></h5>
-            <p class="sub-category"><%= data?.subCategoryName %></p>
-            <p class="price">$<%= data.price %></p>
+            <p class="sub-category"><%= data?.subCategoryName || 'N/A' %></p>
+            <p class="price">$<%= data.price || 'N/A' %></p>
             <div class="buttons-container">
               <div class="status-btn">
                 <% if (data?.status == 1) { %>
@@ -62,9 +62,9 @@
               <div class="view-btn">
                 <button 
                   class="btn btn-sm bg-warning view-product-btn" 
-                  data-id="<%= data._id %>" 
-                  data-toggle="modal" 
-                  data-target="#productDetailModal">
+                  data-id="<%= data %>" 
+                  data-bs-toggle="modal" 
+                  data-bs-target="#productDetailModal">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                 </button>
               </div>
@@ -80,6 +80,84 @@
 <button id="topUpButton" class="topup-btn">
   ↑
 </button>
+
+<div id="productDetailModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productDetailTitle">Product Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="productDetailContent">
+        <!-- Product details will be dynamically injected here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery (required for AJAX) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom Script -->
+<script>
+  $(document).on('click', '.view-product-btn', function () {
+    const productId = $(this).data('id');
+
+    if (!productId) {
+      alert('Invalid product ID. Please try again.');
+      return;
+    }
+
+    // Show loading state while fetching data
+    $('#productDetailContent').html('<p>Loading...</p>');
+
+    $.ajax({
+      url: `/admin/restaurant_product_view/${productId}`,
+      method: 'GET',
+      success: function (response) {
+        const detailsHtml = `
+          <div class="text-center">
+            <h4>${response.name || 'No name available'}</h4>
+            <p>${response.description || 'No description available.'}</p>
+            <img src="${response.image || 'https://via.placeholder.com/300'}" alt="${response.itemName}" class="img-fluid">
+            <p class="price">$${response.price || 'N/A'}</p>
+          </div>
+        `;
+        $('#productDetailContent').html(detailsHtml);
+      },
+      error: function () {
+        $('#productDetailContent').html('<p class="text-danger">Failed to load product details.</p>');
+      },
+    });
+
+    // Show the modal
+    $('#productDetailModal').modal('show');
+  });
+
+  function moveSlide(direction, carouselId) {
+    const carousel = document.getElementById(`carousel-${carouselId}`);
+    const scrollAmount = direction === 'left' ? -300 : 300;
+    carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  }
+
+  // Scroll-to-top button functionality
+  const topUpButton = document.getElementById('topUpButton');
+
+  window.onscroll = function () {
+    topUpButton.style.display = window.scrollY > 200 ? 'block' : 'none';
+  };
+
+  topUpButton.onclick = function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+</script>
+
 
 <style>
   /* Grid Styles */

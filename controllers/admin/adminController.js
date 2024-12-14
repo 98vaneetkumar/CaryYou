@@ -1416,40 +1416,51 @@ module.exports = {
       throw error;
     }
   },
-  restaurant_product: async (req, res) => {
+  restaurant_product : async (req, res) => {
     try {
-      let title = "provider_list";
-      const viewuser = await Models.restaurantModel
-      .findById(req.params._id)
-      .populate("userId") // Populate user information
-      .lean(); // Use `.lean()` to get a plain JavaScript object
-    
-    if (viewuser) {
-      // Map subCategories with corresponding category data
-      viewuser.products = viewuser.products.map((subCat) => {
-        const matchedSubCategory = viewuser.subCategory.find(
-          (cat) => cat._id.toString() === subCat.subCategoryId.toString()
+      const restaurantId = req.params._id;
+  
+      // Debug log
+      console.log("restaurantId:", restaurantId);
+  
+  
+      // Fetch restaurant data
+      const restaurant = await Models.restaurantModel
+        .find({product})
+        .populate("userId")
+        .lean();
+  
+      if (!restaurant) {
+        return res.status(404).json({ message: "Restaurant not found" });
+      }
+  
+      // Process products
+      restaurant.products = restaurant.products.map((product) => {
+        const matchedSubCategory = restaurant.subCategory.find(
+          (subCat) => subCat._id.toString() === product.subCategoryId.toString()
         );
-    
+  
         return {
-          ...subCat,
+          ...product,
           subCategoryName: matchedSubCategory ? matchedSubCategory.name : null,
           subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
         };
       });
-    }    
-        res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
-        title,
-        viewuser,
-        restaurant:req.params._id,
+  
+      res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
+        title: "Products",
+        restaurantId,
+        viewuser: restaurant,
         session: req.session.user,
         msg: req.flash("msg"),
       });
     } catch (error) {
-      console.log(error);
-      throw error;
+      console.error("Error fetching products:", error);
+      res.status(500).json({ message: "Internal server error" });
     }
   },
+  
+  
   restaurant_product_view: async (req, res) => {
     try {
       const product = await Models.restaurantModel.findOne(
