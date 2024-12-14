@@ -1510,11 +1510,10 @@ module.exports = {
   view_ride_detial: async (req, res) => {
     try {
       let title = "rider_list";
-      let riderHistory=await Models.rideBookingModel.findById({_id:req.params.id}).populate("userId")
-      res.render("Admin/rider/view_rider", {
+      let viewrider=await Models.rideBookingModel.findById({_id:req.params.id}).populate("userId").populate("riderId")
+      res.render("Admin/rider/view_ride_user_detail", {
         title,
-        riderHistory,
-        riderId:riderHistory.riderId,
+        viewrider,
         session: req.session.user,
         msg: req.flash("msg"),
       });

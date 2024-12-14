@@ -450,6 +450,86 @@ module.exports = {
     } catch (error) {
       throw error
     }
+  },
+
+  rideBook:async(req,res)=>{
+    try {
+      const dummyRideBookings = [
+        {
+          userId: "6753fd42efe5fd5b8963a3b8", // Replace with valid user IDs from your "user" collection
+          riderId: "675150c86b2e0e72def70281", // Replace with valid rider IDs from your "user" collection
+          userLocation: {
+            location: "User's starting location",
+            coordinates: [77.1234, 28.5678],
+          },
+          destinationLocation: {
+            location: "Destination location",
+            coordinates: [77.5678, 28.1234],
+          },
+          riderLocation: {
+            location: "Rider's current location",
+            coordinates: [77.4321, 28.8765],
+          },
+          status: 1, // Pending
+          reasonOfCancelation: "",
+          riderFair: 200,
+          adminCommission: 20,
+          totalDistance: "15 km",
+          totalTimeTaken: "30 mins",
+          extraCharges: 10,
+        },
+        {
+          userId: "675449f250481a79e5d4ee95",
+          riderId: "675150c86b2e0e72def70281",
+          userLocation: {
+            location: "Another user's location",
+            coordinates: [77.3333, 28.6666],
+          },
+          destinationLocation: {
+            location: "Another destination",
+            coordinates: [77.4444, 28.7777],
+          },
+          riderLocation: {
+            location: "Another rider's location",
+            coordinates: [77.5555, 28.8888],
+          },
+          status: 3, // Ongoing
+          reasonOfCancelation: "",
+          riderFair: 250,
+          adminCommission: 25,
+          totalDistance: "20 km",
+          totalTimeTaken: "40 mins",
+          extraCharges: 15,
+        },
+        {
+          userId: "64efc8d0f4d5b77e09c12347",
+          riderId: "64efc8d0f4d5b77e09c67892",
+          userLocation: {
+            location: "Yet another user's location",
+            coordinates: [77.4444, 28.9999],
+          },
+          destinationLocation: {
+            location: "Yet another destination",
+            coordinates: [77.5555, 28.1111],
+          },
+          riderLocation: {
+            location: "Yet another rider's location",
+            coordinates: [77.6666, 28.2222],
+          },
+          status: 4, // Complete
+          reasonOfCancelation: "",
+          riderFair: 300,
+          adminCommission: 30,
+          totalDistance: "25 km",
+          totalTimeTaken: "50 mins",
+          extraCharges: 20,
+        },
+      ];
+      // await Models.rideBookingModel.create(dummyRideBookings)
+      return true
+    } catch (error) {
+      throw error 
+    }
   }
   
 };

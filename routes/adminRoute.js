@@ -72,7 +72,7 @@ router.get("/restaurant_product_view/:_id",session, controllers.adminController.
 //<------------------------------ Rider ------------------------->
 router.get('/rider_list', session, controllers.adminController.rider_list)
 router.get('/view_rider/:id', session, controllers.adminController.view_rider)
-router.get('/view_ride_detail/:riderId', session, controllers.adminController.view_ride_detial)
+router.get('/view_ride_detail/:id', session, controllers.adminController.view_ride_detial)
 
 router.delete('/delete_rider/:id', controllers.adminController.delete_rider)
 router.post('/rider_status', controllers.adminController.rider_status)

@@ -199,12 +199,40 @@
                   <td><%= data?.userLocation?.location %></td>
                   <td><%= data?.destinationLocation?.location %></td>
                   <td>
+                    <% 
+                      let statusText = "";
+                      let statusClass = "";
+                      switch (data.status) {
+                        case 1: 
+                          statusText = "Pending";
+                          statusClass = "bg-warning"; // yellow
+                          break;
+                        case 2: 
+                          statusText = "Success";
+                          statusClass = "bg-primary"; // blue
+                          break;
+                        case 3: 
+                          statusText = "Canceled";
+                          statusClass = "bg-danger"; // red
+                          break;
+                        case 4: 
+                          statusText = "Ongoing";
+                          statusClass = "bg-success"; // green
+                          break;
+                      }
+                    %>
+                    <span class="badge <%= statusClass %>">
+                      <%= statusText %>
+                    </span>
+                  </td>
+                  
+                  <!-- <td>
                     <span>
                       <%= data.status==4 ? 'Success' : 'Cancel' %>
                     </span>
-                  </td>
+                  </td> -->
                   <td>
-                    <a href="/admin/view_ride_deatail/<%= data._id %>" class="btn btn-sm bg-warning"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a href="/admin/view_ride_detail/<%= data._id %>" class="btn btn-sm bg-warning"><i class="fa fa-eye" aria-hidden="true"></i></a>
                   </td>
                 </tr>
               <% }) %>
