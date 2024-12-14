@@ -18,7 +18,11 @@
       </div>
     </div>
     <div class="row">
+      <div id="loader" class="gear-loader" style="display: none;">
+        <div class="gear"></div>
+      </div>
       <!-- Users Card -->
+      
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-top">
         <a href="/admin/user_list">
           <div
@@ -254,8 +258,8 @@
       </div>
 
       <!-- Services Card -->
-<div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
-  <a href="/admin/service_list">
+<!-- <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
+  <a href="#">
     <div
       class="card card-statistic-1"
       style="background: linear-gradient(135deg, #ff9966, #ffcc66)"
@@ -273,11 +277,11 @@
       </div>
     </div>
   </a>
-</div>
+</div> -->
 
 <!-- Feedback Card -->
 <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
-  <a href="/admin/feedback_list">
+  <a href="#">
     <div
       class="card card-statistic-1"
       style="background: linear-gradient(135deg, #ff6699, #ff99cc)"
@@ -298,8 +302,8 @@
 </div>
 
 <!-- Contact Us Card -->
-<div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-down">
-  <a href="/admin/contact_us">
+<div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
+  <a href="#">
     <div
       class="card card-statistic-1"
       style="background: linear-gradient(135deg, #33cc66, #66ff99)"
@@ -350,108 +354,164 @@
   </div>
   
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <script>
-    // Example of setting up a chart for Users, Riders, and Restaurants
-    var ctx1 = document.getElementById('userGraph').getContext('2d');
-    var userGraph = new Chart(ctx1, {
-      type: 'bar', // You can change to 'line', 'pie', etc.
-      data: {
-        labels: ['Users', 'Riders', 'Restaurants'],
-        datasets: [{
-          label: 'Count',
-          data: [1200, 800, 400], // Example data
-          backgroundColor: 'rgba(75, 192, 192, 0.6)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
+    // Initialize values from existing HTML content
+    let userCount = parseInt(document.getElementById("user").textContent) || 0;
+    let riderCount = parseInt(document.getElementById("rider").textContent) || 0;
+    let providerCount = parseInt(document.getElementById("provider").textContent) || 0;
+    let pendingOrderCount = parseInt(document.getElementById("pendingOrders").textContent) || 0;
+    let activeOrderCount = parseInt(document.getElementById("activeOrders").textContent) || 0;
+    let deliveredOrderCount = parseInt(document.getElementById("deliveredOrders").textContent) || 0;
+    let cancelledOrderCount = parseInt(document.getElementById("cancelledOrders").textContent) || 0;
+  
+    const filterDropdown = document.getElementById("filter");
+    const loader = document.getElementById("loader");
+
+    // Show loader
+    function showLoader() {
+      loader.style.display = "block";
+    }
+
+    // Hide loader
+    function hideLoader() {
+      loader.style.display = "none";
+    }
+        // Chart instances
+    let userGraph, orderStatusGraph;
+  
+    // Function to initialize the charts
+    function initializeCharts() {
+      const ctx1 = document.getElementById('userGraph').getContext('2d');
+      const ctx2 = document.getElementById('orderStatusGraph').getContext('2d');
+  
+      // User, Rider, Provider chart
+      userGraph = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['Users', 'Riders', 'Restaurants'],
+          datasets: [{
+            label: 'Count',
+            data: [userCount, riderCount, providerCount],
+            backgroundColor: [
+              'rgba(75, 192, 192, 0.6)',   // Users (greenish-blue)
+              'rgba(255, 99, 132, 0.6)',   // Riders (pinkish-red)
+              'rgba(54, 162, 235, 0.6)'    // Restaurants (blue)
+            ],
+            borderColor: [
+              'rgba(75, 192, 192, 1)',     // Users (greenish-blue border)
+              'rgba(255, 99, 132, 1)',     // Riders (pinkish-red border)
+              'rgba(54, 162, 235, 1)'      // Restaurants (blue border)
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: { display: true, text: 'Users, Riders, and Restaurants' }
+          },
+          scales: {
+            y: { beginAtZero: true }
           }
         }
-      }
-    });
+      });
   
-    // Example of setting up a chart for Order Status (Pending, Delivered, Cancelled)
-    var ctx2 = document.getElementById('orderStatusGraph').getContext('2d');
-    var orderStatusGraph = new Chart(ctx2, {
-      type: 'pie', // You can change to 'bar', 'line', etc.
-      data: {
-        labels: ['Pending', 'Delivered', 'Cancelled'],
-        datasets: [{
-          label: 'Order Status',
-          data: [500, 1200, 200], // Example data
-          backgroundColor: [
-            'rgba(255, 159, 64, 0.6)', // Pending (orange)
-            'rgba(75, 192, 192, 0.6)', // Delivered (green)
-            'rgba(255, 99, 132, 0.6)'  // Cancelled (red)
-          ],
-          borderColor: [
-            'rgba(255, 159, 64, 1)', // Pending
-            'rgba(75, 192, 192, 1)', // Delivered
-            'rgba(255, 99, 132, 1)'  // Cancelled
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top'
-          },
-          tooltip: {
-            callbacks: {
-              label: function(tooltipItem) {
-                return tooltipItem.label + ': ' + tooltipItem.raw + ' Orders';
+      // Order Status chart
+      orderStatusGraph = new Chart(ctx2, {
+        type: 'pie',
+        data: {
+          labels: ['Pending', 'Delivered', 'Cancelled'],
+          datasets: [{
+            label: 'Order Status',
+            data: [pendingOrderCount, deliveredOrderCount, cancelledOrderCount],
+            backgroundColor: [
+              'rgba(255, 159, 64, 0.6)', // Pending (orange)
+              'rgba(75, 192, 192, 0.6)', // Delivered (green)
+              'rgba(255, 99, 132, 0.6)'  // Cancelled (red)
+            ],
+            borderColor: [
+              'rgba(255, 159, 64, 1)', // Pending
+              'rgba(75, 192, 192, 1)', // Delivered
+              'rgba(255, 99, 132, 1)'  // Cancelled
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            tooltip: {
+              callbacks: {
+                label: function (tooltipItem) {
+                  return tooltipItem.label + ': ' + tooltipItem.raw + ' Orders';
+                }
               }
             }
           }
         }
-      }
-    });
-  </script>
+      });
+    }
   
+   // Function to fetch data and update charts
+    async function fetchData(filter = null) {
+      showLoader(); // Show loader before starting the fetch process
 
+      try {
+        const response = await fetch("/admin/dashboardFilter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ filter })
+        });
 
+        const data = await response.json();
 
+        // Update text content
+        document.getElementById("user").textContent = data.user || 0;
+        document.getElementById("provider").textContent = data.provider || 0;
+        document.getElementById("rider").textContent = data.rider || 0;
+        document.getElementById("pendingOrders").textContent = data.pendingOrders || 0;
+        document.getElementById("activeOrders").textContent = data.activeOrders || 0;
+        document.getElementById("deliveredOrders").textContent = data.deliveredOrders || 0;
+        document.getElementById("cancelledOrders").textContent = data.cancelledOrders || 0;
 
-<script>
-  document.addEventListener("DOMContentLoaded", async () => {
-    const filterDropdown = document.getElementById("filter");
+        // Update variables and charts
+        userCount = data.user || 0;
+        riderCount = data.rider || 0;
+        providerCount = data.provider || 0;
+        pendingOrderCount = data.pendingOrders || 0;
+        activeOrderCount = data.activeOrders || 0;
+        deliveredOrderCount = data.deliveredOrders || 0;
+        cancelledOrderCount = data.cancelledOrders || 0;
 
-    // Listen for dropdown changes
+        userGraph.data.datasets[0].data = [userCount, riderCount, providerCount];
+        userGraph.update();
+
+        orderStatusGraph.data.datasets[0].data = [
+          pendingOrderCount,
+          deliveredOrderCount,
+          cancelledOrderCount
+        ];
+        orderStatusGraph.update();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        hideLoader(); // Always hide loader once fetch process is complete
+      }
+    }
+    // Event listener for dropdown changes
     filterDropdown.addEventListener("change", async () => {
       const selectedFilter = filterDropdown.value;
-      const response = await fetch("/admin/dashboardFilter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ filter: selectedFilter }),
-      });
-
-      const data = await response.json();
-      document.getElementById("user").textContent=data.user;
-      document.getElementById("provider").textContent=data.provider;
-      document.getElementById("rider").textContent=data.rider;
-      document.getElementById("vehicleType").textContent=data.vehicleType;
-      document.getElementById("orders").textContent=data.orders;
-      document.getElementById("payments").textContent=data.payments;
-      document.getElementById("feedbacks").textContent=data.feedbacks;
-      document.getElementById("pendingOrders").textContent=data.pendingOrders;
-
-      document.getElementById("activeOrders").textContent=data.activeOrders;
-      document.getElementById("deliveredOrders").textContent=data.deliveredOrders;
-      document.getElementById("cancelledOrders").textContent=data.cancelledOrders;
-      document.getElementById("contactus").textContent=data.contactus;
-      document.getElementById("servicesData").textContent=data.servicesData;
+      await fetchData(selectedFilter); // Fetch and update data based on filter
     });
-  });
-</script>
+  
+    // Initialize charts and set initial data on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      initializeCharts(); // Initialize charts
+    });
+  </script>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -462,115 +522,59 @@
 </script>
 
 
-<script>
-  document.addEventListener("DOMContentLoaded", async () => {
-  const userGraphCtx = document.getElementById("userGraph").getContext("2d");
-  const orderGraphCtx = document.getElementById("orderGraph").getContext("2d");
-  let userCount= document.getElementById("user").textContent
-  let riderCount= document.getElementById("rider").textContent 
-  let providerCount= document.getElementById("provider").textContent 
-  let pendindOrderCount=document.getElementById("pendingOrders").textContent
-  let activeOrderCount=document.getElementById("activeOrders").textContent
-  let deliveredOrderCount=document.getElementById("deliveredOrders").textContent
-  let cancelledOrderCount=document.getElementById("cancelledOrders").textContent
-  console.log("userCount: ", userCount)
-  // Initialize graphs with empty data
-  let userGraph = new Chart(userGraphCtx, {
-    type: "bar",
-    data: {
-      labels: ["Users", "Riders", "Restaurants"],
-      datasets: [
-        {
-          label: "Count",
-          data: [userCount, riderCount, providerCount], // Initial data
-          backgroundColor: ["#6666ff", "#33cc99", "#33cccc"],
-          borderColor: ["#4444ff", "#33aa99", "#33aaaa"],
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        title: { display: true, text: "Users, Riders, and Restaurants" },
-      },
-    },
-  });
 
-  let orderGraph = new Chart(orderGraphCtx, {
-    type: "doughnut",
-    data: {
-      labels: ["Active Orders", "Delivered Orders", "Cancelled Orders", "Pending Orders"],
-      datasets: [
-        {
-          label: "Orders",
-          data: [activeOrderCount, deliveredOrderCount, cancelledOrderCount, pendindOrderCount], // Initial data
-          backgroundColor: ["#ff5733", "#33a1ff", "#ffc300", "#ffcc00"],
-          borderColor: ["#cc4225", "#267fbf", "#bf9e00", "#cc9900"],
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: "bottom" },
-        title: { display: true, text: "Order Statistics" },
-      },
-    },
-  });
 
-  // Fetch and update graphs when the filter dropdown changes
-  document.getElementById("filter").addEventListener("change", async () => {
-    const selectedFilter = document.getElementById("filter").value;
-    const response = await fetch("/admin/dashboardFilter", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ filter: selectedFilter }),
-    });
+<style>
+  .gear-loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
 
-    const data = await response.json();
-    console.log("data data",data)
+  .gear {
+    width: 100px;
+    height: 100px;
+    border: 10px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 10px solid #4caf50;
+    border-left: 10px solid #4caf50;
+    animation: spin-gear 1.5s linear infinite;
+    position: relative;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.05) 50%, transparent 51%);
+  }
 
-    // Update data for Users, Riders, and Restaurants
-    userGraph.data.datasets[0].data = [
-      data.user || 0,
-      data.rider || 0,
-      data.provider || 0,
-    ];
-    userGraph.update();
+  .gear:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 
-    // Update data for Orders
-    orderGraph.data.datasets[0].data = [
-      data.activeOrders || 0,
-      data.deliveredOrders || 0,
-      data.cancelledOrders || 0,
-      data.pendingOrders || 0,
-    ];
-    orderGraph.update();
-  });
+  @keyframes spin-gear {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 
-  // Listen for live updates via Socket.IO
-  const socket = io();
-  socket.on("updateDashboard", (dashboardData) => {
-    // Update data for Users, Riders, and Restaurants
-    userGraph.data.datasets[0].data = [
-      dashboardData.user || 0,
-      dashboardData.rider || 0,
-      dashboardData.provider || 0,
-    ];
-    userGraph.update();
-
-    // Update data for Orders
-    orderGraph.data.datasets[0].data = [
-      dashboardData.activeOrders || 0,
-      dashboardData.deliveredOrders || 0,
-      dashboardData.cancelledOrders || 0,
-      dashboardData.pendingOrders || 0,
-    ];
-    orderGraph.update();
-  });
-});
-
-</script>
+  /* Optional background dimming */
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 9998;
+  }
+</style>
