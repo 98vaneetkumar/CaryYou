@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="row">
-      <div id="loader" class="gear-loader" style="display: none;">
+      <div id="loader" class="setting-gear-loader" style="display: none;">
         <div class="gear"></div>
       </div>
       <!-- Users Card -->
@@ -523,41 +523,32 @@
 
 
 
-
 <style>
-  .gear-loader {
+  /* Main loader container */
+  .setting-gear-loader {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
-  }
-
-  .gear {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100px;
     height: 100px;
-    border: 10px solid rgba(0, 0, 0, 0.1);
+  }
+
+  /* The gear itself */
+  .gear {
+    width: 60px;
+    height: 60px;
+    border: 8px solid grey;
+    border-top: 8px solid transparent; /* Transparent to create the spinner effect */
     border-radius: 50%;
-    border-top: 10px solid #4caf50;
-    border-left: 10px solid #4caf50;
     animation: spin-gear 1.5s linear infinite;
-    position: relative;
-    background: radial-gradient(circle, rgba(0, 0, 0, 0.05) 50%, transparent 51%);
   }
 
-  .gear:before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    background-color: #fff;
-    border-radius: 50%;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
+  /* Spinning animation */
   @keyframes spin-gear {
     0% {
       transform: rotate(0deg);
@@ -566,15 +557,6 @@
       transform: rotate(360deg);
     }
   }
-
-  /* Optional background dimming */
-  .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8);
-    z-index: 9998;
-  }
 </style>
+
+
