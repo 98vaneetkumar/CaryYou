@@ -1450,17 +1450,16 @@ module.exports = {
       throw error;
     }
   },
-  restaurant_product : async (req, res) => {
+  restaurant_product: async (req, res) => {
     try {
       const restaurantId = req.params._id;
   
       // Debug log
       console.log("restaurantId:", restaurantId);
   
-  
       // Fetch restaurant data
       const restaurant = await Models.restaurantModel
-        .find({product})
+        .findById(restaurantId)
         .populate("userId")
         .lean();
   
@@ -1493,6 +1492,7 @@ module.exports = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
+  
   
   
   restaurant_product_view: async (req, res) => {

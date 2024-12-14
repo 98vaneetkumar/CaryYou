@@ -13,86 +13,102 @@
     <!-- Grid Container -->
     <div class="restaurant-grid">
       <% viewuser.products.forEach(function(data, i) { %>
-        <div class="restaurant-item">
-          <div class="restaurant-image-container">
-            <div class="restaurant-images" id="carousel-<%= i %>">
-              <% data.images.forEach(function(image, index) { %>
-                <div class="restaurant-image">
-                  <img
-                    src="<%= image ? image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
-                    alt="<%= data.itemName %>"
-                    class="img-fluid"
-                  />
-                </div>
-              <% }); %>
+      <div class="restaurant-item">
+        <div class="restaurant-image-container">
+          <div class="restaurant-images" id="carousel-<%= i %>">
+            <% data.images.forEach(function(image, index) { %>
+            <div class="restaurant-image">
+              <img
+                src="<%= image ? image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
+                alt="<%= data.itemName %>"
+                class="img-fluid"
+              />
             </div>
-
-            <% if (data.images.length > 1) { %>
-              <button class="carousel-arrow left-arrow" onclick="moveSlide('left', '<%= i %>')">&#10094;</button>
-              <button class="carousel-arrow right-arrow" onclick="moveSlide('right', '<%= i %>')">&#10095;</button>
-            <% } %>
+            <% }); %>
           </div>
 
-          <div class="restaurant-info">
-            <h5><%= data.itemName %></h5>
-            <p class="sub-category"><%= data?.subCategoryName || 'N/A' %></p>
-            <p class="price">$<%= data.price || 'N/A' %></p>
-            <div class="buttons-container">
-              <div class="status-btn">
-                <% if (data?.status == 1) { %>
-                  <button
-                    id="restaurantId_<%= data._id %>"
-                    class="btn btn-sm btn-success status"
-                    data-id="<%= data._id %>"
-                    value="0"
-                  >
-                    Active
-                  </button>
-                <% } else { %>
-                  <button
-                    id="restaurantId_<%= data._id %>"
-                    class="btn btn-sm btn-danger status"
-                    data-id="<%= data._id %>"
-                    value="1"
-                  >
-                    In-Active
-                  </button>
-                <% } %>
-              </div>
-              <div class="view-btn">
-                <button 
-                  class="btn btn-sm bg-warning view-product-btn" 
-                  data-id="<%= data %>" 
-                  data-bs-toggle="modal" 
-                  data-bs-target="#productDetailModal">
-                  <i class="fa fa-eye" aria-hidden="true"></i>
-                </button>
-              </div>
+          <% if (data.images.length > 1) { %>
+          <button
+            class="carousel-arrow left-arrow"
+            onclick="moveSlide('left', '<%= i %>')"
+          >
+            &#10094;
+          </button>
+          <button
+            class="carousel-arrow right-arrow"
+            onclick="moveSlide('right', '<%= i %>')"
+          >
+            &#10095;
+          </button>
+          <% } %>
+        </div>
+
+        <div class="restaurant-info">
+          <h5><%= data.itemName %></h5>
+          <p class="sub-category"><%= data?.subCategoryName || 'N/A' %></p>
+          <p class="price">$<%= data.price || 'N/A' %></p>
+          <div class="buttons-container">
+            <div class="status-btn">
+              <% if (data?.status == 1) { %>
+              <button
+                id="restaurantId_<%= data._id %>"
+                class="btn btn-sm btn-success status"
+                data-id="<%= data._id %>"
+                value="0"
+              >
+                Active
+              </button>
+              <% } else { %>
+              <button
+                id="restaurantId_<%= data._id %>"
+                class="btn btn-sm btn-danger status"
+                data-id="<%= data._id %>"
+                value="1"
+              >
+                In-Active
+              </button>
+              <% } %>
+            </div>
+            <div class="view-btn">
+              <button
+                class="btn btn-sm bg-warning view-product-btn"
+                data-id="<%= data._id %>"
+                data-bs-toggle="modal"
+                data-bs-target="#productDetailModal"
+              >
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
         </div>
+      </div>
       <% }); %>
     </div>
   </section>
 </div>
 
 <!-- "Top Up" Button -->
-<button id="topUpButton" class="topup-btn">
-  ↑
-</button>
+<button id="topUpButton" class="topup-btn">↑</button>
 
 <div id="productDetailModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="productDetailTitle">Product Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body" id="productDetailContent">
         <!-- Product details will be dynamically injected here -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
       </div>
     </div>
   </div>
@@ -106,58 +122,61 @@
 
 <!-- Custom Script -->
 <script>
-  $(document).on('click', '.view-product-btn', function () {
-    const productId = $(this).data('id');
+  $(document).on("click", ".view-product-btn", function () {
+    const productId = $(this).data("id");
 
     if (!productId) {
-      alert('Invalid product ID. Please try again.');
+      alert("Invalid product ID. Please try again.");
       return;
     }
 
     // Show loading state while fetching data
-    $('#productDetailContent').html('<p>Loading...</p>');
+    $("#productDetailContent").html("<p>Loading...</p>");
 
     $.ajax({
       url: `/admin/restaurant_product_view/${productId}`,
-      method: 'GET',
+      method: "GET",
       success: function (response) {
         const detailsHtml = `
           <div class="text-center">
-            <h4>${response.name || 'No name available'}</h4>
-            <p>${response.description || 'No description available.'}</p>
-            <img src="${response.image || 'https://via.placeholder.com/300'}" alt="${response.itemName}" class="img-fluid">
-            <p class="price">$${response.price || 'N/A'}</p>
+            <h4>${response.name || "No name available"}</h4>
+            <p>${response.description || "No description available."}</p>
+            <img src="${
+              response.image || "https://via.placeholder.com/300"
+            }" alt="${response.itemName}" class="img-fluid">
+            <p class="price">$${response.price || "N/A"}</p>
           </div>
         `;
-        $('#productDetailContent').html(detailsHtml);
+        $("#productDetailContent").html(detailsHtml);
       },
       error: function () {
-        $('#productDetailContent').html('<p class="text-danger">Failed to load product details.</p>');
+        $("#productDetailContent").html(
+          '<p class="text-danger">Failed to load product details.</p>'
+        );
       },
     });
 
     // Show the modal
-    $('#productDetailModal').modal('show');
+    $("#productDetailModal").modal("show");
   });
 
   function moveSlide(direction, carouselId) {
     const carousel = document.getElementById(`carousel-${carouselId}`);
-    const scrollAmount = direction === 'left' ? -300 : 300;
-    carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    const scrollAmount = direction === "left" ? -300 : 300;
+    carousel.scrollBy({ left: scrollAmount, behavior: "smooth" });
   }
 
   // Scroll-to-top button functionality
-  const topUpButton = document.getElementById('topUpButton');
+  const topUpButton = document.getElementById("topUpButton");
 
   window.onscroll = function () {
-    topUpButton.style.display = window.scrollY > 200 ? 'block' : 'none';
+    topUpButton.style.display = window.scrollY > 200 ? "block" : "none";
   };
 
   topUpButton.onclick = function () {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 </script>
-
 
 <style>
   /* Grid Styles */
@@ -183,35 +202,34 @@
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
   }
 
- /* "Top Up" Button Styles */
-.topup-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #00000094; /* Green color for a more inviting look */
-  color: white;
-  border: none;
-  border-radius: 100%;
-  padding: 15px;
-  font-size: 24px; /* Larger font size */
-  cursor: pointer;
-  z-index: 1000;
-  display: none;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Softer shadow */
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  transform: scale(1); /* Start with normal size */
-}
+  /* "Top Up" Button Styles */
+  .topup-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #00000094; /* Green color for a more inviting look */
+    color: white;
+    border: none;
+    border-radius: 100%;
+    padding: 15px;
+    font-size: 24px; /* Larger font size */
+    cursor: pointer;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Softer shadow */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    transform: scale(1); /* Start with normal size */
+  }
 
-.topup-btn:hover {
-  background-color: #000000; /* Darker green on hover */
-  transform: scale(1.1); /* Slightly enlarge the button on hover */
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
-}
+  .topup-btn:hover {
+    background-color: #000000; /* Darker green on hover */
+    transform: scale(1.1); /* Slightly enlarge the button on hover */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
+  }
 
-.topup-btn:active {
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Restore shadow on click */
-}
-
+  .topup-btn:active {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Restore shadow on click */
+  }
 
   /* Restaurant Grid Styles */
   .restaurant-image-container {
@@ -339,9 +357,12 @@
 
 <script>
   // Handle Top Up Button visibility and smooth scroll to top
-  window.onscroll = function() {
+  window.onscroll = function () {
     // Show the button after scrolling 100px down
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+    if (
+      document.body.scrollTop > 100 ||
+      document.documentElement.scrollTop > 100
+    ) {
       document.getElementById("topUpButton").style.display = "block";
     } else {
       document.getElementById("topUpButton").style.display = "none";
@@ -349,33 +370,37 @@
   };
 
   // When the button is clicked, smoothly scroll to the top
-  document.getElementById("topUpButton").onclick = function() {
+  document.getElementById("topUpButton").onclick = function () {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "smooth",
     });
   };
 </script>
 
 <script>
-  $(document).on('click', '.view-product-btn', function () {
-    const productId = $(this).data('id');
+  $(document).on("click", ".view-product-btn", function () {
+    const productId = $(this).data("id");
 
     $.ajax({
       url: `/admin/restaurant_product_view/${productId}`,
-      method: 'GET',
+      method: "GET",
       success: function (response) {
-        $('#productDetailContent').html(`
+        $("#productDetailContent").html(`
           <div class="text-center">
             <h4>${response.itemName}</h4>
-            <p>${response.description || 'No description available.'}</p>
-            <img src="${response.image}" alt="${response.itemName}" class="img-fluid">
+            <p>${response.description || "No description available."}</p>
+            <img src="${response.image}" alt="${
+          response.itemName
+        }" class="img-fluid">
             <p class="price">$${response.price}</p>
           </div>
         `);
       },
       error: function () {
-        $('#productDetailContent').html('<p class="text-danger">Failed to load product details.</p>');
+        $("#productDetailContent").html(
+          '<p class="text-danger">Failed to load product details.</p>'
+        );
       },
     });
   });
@@ -385,24 +410,27 @@
   let currentSlideIndex = {};
 
   function moveSlide(direction, index) {
-    const imagesContainer = document.querySelectorAll('.restaurant-images')[index];
+    const imagesContainer =
+      document.querySelectorAll(".restaurant-images")[index];
     const totalImages = imagesContainer.children.length;
 
     if (!currentSlideIndex[index]) {
       currentSlideIndex[index] = 0;
     }
 
-    if (direction === 'left') {
+    if (direction === "left") {
       if (currentSlideIndex[index] > 0) {
         currentSlideIndex[index] -= 1;
       }
-    } else if (direction === 'right') {
+    } else if (direction === "right") {
       if (currentSlideIndex[index] < totalImages - 1) {
         currentSlideIndex[index] += 1;
       }
     }
 
-    imagesContainer.style.transform = `translateX(-${currentSlideIndex[index] * 100}%)`;
+    imagesContainer.style.transform = `translateX(-${
+      currentSlideIndex[index] * 100
+    }%)`;
   }
 </script>
 
