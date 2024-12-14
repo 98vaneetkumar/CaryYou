@@ -311,8 +311,20 @@
             }
           },
           error: function(xhr, status, error) {
-            // Handle API error
-            showToast("Invalid email or password. Please try again.", "error");
+            let errorMessage = "An unexpected error occurred. Please try again.";
+    
+          // Check if the server provided a custom error message
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            errorMessage = xhr.responseJSON.message; // Use the server's error message
+          }
+          
+          // Show error toast with the appropriate message
+          showToast(errorMessage, "error");
+
+          setTimeout(() => {
+              window.location.reload();
+            }, 3000);
+          
           }
         });
       });
