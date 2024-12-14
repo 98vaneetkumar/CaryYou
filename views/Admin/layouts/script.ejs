@@ -24,12 +24,18 @@
 
 
 <script>
-  $(document).ready(function () {
-  $('#myTable').DataTable({
-    pageLength: 10, // Number of records per page
-    lengthMenu: [5, 10, 25, 50], // Dropdown options for records per page
-  });
+ $(document).ready(function () {
+  console.log('Initializing DataTable for #myTable');
+  if (!$.fn.DataTable.isDataTable('#myTable')) {
+    $('#myTable').DataTable({
+      pageLength: 10,
+      lengthMenu: [5, 10, 25, 50],
+    });
+  } else {
+    console.log('DataTable already initialized for #myTable');
+  }
 });
+
 </script>
 
 <script>
