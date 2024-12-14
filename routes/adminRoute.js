@@ -117,15 +117,25 @@ router.post('/Update_password', controllers.adminController.Update_password)
 router.post('/update_commission',session,controllers.adminController.update_commission)
 router.get('/admin_commission', session, controllers.adminController.admin_commission)
 
-//CMS//
+//CMS User// 
 
 router.post('/Create', controllers.cmsController.Create)
-router.get('/Aboutus', session,  controllers.cmsController.Aboutus)
 router.post('/Update_aboutus',  controllers.cmsController.Update_aboutus)
-router.get('/terms_condition', session,  controllers.cmsController.terms_condition)
 router.post('/Update_terms',  controllers.cmsController.Update_terms)
-router.get('/privacy_policy', session,  controllers.cmsController.privacy_policy)
 
+router.get('/user/privacy_policy', session,  controllers.cmsController.privacy_policy_user)
+router.get('/user/terms_condition', session,  controllers.cmsController.terms_condition_user)
+router.get('/user/Aboutus', session,  controllers.cmsController.Aboutus_user)
+
+//restaurant cms
+router.get('/restaurant/privacy_policy', session,  controllers.cmsController.privacy_policy_restaurant)
+router.get('/restaurant/terms_condition', session,  controllers.cmsController.terms_condition_restaurant)
+router.get('/restaurant/Aboutus', session,  controllers.cmsController.Aboutus_restaurant)
+
+//rider cms
+router.get('/rider/privacy_policy', session,  controllers.cmsController.privacy_policy_rider)
+router.get('/rider/terms_condition', session,  controllers.cmsController.terms_condition_rider)
+router.get('/rider/Aboutus', session,  controllers.cmsController.Aboutus_rider)
 return router;
 }
 

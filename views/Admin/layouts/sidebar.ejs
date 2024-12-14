@@ -147,30 +147,30 @@
 
    
 
-      <li class="dropdown <%=(title.startsWith('terms_condition')?'active':'') %>">
+      <li class="dropdown <%=(title.startsWith('terms_condition_user') || title.startsWith('privacy_policy_user') || title.startsWith('Aboutus_user') ? 'active' : '') %>">
         <a href="#" class="nav-link has-dropdown"
           ><i class="fas fa-users" style="font-size: large"></i
           ><span><b>Users CMS</b></span></a>
         <ul class="dropdown-menu" style="background-color: transparent;">
            <!-- Terms & Conditions -->
-          <li class="<%=(title =='terms_condition'?'active':'') %>">
-            <a class="nav-link" href="/admin/terms_condition"
+          <li class="<%=(title =='terms_condition_user'?'active':'') %>">
+            <a class="nav-link" href="/admin/user/terms_condition"
               ><i class="fas fa-leaf" style="font-size: large"></i
               ><span><b>Term & Condition</b></span></a
             >
           </li>
 
           <!-- Privacy Policy -->
-          <li class="<%=(title =='privacy_policy'?'active':'') %>">
-            <a class="nav-link" href="/admin/privacy_policy"
+          <li class="<%=(title =='privacy_policy_user'?'active':'') %>">
+            <a class="nav-link" href="/admin/user/privacy_policy"
               ><i class="fas fa-hands" style="font-size: large"></i
               ><span><b>Privacy Policy</b></span></a
             >
           </li>
 
           <!-- About Us -->
-          <li class="<%=(title =='Aboutus'?'active':'') %>">
-            <a class="nav-link" href="/admin/Aboutus"
+          <li class="<%=(title =='Aboutus_user'?'active':'') %>">
+            <a class="nav-link" href="/admin/user/Aboutus"
               ><i class="fas fa-book" style="font-size: large"></i
               ><span><b>About Us</b></span></a
             >
@@ -180,31 +180,31 @@
 
       
 
-      <li class="dropdown <%=(title.startsWith('terms_condition1')?'active':'') %>">
+      <li class="dropdown <%=(title.startsWith('terms_condition_restaurant') || title.startsWith('privacy_policy_restaurant') || title.startsWith('Aboutus_restaurant') ? 'active' : '') %>">
         <a href="#" class="nav-link has-dropdown"
           ><i class="fas fa-users" style="font-size: large"></i
           ><span><b>Restaurants CMS</b></span></a
         >
         <ul class="dropdown-menu" style="background-color: transparent;">
            <!-- Terms & Conditions -->
-      <li class="<%=(title =='terms_condition'?'active':'') %>">
-        <a class="nav-link" href="/admin/terms_condition"
+      <li class="<%=(title =='terms_condition_restaurant'?'active':'') %>">
+        <a class="nav-link" href="/admin/restaurant/terms_condition"
           ><i class="fas fa-leaf" style="font-size: large"></i
           ><span><b>Term & Condition</b></span></a
         >
       </li>
 
       <!-- Privacy Policy -->
-      <li class="<%=(title =='privacy_policy'?'active':'') %>">
-        <a class="nav-link" href="/admin/privacy_policy"
+      <li class="<%=(title =='privacy_policy_restaurant'?'active':'') %>">
+        <a class="nav-link" href="/admin/restaurant/privacy_policy"
           ><i class="fas fa-hands" style="font-size: large"></i
           ><span><b>Privacy Policy</b></span></a
         >
       </li>
 
       <!-- About Us -->
-      <li class="<%=(title =='Aboutus'?'active':'') %>">
-        <a class="nav-link" href="/admin/Aboutus"
+      <li class="<%=(title =='Aboutus_restaurant'?'active':'') %>">
+        <a class="nav-link" href="/admin/restaurant/Aboutus"
           ><i class="fas fa-book" style="font-size: large"></i
           ><span><b>About Us</b></span></a
         >
@@ -212,31 +212,31 @@
         </ul>
       </li>
 
-      <li class="dropdown <%=(title.startsWith('terms_condition2')?'active':'') %>">
+      <li class="dropdown <%=(title.startsWith('terms_condition_rider') || title.startsWith('privacy_policy_rider') || title.startsWith('Aboutus_rider') ? 'active' : '') %>">
         <a href="#" class="nav-link has-dropdown"
           ><i class="fas fa-users" style="font-size: large"></i
           ><span><b>Rider CMS</b></span></a
         >
         <ul class="dropdown-menu" style="background-color: transparent;">
            <!-- Terms & Conditions -->
-      <li class="<%=(title =='terms_condition'?'active':'') %>">
-        <a class="nav-link" href="/admin/terms_condition"
+      <li class="<%=(title =='terms_condition_rider'?'active':'') %>">
+        <a class="nav-link" href="/admin/rider/terms_condition"
           ><i class="fas fa-leaf" style="font-size: large"></i
           ><span><b>Term & Condition</b></span></a
         >
       </li>
 
       <!-- Privacy Policy -->
-      <li class="<%=(title =='privacy_policy'?'active':'') %>">
-        <a class="nav-link" href="/admin/privacy_policy"
+      <li class="<%=(title =='privacy_policy_rider'?'active':'') %>">
+        <a class="nav-link" href="/admin/rider/privacy_policy"
           ><i class="fas fa-hands" style="font-size: large"></i
           ><span><b>Privacy Policy</b></span></a
         >
       </li>
 
       <!-- About Us -->
-      <li class="<%=(title =='Aboutus'?'active':'') %>">
-        <a class="nav-link" href="/admin/Aboutus"
+      <li class="<%=(title =='Aboutus_rider'?'active':'') %>">
+        <a class="nav-link" href="/admin/rider/Aboutus"
           ><i class="fas fa-book" style="font-size: large"></i
           ><span><b>About Us</b></span></a
         >

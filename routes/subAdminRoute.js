@@ -26,11 +26,11 @@ module.exports=function(io){
     router.get('/subAdmin_commission', sessionSubAdmin, controllers.subAdminController.subAdmin_commission)
 
     // router.post('/Create', controllers.cmsController.Create)
-    router.get('/Aboutus', sessionSubAdmin,  controllers.cmsController.Aboutus)
+    router.get('/Aboutus', sessionSubAdmin,  controllers.cmsController.Aboutus_user)
     router.post('/Update_aboutus',  controllers.cmsController.Update_aboutus)
-    router.get('/terms_condition', sessionSubAdmin,  controllers.cmsController.terms_condition)
+    router.get('/terms_condition', sessionSubAdmin,  controllers.cmsController.terms_condition_user)
     router.post('/Update_terms',  controllers.cmsController.Update_terms)
-    router.get('/privacy_policy', sessionSubAdmin,  controllers.cmsController.privacy_policy)
+    router.get('/privacy_policy', sessionSubAdmin,  controllers.cmsController.privacy_policy_user)
 
 
 
