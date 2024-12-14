@@ -22,6 +22,12 @@
       integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
       crossorigin="anonymous"
     />
+    
+    <!-- Toastr CSS (for the toaster alerts) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+    />
 
     <style>
       body {
@@ -203,7 +209,7 @@
         <div class="card card-primary shadow-none overflow-hidden">
           <div class="card-header">Sign in</div>
           <div class="card-body">
-            <form method="POST" action="/admin/login" id="addForm">
+            <form method="POST" id="loginForm" action="/admin/login">
               <div class="form-group">
                 <label for="email">Email</label>
                 <input
@@ -245,8 +251,75 @@
       <div class="caryYou">CaryYou</div>
       <div class="slogan">Your Needs, Delivered with Ease!</div>
     </div>
+
+    <!-- Toastr JS (for toaster alerts) -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"
+    ></script>
+
+    <script>
+      // Toastr options
+      toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showMethod": "slideDown",
+        "hideMethod": "slideUp"
+      };
+
+      // Function to show toastr message
+      function showToast(message, type) {
+        if (type === "success") {
+          toastr.success(message);
+        } else if (type === "error") {
+          toastr.error(message);
+        }
+      }
+
+      // Submit the form using AJAX
+      $("#loginForm").submit(function(event) {
+        event.preventDefault(); // Prevent actual form submission for AJAX
+        
+        const email = $("#email").val();
+        const password = $("#password").val();
+        const deviceToken = $("#deviceToken").val();
+
+        // Make the API call
+        $.ajax({
+          url: "/admin/login",  // Adjust the API endpoint
+          method: "POST",
+          data: {
+            email: email,
+            password: password,
+            deviceToken: deviceToken
+          },
+          success: function(response) {
+            if (response.success) {
+              // Show success toast and redirect
+              showToast("Login Successful!", "success");
+              setTimeout(function() {
+                window.location.href = "/admin/dashboard"; // Adjust URL as needed
+              }, 1000);
+            } else {
+              // Show error toast
+              showToast(response.message, "error");
+            }
+          },
+          error: function(xhr, status, error) {
+            // Handle API error
+            showToast("Invalid email or password. Please try again.", "error");
+          }
+        });
+      });
+    </script>
   </body>
 </html>
+
 
 <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-messaging.js"></script>

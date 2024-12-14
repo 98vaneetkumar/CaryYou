@@ -10,38 +10,42 @@ module.exports = {
 
   Login: async (req, res) => {
     try {
+      // Find user by email and role
       let findUser = await Models.userModel.findOne({
-        role: 0,
+        role: 0, // Assuming 0 is the admin role
         email: req.body.email,
       });
+  
+      // If user not found, send error message
       if (!findUser) {
-        console.log("Please enter valid email");
-        req.flash("msg", "Incorrect email");
-        res.redirect("/admin/login");
+        return res.status(400).json({ success: false, message: 'Incorrect email' });
       }
-
-      let checkPassword = await bcrypt.compare(
-        req.body.password,
-        findUser.password
-      );
+  
+      // Compare password
+      let checkPassword = await bcrypt.compare(req.body.password, findUser.password);
       if (!checkPassword) {
-        req.flash("msg", "Incorrect password");
-        res.redirect("/admin/login");
+        return res.status(400).json({ success: false, message: 'Incorrect password' });
       } else {
-        if(req.body&&req.body.deviceToken){
-          await Models.userModel.updateOne({deviceToken:req.body.deviceToken},{_id:findUser._id})
-
+        // Update device token if provided
+        if (req.body.deviceToken) {
+          await Models.userModel.updateOne(
+            { deviceToken: req.body.deviceToken },
+            { _id: findUser._id }
+          );
         }
+  
+        // Store user session
         req.session.user = findUser;
-        req.flash("msg", "Login Successfully");
-        setTimeout(() => {
-          res.redirect("/admin/dashboard");
-        }, 500);
+  
+        // Send success response
+        return res.status(200).json({ success: true, message: 'Login successful' });
       }
     } catch (error) {
       console.log(error);
+      return res.status(500).json({ success: false, message: 'An error occurred. Please try again later.' });
     }
   },
+  
   logout: async (req, res) => {
     try {
       req.session.destroy((err) => {});
