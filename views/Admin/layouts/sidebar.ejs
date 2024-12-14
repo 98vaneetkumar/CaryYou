@@ -35,63 +35,30 @@
         >
       </li>
 
-      <!-- Users Dropdown -->
-      <li class="dropdown <%=(title.startsWith('user')?'active':'') %>">
-        <a href="#" class="nav-link has-dropdown"
-          ><i class="fas fa-users" style="font-size: large"></i
-          ><span><b>Users</b></span></a
-        >
-        <ul class="dropdown-menu" style="background-color: transparent;">
-          <li class="<%=(title =='user_list'?'active':'') %>">
-            <a class="nav-link" href="/admin/user_list">All Users</a>
-          </li>
-          <li class="<%=(title =='terms_condition_user'?'active':'') %>">
-            <a class="nav-link" href="/admin/terms_condition_user">User T&C</a>
-          </li>
-          <li class="<%=(title =='privacy_policy_user'?'active':'') %>">
-            <a class="nav-link" href="/admin/privacy_policy_user">User Privacy Policy</a>
-          </li>
-        </ul>
-      </li>
+        <!-- User  -->
+        <li class="<%=(title =='user_list'?'active':'') %>">
+          <a class="nav-link" href="/admin/user_list"
+            ><i class="fas fa-box" style="font-size: large"></i
+            ><span><b>Users</b></span></a
+          >
+        </li>
 
-      <!-- Riders Dropdown -->
-      <li class="dropdown <%=(title.startsWith('rider')?'active':'') %>">
-        <a href="#" class="nav-link has-dropdown"
-          ><i class="fas fa-taxi" style="font-size: large"></i
-          ><span><b>Riders</b></span></a
-        >
-        <ul class="dropdown-menu" style="background-color: transparent;">
-          <li class="<%=(title =='rider_list'?'active':'') %>">
-            <a class="nav-link" href="/admin/rider_list">All Riders</a>
-          </li>
-          <li class="<%=(title =='terms_condition_rider'?'active':'') %>">
-            <a class="nav-link" href="/admin/terms_condition_rider">Rider T&C</a>
-          </li>
-          <li class="<%=(title =='privacy_policy_rider'?'active':'') %>">
-            <a class="nav-link" href="/admin/privacy_policy_rider">Rider Privacy Policy</a>
-          </li>
-        </ul>
-      </li>
-
-      <!-- Providers/Restaurants Dropdown -->
-      <li class="dropdown <%=(title.startsWith('provider')?'active':'') %>">
-        <a href="#" class="nav-link has-dropdown"
-          ><i class="fas fa-utensils" style="font-size: large"></i
-          ><span><b>Providers/Restaurants</b></span></a
-        >
-        <ul class="dropdown-menu" style="background-color: transparent;">
-          <li class="<%=(title =='provider_list'?'active':'') %>">
-            <a class="nav-link" href="/admin/restaurant_list">All Providers</a>
-          </li>
-          <li class="<%=(title =='terms_condition_provider'?'active':'') %>">
-            <a class="nav-link" href="/admin/terms_condition_provider">Provider T&C</a>
-          </li>
-          <li class="<%=(title =='privacy_policy_provider'?'active':'') %>">
-            <a class="nav-link" href="/admin/privacy_policy_provider">Provider Privacy Policy</a>
-          </li>
-        </ul>
-      </li>
-
+           <!-- Providers/Restaurants -->
+        <li class="<%=(title =='provider_list'?'active':'') %>">
+            <a class="nav-link" href="/admin/restaurant_list"
+              ><i class="fas fa-utensils" style="font-size: large"></i
+              ><span><b>Providers/Restaurants</b></span></a
+            >
+        </li>
+     
+       <!-- Riders -->
+        <li class="<%=(title =='rider_list'?'active':'') %>">
+          <a class="nav-link" href="/admin/rider_list"
+            ><i class="fas fa-taxi" style="font-size: large"></i
+            ><span><b>Riders</b></span></a
+          >
+        </li>
+   
       <!-- Vehicle Types -->
       <li class="<%=(title =='vehicleType_list'?'active':'') %>">
         <a class="nav-link" href="/admin/vehicleType_list"
@@ -143,6 +110,7 @@
 
 
       <!-- Payments -->
+
       <!-- <li class="<%=(title =='payment_list'?'active':'') %>">
         <a class="nav-link" href="#"
           ><i class="fas fa-credit-card" style="font-size: large"></i
@@ -151,6 +119,7 @@
       </li> -->
 
       <!-- Services -->
+
       <!-- <li class="<%=(title =='service_list'?'active':'') %>">
         <a class="nav-link" href="#"
           ><i class="fas fa-clipboard-list" style="font-size: large"></i
@@ -159,6 +128,7 @@
       </li> -->
 
       <!-- Feedback -->
+
       <!-- <li class="<%=(title =='feedback_list'?'active':'') %>">
         <a class="nav-link" href="#"
           ><i class="fas fa-comment-alt" style="font-size: large"></i
@@ -167,6 +137,7 @@
       </li> -->
 
       <!-- Contact Us -->
+       
       <!-- <li class="<%=(title =='contact_us'?'active':'') %>">
         <a class="nav-link" href="#"
           ><i class="far fa-address-book" style="font-size: large"></i
@@ -174,7 +145,48 @@
         >
       </li> -->
 
-      <!-- Terms & Conditions -->
+   
+
+      <li class="dropdown <%=(title.startsWith('terms_condition')?'active':'') %>">
+        <a href="#" class="nav-link has-dropdown"
+          ><i class="fas fa-users" style="font-size: large"></i
+          ><span><b>Users CMS</b></span></a>
+        <ul class="dropdown-menu" style="background-color: transparent;">
+           <!-- Terms & Conditions -->
+          <li class="<%=(title =='terms_condition'?'active':'') %>">
+            <a class="nav-link" href="/admin/terms_condition"
+              ><i class="fas fa-leaf" style="font-size: large"></i
+              ><span><b>Term & Condition</b></span></a
+            >
+          </li>
+
+          <!-- Privacy Policy -->
+          <li class="<%=(title =='privacy_policy'?'active':'') %>">
+            <a class="nav-link" href="/admin/privacy_policy"
+              ><i class="fas fa-hands" style="font-size: large"></i
+              ><span><b>Privacy Policy</b></span></a
+            >
+          </li>
+
+          <!-- About Us -->
+          <li class="<%=(title =='Aboutus'?'active':'') %>">
+            <a class="nav-link" href="/admin/Aboutus"
+              ><i class="fas fa-book" style="font-size: large"></i
+              ><span><b>About Us</b></span></a
+            >
+          </li>
+        </ul>
+      </li>
+
+      
+
+      <li class="dropdown <%=(title.startsWith('terms_condition1')?'active':'') %>">
+        <a href="#" class="nav-link has-dropdown"
+          ><i class="fas fa-users" style="font-size: large"></i
+          ><span><b>Restaurants CMS</b></span></a
+        >
+        <ul class="dropdown-menu" style="background-color: transparent;">
+           <!-- Terms & Conditions -->
       <li class="<%=(title =='terms_condition'?'active':'') %>">
         <a class="nav-link" href="/admin/terms_condition"
           ><i class="fas fa-leaf" style="font-size: large"></i
@@ -197,6 +209,41 @@
           ><span><b>About Us</b></span></a
         >
       </li>
+        </ul>
+      </li>
+
+      <li class="dropdown <%=(title.startsWith('terms_condition2')?'active':'') %>">
+        <a href="#" class="nav-link has-dropdown"
+          ><i class="fas fa-users" style="font-size: large"></i
+          ><span><b>Rider CMS</b></span></a
+        >
+        <ul class="dropdown-menu" style="background-color: transparent;">
+           <!-- Terms & Conditions -->
+      <li class="<%=(title =='terms_condition'?'active':'') %>">
+        <a class="nav-link" href="/admin/terms_condition"
+          ><i class="fas fa-leaf" style="font-size: large"></i
+          ><span><b>Term & Condition</b></span></a
+        >
+      </li>
+
+      <!-- Privacy Policy -->
+      <li class="<%=(title =='privacy_policy'?'active':'') %>">
+        <a class="nav-link" href="/admin/privacy_policy"
+          ><i class="fas fa-hands" style="font-size: large"></i
+          ><span><b>Privacy Policy</b></span></a
+        >
+      </li>
+
+      <!-- About Us -->
+      <li class="<%=(title =='Aboutus'?'active':'') %>">
+        <a class="nav-link" href="/admin/Aboutus"
+          ><i class="fas fa-book" style="font-size: large"></i
+          ><span><b>About Us</b></span></a
+        >
+      </li>
+        </ul>
+      </li>
+
     </ul>
   </aside>
 </div>
