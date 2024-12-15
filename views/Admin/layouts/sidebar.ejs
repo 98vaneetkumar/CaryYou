@@ -15,259 +15,301 @@
         <img
           src="/assets/img/logo.png"
           class="w-50"
-          style="
-            border-radius: 50%;
-            width: 20px;
-            height: 30px;
-            transition: all 0.2s ease;
-          "
+          style="border-radius: 50%; width: 20px; height: 30px; transition: all 0.2s ease;"
         />
       </a>
     </div>
 
     <br />
     <ul class="sidebar-menu">
-      <!-- Dashboard -->
-      <li class="<%=(title =='dashboard'?'active':'') %>">
-        <a class="nav-link" href="/admin/dashboard"
-          ><i class="fas fa-home" style="font-size: large"></i
-          ><span><b>Dashboard</b></span></a
-        >
+      <li class="<%= title == 'dashboard' ? 'active' : '' %>">
+        <a class="nav-link" href="/admin/dashboard">
+          <i class="fas fa-home" style="font-size: large"></i>
+          <span><b>Dashboard</b></span>
+        </a>
       </li>
 
-        <!-- User  -->
-        <li class="<%=(title =='user_list'?'active':'') %>">
-          <a class="nav-link" href="/admin/user_list"
-            ><i class="fas fa-box" style="font-size: large"></i
-            ><span><b>Users</b></span></a
-          >
-        </li>
-
-           <!-- Providers/Restaurants -->
-        <li class="<%=(title =='provider_list'?'active':'') %>">
-            <a class="nav-link" href="/admin/restaurant_list"
-              ><i class="fas fa-utensils" style="font-size: large"></i
-              ><span><b>Providers/Restaurants</b></span></a
-            >
-        </li>
-     
-       <!-- Riders -->
-        <li class="<%=(title =='rider_list'?'active':'') %>">
-          <a class="nav-link" href="/admin/rider_list"
-            ><i class="fas fa-taxi" style="font-size: large"></i
-            ><span><b>Riders</b></span></a
-          >
-        </li>
-   
-      <!-- Vehicle Types -->
-      <li class="<%=(title =='vehicleType_list'?'active':'') %>">
-        <a class="nav-link" href="/admin/vehicleType_list"
-          ><i class="fas fa-car-side" style="font-size: large"></i
-          ><span><b>Vehicle Types</b></span></a
-        >
+      <li class="<%= title == 'user_list' ? 'active' : '' %>">
+        <a class="nav-link" href="/admin/user_list">
+          <i class="fas fa-box" style="font-size: large"></i>
+          <span><b>Users</b></span>
+        </a>
       </li>
 
-      <!-- Orders -->
-      <li class="<%=(title =='order_list'?'active':'') %>">
-        <a class="nav-link" href="/admin/order_list"
-          ><i class="fas fa-box" style="font-size: large"></i
-          ><span><b>Orders</b></span></a
-        >
+      <li class="<%= title == 'provider_list' ? 'active' : '' %>">
+        <a class="nav-link" href="/admin/restaurant_list">
+          <i class="fas fa-utensils" style="font-size: large"></i>
+          <span><b>Providers/Restaurants</b></span>
+        </a>
       </li>
 
-       <!-- Pending Orders -->
-       <li class="<%=(title =='pending_orders'?'active':'') %>">
-        <a class="nav-link" href="/admin/pending_order_list"
-          ><i class="fas fa-clock" style="font-size: large"></i
-          ><span><b>Pending Orders</b></span></a
-        >
+      <li class="<%= title == 'rider_list' ? 'active' : '' %>">
+        <a class="nav-link" href="/admin/rider_list">
+          <i class="fas fa-taxi" style="font-size: large"></i>
+          <span><b>Riders</b></span>
+        </a>
       </li>
 
-      <!-- Active Orders -->
-      <li class="<%=(title =='activeorders'?'active':'') %>">
-        <a class="nav-link" href="/admin/active_order_list"
-          ><i class="fas fa-shopping-cart" style="font-size: large"></i
-          ><span><b>Active Orders</b></span></a
-        >
+      <li class="<%= title == 'vehicleType_list' ? 'active' : '' %>">
+        <a class="nav-link" href="/admin/vehicleType_list">
+          <i class="fas fa-car-side" style="font-size: large"></i>
+          <span><b>Vehicle Types</b></span>
+        </a>
       </li>
 
-      <!-- Delivered Orders -->
-      <li class="<%=(title =='deliveredorders'?'active':'') %>">
-        <a class="nav-link" href="/admin/delivered_order_list"
-          ><i class="fas fa-truck" style="font-size: large"></i
-          ><span><b>Delivered Orders</b></span></a
-        >
+      <li class="<%= title == 'order_list' ? 'active' : '' %>">
+        <a class="nav-link" href="/admin/order_list">
+          <i class="fas fa-box" style="font-size: large"></i>
+          <span><b>Orders</b></span>
+        </a>
       </li>
 
-      <!-- Cancelled Orders -->
-      <li class="<%=(title =='cancelledorders'?'active':'') %>">
-        <a class="nav-link" href="/admin/cancel_order_list"
-          ><i class="fas fa-ban" style="font-size: large"></i
-          ><span><b>Cancelled Orders</b></span></a
-        >
+      <li class="<%= title == 'pending_orders' ? 'active' : '' %>">
+        <a class="nav-link" href="/admin/pending_order_list">
+          <i class="fas fa-clock" style="font-size: large"></i>
+          <span><b>Pending Orders</b></span>
+        </a>
       </li>
 
+      <li class="<%= title == 'activeorders' ? 'active' : '' %>">
+        <a class="nav-link" href="/admin/active_order_list">
+          <i class="fas fa-shopping-cart" style="font-size: large"></i>
+          <span><b>Active Orders</b></span>
+        </a>
+      </li>
 
+      <li class="<%= title == 'deliveredorders' ? 'active' : '' %>">
+        <a class="nav-link" href="/admin/delivered_order_list">
+          <i class="fas fa-truck" style="font-size: large"></i>
+          <span><b>Delivered Orders</b></span>
+        </a>
+      </li>
 
-      <!-- Payments -->
+      <li class="<%= title == 'cancelledorders' ? 'active' : '' %>">
+        <a class="nav-link" href="/admin/cancel_order_list">
+          <i class="fas fa-ban" style="font-size: large"></i>
+          <span><b>Cancelled Orders</b></span>
+        </a>
+      </li>
 
-      <!-- <li class="<%=(title =='payment_list'?'active':'') %>">
-        <a class="nav-link" href="#"
-          ><i class="fas fa-credit-card" style="font-size: large"></i
-          ><span><b>Payments</b></span></a
-        >
-      </li> -->
-
-      <!-- Services -->
-
-      <!-- <li class="<%=(title =='service_list'?'active':'') %>">
-        <a class="nav-link" href="#"
-          ><i class="fas fa-clipboard-list" style="font-size: large"></i
-          ><span><b>Services</b></span></a
-        >
-      </li> -->
-
-      <!-- Feedback -->
-
-      <!-- <li class="<%=(title =='feedback_list'?'active':'') %>">
-        <a class="nav-link" href="#"
-          ><i class="fas fa-comment-alt" style="font-size: large"></i
-          ><span><b>Feedback</b></span></a
-        >
-      </li> -->
-
-      <!-- Contact Us -->
-       
-      <!-- <li class="<%=(title =='contact_us'?'active':'') %>">
-        <a class="nav-link" href="#"
-          ><i class="far fa-address-book" style="font-size: large"></i
-          ><span><b>Contact Us</b></span></a
-        >
-      </li> -->
-
-   
-
-      <li class="dropdown <%=(title.startsWith('terms_condition_user') || title.startsWith('privacy_policy_user') || title.startsWith('Aboutus_user') ? 'active' : '') %>">
-        <a href="#" class="nav-link has-dropdown"
-          ><i class="fas fa-users" style="font-size: large"></i
-          ><span><b>Users CMS</b></span></a>
-        <ul class="dropdown-menu" style="background-color: transparent;">
-           <!-- Terms & Conditions -->
-          <li class="<%=(title =='terms_condition_user'?'active':'') %>">
-            <a class="nav-link" href="/admin/user/terms_condition"
-              ><i class="fas fa-leaf" style="font-size: large"></i
-              ><span><b>Term & Condition</b></span></a
-            >
+      <!-- Users CMS -->
+      <li class="dropdown <%= (title.startsWith('terms_condition_user') || title.startsWith('privacy_policy_user') || title.startsWith('Aboutus_user') ? 'active open' : '') %>">
+        <a href="#" class="nav-link has-dropdown">
+          <i class="fas fa-users" style="font-size: large"></i>
+          <span><b>Users CMS</b></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li class="<%= (title == 'terms_condition_user' ? 'active' : '') %>">
+            <a class="nav-link" href="/admin/user/terms_condition">
+              <i class="fas fa-leaf" style="font-size: large"></i>
+              <span><b>T&C</b></span>
+            </a>
           </li>
-
-          <!-- Privacy Policy -->
-          <li class="<%=(title =='privacy_policy_user'?'active':'') %>">
-            <a class="nav-link" href="/admin/user/privacy_policy"
-              ><i class="fas fa-hands" style="font-size: large"></i
-              ><span><b>Privacy Policy</b></span></a
-            >
+          <li class="<%= (title == 'privacy_policy_user' ? 'active' : '') %>">
+            <a class="nav-link" href="/admin/user/privacy_policy">
+              <i class="fas fa-hands" style="font-size: large"></i>
+              <span><b>Privacy Policy</b></span>
+            </a>
           </li>
-
-          <!-- About Us -->
-          <li class="<%=(title =='Aboutus_user'?'active':'') %>">
-            <a class="nav-link" href="/admin/user/Aboutus"
-              ><i class="fas fa-book" style="font-size: large"></i
-              ><span><b>About Us</b></span></a
-            >
+          <li class="<%= (title == 'Aboutus_user' ? 'active' : '') %>">
+            <a class="nav-link" href="/admin/user/Aboutus">
+              <i class="fas fa-book" style="font-size: large"></i>
+              <span><b>About Us</b></span>
+            </a>
           </li>
         </ul>
       </li>
 
-      
-
-      <li class="dropdown <%=(title.startsWith('terms_condition_restaurant') || title.startsWith('privacy_policy_restaurant') || title.startsWith('Aboutus_restaurant') ? 'active' : '') %>">
-        <a href="#" class="nav-link has-dropdown"
-          ><i class="fas fa-users" style="font-size: large"></i
-          ><span><b>Restaurants CMS</b></span></a
-        >
-        <ul class="dropdown-menu" style="background-color: transparent;">
-           <!-- Terms & Conditions -->
-      <li class="<%=(title =='terms_condition_restaurant'?'active':'') %>">
-        <a class="nav-link" href="/admin/restaurant/terms_condition"
-          ><i class="fas fa-leaf" style="font-size: large"></i
-          ><span><b>Term & Condition</b></span></a
-        >
-      </li>
-
-      <!-- Privacy Policy -->
-      <li class="<%=(title =='privacy_policy_restaurant'?'active':'') %>">
-        <a class="nav-link" href="/admin/restaurant/privacy_policy"
-          ><i class="fas fa-hands" style="font-size: large"></i
-          ><span><b>Privacy Policy</b></span></a
-        >
-      </li>
-
-      <!-- About Us -->
-      <li class="<%=(title =='Aboutus_restaurant'?'active':'') %>">
-        <a class="nav-link" href="/admin/restaurant/Aboutus"
-          ><i class="fas fa-book" style="font-size: large"></i
-          ><span><b>About Us</b></span></a
-        >
-      </li>
+      <!-- Restaurants CMS -->
+      <li class="dropdown <%= (title.startsWith('terms_condition_restaurant') || title.startsWith('privacy_policy_restaurant') || title.startsWith('Aboutus_restaurant') ? 'active open' : '') %>">
+        <a href="#" class="nav-link has-dropdown">
+          <i class="fas fa-users" style="font-size: large"></i>
+          <span><b>Restaurants CMS</b></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li class="<%= (title == 'terms_condition_restaurant' ? 'active' : '') %>">
+            <a class="nav-link" href="/admin/restaurant/terms_condition">
+              <i class="fas fa-leaf" style="font-size: large"></i>
+              <span><b>T&C</b></span>
+            </a>
+          </li>
+          <li class="<%= (title == 'privacy_policy_restaurant' ? 'active' : '') %>">
+            <a class="nav-link" href="/admin/restaurant/privacy_policy">
+              <i class="fas fa-hands" style="font-size: large"></i>
+              <span><b>Privacy Policy</b></span>
+            </a>
+          </li>
+          <li class="<%= (title == 'Aboutus_restaurant' ? 'active' : '') %>">
+            <a class="nav-link" href="/admin/restaurant/Aboutus">
+              <i class="fas fa-book" style="font-size: large"></i>
+              <span><b>About Us</b></span>
+            </a>
+          </li>
         </ul>
       </li>
 
-      <li class="dropdown <%=(title.startsWith('terms_condition_rider') || title.startsWith('privacy_policy_rider') || title.startsWith('Aboutus_rider') ? 'active' : '') %>">
-        <a href="#" class="nav-link has-dropdown"
-          ><i class="fas fa-users" style="font-size: large"></i
-          ><span><b>Rider CMS</b></span></a
-        >
-        <ul class="dropdown-menu" style="background-color: transparent;">
-           <!-- Terms & Conditions -->
-      <li class="<%=(title =='terms_condition_rider'?'active':'') %>">
-        <a class="nav-link" href="/admin/rider/terms_condition"
-          ><i class="fas fa-leaf" style="font-size: large"></i
-          ><span><b>Term & Condition</b></span></a
-        >
-      </li>
-
-      <!-- Privacy Policy -->
-      <li class="<%=(title =='privacy_policy_rider'?'active':'') %>">
-        <a class="nav-link" href="/admin/rider/privacy_policy"
-          ><i class="fas fa-hands" style="font-size: large"></i
-          ><span><b>Privacy Policy</b></span></a
-        >
-      </li>
-
-      <!-- About Us -->
-      <li class="<%=(title =='Aboutus_rider'?'active':'') %>">
-        <a class="nav-link" href="/admin/rider/Aboutus"
-          ><i class="fas fa-book" style="font-size: large"></i
-          ><span><b>About Us</b></span></a
-        >
-      </li>
+      <!-- Riders CMS -->
+      <li class="dropdown <%= (title.startsWith('terms_condition_rider') || title.startsWith('privacy_policy_rider') || title.startsWith('Aboutus_rider') ? 'active open' : '') %>">
+        <a href="#" class="nav-link has-dropdown">
+          <i class="fas fa-users" style="font-size: large"></i>
+          <span><b>Rider CMS</b></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li class="<%= (title == 'terms_condition_rider' ? 'active' : '') %>">
+            <a class="nav-link" href="/admin/rider/terms_condition">
+              <i class="fas fa-leaf" style="font-size: large"></i>
+              <span><b>T&C</b></span>
+            </a>
+          </li>
+          <li class="<%= (title == 'privacy_policy_rider' ? 'active' : '') %>">
+            <a class="nav-link" href="/admin/rider/privacy_policy">
+              <i class="fas fa-hands" style="font-size: large"></i>
+              <span><b>Privacy Policy</b></span>
+            </a>
+          </li>
+          <li class="<%= (title == 'Aboutus_rider' ? 'active' : '') %>">
+            <a class="nav-link" href="/admin/rider/Aboutus">
+              <i class="fas fa-book" style="font-size: large"></i>
+              <span><b>About Us</b></span>
+            </a>
+          </li>
         </ul>
       </li>
-
     </ul>
   </aside>
 </div>
 
+
 <style>
-/* Ensure active item has black background */
-.sidebar-menu .dropdown-menu .nav-link.active {
-  background-color: #000 !important; /* Black background for active item */
-  color: #fff !important; /* White text color for the active item */
-}
+  .main-sidebar {
+    height: 100vh;
+    overflow-y: auto;
+  }
 
-/* Make the dropdown background transparent */
-.sidebar-menu .dropdown-menu {
-  background-color: transparent !important;
-}
+  .sidebar-menu .nav-link {
+    background-color: white; /* Default white background */
+    color: #282c34; /* Dark text color by default */
+  }
 
-/* Ensure the dropdown items do not have a white background */
-.sidebar-menu .dropdown-menu .nav-link {
-  background-color: transparent !important;
-}
+  .sidebar-menu .nav-link.active {
+    background-color: #282c34; /* Blackish background for active links */
+    color: white; /* White text for active link */
+  }
 
-/* On hover, apply light grey background */
-.sidebar-menu .dropdown-menu .nav-link:hover {
-  background-color: #f0f0f0 !important; /* Light grey background on hover */
-  color: #000 !important; /* Darken text color on hover */
-}
+  .sidebar-menu .dropdown-menu .nav-link.active {
+    background-color: #282c34 !important; /* Ensure background stays dark for selected item */
+    color: white !important; /* Ensure text stays white for selected item */
+  }
+
+  .sidebar-menu .dropdown-menu .nav-link {
+    background-color: white; /* White background for dropdown items */
+    color: #282c34; /* Dark text color for dropdown items */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  }
+
+  .sidebar-menu .dropdown-menu .nav-link:hover {
+    background-color: #282c34; /* Blackish background on hover */
+    color: white; /* White text on hover */
+  }
+
+  .sidebar-menu .dropdown.open .nav-link,
+  .sidebar-menu .dropdown.active > a {
+    background-color: white; /* White background for open or active dropdown links */
+    color: #282c34; /* Dark text for open or active dropdown links */
+  }
+
+  .sidebar-menu .dropdown.open .dropdown-menu {
+    display: block; /* Ensure the dropdown is visible when open */
+    background-color: white; /* Consistent white background for dropdown items */
+    border: 1px solid #ddd; /* Optional: add a border for better visibility */
+  }
+
+  .sidebar-menu .has-dropdown:hover {
+    background-color: #f2f2f2; /* Light grey background on hover */
+    color: #282c34; /* Consistent dark text color */
+  }
+
+  .main-sidebar .sidebar-menu li ul.dropdown-menu li a {
+    color: #282c34; /* Default text color for dropdown items */
+    height: 35px;
+    padding-left: 65px;
+    font-weight: 400;
+    background-color: white; /* Default background color */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  }
+
+  .main-sidebar .sidebar-menu li ul.dropdown-menu li a:hover {
+    color: white !important; /* Forces the style to apply */
+    background-color: #282c34 !important; /* Forces the style to apply */
+  }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Keep dropdowns open for active menu items
+    const activeDropdown = document.querySelector('.dropdown.active');
+    if (activeDropdown) {
+      activeDropdown.classList.add('open');
+    }
+
+    // Close the dropdown if clicked outside
+    document.addEventListener('click', function (e) {
+      var dropdowns = document.querySelectorAll('.sidebar-menu .dropdown');
+      dropdowns.forEach(function (dropdown) {
+        if (!dropdown.contains(e.target)) {
+          dropdown.classList.remove('open');
+        }
+      });
+    });
+
+    // Toggle dropdown open state
+    document.querySelectorAll('.sidebar-menu .has-dropdown').forEach(function (dropdown) {
+      dropdown.addEventListener('click', function (e) {
+        e.stopPropagation(); // Prevent propagation to the document click event
+        const isOpen = dropdown.classList.contains('open');
+
+        // Close all other dropdowns
+        document.querySelectorAll('.sidebar-menu .dropdown.open').forEach(function (openDropdown) {
+          openDropdown.classList.remove('open');
+        });
+
+        // Toggle the clicked dropdown
+        if (!isOpen) {
+          dropdown.classList.add('open');
+        }
+      });
+    });
+
+    // Ensure active class is maintained on page load (if coming from server-side logic)
+    document.querySelectorAll('.sidebar-menu .nav-link').forEach(function (link) {
+      if (link.classList.contains('active')) {
+        link.closest('li').classList.add('active'); // Ensures parent <li> is also active
+      }
+
+      link.addEventListener('click', function () {
+        // Remove active class from all links
+        document.querySelectorAll('.sidebar-menu .nav-link').forEach(function (link) {
+          link.classList.remove('active');
+        });
+        // Add active class to clicked link
+        this.classList.add('active');
+      });
+    });
+
+    // Add active class for selected dropdown items
+    document.querySelectorAll('.sidebar-menu .dropdown-menu .nav-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        // Remove active class from all dropdown items
+        document.querySelectorAll('.sidebar-menu .dropdown-menu .nav-link').forEach(function (link) {
+          link.classList.remove('active');
+        });
+        // Add active class to clicked dropdown item
+        this.classList.add('active');
+
+        // Keep dropdown open after selection
+        const dropdown = this.closest('.dropdown');
+        dropdown.classList.add('open');
+      });
+    });
+  });
+</script>
