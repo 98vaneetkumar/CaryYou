@@ -117,6 +117,9 @@
       </a>
     </div>
     <div class="row">
+      <div id="loader" class="setting-gear-loader" style="display: none;">
+        <div class="gear"></div>
+      </div>
       <div id="user_id" data-value="<%= viewuser._id %>" hidden></div>
       <!-- Orders Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-left">
@@ -267,17 +270,6 @@
       </div>
     </div>
 
-    <!-- Additional Graph for Revenue -->
-    <div class="col-lg-6">
-      <div class="card">
-        <div class="card-header">
-          <h4>Revenue Statistics</h4>
-        </div>
-        <div class="card-body">
-          <canvas id="revenueGraph"></canvas>
-        </div>
-      </div>
-    </div>
 
     <!-- Graph for Orders -->
     <div class="col-lg-6">
@@ -297,110 +289,93 @@
 
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // Context for each graph
-    const userGraphCtx = document.getElementById("userGraph").getContext("2d");
-    const orderGraphCtx = document.getElementById("orderGraph").getContext("2d");
-    const revenueGraphCtx = document.getElementById("revenueGraph").getContext("2d");
+    const filterDropdown = document.getElementById("filter");
+    const loader = document.getElementById("loader");
+
+    const userId = document.getElementById("user_id").getAttribute("data-value");
 
     let Orders= parseInt(document.getElementById("orders").textContent)||0
     let cancelledOrders= parseInt(document.getElementById("cancelledOrders").textContent)||0
     let successOrders=parseInt(document.getElementById("successOrders").textContent)||0
     let pendingOrders=parseInt(document.getElementById("pendingOrders").textContent)||0
-    // User Graph setup (Static Data)
-    const userGraph = new Chart(userGraphCtx, {
-      type: "bar",
-      data: {
-        labels: ["Total Orders", "Cancelled Orders"],
-        datasets: [
-          {
-            label: "Count",
-            data: [Orders, cancelledOrders], // Static data
-            backgroundColor: ["#6666ff", "#33cc99"],
-            borderColor: ["#4444ff", "#33aa99"],
-            borderWidth: 1,
+ 
+
+          // Show loader
+      function showLoader() {
+        if (loader) loader.style.display = "block";
+      }
+
+      // Hide loader
+      function hideLoader() {
+        if (loader) loader.style.display = "none";
+      }
+      let userGraph,orderGraph;
+
+      function initializeCharts(){
+        const userGraphCtx = document.getElementById("userGraph").getContext("2d");
+        const orderGraphCtx = document.getElementById("orderGraph").getContext("2d");
+      // User Graph setup (Static Data)
+        userGraph = new Chart(userGraphCtx, {
+          type: "bar",
+          data: {
+            labels: ["Total Orders", "Cancelled Orders"],
+            datasets: [
+              {
+                label: "Count",
+                data: [Orders, cancelledOrders], // Static data
+                backgroundColor: ["#6666ff", "#33cc99"],
+                borderColor: ["#4444ff", "#33aa99"],
+                borderWidth: 1,
+              },
+            ],
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false },
-          title: { display: true, text: "User Order Statistics" },
-        },
-      },
-    });
-
-    // Order Graph setup (Static Data)
-    const orderGraph = new Chart(orderGraphCtx, {
-      type: "doughnut",
-      data: {
-        labels: [
-          "Success Orders",
-          "Cancelled Orders",
-          "Pending Orders",
-        ],
-        datasets: [
-          {
-            label: "Orders",
-            // date:[successOrders,cancelledOrders,pendingOrders],
-            data: [40, 10, 30], // Static data
-            backgroundColor: ["#007bff", "#dc3545", "#ffc107"],
-            borderColor: ["#0056b3", "#a71d2a", "#d39e00"],
-            borderWidth: 1,
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              title: { display: true, text: "User Order Statistics" },
+            },
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: "bottom" },
-          title: { display: true, text: "Order Statistics" },
-        },
-      },
-    });
+        });
 
-    // Revenue Graph setup (Static Data)
-    const revenueGraph = new Chart(revenueGraphCtx, {
-      type: "line",
-      data: {
-        labels: [
-          "December 1",
-          "December 2",
-          "December 3",
-          "December 4",
-          "December 5",
-          "December 6",
-          "December 7",
-        ],
-        datasets: [
-          {
-            label: "Revenue",
-            data: [100, 200, 150, 300, 250, 180, 210], // Static data
-            backgroundColor: "rgba(76, 175, 80, 0.2)",
-            borderColor: "rgba(76, 175, 80, 1)",
-            borderWidth: 2,
+        // Order Graph setup (Static Data)
+        orderGraph = new Chart(orderGraphCtx, {
+          type: "doughnut",
+          data: {
+            labels: [
+              "Success Orders",
+              "Cancelled Orders",
+              "Pending Orders",
+            ],
+            datasets: [
+              {
+                label: "Orders",
+                // date:[successOrders,cancelledOrders,pendingOrders],
+                data: [successOrders, cancelledOrders, pendingOrders], // Static data
+                backgroundColor: ["#007bff", "#dc3545", "#ffc107"],
+                borderColor: ["#0056b3", "#a71d2a", "#d39e00"],
+                borderWidth: 1,
+              },
+            ],
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: true },
-          title: { display: true, text: "Revenue Over Time" },
-        },
-      },
-    });
-  });
-</script>
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: "bottom" },
+              title: { display: true, text: "Order Statistics" },
+            },
+          },
+        });
 
-<script>
-  document.addEventListener("DOMContentLoaded", async () => {
-    const filterDropdown = document.getElementById("filter");
-    const userId = document.getElementById("user_id").getAttribute("data-value");
+  
+      }
 
-    // Listen for dropdown changes
-    filterDropdown.addEventListener("change", async () => {
+
+        // Fetch data and update charts
+  async function fetchData(filter = null) {
+    showLoader(); // Show loader before starting the fetch process
+
+    try {
       const selectedFilter = filterDropdown.value;
       const response = await fetch("/admin/user_dashboardFilter", {
         method: "POST",
@@ -418,6 +393,37 @@
       document.getElementById("cancelledOrders").textContent=data.cancelledOrders;
       document.getElementById("totalRides").textContent=data.totalRides;
       document.getElementById("totalSpend").textContent=data.totalSpend;
-    });
+    
+        // Update chart data
+        userGraph.data.datasets[0].data = [data.orders, data.cancelledOrders];
+        userGraph.update();
+
+        orderGraph.data.datasets[0].data = [
+          data.successOrders,
+          data.cancelledOrders,
+          data.pendingOrders,
+        ];
+        orderGraph.update();
+
+
+
+     } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      hideLoader(); // Always hide loader once fetch process is complete
+    }
+  }
+
+  // Event listener for dropdown changes
+  filterDropdown.addEventListener("change", async () => {
+    await fetchData(); // Fetch and update data based on selected filter
   });
+
+  // Initialize charts and set initial data on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    initializeCharts(); // Initialize charts
+    fetchData(); // Fetch initial data
+  });
+ 
+
 </script>

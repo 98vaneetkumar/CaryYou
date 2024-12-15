@@ -1481,7 +1481,7 @@ module.exports = {
       });
   
       res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
-        title: "Products",
+        title: "provider_list",
         restaurantId,
         viewuser: restaurant,
         session: req.session.user,
