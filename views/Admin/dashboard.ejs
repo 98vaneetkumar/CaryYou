@@ -139,7 +139,7 @@
         <a href="#">
           <div
             class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #db952d, #66ccff)"
+            style="background: linear-gradient(135deg, #2ddbb8, #66ccff)"
           >
             <div class="card-icon" style="background: rgba(38, 151, 219, 0.8)">
               <i class="fas fa-credit-card"></i>
@@ -456,14 +456,14 @@
               label: "Count",
               data: [userCount, riderCount, providerCount],
               backgroundColor: [
-                "rgba(75, 192, 192, 1)", // Users (solid greenish-blue)
-                "rgba(255, 99, 132, 1)", // Riders (solid pinkish-red)
-                "rgba(54, 162, 235, 1)", // Restaurants (solid blue)
+                "rgba(102, 232, 255, 1)", // Users (matches gradient from #66e8ff to #9999ff)
+                "rgba(51, 204, 153, 1)", // Riders (matches gradient from #33cc99 to #66cc99)
+                "rgba(51, 204, 204, 1)", // Restaurants (matches gradient from #33cccc to #66cccc)
               ],
               borderColor: [
-                "rgba(75, 192, 192, 1)", // Users (same as background)
-                "rgba(255, 99, 132, 1)", // Riders (same as background)
-                "rgba(54, 162, 235, 1)", // Restaurants (same as background)
+                "rgba(102, 232, 255, 1)", // Users (same as background)
+                "rgba(51, 204, 153, 1)", // Riders (same as background)
+                "rgba(51, 204, 204, 1)", // Restaurants (same as background)
               ],
               borderWidth: 1,
             },
@@ -480,6 +480,7 @@
           },
         },
       });
+
       // Order Status Chart (Pie Chart)
       orderStatusGraph = new Chart(ctx2, {
         type: "pie",
@@ -494,14 +495,14 @@
                 cancelledOrderCount,
               ],
               backgroundColor: [
-                "rgba(255, 159, 64, 1)", // Pending (solid orange)
-                "rgba(75, 192, 192, 1)", // Delivered (solid green)
-                "rgba(255, 99, 132, 1)", // Cancelled (solid red)
+                "rgba(255, 153, 0, 1)", // Pending (matches container)
+                "rgba(34, 101, 167, 1)", // Delivered (matches container)
+                "rgba(255, 204, 102, 1)", // Cancelled (lighter gold)
               ],
               borderColor: [
-                "rgba(255, 159, 64, 1)", // Pending (same as background)
-                "rgba(75, 192, 192, 1)", // Delivered (same as background)
-                "rgba(255, 99, 132, 1)", // Cancelled (same as background)
+                "rgba(255, 153, 0, 1)", // Pending (same as background)
+                "rgba(34, 101, 167, 1)", // Delivered (same as background)
+                "rgba(255, 204, 102, 1)", // Cancelled (same as background)
               ],
               borderWidth: 1,
             },

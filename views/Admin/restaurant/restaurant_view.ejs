@@ -32,7 +32,7 @@
       </a>
     </div>
     <div class="row">
-      <div id="loader" class="setting-gear-loader" style="display: none;">
+      <div id="loader" class="setting-gear-loader" style="display: none">
         <div class="gear"></div>
       </div>
       <div id="restaurant_id" data-value="<%= viewuser._id %>" hidden></div>
@@ -291,13 +291,20 @@
   const filterDropdown = document.getElementById("filter");
 
   // Initial data setup for graphs
-  let categoryCount = parseInt(document.getElementById("category").textContent) || 0;
-  let subCategoryCount = parseInt(document.getElementById("subCategory").textContent) || 0;
-  let productCount = parseInt(document.getElementById("products").textContent) || 0;
-  let pendingOrderCount = parseInt(document.getElementById("pendingOrders").textContent) || 0;
-  let activeOrderCount = parseInt(document.getElementById("activeOrders").textContent) || 0;
-  let deliveredOrderCount = parseInt(document.getElementById("deliveredOrders").textContent) || 0;
-  let cancelledOrderCount = parseInt(document.getElementById("cancelledOrders").textContent) || 0;
+  let categoryCount =
+    parseInt(document.getElementById("category").textContent) || 0;
+  let subCategoryCount =
+    parseInt(document.getElementById("subCategory").textContent) || 0;
+  let productCount =
+    parseInt(document.getElementById("products").textContent) || 0;
+  let pendingOrderCount =
+    parseInt(document.getElementById("pendingOrders").textContent) || 0;
+  let activeOrderCount =
+    parseInt(document.getElementById("activeOrders").textContent) || 0;
+  let deliveredOrderCount =
+    parseInt(document.getElementById("deliveredOrders").textContent) || 0;
+  let cancelledOrderCount =
+    parseInt(document.getElementById("cancelledOrders").textContent) || 0;
 
   // Loader Element
   const loader = document.getElementById("loader");
@@ -317,7 +324,9 @@
   // Initialize Charts
   function initializeCharts() {
     const userGraphCtx = document.getElementById("userGraph").getContext("2d");
-    const orderGraphCtx = document.getElementById("orderGraph").getContext("2d");
+    const orderGraphCtx = document
+      .getElementById("orderGraph")
+      .getContext("2d");
 
     // User Graph setup
     userGraph = new Chart(userGraphCtx, {
@@ -328,8 +337,16 @@
           {
             label: "Count",
             data: [categoryCount, subCategoryCount, productCount], // Initial data
-            backgroundColor: ["#6666ff", "#33cc99", "#33cccc"],
-            borderColor: ["#4444ff", "#33aa99", "#33aaaa"],
+            backgroundColor: [
+              "#6666ff", // Category (solid blue)
+              "#33cccc", // SubCategory (solid cyan)
+              "#33cc99", // Products (solid greenish)
+            ],
+            borderColor: [
+              "#4444ff", // Category border (darker blue)
+              "#33aaaa", // SubCategory border (darker cyan)
+              "#33aa88", // Products border (darker greenish)
+            ],
             borderWidth: 1,
           },
         ],
@@ -347,13 +364,33 @@
     orderGraph = new Chart(orderGraphCtx, {
       type: "doughnut",
       data: {
-        labels: ["Pending Orders", "Active Orders", "Delivered Orders", "Cancelled Orders"],
+        labels: [
+          "Pending Orders",
+          "Active Orders",
+          "Delivered Orders",
+          "Cancelled Orders",
+        ],
         datasets: [
           {
             label: "Orders",
-            data: [pendingOrderCount, activeOrderCount, deliveredOrderCount, cancelledOrderCount], // Initial data
-            backgroundColor: ["#ffc107", "#28a745", "#007bff", "#dc3545"], // Updated colors
-            borderColor: ["#d39e00", "#1d7a34", "#0056b3", "#a71d2a"], // Updated border colors
+            data: [
+              pendingOrderCount,
+              activeOrderCount,
+              deliveredOrderCount,
+              cancelledOrderCount,
+            ], // Initial data
+            backgroundColor: [
+              "#e68900", // Pending Orders (darker orange)
+              "#ff5733", // Active Orders (red-orange)
+              "#33a1ff", // Delivered Orders (light blue)
+              "#ffc300", // Cancelled Orders (yellow)
+            ],
+            borderColor: [
+              "#d39e00", // Pending Orders border (darker yellow)
+              "#d14b17", // Active Orders border (darker red-orange)
+              "#267bbf", // Delivered Orders border (darker blue)
+              "#e1a700", // Cancelled Orders border (darker yellow)
+            ],
             borderWidth: 1,
           },
         ],
@@ -373,7 +410,8 @@
     showLoader(); // Show loader before starting the fetch process
 
     try {
-      const restaurantId = document.getElementById("restaurant_id").dataset.value;
+      const restaurantId =
+        document.getElementById("restaurant_id").dataset.value;
 
       // Ensure filter value is passed correctly
       const selectedFilter = filter || filterDropdown.value;
@@ -396,8 +434,10 @@
       document.getElementById("orders").textContent = data.orders;
       document.getElementById("pendingOrders").textContent = data.pendingOrders;
       document.getElementById("activeOrders").textContent = data.activeOrders;
-      document.getElementById("deliveredOrders").textContent = data.deliveredOrders;
-      document.getElementById("cancelledOrders").textContent = data.cancelledOrders;
+      document.getElementById("deliveredOrders").textContent =
+        data.deliveredOrders;
+      document.getElementById("cancelledOrders").textContent =
+        data.cancelledOrders;
       document.getElementById("category").textContent = data.category;
       document.getElementById("subCategory").textContent = data.subCategory;
       document.getElementById("products").textContent = data.products;
@@ -412,7 +452,11 @@
       cancelledOrderCount = data.cancelledOrders || 0;
 
       // Update charts
-      userGraph.data.datasets[0].data = [categoryCount, subCategoryCount, productCount];
+      userGraph.data.datasets[0].data = [
+        categoryCount,
+        subCategoryCount,
+        productCount,
+      ];
       userGraph.update();
 
       orderGraph.data.datasets[0].data = [
@@ -441,7 +485,6 @@
   });
 </script>
 
-
 <script src="/socket.io/socket.io.js"></script>
 <script>
   const socket = io();
@@ -449,10 +492,5 @@
     //   document.getElementById('user').textContent = data.user;
   });
 
-
-  socket.on("updateDashboard", (dashboardData) => {
-  
-   });
+  socket.on("updateDashboard", (dashboardData) => {});
 </script>
-
-
