@@ -395,7 +395,7 @@
     </div>
 
     <!-- Graph for Order Status (Pending, Delivered, Cancelled) -->
-    <div class="col-lg-6 col-md-12">
+    <!-- <div class="col-lg-6 col-md-12">
       <div class="card">
         <div class="card-header">
           <h4 style="font-weight: bold; color: #333">Order Status</h4>
@@ -404,7 +404,20 @@
           <canvas id="orderStatusGraph"></canvas>
         </div>
       </div>
-    </div>
+    </div> -->
+
+       <!-- Graph for Orders -->
+       <div class="col-lg-6 col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 style="font-weight: bold; color: #333">Order Statistics</h4>
+          </div>
+          <div class="card-body">
+            <canvas id="orderStatusGraph"></canvas>
+          </div>
+        </div>
+      </div>
+
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -483,46 +496,51 @@
 
       // Order Status Chart (Pie Chart)
       orderStatusGraph = new Chart(ctx2, {
-        type: "pie",
-        data: {
-          labels: ["Pending", "Delivered", "Cancelled"],
-          datasets: [
-            {
-              label: "Order Status",
-              data: [
-                pendingOrderCount,
-                deliveredOrderCount,
-                cancelledOrderCount,
-              ],
-              backgroundColor: [
-                "rgba(255, 153, 0, 1)", // Pending (matches container)
-                "rgba(34, 101, 167, 1)", // Delivered (matches container)
-                "rgba(255, 204, 102, 1)", // Cancelled (lighter gold)
-              ],
-              borderColor: [
-                "rgba(255, 153, 0, 1)", // Pending (same as background)
-                "rgba(34, 101, 167, 1)", // Delivered (same as background)
-                "rgba(255, 204, 102, 1)", // Cancelled (same as background)
-              ],
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { position: "top" },
-            tooltip: {
-              callbacks: {
-                label: function (tooltipItem) {
-                  return tooltipItem.label + ": " + tooltipItem.raw + " Orders";
-                },
-              },
-            },
+      type: "doughnut",
+      data: {
+        labels: [
+          "Pending Orders",
+          "Active Order", //
+          "Delivered Orders",
+          "Cancelled Orders",
+        ],
+        datasets: [
+          {
+            label: "Orders",
+            data: [
+              pendingOrderCount,
+              activeOrderCount,
+              deliveredOrderCount,
+              cancelledOrderCount,
+            ], // Initial data
+            backgroundColor: [
+              "#ff6f00", // Pending Orders (darker orange)
+              "#ff8c66", // Active Orders (red-orange)
+              "#4e89b0", // Delivered Orders (light blue)
+              "#ffd966", // Cancelled Orders (yellow)
+            ],
+            borderColor: [
+              "#d39e00", // Pending Orders border (darker yellow)
+              "#d14b17", // Active Orders border (darker red-orange)
+              "#267bbf", // Delivered Orders border (darker blue)
+              "#e1a700", // Cancelled Orders border (darker yellow)
+            ],
+            borderWidth: 1,
           },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: "bottom" },
+          title: { display: true, text: "Order Statistics" },
         },
-      });
+      },
+    });
+  
     }
+
+  
 
     // Function to fetch data and update charts
     async function fetchData(filter = null) {
@@ -568,6 +586,7 @@
 
         orderStatusGraph.data.datasets[0].data = [
           pendingOrderCount,
+          activeOrderCount,
           deliveredOrderCount,
           cancelledOrderCount,
         ];

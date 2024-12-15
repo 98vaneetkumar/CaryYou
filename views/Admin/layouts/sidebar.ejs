@@ -21,7 +21,7 @@
     </div>
 
     <br />
-    <ul class="sidebar-menu">
+    <ul class="sidebar-menu" style="overflow-y: auto; max-height: calc(100vh - 60px);">
       <li class="<%= title == 'dashboard' ? 'active' : '' %>">
         <a class="nav-link" href="/admin/dashboard">
           <i class="fas fa-home" style="font-size: large"></i>
@@ -175,141 +175,37 @@
           </li>
         </ul>
       </li>
+
+
+      
+
     </ul>
   </aside>
 </div>
 
 
-<style>
-  .main-sidebar {
-    height: 100vh;
-    overflow-y: auto;
-  }
-
-  .sidebar-menu .nav-link {
-    background-color: white; /* Default white background */
-    color: #282c34; /* Dark text color by default */
-  }
-
-  .sidebar-menu .nav-link.active {
-    background-color: #282c34; /* Blackish background for active links */
-    color: white; /* White text for active link */
-  }
-
-  .sidebar-menu .dropdown-menu .nav-link.active {
-    background-color: #282c34 !important; /* Ensure background stays dark for selected item */
-    color: white !important; /* Ensure text stays white for selected item */
-  }
-
-  .sidebar-menu .dropdown-menu .nav-link {
-    background-color: white; /* White background for dropdown items */
-    color: #282c34; /* Dark text color for dropdown items */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
-  }
-
-  .sidebar-menu .dropdown-menu .nav-link:hover {
-    background-color: #282c34; /* Blackish background on hover */
-    color: white; /* White text on hover */
-  }
-
-  .sidebar-menu .dropdown.open .nav-link,
-  .sidebar-menu .dropdown.active > a {
-    background-color: white; /* White background for open or active dropdown links */
-    color: #282c34; /* Dark text for open or active dropdown links */
-  }
-
-  .sidebar-menu .dropdown.open .dropdown-menu {
-    display: block; /* Ensure the dropdown is visible when open */
-    background-color: white; /* Consistent white background for dropdown items */
-    border: 1px solid #ddd; /* Optional: add a border for better visibility */
-  }
-
-  .sidebar-menu .has-dropdown:hover {
-    background-color: #f2f2f2; /* Light grey background on hover */
-    color: #282c34; /* Consistent dark text color */
-  }
-
-  .main-sidebar .sidebar-menu li ul.dropdown-menu li a {
-    color: #282c34; /* Default text color for dropdown items */
-    height: 35px;
-    padding-left: 65px;
-    font-weight: 400;
-    background-color: white; /* Default background color */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
-  }
-
-  .main-sidebar .sidebar-menu li ul.dropdown-menu li a:hover {
-    color: white !important; /* Forces the style to apply */
-    background-color: #282c34 !important; /* Forces the style to apply */
-  }
-</style>
-
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Keep dropdowns open for active menu items
-    const activeDropdown = document.querySelector('.dropdown.active');
-    if (activeDropdown) {
-      activeDropdown.classList.add('open');
-    }
+  // JavaScript to reset active states and clear dropdowns on sidebar change
+document.addEventListener('DOMContentLoaded', function () {
+  const links = document.querySelectorAll('.nav-link');
+  links.forEach(link => {
+    link.addEventListener('click', function () {
+      // Remove 'active' class from all links
+      links.forEach(l => l.classList.remove('active'));
 
-    // Close the dropdown if clicked outside
-    document.addEventListener('click', function (e) {
-      var dropdowns = document.querySelectorAll('.sidebar-menu .dropdown');
-      dropdowns.forEach(function (dropdown) {
-        if (!dropdown.contains(e.target)) {
-          dropdown.classList.remove('open');
-        }
-      });
-    });
+      // Clear all dropdown menus
+      const dropdowns = document.querySelectorAll('.dropdown-menu');
+      dropdowns.forEach(dropdown => dropdown.style.display = 'none');
 
-    // Toggle dropdown open state
-    document.querySelectorAll('.sidebar-menu .has-dropdown').forEach(function (dropdown) {
-      dropdown.addEventListener('click', function (e) {
-        e.stopPropagation(); // Prevent propagation to the document click event
-        const isOpen = dropdown.classList.contains('open');
+      // Set the clicked link to 'active'
+      this.classList.add('active');
 
-        // Close all other dropdowns
-        document.querySelectorAll('.sidebar-menu .dropdown.open').forEach(function (openDropdown) {
-          openDropdown.classList.remove('open');
-        });
-
-        // Toggle the clicked dropdown
-        if (!isOpen) {
-          dropdown.classList.add('open');
-        }
-      });
-    });
-
-    // Ensure active class is maintained on page load (if coming from server-side logic)
-    document.querySelectorAll('.sidebar-menu .nav-link').forEach(function (link) {
-      if (link.classList.contains('active')) {
-        link.closest('li').classList.add('active'); // Ensures parent <li> is also active
+      // If the link is a dropdown, show the menu
+      if (this.nextElementSibling && this.nextElementSibling.classList.contains('dropdown-menu')) {
+        this.nextElementSibling.style.display = 'block';
       }
-
-      link.addEventListener('click', function () {
-        // Remove active class from all links
-        document.querySelectorAll('.sidebar-menu .nav-link').forEach(function (link) {
-          link.classList.remove('active');
-        });
-        // Add active class to clicked link
-        this.classList.add('active');
-      });
-    });
-
-    // Add active class for selected dropdown items
-    document.querySelectorAll('.sidebar-menu .dropdown-menu .nav-link').forEach(function (link) {
-      link.addEventListener('click', function () {
-        // Remove active class from all dropdown items
-        document.querySelectorAll('.sidebar-menu .dropdown-menu .nav-link').forEach(function (link) {
-          link.classList.remove('active');
-        });
-        // Add active class to clicked dropdown item
-        this.classList.add('active');
-
-        // Keep dropdown open after selection
-        const dropdown = this.closest('.dropdown');
-        dropdown.classList.add('open');
-      });
     });
   });
+});
+
 </script>
