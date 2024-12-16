@@ -18,7 +18,7 @@
     <!-- Grid Container -->
     <div class="restaurant-grid">
       <% viewuser.products.forEach(function(data, i) { %>
-      <div class="restaurant-item">
+      <div class="restaurant-item" data-index="<%= i %>">
         <div class="restaurant-image-container">
           <div class="restaurant-images" id="carousel-<%= i %>">
             <% data.images.forEach(function(image, index) { %>
@@ -75,7 +75,7 @@
               <% } %>
             </div>
             <div class="view-btn">
-              <a href="/admin/restaurant_product_view/<%= data._id %>" class="btn btn-sm bg-warning">
+              <a href="/admin/restaurant_product_view/<%= restaurantId %>/<%=data._id%>" class="btn btn-sm bg-warning">
                 <i class="fa fa-eye" aria-hidden="true"></i>
               </a>
             </div>
@@ -97,9 +97,8 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-
+<!-- Styles -->
 <style>
-  /* Grid Styles */
   .restaurant-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -122,35 +121,6 @@
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
   }
 
-  /* "Top Up" Button Styles */
-  .topup-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #00000094; /* Green color for a more inviting look */
-    color: white;
-    border: none;
-    border-radius: 100%;
-    padding: 15px;
-    font-size: 24px; /* Larger font size */
-    cursor: pointer;
-    z-index: 1000;
-    display: none;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Softer shadow */
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    transform: scale(1); /* Start with normal size */
-  }
-
-  .topup-btn:hover {
-    background-color: #000000; /* Darker green on hover */
-    transform: scale(1.1); /* Slightly enlarge the button on hover */
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
-  }
-
-  .topup-btn:active {
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Restore shadow on click */
-  }
-
   .restaurant-image-container {
     position: relative;
     width: 100%;
@@ -160,12 +130,11 @@
 
   .restaurant-images {
     display: flex;
-    transition: transform 0.5s ease;
+    transition: transform 0.5s ease-in-out;
   }
 
   .restaurant-image {
     min-width: 100%;
-    transition: opacity 0.5s ease;
   }
 
   .restaurant-image img {
@@ -173,11 +142,6 @@
     height: 200px;
     object-fit: cover;
     border-radius: 12px 12px 0 0;
-  }
-
-  .carousel-arrow:focus {
-    outline: none;
-    border: none;
   }
 
   .carousel-arrow {
@@ -192,7 +156,6 @@
     cursor: pointer;
     transform: translateY(-50%);
     border-radius: 50%;
-    outline: none;
   }
 
   .left-arrow {
@@ -227,159 +190,71 @@
     color: #1e9e35;
     margin: 8px 0;
   }
-
-  .buttons-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 12px;
-  }
-
-  .status-btn {
-    margin-right: 5px;
-  }
-
-  .view-btn {
-    margin-left: 5px;
-  }
-
-  .btn {
-    font-size: 12px;
-    padding: 5px 10px;
-    border-radius: 20px;
-  }
 </style>
 
-<script>
-  // Handle Top Up Button visibility and smooth scroll to top
-  window.onscroll = function () {
-    // Show the button after scrolling 100px down
-    if (
-      document.body.scrollTop > 100 ||
-      document.documentElement.scrollTop > 100
-    ) {
-      document.getElementById("topUpButton").style.display = "block";
-    } else {
-      document.getElementById("topUpButton").style.display = "none";
-    }
-  };
-
-  document.getElementById("topUpButton").onclick = function () {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-</script>
 
 <script>
-  let currentSlideIndex = {};
+  document.addEventListener("DOMContentLoaded", function () {
+    const carousels = document.querySelectorAll(".restaurant-images");
 
-  function moveSlide(direction, index) {
-    const imagesContainer =
-      document.querySelectorAll(".restaurant-images")[index];
-    const totalImages = imagesContainer.children.length;
+    carousels.forEach((carousel, index) => {
+      const images = carousel.children;
+      let currentIndex = 0;
 
-    if (!currentSlideIndex[index]) {
-      currentSlideIndex[index] = 0;
-    }
+      // Auto-scroll function for all carousels
+      setInterval(() => {
+        if (images.length > 1) {
+          currentIndex = (currentIndex + 1) % images.length;
+          carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+      }, 3000); // Change image every 3 seconds
+    });
 
-    if (direction === "left") {
-      if (currentSlideIndex[index] > 0) {
-        currentSlideIndex[index] -= 1;
-      }
-    } else if (direction === "right") {
-      if (currentSlideIndex[index] < totalImages - 1) {
-        currentSlideIndex[index] += 1;
-      }
-    }
+    // Add hover event listeners to specific product items
+    const productItems = document.querySelectorAll('.restaurant-item');
 
-    imagesContainer.style.transform = `translateX(-${
-      currentSlideIndex[index] * 100
-    }%)`;
-  }
-</script>
+    productItems.forEach((item, i) => {
+      item.addEventListener('mouseenter', function () {
+        const carouselIndex = parseInt(this.getAttribute('data-index'), 10);
+        const targetCarousel = carousels[carouselIndex];
+        const images = targetCarousel.children;
+        let currentIndex = 0;
 
-<script>
-  $(document).ready(function () {
-    $("#myTable").DataTable({
-      dom: "Bfrtip",
-      buttons: ["excel", "pdf", "print"],
+        // Start auto-scroll for specific carousel when hovered
+        const autoScroll = setInterval(() => {
+          if (images.length > 1) {
+            currentIndex = (currentIndex + 1) % images.length;
+            targetCarousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+          }
+        }, 3000); // Change image every 3 seconds
+
+        // Stop auto-scroll when mouse leaves
+        item.addEventListener('mouseleave', function () {
+          clearInterval(autoScroll);
+        });
+      });
     });
   });
 </script>
 
-<script>
-  setTimeout(function () {
-    $("div.msg").fadeOut();
-  }, 2000);
-</script>
 
-<script>
-  function confirmDelete(id) {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: "btn btn-warning",
-        cancelButton: "btn btn-info",
-      },
-      buttonsStyling: true,
-    });
 
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, keep it",
-        reverseButtons: true,
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          $.ajax({
-            url: `/admin/restaurant_product_delete/${id}`,
-            method: "POST",
-            success: function () {
-              location.reload();
-            },
-            error: function () {
-              swalWithBootstrapButtons.fire(
-                "Error!",
-                "There was an issue deleting the product.",
-                "error"
-              );
-            },
-          });
+<!-- Auto-Scroll Script -->
+<!-- <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const carousels = document.querySelectorAll(".restaurant-images");
+
+    carousels.forEach((carousel) => {
+      const images = carousel.children;
+      let currentIndex = 0;
+
+      // Auto-scroll function
+      setInterval(() => {
+        if (images.length > 1) {
+          currentIndex = (currentIndex + 1) % images.length;
+          carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
         }
-      });
-  }
-</script>
-
-<script>
-  const changeStatus = (val) => {
-    let id = val.getAttribute("data-id");
-    let value = val.getAttribute("value");
-    let elemID = val.getAttribute("id");
-    elemID = document.getElementById(elemID);
-
-    $.ajax({
-      type: "POST",
-      url: "/admin/restaurant_status",
-      data: {
-        id: id,
-        value: value,
-      },
-      success: function (data) {
-        if (data) {
-          elemID.setAttribute("value", 0);
-          elemID.innerText = `Active`;
-          elemID.classList.remove("btn-danger");
-          elemID.classList.add("btn-success");
-        } else {
-          elemID.setAttribute("value", 1);
-          elemID.innerText = `In-Active`;
-          elemID.classList.remove("btn-success");
-          elemID.classList.add("btn-danger");
-        }
-        window.location.reload();
-      },
+      }, 3000); // Change image every 3 seconds
     });
-  };
-</script>
+  });
+</script> -->

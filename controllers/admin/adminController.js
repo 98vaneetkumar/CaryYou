@@ -1521,10 +1521,6 @@ module.exports = {
   restaurant_product: async (req, res) => {
     try {
       const restaurantId = req.params._id;
-
-      // Debug log
-      console.log("restaurantId:", restaurantId);
-
       // Fetch restaurant data
       const restaurant = await Models.restaurantModel
         .findById(restaurantId)
@@ -1568,35 +1564,64 @@ module.exports = {
 
   restaurant_product_view: async (req, res) => {
     try {
-      // Define title for the page
-      let title = "Restaurant Product Details";
+      let title="provider_list"
+      const restaurantId = req.params.restaurantId; // Restaurant ID from the request
+      const productId = req.params._id;       // Product ID from the request
   
-      // Fetch product by its ID from the product array in the restaurant model
-      const productData = await Models.restaurantModel
-        .findOne(
-          { "products._id": req.params._id },
-          { "products.$": 1, _id: 0 } // Only get the matching product
-        )
-        .lean();
+      // Fetch the restaurant data by restaurantId
+      const restaurant = await Models.restaurantModel
+          .findById(restaurantId)
+          .lean(); // Fetch the restaurant document as a plain JS object
   
-      // Check if the product data exists
-      if (!productData || !productData.products.length) {
-        return res.status(404).json({ success: false, message: "Product not found" });
+      if (!restaurant) {
+          return res.status(404).json({ message: "Restaurant not found" });
       }
   
-      // Extract the product details
-      const product = productData.products[0];
+      // Find the product within the restaurant's products array by productId
+      let product = restaurant.products.find(
+          (prod) => prod._id.toString() === productId.toString()
+      );
   
-      // Render the product view page with product data and title
-      res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_view", { 
+      if (!product) {
+          return res.status(404).json({ message: "Product not found" });
+      }
+  
+      // Find the corresponding subcategory for the product
+      const matchedSubCategory = restaurant.subCategory.find(
+          (subCat) => subCat._id.toString() === product.subCategoryId.toString()
+      );
+  
+      // Find the corresponding category for the subcategory (if subcategory exists)
+      const matchedCategory = matchedSubCategory
+          ? restaurant.category.find(
+                (cat) => cat._id.toString() === matchedSubCategory.categoryId.toString()
+            )
+          : null;
+  
+      // Enrich the product with category and subcategory details
+       product = {
+          ...product,
+          subCategoryName: matchedSubCategory ? matchedSubCategory.name : null,
+          subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
+          categoryName: matchedCategory ? matchedCategory.name : null,
+          categoryImage: matchedCategory ? matchedCategory.image : null,
+      };
+  console.log("product",product)
+  // return
+      res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_view", {
         title,
-        product 
-      });
-      
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: "Internal server error" });
-    }
+        productId,
+        restaurantId,
+        product,
+        session: req.session.user,
+        msg: req.flash("msg"),
+    });
+  } catch (error) {
+      console.error("Error fetching product:", error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+  
+  
   },
   
   

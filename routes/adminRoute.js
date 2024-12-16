@@ -67,7 +67,7 @@ router.get('/restaurant_return_view_order/:_id', session, controllers.adminContr
 router.get("/restaurant_category/:_id",session, controllers.adminController.restaurant_category)
 router.get("/restaurant_subCategory/:_id",session, controllers.adminController.restaurant_subCategory)
 router.get("/restaurant_product/:_id",session, controllers.adminController.restaurant_product)
-router.get("/restaurant_product_view/:_id",session, controllers.adminController.restaurant_product_view)
+router.get("/restaurant_product_view/:restaurantId/:_id",session, controllers.adminController.restaurant_product_view)
 
 //<------------------------------ Rider ------------------------->
 router.get('/rider_list', session, controllers.adminController.rider_list)

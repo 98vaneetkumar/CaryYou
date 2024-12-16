@@ -1,49 +1,110 @@
-
 <div class="main-content">
   <section class="section">
     <div class="section-header">
       <h1>Product Details</h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="/admin/dashboard">Dashboard</a></div>
-        <div class="breadcrumb-item"><a href="/admin/view_restaurant/<%= product.restaurantId %>">Restaurant</a></div>
+        <div class="breadcrumb-item">
+          <a href="/admin/view_restaurant/<%= product.restaurantId %>">Restaurant</a>
+        </div>
         <div class="breadcrumb-item">Product Details</div>
       </div>
     </div>
-    
+
     <div class="section-body">
       <div class="card" style="background-color: wheat; border-radius: 10px;">
         <!-- Back Button -->
         <div class="form-group text-left ml-3 mt-2">
-          <a href="/admin/view_restaurant/<%= product.restaurantId %>" class="btn btn-info">
-            <i class="fas fa-arrow-left"></i> Back to Restaurant</a>
+          <a href="/admin/restaurant_product/<%= restaurantId %>" class="btn btn-info">
+            <i class="fas fa-arrow-left"></i> Back to all Products
+          </a>
         </div>
-        
+
         <div class="row mt-sm-4 justify-content-center">
-          <!-- Left Side - Product Image & Basic Details -->
+          <!-- Left Side - Product Images & Basic Details -->
           <div class="col-12 col-md-12 col-lg-4">
             <div class="card profile-widget">
               <div class="profile-widget-header text-center py-3">
-                <!-- Placeholder for product image -->
-                <img alt="Product Image" width="200" height="200" src="<%= product.image || 'default_image_url' %>" class="profile_img rounded-circle">
+                <!-- Product Images Carousel -->
+                <div id="productImagesCarousel" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                    <% if (product.images && product.images.length > 0) { %>
+                      <% product.images.forEach((image, index) => { %>
+                        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                          <img
+                            src="<%= image %>"
+                            alt="Product Image <%= index + 1 %>"
+                            class="d-block w-100 rounded"
+                            style="max-height: 300px; object-fit: cover;"
+                          >
+                        </div>
+                      <% }) %>
+                    <% } else { %>
+                      <div class="carousel-item active">
+                        <img
+                          src="/images/default_product_image.jpg"
+                          alt="Default Product Image"
+                          class="d-block w-100 rounded"
+                          style="max-height: 300px; object-fit: cover;"
+                        >
+                      </div>
+                    <% } %>
+                  </div>
+                  <% if (product.images && product.images.length > 1) { %>
+                    <!-- Carousel Controls -->
+                    <a class="carousel-control-prev" href="#productImagesCarousel" role="button" data-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#productImagesCarousel" role="button" data-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  <% } %>
+                </div>
               </div>
             </div>
             <div class="card-body">
               <h4 class="text-center">Basic Info</h4>
               <div class="form-group">
                 <label class="col-form-label">Product Name</label>
-                <input type="text" name="name" value="<%= product.name %>" class="form-control" disabled>
+                <input
+                  type="text"
+                  name="name"
+                  value="<%= product.itemName %>"
+                  class="form-control"
+                  disabled
+                >
               </div>
               <div class="form-group">
                 <label class="col-form-label">Price</label>
-                <input type="text" name="price" value="<%= product.price ? `$${product.price}` : 'N/A' %>" class="form-control" disabled>
+                <input
+                  type="text"
+                  name="price"
+                  value="<%= product.price ? `$${product.price}` : 'N/A' %>"
+                  class="form-control"
+                  disabled
+                >
               </div>
               <div class="form-group">
                 <label class="col-form-label">Category</label>
-                <input type="text" name="category" value="<%= product.category || 'N/A' %>" class="form-control" disabled>
+                <input
+                  type="text"
+                  name="category"
+                  value="<%= product.categoryName || 'N/A' %>"
+                  class="form-control"
+                  disabled
+                >
               </div>
               <div class="form-group">
-                <label class="col-form-label">Available</label>
-                <input type="text" name="available" value="<%= product.available ? 'Yes' : 'No' %>" class="form-control" disabled>
+                <label class="col-form-label">SubCategory</label>
+                <input
+                  type="text"
+                  name="subCategory"
+                  value="<%= product.subCategoryName || 'N/A' %>"
+                  class="form-control"
+                  disabled
+                >
               </div>
             </div>
           </div>
@@ -54,7 +115,12 @@
               <h4 class="text-center">Product Description</h4>
               <div class="form-group">
                 <label class="col-form-label">Description</label>
-                <textarea name="description" class="form-control" rows="4" disabled><%= product.description || 'No description available' %></textarea>
+                <textarea
+                  name="description"
+                  class="form-control"
+                  rows="4"
+                  disabled
+                ><%= product.description || 'No description available' %></textarea>
               </div>
             </div>
           </div>
@@ -63,4 +129,3 @@
     </div>
   </section>
 </div>
-
