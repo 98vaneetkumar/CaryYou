@@ -1568,21 +1568,39 @@ module.exports = {
 
   restaurant_product_view: async (req, res) => {
     try {
-      const product = await Models.restaurantModel
-        .findOne({ "products._id": req.params._id }, { "products.$": 1 })
+      // Define title for the page
+      let title = "Restaurant Product Details";
+  
+      // Fetch product by its ID from the product array in the restaurant model
+      const productData = await Models.restaurantModel
+        .findOne(
+          { "products._id": req.params._id },
+          { "products.$": 1, _id: 0 } // Only get the matching product
+        )
         .lean();
-
-      if (!product) {
-        return res.status(404).json({ message: "Product not found" });
+  
+      // Check if the product data exists
+      if (!productData || !productData.products.length) {
+        return res.status(404).json({ success: false, message: "Product not found" });
       }
-
-      // Extract and send the product details
-      res.json(product.products[0]);
+  
+      // Extract the product details
+      const product = productData.products[0];
+  
+      // Render the product view page with product data and title
+      res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_view", { 
+        title,
+        product 
+      });
+      
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Internal server error" });
+      console.error(error);
+      res.status(500).json({ success: false, message: "Internal server error" });
     }
   },
+  
+  
+
 
   //---------riders list apis--------------
 

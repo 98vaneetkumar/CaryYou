@@ -9,12 +9,12 @@
         <div class="breadcrumb-item">Restaurant</div>
       </div>
     </div>
- <!-- Back Button -->
- <div class="form-group text-left ml-3 mt-2">
-  <a href="/admin/view_restaurant/<%=restaurantId%>" class="btn btn-dark rounded-pill">
-    <i class="fas fa-arrow-left"></i> Back
-  </a>
-</div>
+    <!-- Back Button -->
+    <div class="form-group text-left ml-3 mt-2">
+      <a href="/admin/view_restaurant/<%= restaurantId %>" class="btn btn-dark rounded-pill">
+        <i class="fas fa-arrow-left"></i> Back
+      </a>
+    </div>
     <!-- Grid Container -->
     <div class="restaurant-grid">
       <% viewuser.products.forEach(function(data, i) { %>
@@ -75,14 +75,9 @@
               <% } %>
             </div>
             <div class="view-btn">
-              <button
-                class="btn btn-sm bg-warning view-product-btn"
-                data-id="<%= data._id %>"
-                data-bs-toggle="modal"
-                data-bs-target="#productDetailModal"
-              >
+              <a href="/admin/restaurant_product_view/<%= data._id %>" class="btn btn-sm bg-warning">
                 <i class="fa fa-eye" aria-hidden="true"></i>
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -92,32 +87,9 @@
   </section>
 </div>
 
+
 <!-- "Top Up" Button -->
 <button id="topUpButton" class="topup-btn">↑</button>
-
-<div id="productDetailModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="productDetailTitle">Product Details</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body" id="productDetailContent">
-        <!-- Product details will be dynamically injected here -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- jQuery (required for AJAX) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -125,63 +97,6 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Custom Script -->
-<script>
-  $(document).on("click", ".view-product-btn", function () {
-    const productId = $(this).data("id");
-
-    if (!productId) {
-      alert("Invalid product ID. Please try again.");
-      return;
-    }
-
-    // Show loading state while fetching data
-    $("#productDetailContent").html("<p>Loading...</p>");
-
-    $.ajax({
-      url: `/admin/restaurant_product_view/${productId}`,
-      method: "GET",
-      success: function (response) {
-        const detailsHtml = `
-          <div class="text-center">
-            <h4>${response.name || "No name available"}</h4>
-            <p>${response.description || "No description available."}</p>
-            <img src="${
-              response.image || "https://via.placeholder.com/300"
-            }" alt="${response.itemName}" class="img-fluid">
-            <p class="price">$${response.price || "N/A"}</p>
-          </div>
-        `;
-        $("#productDetailContent").html(detailsHtml);
-      },
-      error: function () {
-        $("#productDetailContent").html(
-          '<p class="text-danger">Failed to load product details.</p>'
-        );
-      },
-    });
-
-    // Show the modal
-    $("#productDetailModal").modal("show");
-  });
-
-  function moveSlide(direction, carouselId) {
-    const carousel = document.getElementById(`carousel-${carouselId}`);
-    const scrollAmount = direction === "left" ? -300 : 300;
-    carousel.scrollBy({ left: scrollAmount, behavior: "smooth" });
-  }
-
-  // Scroll-to-top button functionality
-  const topUpButton = document.getElementById("topUpButton");
-
-  window.onscroll = function () {
-    topUpButton.style.display = window.scrollY > 200 ? "block" : "none";
-  };
-
-  topUpButton.onclick = function () {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-</script>
 
 <style>
   /* Grid Styles */
@@ -236,7 +151,6 @@
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Restore shadow on click */
   }
 
-  /* Restaurant Grid Styles */
   .restaurant-image-container {
     position: relative;
     width: 100%;
@@ -333,31 +247,6 @@
     padding: 5px 10px;
     border-radius: 20px;
   }
-
-  /* Modal Styles */
-  .modal-lg {
-    max-width: 80% !important;
-  }
-
-  .modal-dialog {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modal-content {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-  }
-
-  .modal-header {
-    border-bottom: 1px solid #ddd;
-  }
-
-  .modal-footer {
-    border-top: 1px solid #ddd;
-  }
 </style>
 
 <script>
@@ -374,41 +263,9 @@
     }
   };
 
-  // When the button is clicked, smoothly scroll to the top
   document.getElementById("topUpButton").onclick = function () {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
-</script>
-
-<script>
-  $(document).on("click", ".view-product-btn", function () {
-    const productId = $(this).data("id");
-
-    $.ajax({
-      url: `/admin/restaurant_product_view/${productId}`,
-      method: "GET",
-      success: function (response) {
-        $("#productDetailContent").html(`
-          <div class="text-center">
-            <h4>${response.itemName}</h4>
-            <p>${response.description || "No description available."}</p>
-            <img src="${response.image}" alt="${
-          response.itemName
-        }" class="img-fluid">
-            <p class="price">$${response.price}</p>
-          </div>
-        `);
-      },
-      error: function () {
-        $("#productDetailContent").html(
-          '<p class="text-danger">Failed to load product details.</p>'
-        );
-      },
-    });
-  });
 </script>
 
 <script>
