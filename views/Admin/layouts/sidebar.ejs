@@ -15,13 +15,21 @@
         <img
           src="/assets/img/logo.png"
           class="w-50"
-          style="border-radius: 50%; width: 20px; height: 30px; transition: all 0.2s ease;"
+          style="
+            border-radius: 50%;
+            width: 20px;
+            height: 30px;
+            transition: all 0.2s ease;
+          "
         />
       </a>
     </div>
 
     <br />
-    <ul class="sidebar-menu" style="overflow-y: auto; max-height: calc(100vh - 60px);">
+    <ul
+      class="sidebar-menu"
+      style="overflow-y: auto; max-height: calc(100vh - 60px)"
+    >
       <li class="<%= title == 'dashboard' ? 'active' : '' %>">
         <a class="nav-link" href="/admin/dashboard">
           <i class="fas fa-home" style="font-size: large"></i>
@@ -93,7 +101,9 @@
       </li>
 
       <!-- Users CMS -->
-      <li class="dropdown <%= (title.startsWith('terms_condition_user') || title.startsWith('privacy_policy_user') || title.startsWith('Aboutus_user') ? 'active open' : '') %>">
+      <li
+        class="dropdown <%= (title.startsWith('terms_condition_user') || title.startsWith('privacy_policy_user') || title.startsWith('Aboutus_user') ? 'active open' : '') %>"
+      >
         <a href="#" class="nav-link has-dropdown">
           <i class="fas fa-users" style="font-size: large"></i>
           <span><b>Users CMS</b></span>
@@ -121,19 +131,25 @@
       </li>
 
       <!-- Restaurants CMS -->
-      <li class="dropdown <%= (title.startsWith('terms_condition_restaurant') || title.startsWith('privacy_policy_restaurant') || title.startsWith('Aboutus_restaurant') ? 'active open' : '') %>">
+      <li
+        class="dropdown <%= (title.startsWith('terms_condition_restaurant') || title.startsWith('privacy_policy_restaurant') || title.startsWith('Aboutus_restaurant') ? 'active open' : '') %>"
+      >
         <a href="#" class="nav-link has-dropdown">
           <i class="fas fa-users" style="font-size: large"></i>
           <span><b>Restaurants CMS</b></span>
         </a>
         <ul class="dropdown-menu">
-          <li class="<%= (title == 'terms_condition_restaurant' ? 'active' : '') %>">
+          <li
+            class="<%= (title == 'terms_condition_restaurant' ? 'active' : '') %>"
+          >
             <a class="nav-link" href="/admin/restaurant/terms_condition">
               <i class="fas fa-leaf" style="font-size: large"></i>
               <span><b>T&C</b></span>
             </a>
           </li>
-          <li class="<%= (title == 'privacy_policy_restaurant' ? 'active' : '') %>">
+          <li
+            class="<%= (title == 'privacy_policy_restaurant' ? 'active' : '') %>"
+          >
             <a class="nav-link" href="/admin/restaurant/privacy_policy">
               <i class="fas fa-hands" style="font-size: large"></i>
               <span><b>Privacy Policy</b></span>
@@ -149,7 +165,9 @@
       </li>
 
       <!-- Riders CMS -->
-      <li class="dropdown <%= (title.startsWith('terms_condition_rider') || title.startsWith('privacy_policy_rider') || title.startsWith('Aboutus_rider') ? 'active open' : '') %>">
+      <li
+        class="dropdown <%= (title.startsWith('terms_condition_rider') || title.startsWith('privacy_policy_rider') || title.startsWith('Aboutus_rider') ? 'active open' : '') %>"
+      >
         <a href="#" class="nav-link has-dropdown">
           <i class="fas fa-users" style="font-size: large"></i>
           <span><b>Rider CMS</b></span>
@@ -175,37 +193,152 @@
           </li>
         </ul>
       </li>
-
-
-      
-
     </ul>
   </aside>
 </div>
 
+<style>
+/* Main Sidebar */
+.main-sidebar {
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Sidebar Menu Links */
+.sidebar-menu .nav-link {
+  background-color: white; /* Default white background */
+  color: #282c34; /* Dark text color by default */
+  padding: 10px 20px; /* Consistent padding */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.sidebar-menu .nav-link.active {
+  background-color: #282c34; /* Blackish background for active links */
+  color: white; /* White text for active link */
+}
+
+/* Dropdown Menu */
+.sidebar-menu .dropdown-menu {
+  display: none; /* Hidden by default */
+  background-color: white; /* White background for dropdown */
+  border: 1px solid #ddd; /* Optional: Add a border for better visibility */
+}
+
+.sidebar-menu .dropdown.open .dropdown-menu {
+  display: block; /* Ensure the dropdown is visible when open */
+}
+
+.sidebar-menu .dropdown-menu .nav-link {
+  background-color: white; /* White background for dropdown items */
+  color: #282c34; /* Dark text color for dropdown items */
+  padding: 10px 20px; /* Consistent padding */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.sidebar-menu .dropdown-menu .nav-link:hover {
+  background-color: #282c34; /* Blackish background on hover */
+  color: white; /* White text on hover */
+}
+
+/* Ensure active dropdown items stay styled */
+.sidebar-menu .dropdown-menu .nav-link.active {
+  background-color: #282c34 !important; /* Dark background for active dropdown items */
+  color: white !important; /* White text for active dropdown items */
+}
+
+/* Fix padding issues on dropdown click */
+.sidebar-menu .dropdown-menu .nav-link:focus {
+  outline: none; /* Remove focus outline */
+  padding: 10px 20px; /* Reset padding to consistent value */
+}
+
+/* Hover Effects for Dropdown Parent */
+.sidebar-menu .has-dropdown:hover {
+  background-color: #f2f2f2; /* Light grey background on hover */
+  color: #282c34; /* Consistent dark text color */
+}
+
+/* Dropdown Nested Links */
+.main-sidebar .sidebar-menu li ul.dropdown-menu li a {
+  color: #282c34; /* Default text color for dropdown items */
+  height: 35px; /* Consistent height */
+  padding: 10px 40px; /* Adjust padding for nested items */
+  font-weight: 400;
+  background-color: white; /* Default background color */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.main-sidebar .sidebar-menu li ul.dropdown-menu li a:hover {
+  color: white !important; /* Forces the style to apply */
+  background-color: #282c34 !important; /* Forces the style to apply */
+}
+
+/* General Sidebar Links */
+.main-sidebar .sidebar-menu li a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  letter-spacing: 0.3px;
+  color: #474b4e;
+  text-decoration: none;
+}
+</style>
+
+  
+
 
 <script>
-  // JavaScript to reset active states and clear dropdowns on sidebar change
-document.addEventListener('DOMContentLoaded', function () {
-  const links = document.querySelectorAll('.nav-link');
-  links.forEach(link => {
-    link.addEventListener('click', function () {
-      // Remove 'active' class from all links
-      links.forEach(l => l.classList.remove('active'));
+document.addEventListener("DOMContentLoaded", function () {
+  const links = document.querySelectorAll(".nav-link");
 
-      // Clear all dropdown menus
-      const dropdowns = document.querySelectorAll('.dropdown-menu');
-      dropdowns.forEach(dropdown => dropdown.style.display = 'none');
+  links.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      // If the link has a dropdown
+      if (
+        this.nextElementSibling &&
+        this.nextElementSibling.classList.contains("dropdown-menu")
+      ) {
+        // Prevent the dropdown from closing automatically when selecting an item
+        e.stopPropagation();
+        const dropdownMenu = this.nextElementSibling;
 
-      // Set the clicked link to 'active'
-      this.classList.add('active');
+        // Toggle the display of the dropdown menu
+        dropdownMenu.style.display =
+          dropdownMenu.style.display === "block" ? "none" : "block";
+      } else {
+        // Close other dropdowns if clicked outside
+        document.querySelectorAll(".dropdown-menu").forEach((menu) => {
+          if (menu !== this.nextElementSibling) {
+            menu.style.display = "none";
+          }
+        });
+      }
 
-      // If the link is a dropdown, show the menu
-      if (this.nextElementSibling && this.nextElementSibling.classList.contains('dropdown-menu')) {
-        this.nextElementSibling.style.display = 'block';
+      // Deactivate all links
+      links.forEach((l) => l.classList.remove("active"));
+      // Activate the clicked link
+      this.classList.add("active");
+
+      // If the link is a dropdown item, make it active
+      if (this.closest("li").classList.contains("dropdown")) {
+        const dropdownLinks = this.closest("li").querySelectorAll(".dropdown-menu .nav-link");
+        dropdownLinks.forEach((dropdownLink) => {
+          dropdownLink.classList.remove("active");
+        });
+        this.classList.add("active"); // Add active class to the clicked dropdown link
       }
     });
   });
-});
 
+  // Close dropdown if click occurs outside the dropdown or sidebar
+  document.addEventListener("click", function (e) {
+    const sidebar = document.querySelector(".sidebar-menu");
+    const dropdownMenus = document.querySelectorAll(".dropdown-menu");
+    if (!sidebar.contains(e.target)) {
+      dropdownMenus.forEach((menu) => (menu.style.display = "none"));
+    }
+  });
+});
 </script>
