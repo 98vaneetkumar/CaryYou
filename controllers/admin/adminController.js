@@ -15,16 +15,23 @@ module.exports = {
         role: 0, // Assuming 0 is the admin role
         email: req.body.email,
       });
-  
+
       // If user not found, send error message
       if (!findUser) {
-        return res.status(400).json({ success: false, message: 'Incorrect email' });
+        return res
+          .status(400)
+          .json({ success: false, message: "Incorrect email" });
       }
-  
+
       // Compare password
-      let checkPassword = await bcrypt.compare(req.body.password, findUser.password);
+      let checkPassword = await bcrypt.compare(
+        req.body.password,
+        findUser.password
+      );
       if (!checkPassword) {
-        return res.status(400).json({ success: false, message: 'Incorrect password' });
+        return res
+          .status(400)
+          .json({ success: false, message: "Incorrect password" });
       } else {
         // Update device token if provided
         if (req.body.deviceToken) {
@@ -33,19 +40,26 @@ module.exports = {
             { _id: findUser._id }
           );
         }
-  
+
         // Store user session
         req.session.user = findUser;
-  
+
         // Send success response
-        return res.status(200).json({ success: true, message: 'Login successful' });
+        return res
+          .status(200)
+          .json({ success: true, message: "Login successful" });
       }
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ success: false, message: 'An error occurred. Please try again later.' });
+      return res
+        .status(500)
+        .json({
+          success: false,
+          message: "An error occurred. Please try again later.",
+        });
     }
   },
-  
+
   logout: async (req, res) => {
     try {
       req.session.destroy((err) => {});
@@ -242,21 +256,34 @@ module.exports = {
     try {
       let title = "user_list";
       let viewuser = await Models.userModel.findById({ _id: req.params.id });
-      let orders=await Models.orderModel.countDocuments({orderBy:req.params.id})
-      let successOrders=await Models.orderModel.countDocuments({orderBy:req.params.id,status:2})
-      let pendingOrders=await Models.orderModel.countDocuments({orderBy:req.params.id,status:1})
-      let cancelledOrders=await Models.orderModel.countDocuments({orderBy:req.params.id,status:3})
-      let totalRides=await Models.rideBookingModel.countDocuments({userId:req.params.id})
+      let orders = await Models.orderModel.countDocuments({
+        orderBy: req.params.id,
+      });
+      let successOrders = await Models.orderModel.countDocuments({
+        orderBy: req.params.id,
+        status: 2,
+      });
+      let pendingOrders = await Models.orderModel.countDocuments({
+        orderBy: req.params.id,
+        status: 1,
+      });
+      let cancelledOrders = await Models.orderModel.countDocuments({
+        orderBy: req.params.id,
+        status: 3,
+      });
+      let totalRides = await Models.rideBookingModel.countDocuments({
+        userId: req.params.id,
+      });
       res.render("Admin/user/view_user", {
         title,
-        userId:req.params.id,
+        userId: req.params.id,
         viewuser,
         orders,
         successOrders,
         pendingOrders,
         cancelledOrders,
         totalRides,
-        totalSpend:0,
+        totalSpend: 0,
         session: req.session.user,
         msg: req.flash("msg"),
       });
@@ -314,22 +341,43 @@ module.exports = {
         startDate && endDate
           ? { createdAt: { $gte: startDate, $lte: endDate } }
           : {};
-      let viewuser = await Models.userModel.findById({ _id: req.body.id, ...dateQuery });
-      let orders=await Models.orderModel.countDocuments({orderBy:req.body.id, ...dateQuery })
-      let successOrders=await Models.orderModel.countDocuments({orderBy:req.body.id,status:2, ...dateQuery })
-      let pendingOrders=await Models.orderModel.countDocuments({orderBy:req.body.id,status:1, ...dateQuery })
-      let cancelledOrders=await Models.orderModel.countDocuments({orderBy:req.body.id,status:3, ...dateQuery })
-      let totalRides=await Models.rideBookingModel.countDocuments({userId:req.body.id, ...dateQuery })
-      res.json( {
+      let viewuser = await Models.userModel.findById({
+        _id: req.body.id,
+        ...dateQuery,
+      });
+      let orders = await Models.orderModel.countDocuments({
+        orderBy: req.body.id,
+        ...dateQuery,
+      });
+      let successOrders = await Models.orderModel.countDocuments({
+        orderBy: req.body.id,
+        status: 2,
+        ...dateQuery,
+      });
+      let pendingOrders = await Models.orderModel.countDocuments({
+        orderBy: req.body.id,
+        status: 1,
+        ...dateQuery,
+      });
+      let cancelledOrders = await Models.orderModel.countDocuments({
+        orderBy: req.body.id,
+        status: 3,
+        ...dateQuery,
+      });
+      let totalRides = await Models.rideBookingModel.countDocuments({
+        userId: req.body.id,
+        ...dateQuery,
+      });
+      res.json({
         title,
-        userId:req.body.id,
+        userId: req.body.id,
         viewuser,
         orders,
         successOrders,
         pendingOrders,
         cancelledOrders,
         totalRides,
-        totalSpend:0,
+        totalSpend: 0,
         session: req.session.user,
         msg: req.flash("msg"),
       });
@@ -365,32 +413,34 @@ module.exports = {
       throw error;
     }
   },
-  total_user_order_list:async(req,res)=>{
+  total_user_order_list: async (req, res) => {
     try {
       const title = "user_list";
       const orders = await Models.orderModel
-        .find({orderBy:req.params.userId})
-        .populate("orderBy", "fullName") 
+        .find({ orderBy: req.params.userId })
+        .populate("orderBy", "fullName")
         .populate("restaurant", "name")
         .sort({ createdAt: -1 });
-      
+
       const formattedOrders = orders.map((order, index) => ({
         sNo: index + 1,
         orderBy: order.orderBy?.fullName || "N/A",
         restaurant: order.restaurant?.name || "N/A",
         item: order.item || "N/A",
-        orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+        orderDateTime: order.createdAt
+          ? order.createdAt.toLocaleString()
+          : "N/A",
         status: order.status || 0, // Default to 0 if status is missing
         id: order._id,
       }));
-  
+
       res.render("Admin/user/userOrders/total_orders_list", {
         title,
-        userId:req.params.userId,
-        userName:orders[0].orderBy.fullName,
+        userId: req.params.userId,
+        userName: orders[0].orderBy.fullName,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
-        msg: req.flash("msg") || '', // Flash message
+        msg: req.flash("msg") || "", // Flash message
       });
     } catch (error) {
       console.error("Error fetching order list:", error);
@@ -429,7 +479,7 @@ module.exports = {
       // Render the view with order details
       res.render("Admin/user/userOrders/total_orders_view", {
         title, // Pass the title to the view
-        orderId:order.orderBy._id,
+        orderId: order.orderBy._id,
         order, // Pass the order details to the view
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.user, // Pass session details (if needed)
@@ -444,32 +494,34 @@ module.exports = {
       });
     }
   },
-  user_success_order_list:async(req,res)=>{
+  user_success_order_list: async (req, res) => {
     try {
       const title = "user_list";
       const orders = await Models.orderModel
-        .find({orderBy:req.params.userId,status:2})
-        .populate("orderBy", "fullName") 
+        .find({ orderBy: req.params.userId, status: 2 })
+        .populate("orderBy", "fullName")
         .populate("restaurant", "name")
         .sort({ createdAt: -1 });
-      
+
       const formattedOrders = orders.map((order, index) => ({
         sNo: index + 1,
         orderBy: order.orderBy?.fullName || "N/A",
         restaurant: order.restaurant?.name || "N/A",
         item: order.item || "N/A",
-        orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+        orderDateTime: order.createdAt
+          ? order.createdAt.toLocaleString()
+          : "N/A",
         status: order.status || 0, // Default to 0 if status is missing
         id: order._id,
       }));
-  
+
       res.render("Admin/user/userOrders/success_orders_list", {
         title,
-        userId:req.params.userId,
-        userName:orders[0].orderBy.fullName,
+        userId: req.params.userId,
+        userName: orders[0].orderBy.fullName,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
-        msg: req.flash("msg") || '', // Flash message
+        msg: req.flash("msg") || "", // Flash message
       });
     } catch (error) {
       console.error("Error fetching order list:", error);
@@ -508,7 +560,7 @@ module.exports = {
       // Render the view with order details
       res.render("Admin/user/userOrders/success_orders_view", {
         title, // Pass the title to the view
-        orderId:order.orderBy._id,
+        orderId: order.orderBy._id,
         order, // Pass the order details to the view
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.user, // Pass session details (if needed)
@@ -524,32 +576,34 @@ module.exports = {
     }
   },
 
-  user_pending_order_list:async(req,res)=>{
+  user_pending_order_list: async (req, res) => {
     try {
       const title = "user_list";
       const orders = await Models.orderModel
-        .find({orderBy:req.params.userId,status:1})
-        .populate("orderBy", "fullName") 
+        .find({ orderBy: req.params.userId, status: 1 })
+        .populate("orderBy", "fullName")
         .populate("restaurant", "name")
         .sort({ createdAt: -1 });
-      
+
       const formattedOrders = orders.map((order, index) => ({
         sNo: index + 1,
         orderBy: order.orderBy?.fullName || "N/A",
         restaurant: order.restaurant?.name || "N/A",
         item: order.item || "N/A",
-        orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+        orderDateTime: order.createdAt
+          ? order.createdAt.toLocaleString()
+          : "N/A",
         status: order.status || 0, // Default to 0 if status is missing
         id: order._id,
       }));
-  
+
       res.render("Admin/user/userOrders/pending_orders_list", {
         title,
-        userId:req.params.userId,
-        userName:orders[0].orderBy.fullName,
+        userId: req.params.userId,
+        userName: orders[0].orderBy.fullName,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
-        msg: req.flash("msg") || '', // Flash message
+        msg: req.flash("msg") || "", // Flash message
       });
     } catch (error) {
       console.error("Error fetching order list:", error);
@@ -588,7 +642,7 @@ module.exports = {
       // Render the view with order details
       res.render("Admin/user/userOrders/pending_orders_view", {
         title, // Pass the title to the view
-        orderId:order.orderBy._id,
+        orderId: order.orderBy._id,
         order, // Pass the order details to the view
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.user, // Pass session details (if needed)
@@ -604,32 +658,34 @@ module.exports = {
     }
   },
 
-  user_cancel_order_list:async(req,res)=>{
+  user_cancel_order_list: async (req, res) => {
     try {
       const title = "user_list";
       const orders = await Models.orderModel
-        .find({orderBy:req.params.userId,status:3})
-        .populate("orderBy", "fullName") 
+        .find({ orderBy: req.params.userId, status: 3 })
+        .populate("orderBy", "fullName")
         .populate("restaurant", "name")
         .sort({ createdAt: -1 });
-      
+
       const formattedOrders = orders.map((order, index) => ({
         sNo: index + 1,
         orderBy: order.orderBy?.fullName || "N/A",
         restaurant: order.restaurant?.name || "N/A",
         item: order.item || "N/A",
-        orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+        orderDateTime: order.createdAt
+          ? order.createdAt.toLocaleString()
+          : "N/A",
         status: order.status || 0, // Default to 0 if status is missing
         id: order._id,
       }));
-  
+
       res.render("Admin/user/userOrders/cancel_orders_list", {
         title,
-        userId:req.params.userId,
-        userName:orders[0].orderBy.fullName,
+        userId: req.params.userId,
+        userName: orders[0].orderBy.fullName,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
-        msg: req.flash("msg") || '', // Flash message
+        msg: req.flash("msg") || "", // Flash message
       });
     } catch (error) {
       console.error("Error fetching order list:", error);
@@ -668,7 +724,7 @@ module.exports = {
       // Render the view with order details
       res.render("Admin/user/userOrders/cancel_orders_view", {
         title, // Pass the title to the view
-        orderId:order.orderBy._id,
+        orderId: order.orderBy._id,
         order, // Pass the order details to the view
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.user, // Pass session details (if needed)
@@ -707,14 +763,16 @@ module.exports = {
   view_restaurant: async (req, res) => {
     try {
       let title = "provider_list";
-       // Start of the month
-       const currentDate = new Date();
-       const startOfMonth = currentDate.getMonth() + 1;
-       const endOfMonth = currentDate.getFullYear();;
+      // Start of the month
+      const currentDate = new Date();
+      const startOfMonth = currentDate.getMonth() + 1;
+      const endOfMonth = currentDate.getFullYear();
       let viewuser = await Models.restaurantModel
         .findById({ _id: req.params.id })
         .populate("userId");
-      const orders = await Models.orderModel.countDocuments({restaurant: req.params.id,});
+      const orders = await Models.orderModel.countDocuments({
+        restaurant: req.params.id,
+      });
       const pendingOrders = await Models.orderModel.countDocuments({
         status: 1,
         restaurant: req.params.id,
@@ -734,13 +792,13 @@ module.exports = {
       const revenueData = await Models.transactionModel.find({
         createdAt: { $gte: startOfMonth, $lte: endOfMonth },
       });
-  
+
       // Format the response
       const labels = revenueData.map((entry) => entry.day); // e.g., [1, 2, 3, ...]
       const revenue = revenueData.map((entry) => entry.amount); // e.g., [100, 200, ...]
-  
-      console.log("labels", labels)
-      console.log("revenue", revenue)
+
+      console.log("labels", labels);
+      console.log("revenue", revenue);
       res.render("Admin/restaurant/restaurant_view", {
         title,
         viewuser,
@@ -764,10 +822,9 @@ module.exports = {
   },
   restaurant_dashboard_filter: async (req, res) => {
     try {
-
       const title = "provider_list";
       const filter = req.body.filter || "all"; // Get the filter parameter from the request body
-      const _id=req.body.id
+      const _id = req.body.id;
       const { year, month } = req.body;
       // Calculate date range based on the filter
       const now = new Date();
@@ -808,61 +865,65 @@ module.exports = {
           startDate = null; // No date filter
           endDate = null;
       }
-  
+
       // Define the query object for date-based filtering
       const dateQuery =
         startDate && endDate
-          ? { createdAt: { $gte: new Date(startDate) , $lte: new Date(endDate) } }
+          ? {
+              createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) },
+            }
           : {};
       // Fetch filtered restaurant data
       const userdata = await Models.restaurantModel
-        .findById({_id, ...dateQuery })
+        .findById({ _id, ...dateQuery })
         .populate("userId") // Populating the user details based on userId
         .sort({ createdAt: -1 }); // Sorting by creation date, most recent first
-        const orders = await Models.orderModel.countDocuments({restaurant: req.body.id,...dateQuery});
-        const pendingOrders = await Models.orderModel.countDocuments({
+      const orders = await Models.orderModel.countDocuments({
+        restaurant: req.body.id,
+        ...dateQuery,
+      });
+      const pendingOrders = await Models.orderModel.countDocuments({
         status: 1,
         restaurant: req.body.id,
-        ...dateQuery
+        ...dateQuery,
       });
       const activeOrders = await Models.orderModel.countDocuments({
         status: 4,
         restaurant: req.body.id,
-        ...dateQuery
+        ...dateQuery,
       });
       const deliveredOrders = await Models.orderModel.countDocuments({
         status: 2,
         restaurant: req.body.id,
-        ...dateQuery
+        ...dateQuery,
       });
       const cancelledOrders = await Models.orderModel.countDocuments({
         status: 3,
         restaurant: req.body.id,
-        ...dateQuery
+        ...dateQuery,
       });
 
       // const revenueData = await Models.transactionModel.find({
       //   createdAt: { $gte: startOfMonth, $lte: endOfMonth },
       // });
-  
+
       // // Format the response
       // const labels = revenueData.map((entry) => entry.day); // e.g., [1, 2, 3, ...]
       // const revenue = revenueData.map((entry) => entry.amount); // e.g., [100, 200, ...]
-  
 
-       return res.json({
-          userdata,
-          category: userdata?.category?.length || 0,
-          subCategory: userdata?.subcategory?.length || 0,
-          products: userdata?.products?.length || 0,
-          orders,
-          pendingOrders,
-          activeOrders,
-          deliveredOrders,
-          cancelledOrders,
-          // labels,
-          // revenue
-        })
+      return res.json({
+        userdata,
+        category: userdata?.category?.length || 0,
+        subCategory: userdata?.subcategory?.length || 0,
+        products: userdata?.products?.length || 0,
+        orders,
+        pendingOrders,
+        activeOrders,
+        deliveredOrders,
+        cancelledOrders,
+        // labels,
+        // revenue
+      });
     } catch (error) {
       console.error("Error in restaurant_view:", error);
       res.status(500).send("Internal Server Error");
@@ -885,60 +946,62 @@ module.exports = {
         { _id: req.body.id },
         { status: req.body.value }
       );
-  
+
       if (updateRestaurant.nModified > 0) {
         const restaurant = await Models.restaurantModel.findById(req.body.id);
-  
+
         if (restaurant && restaurant.userId) {
           await Models.userModel.updateOne(
             { _id: restaurant.userId },
             { status: req.body.value }
           );
         }
-  
+
         req.flash("msg", "Status updated successfully");
-        
+
         // Send explicit boolean based on the updated status
         return res.status(200).send(req.body.value == 1); // `true` for active, `false` for inactive
       } else {
         // Handle no modification
-        return res.status(404).send({ error: "No changes made or restaurant not found." });
+        return res
+          .status(404)
+          .send({ error: "No changes made or restaurant not found." });
       }
     } catch (error) {
       console.error("Error updating status:", error);
       res.status(500).send({ error: "Internal Server Error" });
     }
   },
-  
-  
 
-   //----------------Dashboard order api-----------------------
+  //----------------Dashboard order api-----------------------
 
   restaurant_order_list: async (req, res) => {
     try {
       const title = "provider_list";
       const orders = await Models.orderModel
-        .find({restaurant:req.params._id})
-        .populate("orderBy", "fullName") 
+        .find({ restaurant: req.params._id })
+        .populate("orderBy", "fullName")
         .populate("restaurant", "name")
         .sort({ createdAt: -1 });
-      
+
       const formattedOrders = orders.map((order, index) => ({
         sNo: index + 1,
         orderBy: order.orderBy?.fullName || "N/A",
         restaurant: order.restaurant?.name || "N/A",
         item: order.item || "N/A",
-        orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+        orderDateTime: order.createdAt
+          ? order.createdAt.toLocaleString()
+          : "N/A",
         status: order.status || 0, // Default to 0 if status is missing
         id: order._id,
       }));
-  
+
       res.render("Admin/restaurant/restaurantOrders/order_list", {
         title,
-        restaurant:req.params._id,
+        restaurant: req.params._id,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
-        msg: req.flash("msg") || '', // Flash message
+        msg: req.flash("msg") || "", // Flash message
       });
     } catch (error) {
       console.error("Error fetching order list:", error);
@@ -996,7 +1059,7 @@ module.exports = {
     try {
       const title = "provider_list";
       const orders = await Models.orderModel
-        .find({ status: 4 ,restaurant:req.params._id})
+        .find({ status: 4, restaurant: req.params._id })
         .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
         .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
         .sort({ createdAt: -1 });
@@ -1014,7 +1077,7 @@ module.exports = {
 
       res.render("Admin/restaurant/restaurantOrders/active_order_list", {
         title,
-        restaurant:req.params._id,
+        restaurant: req.params._id,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
         msg: req.flash("msg") || "", // Flash message
@@ -1077,7 +1140,7 @@ module.exports = {
     try {
       const title = "provider_list";
       const orders = await Models.orderModel
-        .find({ status: 2 ,restaurant:req.params._id})
+        .find({ status: 2, restaurant: req.params._id })
         .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
         .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
         .sort({ createdAt: -1 });
@@ -1095,7 +1158,7 @@ module.exports = {
 
       res.render("Admin/restaurant/restaurantOrders/delivered_order_list", {
         title,
-        restaurant:req.params._id,
+        restaurant: req.params._id,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
         msg: req.flash("msg") || "", // Flash message
@@ -1157,7 +1220,7 @@ module.exports = {
     try {
       const title = "provider_list";
       const orders = await Models.orderModel
-        .find({ status: 3 ,restaurant:req.params._id})
+        .find({ status: 3, restaurant: req.params._id })
         .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
         .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
         .sort({ createdAt: -1 });
@@ -1175,7 +1238,7 @@ module.exports = {
 
       res.render("Admin/restaurant/restaurantOrders/cancel_order_list", {
         title,
-        restaurant:req.params._id,
+        restaurant: req.params._id,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
         msg: req.flash("msg") || "", // Flash message
@@ -1238,7 +1301,7 @@ module.exports = {
     try {
       const title = "provider_list";
       const orders = await Models.orderModel
-        .find({ status: 1,restaurant:req.params._id })
+        .find({ status: 1, restaurant: req.params._id })
         .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
         .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
         .sort({ createdAt: -1 });
@@ -1256,7 +1319,7 @@ module.exports = {
 
       res.render("Admin/restaurant/restaurantOrders/pending_order_list", {
         title,
-        restaurant:req.params._id,
+        restaurant: req.params._id,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
         msg: req.flash("msg") || "", // Flash message
@@ -1319,7 +1382,7 @@ module.exports = {
     try {
       const title = "provider_list";
       const orders = await Models.orderModel
-        .find({ status: 5 ,restaurant:req.params._id})
+        .find({ status: 5, restaurant: req.params._id })
         .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
         .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
         .sort({ createdAt: -1 });
@@ -1337,7 +1400,7 @@ module.exports = {
 
       res.render("Admin/restaurant/restaurantOrders/pending_order_list", {
         title,
-        restaurant:req.params._id,
+        restaurant: req.params._id,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
         msg: req.flash("msg") || "", // Flash message
@@ -1401,14 +1464,17 @@ module.exports = {
       let viewuser = await Models.restaurantModel
         .findById({ _id: req.params._id })
         .populate("userId");
-    
-      res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_category_list", {
-        title,
-        viewuser,
-        restaurant:req.params._id,
-        session: req.session.user,
-        msg: req.flash("msg"),
-      });
+
+      res.render(
+        "Admin/restaurant/restaurantCatSubCatProduct/restaurant_category_list",
+        {
+          title,
+          viewuser,
+          restaurant: req.params._id,
+          session: req.session.user,
+          msg: req.flash("msg"),
+        }
+      );
     } catch (error) {
       console.log(error);
       throw error;
@@ -1418,33 +1484,35 @@ module.exports = {
     try {
       let title = "provider_list";
       const viewuser = await Models.restaurantModel
-      .findById(req.params._id)
-      .populate("userId") // Populate user information
-      .lean(); // Use `.lean()` to get a plain JavaScript object
-    
-    if (viewuser) {
-      // Map subCategories with corresponding category data
-      viewuser.subCategory = viewuser.subCategory.map((subCat) => {
-        const matchedCategory = viewuser.category.find(
-          (cat) => cat._id.toString() === subCat.categoryId.toString()
-        );
-    
-        return {
-          ...subCat,
-          categoryName: matchedCategory ? matchedCategory.name : null,
-          categoryImage: matchedCategory ? matchedCategory.image : null,
-        };
-      });
-    }
-        
+        .findById(req.params._id)
+        .populate("userId") // Populate user information
+        .lean(); // Use `.lean()` to get a plain JavaScript object
 
-        res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_subCategory_list", {
-        title,
-        viewuser,
-        restaurant:req.params._id,
-        session: req.session.user,
-        msg: req.flash("msg"),
-      });
+      if (viewuser) {
+        // Map subCategories with corresponding category data
+        viewuser.subCategory = viewuser.subCategory.map((subCat) => {
+          const matchedCategory = viewuser.category.find(
+            (cat) => cat._id.toString() === subCat.categoryId.toString()
+          );
+
+          return {
+            ...subCat,
+            categoryName: matchedCategory ? matchedCategory.name : null,
+            categoryImage: matchedCategory ? matchedCategory.image : null,
+          };
+        });
+      }
+
+      res.render(
+        "Admin/restaurant/restaurantCatSubCatProduct/restaurant_subCategory_list",
+        {
+          title,
+          viewuser,
+          restaurant: req.params._id,
+          session: req.session.user,
+          msg: req.flash("msg"),
+        }
+      );
     } catch (error) {
       console.log(error);
       throw error;
@@ -1453,59 +1521,61 @@ module.exports = {
   restaurant_product: async (req, res) => {
     try {
       const restaurantId = req.params._id;
-  
+
       // Debug log
       console.log("restaurantId:", restaurantId);
-  
+
       // Fetch restaurant data
       const restaurant = await Models.restaurantModel
         .findById(restaurantId)
         .populate("userId")
         .lean();
-  
+
       if (!restaurant) {
         return res.status(404).json({ message: "Restaurant not found" });
       }
-  
+
       // Process products
       restaurant.products = restaurant.products.map((product) => {
         const matchedSubCategory = restaurant.subCategory.find(
           (subCat) => subCat._id.toString() === product.subCategoryId.toString()
         );
-  
+
         return {
           ...product,
           subCategoryName: matchedSubCategory ? matchedSubCategory.name : null,
-          subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
+          subCategoryImage: matchedSubCategory
+            ? matchedSubCategory.image
+            : null,
         };
       });
-  
-      res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
-        title: "provider_list",
-        restaurantId,
-        viewuser: restaurant,
-        session: req.session.user,
-        msg: req.flash("msg"),
-      });
+
+      res.render(
+        "Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_list",
+        {
+          title: "provider_list",
+          restaurantId,
+          viewuser: restaurant,
+          session: req.session.user,
+          msg: req.flash("msg"),
+        }
+      );
     } catch (error) {
       console.error("Error fetching products:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   },
-  
-  
-  
+
   restaurant_product_view: async (req, res) => {
     try {
-      const product = await Models.restaurantModel.findOne(
-        { "products._id": req.params._id },
-        { "products.$": 1 }
-      ).lean();
-  
+      const product = await Models.restaurantModel
+        .findOne({ "products._id": req.params._id }, { "products.$": 1 })
+        .lean();
+
       if (!product) {
         return res.status(404).json({ message: "Product not found" });
       }
-  
+
       // Extract and send the product details
       res.json(product.products[0]);
     } catch (error) {
@@ -1513,7 +1583,7 @@ module.exports = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
-  
+
   //---------riders list apis--------------
 
   rider_list: async (req, res) => {
@@ -1538,7 +1608,9 @@ module.exports = {
     try {
       let title = "rider_list";
       let viewrider = await Models.userModel.findById({ _id: req.params.id });
-      let riderHistory=await Models.rideBookingModel.find({riderId:req.params.id}).populate("userId")
+      let riderHistory = await Models.rideBookingModel
+        .find({ riderId: req.params.id })
+        .populate("userId");
       res.render("Admin/rider/view_rider", {
         title,
         viewrider,
@@ -1555,7 +1627,10 @@ module.exports = {
   view_ride_detial: async (req, res) => {
     try {
       let title = "rider_list";
-      let viewrider=await Models.rideBookingModel.findById({_id:req.params.id}).populate("userId").populate("riderId")
+      let viewrider = await Models.rideBookingModel
+        .findById({ _id: req.params.id })
+        .populate("userId")
+        .populate("riderId");
       res.render("Admin/rider/view_ride_user_detail", {
         title,
         viewrider,
@@ -1780,25 +1855,27 @@ module.exports = {
       const title = "order_list";
       const orders = await Models.orderModel
         .find({})
-        .populate("orderBy", "fullName") 
+        .populate("orderBy", "fullName")
         .populate("restaurant", "name")
         .sort({ createdAt: -1 });
-      
+
       const formattedOrders = orders.map((order, index) => ({
         sNo: index + 1,
         orderBy: order.orderBy?.fullName || "N/A",
         restaurant: order.restaurant?.name || "N/A",
         item: order.item || "N/A",
-        orderDateTime: order.createdAt ? order.createdAt.toLocaleString() : "N/A",
+        orderDateTime: order.createdAt
+          ? order.createdAt.toLocaleString()
+          : "N/A",
         status: order.status || 0, // Default to 0 if status is missing
         id: order._id,
       }));
-  
+
       res.render("Admin/orders/order_list", {
         title,
         orderdata: formattedOrders,
         session: req.session.user, // Ensure session data is passed here
-        msg: req.flash("msg") || '', // Flash message
+        msg: req.flash("msg") || "", // Flash message
       });
     } catch (error) {
       console.error("Error fetching order list:", error);
@@ -2252,7 +2329,7 @@ module.exports = {
   },
   //---------------------------------------
 
-  create_subadmin: async(req, res)=>{
+  create_subadmin: async (req, res) => {
     try {
       let title = "create_subadmin";
       res.render("Admin/admin/create_subadmin", {

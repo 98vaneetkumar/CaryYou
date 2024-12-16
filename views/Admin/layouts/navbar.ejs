@@ -11,7 +11,7 @@
 
   <ul class="navbar-nav navbar-right">
     <!-- WhatsApp Icon -->
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a
         href="https://web.whatsapp.com/"
         target="_blank"
@@ -24,7 +24,7 @@
         <i class="fab fa-whatsapp"></i>
         <span class="badge badge-success" id="whatsapp-count" style="display: none;">0</span>
       </a>
-    </li>
+    </li> -->
 
     <!-- Notification Icon -->
     <li class="nav-item dropdown">
@@ -96,27 +96,27 @@
 
 <script>
   // Fetch WhatsApp messages
-  async function fetchWhatsAppMessages() {
-    try {
-      const response = await fetch(''); // Replace with your API endpoint
-      const data = await response.json();
+  // async function fetchWhatsAppMessages() {
+  //   try {
+  //     const response = await fetch(''); // Replace with your API endpoint
+  //     const data = await response.json();
 
-      const count = data.messages.length;
-      const icon = document.getElementById('whatsapp-icon');
-      const countBadge = document.getElementById('whatsapp-count');
+  //     const count = data.messages.length;
+  //     const icon = document.getElementById('whatsapp-icon');
+  //     const countBadge = document.getElementById('whatsapp-count');
 
-      countBadge.textContent = count;
-      countBadge.style.display = count > 0 ? 'inline-block' : 'none';
+  //     countBadge.textContent = count;
+  //     countBadge.style.display = count > 0 ? 'inline-block' : 'none';
 
-      if (count > 0) {
-        icon.classList.add('vibrate');
-      } else {
-        icon.classList.remove('vibrate');
-      }
-    } catch (error) {
-      console.error('Error fetching WhatsApp messages:', error);
-    }
-  }
+  //     if (count > 0) {
+  //       icon.classList.add('vibrate');
+  //     } else {
+  //       icon.classList.remove('vibrate');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching WhatsApp messages:', error);
+  //   }
+  // }
 
   // Fetch notifications
   async function fetchNotifications() {
