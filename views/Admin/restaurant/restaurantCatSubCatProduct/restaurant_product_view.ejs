@@ -1,7 +1,7 @@
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1>Product Details</h1>
+      <h1 class="font-weight-bold text-primary">Product Details</h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="/admin/dashboard">Dashboard</a></div>
         <div class="breadcrumb-item">
@@ -12,46 +12,65 @@
     </div>
 
     <div class="section-body">
-      <div class="card" style="background-color: wheat; border-radius: 10px;">
+      <div class="card p-5 rounded-lg shadow-lg">
         <!-- Back Button -->
-        <div class="form-group text-left ml-3 mt-2">
-          <a href="/admin/restaurant_product/<%= restaurantId %>" class="btn btn-info">
-            <i class="fas fa-arrow-left"></i> Back to all Products
+        <div class="form-group text-left mb-5">
+          <a href="/admin/restaurant_product/<%= restaurantId %>" class="btn btn-info rounded-pill">
+            <i class="fas fa-arrow-left"></i> Back to All Products
           </a>
         </div>
 
-        <div class="row mt-sm-4 justify-content-center">
-          <!-- Left Side - Product Images & Basic Details -->
-          <div class="col-12 col-md-12 col-lg-4">
-            <div class="card profile-widget">
-              <div class="profile-widget-header text-center py-3">
-                <!-- Product Images Carousel -->
+        <div class="row">
+          <!-- Left Section: Product Info -->
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm rounded-lg">
+              <div class="card-body">
+                <h4 class="text-center text-primary mb-4 font-weight-bold">Product Info</h4>
+                <div class="form-group">
+                  <label for="product-name">Product Name</label>
+                  <input type="text" id="product-name" value="<%= product.itemName %>" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                  <label for="product-price">Price</label>
+                  <input type="text" id="product-price" value="<%= product.price ? `$${product.price}` : 'N/A' %>" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                  <label for="category">Category</label>
+                  <input type="text" id="category" value="<%= product.categoryName || 'N/A' %>" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                  <label for="subcategory">Subcategory</label>
+                  <input type="text" id="subcategory" value="<%= product.subCategoryName || 'N/A' %>" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <textarea id="description" class="form-control" rows="5" disabled><%= product.description || 'No description available' %></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Section: Product Images -->
+          <div class="col-md-6 col-lg-8 mb-4">
+            <div class="card border-0 shadow-sm rounded-lg">
+              <div class="card-body">
+                <h4 class="text-center text-primary mb-4 font-weight-bold">Product Images</h4>
+                
                 <div id="productImagesCarousel" class="carousel slide" data-ride="carousel">
                   <div class="carousel-inner">
                     <% if (product.images && product.images.length > 0) { %>
                       <% product.images.forEach((image, index) => { %>
                         <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                          <img
-                            src="<%= image %>"
-                            alt="Product Image <%= index + 1 %>"
-                            class="d-block w-100 rounded"
-                            style="max-height: 300px; object-fit: cover;"
-                          >
+                          <img src="<%= image %>" class="d-block w-100 rounded-lg" style="height: 300px; object-fit: cover;">
                         </div>
                       <% }) %>
                     <% } else { %>
                       <div class="carousel-item active">
-                        <img
-                          src="/images/default_product_image.jpg"
-                          alt="Default Product Image"
-                          class="d-block w-100 rounded"
-                          style="max-height: 300px; object-fit: cover;"
-                        >
+                        <img src="/images/default_product_image.jpg" class="d-block w-100 rounded-lg" style="height: 300px; object-fit: cover;">
                       </div>
                     <% } %>
                   </div>
                   <% if (product.images && product.images.length > 1) { %>
-                    <!-- Carousel Controls -->
                     <a class="carousel-control-prev" href="#productImagesCarousel" role="button" data-slide="prev">
                       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                       <span class="sr-only">Previous</span>
@@ -64,68 +83,148 @@
                 </div>
               </div>
             </div>
-            <div class="card-body">
-              <h4 class="text-center">Basic Info</h4>
-              <div class="form-group">
-                <label class="col-form-label">Product Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value="<%= product.itemName %>"
-                  class="form-control"
-                  disabled
-                >
-              </div>
-              <div class="form-group">
-                <label class="col-form-label">Price</label>
-                <input
-                  type="text"
-                  name="price"
-                  value="<%= product.price ? `$${product.price}` : 'N/A' %>"
-                  class="form-control"
-                  disabled
-                >
-              </div>
-              <div class="form-group">
-                <label class="col-form-label">Category</label>
-                <input
-                  type="text"
-                  name="category"
-                  value="<%= product.categoryName || 'N/A' %>"
-                  class="form-control"
-                  disabled
-                >
-              </div>
-              <div class="form-group">
-                <label class="col-form-label">SubCategory</label>
-                <input
-                  type="text"
-                  name="subCategory"
-                  value="<%= product.subCategoryName || 'N/A' %>"
-                  class="form-control"
-                  disabled
-                >
+          </div>
+        </div>
+
+        <!-- Category and Subcategory Images Section (commented out as requested) -->
+        <!--
+        <div class="row mt-5">
+          <div class="col-12 mb-4">
+            <div class="card border-0 shadow-sm rounded-lg">
+              <div class="card-body text-center">
+                <h4 class="font-weight-bold text-primary">Category Image</h4>
+                <% if (product.categoryImage) { %>
+                  <img src="<%= product.categoryImage %>" class="img-fluid rounded" style="max-width: 80%; max-height: 300px; object-fit: cover;">
+                <% } else { %>
+                  <img src="/images/default_category_image.jpg" class="img-fluid rounded" style="max-width: 80%; max-height: 300px; object-fit: cover;">
+                <% } %>
               </div>
             </div>
           </div>
 
-          <!-- Right Side - Product Description & Additional Info -->
-          <div class="col-12 col-md-12 col-lg-7">
-            <div class="card-body">
-              <h4 class="text-center">Product Description</h4>
-              <div class="form-group">
-                <label class="col-form-label">Description</label>
-                <textarea
-                  name="description"
-                  class="form-control"
-                  rows="4"
-                  disabled
-                ><%= product.description || 'No description available' %></textarea>
+          <div class="col-12 mb-4">
+            <div class="card border-0 shadow-sm rounded-lg">
+              <div class="card-body text-center">
+                <h4 class="font-weight-bold text-primary">Subcategory Image</h4>
+                <% if (product.subCategoryImage) { %>
+                  <img src="<%= product.subCategoryImage %>" class="img-fluid rounded" style="max-width: 80%; max-height: 300px; object-fit: cover;">
+                <% } else { %>
+                  <img src="/images/default_subcategory_image.jpg" class="img-fluid rounded" style="max-width: 80%; max-height: 300px; object-fit: cover;">
+                <% } %>
               </div>
             </div>
           </div>
         </div>
+        -->
+
       </div>
     </div>
   </section>
 </div>
+
+<style>
+  /* Global Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7fc;
+  color: #333;
+}
+
+.main-content {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+/* Section Header */
+.section-header {
+  margin-bottom: 30px;
+}
+
+.section-header h1 {
+  font-size: 30px;
+}
+
+.section-header-breadcrumb {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Button */
+.btn-info {
+  border-radius: 30px;
+  padding: 10px 20px;
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  padding: 15px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.form-control:disabled {
+  background-color: #f9f9f9;
+  cursor: not-allowed;
+}
+
+/* Carousel Styles */
+.carousel-inner {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.carousel-item img {
+  height: 300px;
+  object-fit: cover;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  border-radius: 50%;
+}
+
+/* Cards Styling */
+.card-body {
+  padding: 25px;
+}
+
+.card-body h4 {
+  font-size: 22px;
+}
+
+.text-primary {
+  color: black !important;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .col-md-6, .col-lg-4, .col-lg-8 {
+    margin-bottom: 20px;
+  }
+
+  .card-body h4 {
+    font-size: 20px;
+  }
+
+  .form-control {
+    font-size: 14px;
+  }
+
+  .carousel-item img {
+    height: 200px;
+  }
+}
+
+</style>

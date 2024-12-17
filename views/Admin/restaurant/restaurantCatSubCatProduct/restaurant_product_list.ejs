@@ -52,7 +52,7 @@
           <h5><%= data.itemName %></h5>
           <p class="sub-category"><%= data?.subCategoryName || 'N/A' %></p>
           <p class="price">$<%= data.price || 'N/A' %></p>
-          <div class="buttons-container">
+          <div class="buttons-container d-flex justify-content-between">
             <div class="status-btn">
               <% if (data?.status == 1) { %>
               <button
@@ -80,6 +80,8 @@
               </a>
             </div>
           </div>
+          
+
         </div>
       </div>
       <% }); %>
@@ -144,6 +146,17 @@
     border-radius: 12px 12px 0 0;
   }
 
+  .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .status-btn,
+  .view-btn {
+    display: inline-block;
+  }
   .carousel-arrow {
     position: absolute;
     top: 50%;
@@ -194,47 +207,36 @@
 
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const carousels = document.querySelectorAll(".restaurant-images");
+ document.addEventListener("DOMContentLoaded", function () {
+  const carousels = document.querySelectorAll(".restaurant-images");
 
-    carousels.forEach((carousel, index) => {
-      const images = carousel.children;
-      let currentIndex = 0;
+  // Add hover event listeners to specific product items
+  carousels.forEach((carousel, index) => {
+    const images = carousel.children;
+    let currentIndex = 0;
+    let autoScroll;
 
-      // Auto-scroll function for all carousels
-      setInterval(() => {
-        if (images.length > 1) {
+    // Function to start auto-scroll
+    const startAutoScroll = () => {
+      if (images.length > 1) {
+        autoScroll = setInterval(() => {
           currentIndex = (currentIndex + 1) % images.length;
           carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
-        }
-      }, 3000); // Change image every 3 seconds
-    });
+        }, 1000); // Change image every 3 seconds
+      }
+    };
 
-    // Add hover event listeners to specific product items
-    const productItems = document.querySelectorAll('.restaurant-item');
+    // Function to stop auto-scroll
+    const stopAutoScroll = () => {
+      clearInterval(autoScroll);
+    };
 
-    productItems.forEach((item, i) => {
-      item.addEventListener('mouseenter', function () {
-        const carouselIndex = parseInt(this.getAttribute('data-index'), 10);
-        const targetCarousel = carousels[carouselIndex];
-        const images = targetCarousel.children;
-        let currentIndex = 0;
-
-        // Start auto-scroll for specific carousel when hovered
-        const autoScroll = setInterval(() => {
-          if (images.length > 1) {
-            currentIndex = (currentIndex + 1) % images.length;
-            targetCarousel.style.transform = `translateX(-${currentIndex * 100}%)`;
-          }
-        }, 3000); // Change image every 3 seconds
-
-        // Stop auto-scroll when mouse leaves
-        item.addEventListener('mouseleave', function () {
-          clearInterval(autoScroll);
-        });
-      });
-    });
+    // Event listeners for hover behavior
+    carousel.addEventListener("mouseenter", startAutoScroll);
+    carousel.addEventListener("mouseleave", stopAutoScroll);
   });
+});
+
 </script>
 
 

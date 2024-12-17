@@ -763,13 +763,17 @@ module.exports = {
   view_restaurant: async (req, res) => {
     try {
       let title = "provider_list";
-      // Start of the month
+  
       const currentDate = new Date();
       const startOfMonth = currentDate.getMonth() + 1;
       const endOfMonth = currentDate.getFullYear();
+  
+      // Populate subCategory if it's a reference
       let viewuser = await Models.restaurantModel
         .findById({ _id: req.params.id })
-        .populate("userId");
+        .populate("userId")
+        .populate("subCategory"); // Ensure subCategory is populated
+  
       const orders = await Models.orderModel.countDocuments({
         restaurant: req.params.id,
       });
@@ -792,13 +796,10 @@ module.exports = {
       const revenueData = await Models.transactionModel.find({
         createdAt: { $gte: startOfMonth, $lte: endOfMonth },
       });
-
-      // Format the response
-      const labels = revenueData.map((entry) => entry.day); // e.g., [1, 2, 3, ...]
-      const revenue = revenueData.map((entry) => entry.amount); // e.g., [100, 200, ...]
-
-      console.log("labels", labels);
-      console.log("revenue", revenue);
+  
+      const labels = revenueData.map((entry) => entry.day);
+      const revenue = revenueData.map((entry) => entry.amount);
+  
       res.render("Admin/restaurant/restaurant_view", {
         title,
         viewuser,
@@ -820,6 +821,7 @@ module.exports = {
       throw error;
     }
   },
+  
   restaurant_dashboard_filter: async (req, res) => {
     try {
       const title = "provider_list";
@@ -932,7 +934,7 @@ module.exports = {
   delete_restaurant: async (req, res) => {
     try {
       let userid = req.body.id;
-      let remove = await Models.userModel.deleteOne({ _id: userid });
+      // let remove = await Models.userModel.deleteOne({ _id: userid });
       res.redirect("/admin/user_list");
     } catch (error) {
       console.log(error);
