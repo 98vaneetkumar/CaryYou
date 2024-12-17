@@ -390,7 +390,7 @@ module.exports = {
   delete_user: async (req, res) => {
     try {
       let userid = req.body.id;
-      let remove = await Models.userModel.deleteOne({ _id: userid });
+      // let remove = await Models.userModel.deleteOne({ _id: userid });
       res.redirect("/admin/user_list");
     } catch (error) {
       console.log(error);
@@ -1690,7 +1690,7 @@ module.exports = {
   delete_rider: async (req, res) => {
     try {
       let riderid = req.body.id;
-      let remove = await Models.userModel.deleteOne({ _id: riderid });
+      // let remove = await Models.userModel.deleteOne({ _id: riderid });
       res.redirect("/admin/rider_list");
     } catch (error) {
       console.log(error);
@@ -1765,7 +1765,7 @@ module.exports = {
     try {
       const { id } = req.body;
 
-      const deleteResult = await Models.vehicleTypeModel.deleteOne({ _id: id });
+      // const deleteResult = await Models.vehicleTypeModel.deleteOne({ _id: id });
 
       if (deleteResult.deletedCount === 0) {
         req.flash("msg", "Vehicle Type not found or already deleted");
