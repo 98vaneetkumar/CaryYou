@@ -804,7 +804,7 @@ module.exports = {
         title,
         viewuser,
         category: viewuser?.category?.length || 0,
-        subCategory: viewuser?.subCategory?.length || 0,
+        subCategory: viewuser?.subCategory?.length,
         products: viewuser?.products?.length || 0,
         orders,
         pendingOrders,
@@ -916,7 +916,7 @@ module.exports = {
       return res.json({
         userdata,
         category: userdata?.category?.length || 0,
-        subCategory: userdata?.subcategory?.length || 0,
+        subCategory: userdata?.subCategory?.length || 0,
         products: userdata?.products?.length || 0,
         orders,
         pendingOrders,
