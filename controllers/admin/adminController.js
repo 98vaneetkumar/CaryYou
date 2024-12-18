@@ -1608,11 +1608,10 @@ module.exports = {
           categoryName: matchedCategory ? matchedCategory.name : null,
           categoryImage: matchedCategory ? matchedCategory.image : null,
       };
-  console.log("product",product)
-  // return
       res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_view", {
         title,
         productId,
+        restaurantName:restaurant.name,
         restaurantId,
         product,
         session: req.session.user,
