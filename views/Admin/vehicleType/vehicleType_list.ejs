@@ -114,83 +114,83 @@
 
 <script>
   $(document).ready(function () {
-    // Initialize DataTable with buttons for export options
     $("#vehicleTypeTable").DataTable({
       dom: "Bfrtip",
-      buttons: [
-        "excelHtml5", // Export to Excel
-        "pdfHtml5", // Export to PDF
-        "print", // Print table
-      ],
+      buttons: ["excelHtml5", "pdfHtml5", "print"],
+      language: {
+        emptyTable: "No vehicle types available.",
+      },
     });
   });
 
   function confirmDelete(id) {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: "btn btn-warning",
-        cancelButton: "btn btn-info",
-      },
-      buttonsStyling: true,
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "/admin/delete_vehicleType",
+          type: "POST",
+          data: { id: id },
+          success: function () {
+            Swal.fire("Deleted!", "The vehicle type has been deleted.", "success").then(() => {
+              location.reload();
+            });
+          },
+          error: function () {
+            Swal.fire("Error!", "Unable to delete the vehicle type. Please try again.", "error");
+          },
+        });
+      } else {
+        Swal.fire("Cancelled", "The vehicle type is safe :)", "info");
+      }
     });
-
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true,
-      })
-      .then((isConfirm) => {
-        if (isConfirm.isConfirmed) {
-          $.ajax({
-            url: "/admin/delete_vehicleType",
-            data: {
-              id: id,
-            },
-            type: "post",
-            success: function (result) {
-              swalWithBootstrapButtons
-                .fire(
-                  "Deleted!",
-                  "The vehicle type has been deleted.",
-                  "success"
-                )
-                .then(() => {
-                  location.reload();
-                });
-            },
-          });
-        } else {
-          swalWithBootstrapButtons.fire(
-            "Cancelled",
-            "The vehicle type is safe :)",
-            "error"
-          );
-        }
-      });
   }
 
   const changeStatus = (checkbox) => {
-    let id = checkbox.getAttribute("data-id");
-    let status = checkbox.checked ? 1 : 0;
+    const id = checkbox.getAttribute("data-id");
+    const status = checkbox.checked ? 1 : 0;
 
     $.ajax({
-      type: "post",
+      type: "POST",
       url: "/admin/vehicleType_status",
-      data: {
-        id: id,
-        status: status,
+      data: { id: id, status: status },
+      success: function () {
+        Swal.fire({
+          icon: "success",
+          title: "Status Updated",
+          text: "Vehicle type status has been successfully updated.",
+          timer: 1500,
+          showConfirmButton: false,
+        });
       },
-      success: function (response) {
-        // Optionally, you can show a success message here
+      error: function () {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "There was a problem updating the status.",
+          timer: 1500,
+          showConfirmButton: false,
+        });
       },
     });
   };
+
+  function escapeHTML(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 </script>
+
 
 <!-- Toggle Button CSS -->
 <style>

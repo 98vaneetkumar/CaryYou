@@ -35,9 +35,9 @@
                       class="profile_img rounded-circle border" 
                       style="cursor:pointer;">
                   </td>
-                  <td><%= data.fullName %></td>
-                  <td><%= data.email %></td>
-                  <td><%= data.countryCode %>-<%= data.phoneNumber %></td>
+                  <td><%= data.fullName || 'N/A' %></td>
+                  <td><%= data.email || 'N/A' %></td>
+                  <td><%= (data.countryCode || '') + '-' + (data.phoneNumber || 'N/A') %></td>
                   <td>
                     <!-- Toggle switch for active/inactive status -->
                     <label class="switch">
@@ -45,7 +45,7 @@
                              id="riderStatusToggle_<%= data.id %>" 
                              <% if (data.status == 1) { %> checked <% } %>
                              onchange="changeStatus(this)" 
-                             data-id="<%= data._id %>">
+                             data-id="<%= encodeURIComponent(data._id) %>">
                       <span class="slider round"></span>
                     </label>
                   </td>
@@ -56,8 +56,8 @@
                     </span>
                   </td>
                   <td>
-                    <a href="/admin/view_rider/<%= data._id %>" class="btn btn-sm bg-warning"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                    <button onclick="confirmDelete('<%= data._id %>')" class="btn btn-sm bg-danger"> <i class="fa fa-trash"></i> </button>
+                    <a href="/admin/view_rider/<%= encodeURIComponent(data._id) %>" class="btn btn-sm bg-warning"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <button onclick="confirmDelete('<%= encodeURIComponent(data._id) %>')" class="btn btn-sm bg-danger"> <i class="fa fa-trash"></i> </button>
                   </td>
                 </tr>
               <% }) %>
@@ -73,18 +73,19 @@
 
 <script>
   $(document).ready(function () {
+    // Initialize DataTable with export buttons
     $('#myTable').DataTable({
       dom: 'Bfrtip',
-      buttons: [
-        'excel',  'print'
-      ]
+      buttons: ['excel', 'print']
     });
   });
 
+  // Fade out alert messages
   setTimeout(function () {
     $("div.msg").fadeOut();
   }, 2000);
 
+  // Confirm deletion of rider
   function confirmDelete(id) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -105,55 +106,42 @@
     }).then((isConfirm) => {
       if (isConfirm.isConfirmed) {
         $.ajax({
-          url: "/admin/delete_rider/:id",
-          type: 'delete',
-          data: {
-            id: id
+          url: `/admin/delete_rider/${id}`,
+          type: 'DELETE',
+          success: function (result) {
+            Swal.fire('Deleted!', 'The rider has been deleted.', 'success').then(() => {
+              location.reload();
+            });
           },
-          success: function (result) { }
-        });
-        swalWithBootstrapButtons.fire(
-          'Deleted!',
-          'The rider has been deleted.',
-          'success'
-        ).then(() => {
-          location.reload();
+          error: function () {
+            Swal.fire('Error!', 'There was an issue deleting the rider.', 'error');
+          }
         });
       } else {
-        swalWithBootstrapButtons.fire(
-          'Cancelled',
-          'The rider is safe :)',
-          'error'
-        );
+        swalWithBootstrapButtons.fire('Cancelled', 'The rider is safe :)', 'info');
       }
     });
   }
 
+  // Change rider status
   const changeStatus = (val) => {
-    let id = val.getAttribute('data-id');
-    let value = val.checked ? 1 : 0; // 1 for active, 0 for inactive
+    const id = val.getAttribute('data-id');
+    const value = val.checked ? 1 : 0; // 1 for active, 0 for inactive
 
     $.ajax({
-      type: "post",
+      type: "POST",
       url: "/admin/rider_status",
-      data: {
-        id: id,
-        value: value
-      },
+      data: { id: id, value: value },
       success: function (data) {
-        if (data) {
-          // Show SweetAlert2 success toaster
-          Swal.fire({
-            icon: 'success',
-            title: 'Status Updated',
-            text: 'Rider status has been successfully updated.',
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
+        Swal.fire({
+          icon: 'success',
+          title: 'Status Updated',
+          text: 'Rider status has been successfully updated.',
+          showConfirmButton: false,
+          timer: 1500
+        });
       },
-      error: function (error) {
-        // Handle error with an error toaster
+      error: function () {
         Swal.fire({
           icon: 'error',
           title: 'Error!',
@@ -165,4 +153,3 @@
     });
   };
 </script>
-

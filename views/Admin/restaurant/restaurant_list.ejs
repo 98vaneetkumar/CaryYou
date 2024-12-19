@@ -79,6 +79,7 @@
   </section>
 </div>
 
+
 <style>
   .action-buttons {
     display: flex;
@@ -87,13 +88,20 @@
   .action-buttons .btn {
     margin: 0; /* Remove any default margin */
   }
+  /* Disable hover effect on Excel and Print buttons */
+  .dt-button:hover {
+    background-color: black !important;
+    color: white !important;
+    box-shadow: none !important;
+  }
 </style>
 
 <script>
   $(document).ready(function () {
-    $("#myTable").DataTable({
-      dom: "Bfrtip",
-      buttons: ["excel", "print"],
+    // Initialize DataTable with export buttons
+    $('#myTable').DataTable({
+      dom: 'Bfrtip',
+      buttons: ['excel', 'print']
     });
   });
 
@@ -164,8 +172,6 @@
         value: value,
       },
       success: function (data) {
-        console.log("Server Response:", data); // Log the response for debugging
-
         // Always show the success popup
         let statusMessage =
           value === 1
@@ -181,8 +187,6 @@
         });
       },
       error: function (error) {
-        console.error("Error Response:", error); // Log error response for debugging
-
         Swal.fire({
           icon: "error",
           title: "Error!",

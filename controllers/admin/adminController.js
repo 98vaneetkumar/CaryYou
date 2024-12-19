@@ -404,7 +404,7 @@ module.exports = {
         { _id: req.body.id },
         { status: req.body.value }
       );
-      req.flash("msg", "Status update successfully");
+      // req.flash("msg", "Status update successfully");
 
       if (req.body.value == 0) res.send(false);
       if (req.body.value == 1) res.send(true);
@@ -943,37 +943,46 @@ module.exports = {
   },
   restaurant_status: async (req, res) => {
     try {
+      const { id, value } = req.body;
+  
+      // Validate input
+      if (!id || value === undefined) {
+        return res.status(400).send({ error: "Invalid input data." });
+      }
+  
       // Update the restaurant status
       const updateRestaurant = await Models.restaurantModel.updateOne(
-        { _id: req.body.id },
-        { status: req.body.value }
+        { _id: id },
+        { status: value }
       );
-
-      if (updateRestaurant.nModified > 0) {
-        const restaurant = await Models.restaurantModel.findById(req.body.id);
-
+  
+      // Check if the restaurant status was modified
+      if (updateRestaurant.modifiedCount > 0) {
+        const restaurant = await Models.restaurantModel.findById(id);
+  
         if (restaurant && restaurant.userId) {
           await Models.userModel.updateOne(
             { _id: restaurant.userId },
-            { status: req.body.value }
+            { status: value }
           );
         }
-
-        req.flash("msg", "Status updated successfully");
-
-        // Send explicit boolean based on the updated status
-        return res.status(200).send(req.body.value == 1); // `true` for active, `false` for inactive
+  
+        // Return success response with the updated status
+        return res.status(200).send({ success: true, status: value == 1 });
       } else {
-        // Handle no modification
-        return res
-          .status(404)
-          .send({ error: "No changes made or restaurant not found." });
+        // No modification occurred (already in the desired state or not found)
+        return res.status(404).send({
+          error: "No changes made. Restaurant not found or already updated.",
+        });
       }
     } catch (error) {
-      console.error("Error updating status:", error);
-      res.status(500).send({ error: "Internal Server Error" });
+      console.error("Error updating restaurant status:", error);
+  
+      // Return a 500 Internal Server Error for any other exceptions
+      return res.status(500).send({ error: "Internal Server Error" });
     }
   },
+
 
   //----------------Dashboard order api-----------------------
 
@@ -1703,7 +1712,7 @@ module.exports = {
         { _id: req.body.id },
         { status: req.body.value }
       );
-      req.flash("msg", "Status update successfully");
+      // req.flash("msg", "Status update successfully");
 
       if (req.body.value == 0) res.send(false);
       if (req.body.value == 1) res.send(true);
@@ -1808,7 +1817,7 @@ module.exports = {
         .sort({ createdAt: -1 });
 
       const title = "vehicleType_list";
-      req.flash("msg", "Status updated successfully");
+      // req.flash("msg", "Status updated successfully");
       res.render("Admin/vehicleType/vehicleType_list", {
         title,
         vehicleTypes,
