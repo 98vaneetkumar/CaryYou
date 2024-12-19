@@ -62,6 +62,7 @@ module.exports = {
 
   dashboard: async (req, res) => {
     try {
+      console.log("Session Data:", req.session);
       let title = "dashboard";
       let user = await Models.userModel.countDocuments({ role: 1 });
       let provider = await Models.userModel.countDocuments({ role: 2 });
