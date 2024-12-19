@@ -35,7 +35,7 @@ module.exports = {
 
         console.log('=====', restaurantDetail)
   
-      req.session.user = findUser;
+      req.session.subAdmin = findUser;
       if(restaurantDetail) {
         req.session.restaurant = restaurantDetail
       }
@@ -53,7 +53,7 @@ module.exports = {
   
   logout: async (req, res) => {
     try {
-      req.session.destroy((err) => {});
+      delete req.session.subAdmin
       res.redirect("/subadmin/login");
     } catch (error) {
       helper.error(res, error);
@@ -94,7 +94,7 @@ module.exports = {
         subcategories: 0,
         products: 0,
         returnrequests: 0,
-        session: req.session.user,
+        session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
     } catch (error) {
@@ -113,7 +113,7 @@ module.exports = {
       res.render("SubAdmin/user/user_list", {
         title,
         userdata,
-        session: req.session.user,
+        session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
     } catch (error) {
@@ -130,7 +130,7 @@ module.exports = {
       res.render("SubAdmin/user/view_user", {
         title,
         viewuser,
-        session: req.session.user,
+        session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
     } catch (error) {
@@ -187,17 +187,17 @@ module.exports = {
           req.body.image = await helper.fileUpload(image, "images");
         }
       }
-      console.log(req.session.user._id);
+      console.log(req.session.subAdmin._id);
       const userData = await Models.userModel.findByIdAndUpdate(
-        { _id: req.session.user._id },
+        { _id: req.session.subAdmin._id },
         {
           name: req.body.name,
           image: req.body.image,
           phoneNumber: req.body.phone,
         }
       );
-      let data = await Models.userModel.findById({ _id: req.session.user._id });
-      req.session.user = data;
+      let data = await Models.userModel.findById({ _id: req.session.subAdmin._id });
+      req.session.subAdmin = data;
       req.flash("msg", "Profile updated successfully");
       if (userData) {
         res.redirect("back");
@@ -214,7 +214,7 @@ module.exports = {
       let title = "change_password";
       res.render("SubAdmin/SubAdmin/change_password", {
         title,
-        session: req.session.user,
+        session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
     } catch (error) {
@@ -231,7 +231,7 @@ module.exports = {
       });
 
       let payload = await helper.validationJoi(req.body, schema);
-      let data = req.session.user;
+      let data = req.session.subAdmin;
 
       if (data) {
         let comp = await bcrypt.compare(payload.oldPassword, data.password);
@@ -242,7 +242,7 @@ module.exports = {
             { _id: data._id },
             { password: bcryptPassword }
           );
-          req.session.user = create;
+          req.session.subAdmin = create;
           req.flash("msg", "Update password successfully");
           res.redirect("/subadmin/login");
         } else {
@@ -258,11 +258,11 @@ module.exports = {
   subAdmin_commission: async (req, res) => {
     try {
       let title = "commission";
-      let users = await Models.userModel.findOne({ _id: req.session.user._id });
+      let users = await Models.userModel.findOne({ _id: req.session.subAdmin._id });
       res.render("SubAdmin/commission/commission", {
         title,
         users,
-        session: req.session.user,
+        session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
     } catch (error) {
@@ -274,12 +274,12 @@ module.exports = {
   update_commission: async (req, res) => {
     try {
       await Models.userModel.updateOne(
-        { _id: req.session.user._id },
+        { _id: req.session.subAdmin._id },
         {
           subAdmincommission: req.body.subAdmincommission,
         }
       );
-      let users = await Models.userModel.findOne({ _id: req.session.user._id });
+      let users = await Models.userModel.findOne({ _id: req.session.subAdmin._id });
       req.flash("msg", "Updated successfully");
       res.redirect("/subadmin/SubAdmin_commission");
     } catch (error) {
@@ -304,7 +304,7 @@ module.exports = {
       res.render("subAdmin/restaurant/restaurant_list", {
         title,
         userdata, // Passing the list of restaurants to the view
-        session: req.session.user, // Passing the session data for authentication purposes
+        session: req.session.subAdmin, // Passing the session data for authentication purposes
         msg: req.flash("msg"), // Flash message, if any
       });
     } catch (error) {
@@ -348,7 +348,7 @@ module.exports = {
         activeOrders,
         deliveredOrders,
         cancelledOrders,
-        session: req.session.user,
+        session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
     } catch (error) {
@@ -516,7 +516,7 @@ module.exports = {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
-          session: req.session.user, // Ensure session data is passed here
+          session: req.session.subAdmin, // Ensure session data is passed here
           msg: req.flash("msg") || '', // Flash message
         });
       } catch (error) {
@@ -558,7 +558,7 @@ module.exports = {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
-          session: req.session.user, // Pass session details (if needed)
+          session: req.session.subAdmin, // Pass session details (if needed)
           msg: req.flash("msg"), // Pass any flash messages (if needed)
         });
       } catch (error) {
@@ -595,7 +595,7 @@ module.exports = {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
-          session: req.session.user, // Ensure session data is passed here
+          session: req.session.subAdmin, // Ensure session data is passed here
           msg: req.flash("msg") || "", // Flash message
         });
       } catch (error) {
@@ -639,7 +639,7 @@ module.exports = {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
-          session: req.session.user, // Pass session details (if needed)
+          session: req.session.subAdmin, // Pass session details (if needed)
           msg: req.flash("msg"), // Pass any flash messages (if needed)
         });
       } catch (error) {
@@ -676,7 +676,7 @@ module.exports = {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
-          session: req.session.user, // Ensure session data is passed here
+          session: req.session.subAdmin, // Ensure session data is passed here
           msg: req.flash("msg") || "", // Flash message
         });
       } catch (error) {
@@ -720,7 +720,7 @@ module.exports = {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
-          session: req.session.user, // Pass session details (if needed)
+          session: req.session.subAdmin, // Pass session details (if needed)
           msg: req.flash("msg"), // Pass any flash messages (if needed)
         });
       } catch (error) {
@@ -756,7 +756,7 @@ module.exports = {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
-          session: req.session.user, // Ensure session data is passed here
+          session: req.session.subAdmin, // Ensure session data is passed here
           msg: req.flash("msg") || "", // Flash message
         });
       } catch (error) {
@@ -800,7 +800,7 @@ module.exports = {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
-          session: req.session.user, // Pass session details (if needed)
+          session: req.session.subAdmin, // Pass session details (if needed)
           msg: req.flash("msg"), // Pass any flash messages (if needed)
         });
       } catch (error) {
@@ -837,7 +837,7 @@ module.exports = {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
-          session: req.session.user, // Ensure session data is passed here
+          session: req.session.subAdmin, // Ensure session data is passed here
           msg: req.flash("msg") || "", // Flash message
         });
       } catch (error) {
@@ -881,7 +881,7 @@ module.exports = {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
-          session: req.session.user, // Pass session details (if needed)
+          session: req.session.subAdmin, // Pass session details (if needed)
           msg: req.flash("msg"), // Pass any flash messages (if needed)
         });
       } catch (error) {
@@ -918,7 +918,7 @@ module.exports = {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
-          session: req.session.user, // Ensure session data is passed here
+          session: req.session.subAdmin, // Ensure session data is passed here
           msg: req.flash("msg") || "", // Flash message
         });
       } catch (error) {
@@ -962,7 +962,7 @@ module.exports = {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
-          session: req.session.user, // Pass session details (if needed)
+          session: req.session.subAdmin, // Pass session details (if needed)
           msg: req.flash("msg"), // Pass any flash messages (if needed)
         });
       } catch (error) {
@@ -985,7 +985,7 @@ module.exports = {
           title,
           viewuser,
           restaurant:req.params._id,
-          session: req.session.user,
+          session: req.session.subAdmin,
           msg: req.flash("msg"),
         });
       } catch (error) {
@@ -1021,7 +1021,7 @@ module.exports = {
           title,
           viewuser,
           restaurant:req.params._id,
-          session: req.session.user,
+          session: req.session.subAdmin,
           msg: req.flash("msg"),
         });
       } catch (error) {
@@ -1059,7 +1059,7 @@ module.exports = {
           title,
           viewuser,
           restaurant:req.params._id,
-          session: req.session.user,
+          session: req.session.subAdmin,
           msg: req.flash("msg"),
         });
       } catch (error) {
@@ -1097,7 +1097,7 @@ module.exports = {
           title,
           viewuser,
           restaurant:req.params._id,
-          session: req.session.user,
+          session: req.session.subAdmin,
           msg: req.flash("msg"),
         });
       } catch (error) {
@@ -1131,7 +1131,7 @@ module.exports = {
           res.render("subAdmin/orders/order_list", {
             title,
             orderdata: formattedOrders,
-            session: req.session.user, // Ensure session data is passed here
+            session: req.session.subAdmin, // Ensure session data is passed here
             msg: req.flash("msg") || '', // Flash message
           });
         } catch (error) {
@@ -1173,7 +1173,7 @@ module.exports = {
             title, // Pass the title to the view
             order, // Pass the order details to the view
             orderStatus: getOrderStatus(order.status), // Pass the order status
-            session: req.session.user, // Pass session details (if needed)
+            session: req.session.subAdmin, // Pass session details (if needed)
             msg: req.flash("msg"), // Pass any flash messages (if needed)
           });
         } catch (error) {
@@ -1209,7 +1209,7 @@ module.exports = {
           res.render("subAdmin/orders/active_order_list", {
             title,
             orderdata: formattedOrders,
-            session: req.session.user, // Ensure session data is passed here
+            session: req.session.subAdmin, // Ensure session data is passed here
             msg: req.flash("msg") || "", // Flash message
           });
         } catch (error) {
@@ -1253,7 +1253,7 @@ module.exports = {
             title, // Pass the title to the view
             order, // Pass the order details to the view
             orderStatus: getOrderStatus(order.status), // Pass the order status
-            session: req.session.user, // Pass session details (if needed)
+            session: req.session.subAdmin, // Pass session details (if needed)
             msg: req.flash("msg"), // Pass any flash messages (if needed)
           });
         } catch (error) {
@@ -1289,7 +1289,7 @@ module.exports = {
           res.render("subAdmin/orders/delivered_order_list", {
             title,
             orderdata: formattedOrders,
-            session: req.session.user, // Ensure session data is passed here
+            session: req.session.subAdmin, // Ensure session data is passed here
             msg: req.flash("msg") || "", // Flash message
           });
         } catch (error) {
@@ -1333,7 +1333,7 @@ module.exports = {
             title, // Pass the title to the view
             order, // Pass the order details to the view
             orderStatus: getOrderStatus(order.status), // Pass the order status
-            session: req.session.user, // Pass session details (if needed)
+            session: req.session.subAdmin, // Pass session details (if needed)
             msg: req.flash("msg"), // Pass any flash messages (if needed)
           });
         } catch (error) {
@@ -1368,7 +1368,7 @@ module.exports = {
           res.render("subAdmin/orders/cancel_order_list", {
             title,
             orderdata: formattedOrders,
-            session: req.session.user, // Ensure session data is passed here
+            session: req.session.subAdmin, // Ensure session data is passed here
             msg: req.flash("msg") || "", // Flash message
           });
         } catch (error) {
@@ -1412,7 +1412,7 @@ module.exports = {
             title, // Pass the title to the view
             order, // Pass the order details to the view
             orderStatus: getOrderStatus(order.status), // Pass the order status
-            session: req.session.user, // Pass session details (if needed)
+            session: req.session.subAdmin, // Pass session details (if needed)
             msg: req.flash("msg"), // Pass any flash messages (if needed)
           });
         } catch (error) {
@@ -1448,7 +1448,7 @@ module.exports = {
           res.render("subAdmin/orders/pending_order_list", {
             title,
             orderdata: formattedOrders,
-            session: req.session.user, // Ensure session data is passed here
+            session: req.session.subAdmin, // Ensure session data is passed here
             msg: req.flash("msg") || "", // Flash message
           });
         } catch (error) {
@@ -1492,7 +1492,7 @@ module.exports = {
             title, // Pass the title to the view
             order, // Pass the order details to the view
             orderStatus: getOrderStatus(order.status), // Pass the order status
-            session: req.session.user, // Pass session details (if needed)
+            session: req.session.subAdmin, // Pass session details (if needed)
             msg: req.flash("msg"), // Pass any flash messages (if needed)
           });
         } catch (error) {

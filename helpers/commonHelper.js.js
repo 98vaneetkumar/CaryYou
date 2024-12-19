@@ -179,7 +179,7 @@ module.exports = {
     }
   },
   sessionSubAdmin: async (req, res, next) => {
-    if (req.session.user) {
+    if (req.session.subAdmin) {
       next();
     } else {
       return res.redirect("/subadmin/login");

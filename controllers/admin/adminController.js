@@ -62,7 +62,7 @@ module.exports = {
 
   logout: async (req, res) => {
     try {
-      req.session.destroy((err) => {});
+      delete req.session.user;
       res.redirect("/admin/login");
     } catch (error) {
       helper.error(res, error);
@@ -2416,7 +2416,6 @@ module.exports = {
           req.body.image = await helper.fileUpload(image, "images");
         }
       }
-      console.log(req.session.user._id);
       const userData = await Models.userModel.findByIdAndUpdate(
         { _id: req.session.user._id },
         {
