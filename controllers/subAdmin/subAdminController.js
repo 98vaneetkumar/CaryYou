@@ -1444,7 +1444,9 @@ module.exports = {
               : "N/A",
             id: order._id,
           }));
-    console.log("formattedOrders",formattedOrders)
+    console.log("subAdmin/orders/pending_order_list",formattedOrders)
+    console.log("title",title)
+    console.log("req.flash()",req.flash("msg"))
           res.render("subAdmin/orders/pending_order_list", {
             title,
             orderdata: formattedOrders,
