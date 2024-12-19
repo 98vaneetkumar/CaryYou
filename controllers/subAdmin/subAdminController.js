@@ -33,7 +33,6 @@ module.exports = {
         .populate('userId')
         .exec();
 
-        console.log('=====', restaurantDetail)
   
       req.session.subAdmin = findUser;
       if(restaurantDetail) {
@@ -1445,7 +1444,7 @@ module.exports = {
               : "N/A",
             id: order._id,
           }));
-    
+    console.log("formattedOrders",formattedOrders)
           res.render("subAdmin/orders/pending_order_list", {
             title,
             orderdata: formattedOrders,
