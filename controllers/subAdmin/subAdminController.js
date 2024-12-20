@@ -1021,6 +1021,8 @@ module.exports = {
     
     restaurant_subCategory: async (req, res) => {
       try {
+        const title = "Restaurant subCategory List";
+
         // Fetch restaurant details
         const viewuser = await Models.restaurantModel
           .findById({_id:req.params._id})
@@ -1035,7 +1037,7 @@ module.exports = {
         res.render(
           "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_category_list",
           {
-            title: "provider_list",
+            title,
             viewuser,
             restaurant: req.params._id,
             session: req.session.subAdmin,
