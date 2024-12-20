@@ -1077,12 +1077,9 @@ module.exports = {
             subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
           };
         });
-      }
-      
-      console.log(viewuser);
-      
+      }      
   
-          res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
+        res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
           title,
           viewuser,
           restaurant:req.params._id,
