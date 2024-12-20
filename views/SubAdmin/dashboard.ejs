@@ -1,9 +1,21 @@
 <!-- Main Content -->
 <div class="main-content">
   <section class="section">
-    <div class="section-header">
+    <<div class="section-header d-flex justify-content-between align-items-center">
       <h1>SubAdmin Dashboard</h1>
-    </div>
+      <div class="filter-options">
+        <select id="filter" class="form-control">
+          <option value="all">All</option>
+          <option value="today">Today</option>
+          <option value="weekly">This Week</option>
+          <option value="monthly">This Month</option>
+          <option value="3months">Last 3 Months</option>
+          <option value="6months">Last 6 Months</option>
+          <option value="1year">Last 1 Year</option>
+          <option value="5years">Last 5 Years</option>
+        </select>
+      </div>
+    </div>    
     <div class="row">
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-top">
         <a href="/subAdmin/order_list">
@@ -242,7 +254,7 @@
             </div>
           </div>
         </a>
-      </div>
+      </div>  
 
       <!-- Contact Us Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
@@ -283,6 +295,19 @@
   </section>
 </div>
 
+<style>
+  .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-options {
+  margin-left: auto;
+  max-width: 200px; /* Optional: Adjust as needed */
+}
+</style>
+
 <script>
   setTimeout(function () {
     $("div.msg").fadeOut();
@@ -290,6 +315,83 @@
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+<script>
+  const filterDropdown = document.getElementById("filter");
+
+  // Loader Element
+  const loader = document.getElementById("loader");
+
+  // Show loader
+  function showLoader() {
+    if (loader) loader.style.display = "block";
+  }
+
+  // Hide loader
+  function hideLoader() {
+    if (loader) loader.style.display = "none";
+  }
+
+  // Update card data dynamically
+  function updateCardData(data) {
+    document.getElementById("orders").textContent = data.orders || 0;
+    document.getElementById("pendingOrders").textContent =
+      data.pendingOrders || 0;
+    document.getElementById("activeOrders").textContent =
+      data.activeOrders || 0;
+    document.getElementById("deliveredOrders").textContent =
+      data.deliveredOrders || 0;
+    document.getElementById("cancelledOrders").textContent =
+      data.cancelledOrders || 0;
+    document.getElementById("category").textContent = data.categories || 0;
+    document.getElementById("subCategory").textContent =
+      data.subCategories || 0;
+    document.getElementById("products").textContent = data.products || 0;
+  }
+
+  // Fetch data and update dashboard
+  async function fetchData(filter = null) {
+    showLoader(); // Show loader
+
+    try {
+      const restaurantId =
+        document.getElementById("restaurant_id").dataset.value;
+
+      const selectedFilter = filter || filterDropdown.value;
+
+      const response = await fetch("/SubAdmin/restaurantDashboardFilter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ filter: selectedFilter, id: restaurantId }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error with status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Update card content
+      updateCardData(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      hideLoader(); // Hide loader
+    }
+  }
+
+  // Event listener for dropdown changes
+  filterDropdown.addEventListener("change", async () => {
+    await fetchData();
+  });
+
+  // Initialize dashboard on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    fetchData(); // Initial data fetch
+  });
+</script>
 
 <!-- Uncommented code for dynamic charts -->
 <!--
