@@ -301,7 +301,7 @@ module.exports = {
         .find()
         .populate("userId") // Populating the user details based on userId
         .sort({ createdAt: -1 }); // Sorting by creation date, most recent first
-      res.render("subAdmin/restaurant/restaurant_list", {
+      res.render("SubAdmin/restaurant/restaurant_list", {
         title,
         userdata, // Passing the list of restaurants to the view
         session: req.session.subAdmin, // Passing the session data for authentication purposes
@@ -337,7 +337,7 @@ module.exports = {
         restaurant: req.params.id,
       });
 
-      res.render("subAdmin/restaurant/restaurant_view", {
+      res.render("SubAdmin/restaurant/restaurant_view", {
         title,
         viewuser,
         category: viewuser?.category?.length || 0,
@@ -512,7 +512,7 @@ module.exports = {
           id: order._id,
         }));
     
-        res.render("subAdmin/restaurant/restaurantOrders/order_list", {
+        res.render("SubAdmin/restaurant/restaurantOrders/order_list", {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
@@ -554,7 +554,7 @@ module.exports = {
           return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
         }
         // Render the view with order details
-        res.render("subAdmin/restaurant/restaurantOrders/view_order", {
+        res.render("SubAdmin/restaurant/restaurantOrders/view_order", {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
@@ -591,7 +591,7 @@ module.exports = {
           id: order._id,
         }));
   
-        res.render("subAdmin/restaurant/restaurantOrders/active_order_list", {
+        res.render("SubAdmin/restaurant/restaurantOrders/active_order_list", {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
@@ -635,7 +635,7 @@ module.exports = {
         }
   
         // Render the view with order details
-        res.render("subAdmin/restaurant/restaurantOrders/active_order_view", {
+        res.render("SubAdmin/restaurant/restaurantOrders/active_order_view", {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
@@ -672,7 +672,7 @@ module.exports = {
           id: order._id,
         }));
   
-        res.render("subAdmin/restaurant/restaurantOrders/delivered_order_list", {
+        res.render("SubAdmin/restaurant/restaurantOrders/delivered_order_list", {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
@@ -716,7 +716,7 @@ module.exports = {
         }
   
         // Render the view with order details
-        res.render("subAdmin/restaurant/restaurantOrders/delivered_order_view", {
+        res.render("SubAdmin/restaurant/restaurantOrders/delivered_order_view", {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
@@ -752,7 +752,7 @@ module.exports = {
           id: order._id,
         }));
   
-        res.render("subAdmin/restaurant/restaurantOrders/cancel_order_list", {
+        res.render("SubAdmin/restaurant/restaurantOrders/cancel_order_list", {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
@@ -796,7 +796,7 @@ module.exports = {
         }
   
         // Render the view with order details
-        res.render("subAdmin/restaurant/restaurantOrders/cancel_order_view", {
+        res.render("SubAdmin/restaurant/restaurantOrders/cancel_order_view", {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
@@ -833,7 +833,7 @@ module.exports = {
           id: order._id,
         }));
   
-        res.render("subAdmin/restaurant/restaurantOrders/pending_order_list", {
+        res.render("SubAdmin/restaurant/restaurantOrders/pending_order_list", {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
@@ -877,7 +877,7 @@ module.exports = {
         }
   
         // Render the view with order details
-        res.render("subAdmin/restaurant/restaurantOrders/pending_order_view", {
+        res.render("SubAdmin/restaurant/restaurantOrders/pending_order_view", {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
@@ -914,7 +914,7 @@ module.exports = {
           id: order._id,
         }));
   
-        res.render("subAdmin/restaurant/restaurantOrders/pending_order_list", {
+        res.render("SubAdmin/restaurant/restaurantOrders/pending_order_list", {
           title,
           restaurant:req.params._id,
           orderdata: formattedOrders,
@@ -958,7 +958,7 @@ module.exports = {
         }
   
         // Render the view with order details
-        res.render("subAdmin/restaurant/restaurantOrders/pending_order_view", {
+        res.render("SubAdmin/restaurant/restaurantOrders/pending_order_view", {
           title, // Pass the title to the view
           order, // Pass the order details to the view
           orderStatus: getOrderStatus(order.status), // Pass the order status
@@ -981,7 +981,7 @@ module.exports = {
           .findById({ _id: req.params._id })
           .populate("userId");
       
-        res.render("subAdmin/restaurant/restaurantCatSubCatProduct/restaurant_category_list", {
+        res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_category_list", {
           title,
           viewuser,
           restaurant:req.params._id,
@@ -1017,7 +1017,7 @@ module.exports = {
       }
           
   
-          res.render("subAdmin/restaurant/restaurantCatSubCatProduct/restaurant_subCategory_list", {
+          res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_subCategory_list", {
           title,
           viewuser,
           restaurant:req.params._id,
@@ -1055,7 +1055,7 @@ module.exports = {
       console.log(viewuser);
       
   
-          res.render("subAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
+          res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
           title,
           viewuser,
           restaurant:req.params._id,
@@ -1093,7 +1093,7 @@ module.exports = {
       console.log(viewuser);
       
   
-          res.render("subAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
+          res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
           title,
           viewuser,
           restaurant:req.params._id,
@@ -1128,7 +1128,7 @@ module.exports = {
             id: order._id,
           }));
       
-          res.render("subAdmin/orders/order_list", {
+          res.render("SubAdmin/orders/order_list", {
             title,
             orderdata: formattedOrders,
             session: req.session.subAdmin, // Ensure session data is passed here
@@ -1169,7 +1169,7 @@ module.exports = {
             return statuses[status] || "Unknown"; // If status is unknown, return "Unknown"
           }
           // Render the view with order details
-          res.render("subAdmin/orders/view_order", {
+          res.render("SubAdmin/orders/view_order", {
             title, // Pass the title to the view
             order, // Pass the order details to the view
             orderStatus: getOrderStatus(order.status), // Pass the order status
@@ -1206,7 +1206,7 @@ module.exports = {
             id: order._id,
           }));
     
-          res.render("subAdmin/orders/active_order_list", {
+          res.render("SubAdmin/orders/active_order_list", {
             title,
             orderdata: formattedOrders,
             session: req.session.subAdmin, // Ensure session data is passed here
@@ -1249,7 +1249,7 @@ module.exports = {
           }
     
           // Render the view with order details
-          res.render("subAdmin/orders/active_order_view", {
+          res.render("SubAdmin/orders/active_order_view", {
             title, // Pass the title to the view
             order, // Pass the order details to the view
             orderStatus: getOrderStatus(order.status), // Pass the order status
@@ -1286,7 +1286,7 @@ module.exports = {
             id: order._id,
           }));
     
-          res.render("subAdmin/orders/delivered_order_list", {
+          res.render("SubAdmin/orders/delivered_order_list", {
             title,
             orderdata: formattedOrders,
             session: req.session.subAdmin, // Ensure session data is passed here
@@ -1329,7 +1329,7 @@ module.exports = {
           }
     
           // Render the view with order details
-          res.render("subAdmin/orders/delivered_order_view", {
+          res.render("SubAdmin/orders/delivered_order_view", {
             title, // Pass the title to the view
             order, // Pass the order details to the view
             orderStatus: getOrderStatus(order.status), // Pass the order status
@@ -1365,7 +1365,7 @@ module.exports = {
             id: order._id,
           }));
     
-          res.render("subAdmin/orders/cancel_order_list", {
+          res.render("SubAdmin/orders/cancel_order_list", {
             title,
             orderdata: formattedOrders,
             session: req.session.subAdmin, // Ensure session data is passed here
@@ -1408,7 +1408,7 @@ module.exports = {
           }
     
           // Render the view with order details
-          res.render("subAdmin/orders/cancel_order_view", {
+          res.render("SubAdmin/orders/cancel_order_view", {
             title, // Pass the title to the view
             order, // Pass the order details to the view
             orderStatus: getOrderStatus(order.status), // Pass the order status
@@ -1444,9 +1444,6 @@ module.exports = {
               : "N/A",
             id: order._id,
           }));
-    console.log("subAdmin/orders/pending_order_list",formattedOrders)
-    console.log("title",title)
-    console.log("req.flash()",req.flash("msg"))
           res.render("SubAdmin/orders/pending_order_list", {
             title,
             orderdata: formattedOrders,
@@ -1490,7 +1487,7 @@ module.exports = {
           }
     
           // Render the view with order details
-          res.render("subAdmin/orders/pending_order_view", {
+          res.render("SubAdmin/orders/pending_order_view", {
             title, // Pass the title to the view
             order, // Pass the order details to the view
             orderStatus: getOrderStatus(order.status), // Pass the order status
