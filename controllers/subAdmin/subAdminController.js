@@ -83,7 +83,6 @@ module.exports = {
 
   dashboard: async (req, res) => {
     try {
-      console.log("Session Data:", req.session);
       let title = "dashboard";
       let user = await Models.userModel.countDocuments({ role: 1 });
       let provider = await Models.userModel.countDocuments({ role: 2 });
@@ -106,6 +105,7 @@ module.exports = {
         user,
         provider,
         restaurantId,
+        restaurant:restaurantId._id,
         servicesdata: 0,
         contactus: 0,
         orders,
@@ -454,7 +454,6 @@ module.exports = {
         restaurant: req.params.id,
         ...dateQuery
       });
-  console.log("userdata",userdata)
 
        return res.json({
           userdata,
@@ -1022,17 +1021,25 @@ module.exports = {
     restaurant_subCategory: async (req, res) => {
       try {
         const title = "Restaurant subCategory List";
-
-        // Fetch restaurant details
-        const viewuser = await Models.restaurantModel
-          .findById({_id:req.params._id})
-          .populate("userId");
-    
-        if (!viewuser) {
-          req.flash("msg", "Restaurant not found.");
-          return res.redirect("/subAdmin/some_error_page"); // Replace with the correct error page route
-        }
-    
+         const viewuser = await Models.restaurantModel
+               .findById(req.params._id)
+               .populate("userId") // Populate user information
+               .lean(); // Use `.lean()` to get a plain JavaScript object
+       
+             if (viewuser) {
+               // Map subCategories with corresponding category data
+               viewuser.subCategory = viewuser.subCategory.map((subCat) => {
+                 const matchedCategory = viewuser.category.find(
+                   (cat) => cat._id.toString() === subCat.categoryId.toString()
+                 );
+       
+                 return {
+                   ...subCat,
+                   categoryName: matchedCategory ? matchedCategory.name : null,
+                   categoryImage: matchedCategory ? matchedCategory.image : null,
+                 };
+               });
+             }
         // Render the category list
         res.render(
           "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_subCategory_list",
@@ -1173,6 +1180,7 @@ module.exports = {
       
           res.render("SubAdmin/orders/order_list", {
             title,
+            restaurant:req.params._id,
             orderdata: formattedOrders,
             session: req.session.subAdmin, // Ensure session data is passed here
             msg: req.flash("msg") || '', // Flash message
@@ -1233,7 +1241,7 @@ module.exports = {
         try {
           const title = "active_orders";
           const orders = await Models.orderModel
-            .find({ status: 4 })
+            .find({ status: 4,restaurant:req.params._id })
             .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
             .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
             .sort({ createdAt: -1 });
@@ -1251,6 +1259,7 @@ module.exports = {
     
           res.render("SubAdmin/orders/active_order_list", {
             title,
+            restaurant:req.params._id,
             orderdata: formattedOrders,
             session: req.session.subAdmin, // Ensure session data is passed here
             msg: req.flash("msg") || "", // Flash message
@@ -1313,7 +1322,7 @@ module.exports = {
         try {
           const title = "delivered_orders";
           const orders = await Models.orderModel
-            .find({ status: 2 })
+            .find({ status: 2 ,restaurant:req.params._id})
             .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
             .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
             .sort({ createdAt: -1 });
@@ -1331,6 +1340,7 @@ module.exports = {
     
           res.render("SubAdmin/orders/delivered_order_list", {
             title,
+            restaurant:req.params._id,
             orderdata: formattedOrders,
             session: req.session.subAdmin, // Ensure session data is passed here
             msg: req.flash("msg") || "", // Flash message
@@ -1392,7 +1402,7 @@ module.exports = {
         try {
           const title = "cancelled_orders";
           const orders = await Models.orderModel
-            .find({ status: 3 })
+            .find({ status: 3 ,restaurant:req.params._id})
             .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
             .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
             .sort({ createdAt: -1 });
@@ -1410,6 +1420,7 @@ module.exports = {
     
           res.render("SubAdmin/orders/cancel_order_list", {
             title,
+            restaurant:req.params._id,
             orderdata: formattedOrders,
             session: req.session.subAdmin, // Ensure session data is passed here
             msg: req.flash("msg") || "", // Flash message
@@ -1472,7 +1483,7 @@ module.exports = {
         try {
           const title = "pending_orders";
           const orders = await Models.orderModel
-            .find({ status: 1 })
+            .find({ status: 1 ,restaurant:req.params._id})
             .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
             .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
             .sort({ createdAt: -1 });
@@ -1487,8 +1498,10 @@ module.exports = {
               : "N/A",
             id: order._id,
           }));
+          console.log("formattedOrders",formattedOrders)
           res.render("SubAdmin/orders/pending_order_list", {
             title,
+            restaurant:req.params._id,
             orderdata: formattedOrders,
             session: req.session.subAdmin, // Ensure session data is passed here
             msg: req.flash("msg") || "", // Flash message

@@ -33,37 +33,59 @@
           <span><b>Dashboard</b></span>
         </a>
       </li>
+
+      <li class="<%=(title =='Restaurant Category List'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/restaurant_category/<%=restaurant%>">
+          <i class="fas fa-th" style="font-size: large"></i>
+          <span><b>Categories</b></span>
+        </a>
+      </li>
+
+      <li class="<%=(title =='Restaurant subCategory List'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/restaurant_subCategory/<%=restaurant%>">
+          <i class="fas fa-th-list" style="font-size: large"></i>
+          <span><b>Sub Categories</b></span>
+        </a>
+      </li>
+
+      <li class="<%=(title =='provider_list'?'active':'') %>">
+        <a class="nav-link" href="#">
+          <i class="fab fa-product-hunt" style="font-size: large"></i>
+          <span><b>Products</b></span>
+        </a>
+      </li>
+
       <!-- Orders -->
       <li class="<%=(title =='order_list'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/order_list"
+        <a class="nav-link" href="/subAdmin/order_list/<%=restaurant%>"
           ><i class="fas fa-box" style="font-size: large"></i
           ><span><b>Orders</b></span></a
         >
       </li>
 
       <li class="<%=(title =='pending_orders'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/pending_order_list">
+        <a class="nav-link" href="/subAdmin/pending_order_list/<%=restaurant%>">
           <i class="fas fa-clock" style="font-size: large"></i>
           <span><b>Pending Orders</b></span>
         </a>
       </li>
 
       <li class="<%=(title =='active_orders'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/active_order_list">
+        <a class="nav-link" href="/subAdmin/active_order_list/<%=restaurant%>">
           <i class="fas fa-shopping-cart" style="font-size: large"></i>
           <span><b>Active Orders</b></span>
         </a>
       </li>
 
       <li class="<%=(title =='delivered_orders'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/delivered_order_list">
+        <a class="nav-link" href="/subAdmin/delivered_order_list/<%=restaurant%>">
           <i class="fas fa-truck" style="font-size: large"></i>
           <span><b>Delivered Orders</b></span>
         </a>
       </li>
 
       <li class="<%=(title =='cancelled_orders'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/cancel_order_list">
+        <a class="nav-link" href="/subAdmin/cancel_order_list/<%=restaurant%>">
           <i class="fas fa-times-circle" style="font-size: large"></i>
           <span><b>Cancelled Orders</b></span>
         </a>
@@ -76,26 +98,7 @@
         </a>
       </li>
 
-      <li class="<%=(title =='Restaurant Category List'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/restaurant_category">
-          <i class="fas fa-th" style="font-size: large"></i>
-          <span><b>Categories</b></span>
-        </a>
-      </li>
 
-      <li class="<%=(title =='Restaurant subCategory List'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/restaurant_subCategory">
-          <i class="fas fa-th-list" style="font-size: large"></i>
-          <span><b>Sub Categories</b></span>
-        </a>
-      </li>
-
-      <li class="<%=(title =='provider_list'?'active':'') %>">
-        <a class="nav-link" href="#">
-          <i class="fab fa-product-hunt" style="font-size: large"></i>
-          <span><b>Products</b></span>
-        </a>
-      </li>
 
       <li class="<%=(title =='vendors'?'active':'') %>">
         <a class="nav-link" href="#">
