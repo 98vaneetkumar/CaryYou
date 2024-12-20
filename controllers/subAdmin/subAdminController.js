@@ -115,8 +115,8 @@ module.exports = {
         activeorders,
         vendors: 0,
         categories: restaurantId.category.length || 0,
-        subcategories: restaurantId.category.length || 0,
-        products: 0,
+        subcategories: restaurantId.subCategory.length || 0,
+        products: restaurantId.products.length || 0,
         returnrequests: 0,
         session: req.session.subAdmin,
         msg: req.flash("msg"),
@@ -1051,8 +1051,6 @@ module.exports = {
     },
     restaurant_product: async (req, res) => { 
       try {
-        console.log('===========', req.params._id);
-        return
         let title = "provider_list";
         const viewuser = await Models.restaurantModel
         .findById(req.params._id)
@@ -1092,41 +1090,64 @@ module.exports = {
     restaurant_product_view: async (req, res) => {
       try {
         let title = "provider_list";
-        const viewuser = await Models.restaurantModel
-        .findById(req.params._id)
-        .populate("userId") // Populate user information
-        .lean(); // Use `.lean()` to get a plain JavaScript object
-      
-      if (viewuser) {
-        // Map subCategories with corresponding category data
-        viewuser.products = viewuser.products.map((subCat) => {
-          const matchedSubCategory = viewuser.subCategory.find(
-            (cat) => cat._id.toString() === subCat.subCategoryId.toString()
-          );
-      
-          return {
-            ...subCat,
-            subCategoryName: matchedSubCategory ? matchedSubCategory.name : null,
-            subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
-          };
-        });
-      }
-      
-      console.log(viewuser);
-      
-  
-          res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_list", {
+        const restaurantId = req.params.restaurantId; // Restaurant ID from the request
+        const productId = req.params._id; // Product ID from the request
+    
+        // Fetch the restaurant data by restaurantId and populate the userId
+        const restaurant = await Models.restaurantModel
+          .findById(req.params.id)
+          .lean();
+    
+        if (!restaurant) {
+          return res.status(404).json({ message: "Restaurant not found" });
+        }
+    
+        // Find the product within the restaurant's products array by productId
+        let product = restaurant.products.find(
+          (prod) => prod._id.toString() === productId.toString()
+        );
+    
+        if (!product) {
+          return res.status(404).json({ message: "Product not found" });
+        }
+    
+        // Find the corresponding subcategory for the product
+        const matchedSubCategory = restaurant.subCategory.find(
+          (subCat) => subCat._id.toString() === product.subCategoryId.toString()
+        );
+    
+        // Find the corresponding category for the subcategory (if subcategory exists)
+        const matchedCategory = matchedSubCategory
+          ? restaurant.category.find(
+              (cat) => cat._id.toString() === matchedSubCategory.categoryId.toString()
+            )
+          : null;
+    
+        // Enrich the product with category and subcategory details
+        product = {
+          ...product,
+          subCategoryName: matchedSubCategory ? matchedSubCategory.name : null,
+          subCategoryImage: matchedSubCategory ? matchedSubCategory.image : null,
+          categoryName: matchedCategory ? matchedCategory.name : null,
+          categoryImage: matchedCategory ? matchedCategory.image : null,
+        };
+    
+        // Render the SubAdmin view
+        res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_view", {
           title,
-          viewuser,
-          restaurant:req.params._id,
+          productId,
+          restaurantName: restaurant.name,
+          restaurantId,
+          product,
           session: req.session.subAdmin,
           msg: req.flash("msg"),
         });
       } catch (error) {
-        console.log(error);
-        throw error;
+        console.error("Error fetching product:", error);
+        res.status(500).json({ message: "Internal server error" });
       }
     },
+    
   
       //----------------order api-----------------------
   
