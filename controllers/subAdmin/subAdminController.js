@@ -1188,7 +1188,7 @@ module.exports = {
     
       active_order_list: async (req, res) => {
         try {
-          const title = "activeorders";
+          const title = "active_orders";
           const orders = await Models.orderModel
             .find({ status: 4 })
             .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
@@ -1220,7 +1220,7 @@ module.exports = {
       },
       active_view_order: async (req, res) => {
         try {
-          let title = "activeorders";
+          let title = "active_orders";
           // Fetch the order details by its ID from the database
           const order = await Models.orderModel
             .findById(req.params._id)
@@ -1268,7 +1268,7 @@ module.exports = {
     
       delivered_order_list: async (req, res) => {
         try {
-          const title = "deliveredorders";
+          const title = "delivered_orders";
           const orders = await Models.orderModel
             .find({ status: 2 })
             .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
@@ -1300,7 +1300,7 @@ module.exports = {
       },
       delivered_view_order: async (req, res) => {
         try {
-          let title = "deliveredorders";
+          let title = "delivered_orders";
           // Fetch the order details by its ID from the database
           const order = await Models.orderModel
             .findById(req.params._id)
@@ -1347,7 +1347,7 @@ module.exports = {
       },
       cancel_order_list: async (req, res) => {
         try {
-          const title = "cancelledorders";
+          const title = "cancelled_orders";
           const orders = await Models.orderModel
             .find({ status: 3 })
             .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
@@ -1379,7 +1379,7 @@ module.exports = {
       },
       cancel_view_order: async (req, res) => {
         try {
-          let title = "cancelledorders";
+          let title = "cancelled_orders";
           // Fetch the order details by its ID from the database
           const order = await Models.orderModel
             .findById(req.params._id)
@@ -1447,7 +1447,7 @@ module.exports = {
     console.log("subAdmin/orders/pending_order_list",formattedOrders)
     console.log("title",title)
     console.log("req.flash()",req.flash("msg"))
-          res.render("subAdmin/orders/pending_order_list", {
+          res.render("SubAdmin/orders/pending_order_list", {
             title,
             orderdata: formattedOrders,
             session: req.session.subAdmin, // Ensure session data is passed here

@@ -52,7 +52,7 @@ module.exports = {
         title,
         data,
         session: req.session.user,
-        msg: req.flash("msg"),
+        msg: req.flash("msg")||'',
       });
     } catch (error) {
       console.log(error);
