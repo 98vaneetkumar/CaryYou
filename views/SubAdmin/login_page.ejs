@@ -6,7 +6,7 @@
       content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
       name="viewport"
     />
-    <title>CaryYou &mdash; Login</title>
+    <title>CaryYou &mdash; Subadmin Login</title>
     <link rel="icon" type="image/x-icon" href="../assets/img/logo.png" />
 
     <!-- General CSS Files -->
@@ -21,6 +21,12 @@
       href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
       integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
       crossorigin="anonymous"
+    />
+
+    <!-- Toastr CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
     />
 
     <style>
@@ -93,7 +99,7 @@
         text-align: center;
         margin-top: 10px;
         font-size: 14px;
-        color: #666;
+        color: #999;
       }
 
       .footer-left a {
@@ -109,15 +115,9 @@
         <img src="/assets/img/logo.png" alt="Logo" />
       </div>
       <div class="card">
-        <div class="card-header">Sign in</div>
+        <div class="card-header">Subadmin Login</div>
         <div class="card-body">
-          <form
-            method="POST"
-            action="/subAdmin/Login"
-            id="addForm"
-            class="needs-validation"
-            novalidate=""
-          >
+          <form id="subadminLoginForm" method="POST" action="/subadmin/login">
             <div class="form-group">
               <label for="email">Email</label>
               <input
@@ -126,9 +126,9 @@
                 class="form-control"
                 name="email"
                 required
+                autofocus
               />
             </div>
-
             <div class="form-group">
               <label for="password">Password</label>
               <input
@@ -139,19 +139,70 @@
                 required
               />
             </div>
-
+            <input type="hidden" id="deviceToken" name="deviceToken" value="" />
             <div class="form-group text-center">
-              <button type="submit" class="btn btn-lg">Login</button>
+              <button type="submit" class="btn btn-primary">Login</button>
             </div>
           </form>
-          <div class="footer-left">
-            <b>Design By</b>
-            <a href="https://github.com/98vaneetkumar"
-              >Developer Vaneet Kumar</a
-            >
-          </div>
         </div>
       </div>
     </div>
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script>
+      // Toastr options
+      toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        timeOut: "3000",
+        extendedTimeOut: "1000",
+        showMethod: "slideDown",
+        hideMethod: "slideUp",
+      };
+
+      // Function to display Toastr messages
+      function showToast(message, type) {
+        if (type === "success") {
+          toastr.success(message);
+        } else if (type === "error") {
+          toastr.error(message);
+        }
+      }
+
+      // Handle form submission with AJAX
+      $("#subadminLoginForm").submit(function (event) {
+        event.preventDefault();
+
+        const email = $("#email").val();
+        const password = $("#password").val();
+        const deviceToken = $("#deviceToken").val();
+
+        $.ajax({
+          url: "/subadmin/login",
+          method: "POST",
+          data: { email, password, deviceToken },
+          success: function (response) {
+            if (response.success) {
+              showToast("Login Successful!", "success");
+              setTimeout(() => {
+                window.location.href = "/subadmin/dashboard";
+              }, 1000);
+            } else {
+              showToast(response.message || "Invalid credentials!", "error");
+            }
+          },
+          error: function (xhr) {
+            const errorMessage =
+              xhr.responseJSON?.message ||
+              "An unexpected error occurred. Please try again.";
+            showToast(errorMessage, "error");
+          },
+        });
+      });
+    </script>
   </body>
 </html>
