@@ -1035,7 +1035,7 @@ module.exports = {
     
         // Render the category list
         res.render(
-          "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_category_list",
+          "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_subCategory_list",
           {
             title,
             viewuser,
@@ -1051,6 +1051,8 @@ module.exports = {
     },
     restaurant_product: async (req, res) => { 
       try {
+        console.log('===========', req.params._id);
+        return
         let title = "provider_list";
         const viewuser = await Models.restaurantModel
         .findById(req.params._id)
