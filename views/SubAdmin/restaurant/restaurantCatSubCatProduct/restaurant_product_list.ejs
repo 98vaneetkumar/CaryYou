@@ -1,186 +1,292 @@
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1>Restaurant</h1>
+      <h1><%= viewuser.name %></h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active">
-          <a href="/subAdmin/dashboard">Dashboard</a>
+          <a href="/subadmin/dashboard">Dashboard</a>
         </div>
         <div class="breadcrumb-item">Restaurant</div>
       </div>
     </div>
-    <div class="col-12 col-mt-5">
-      <div class="card-datatable">
-        <div class="table-responsive">
-          <table id="myTable" class="table table-hover table-md">
-            <thead>
-              <tr style="background-color: #ebf2f2">
-                <th scope="col">S No.</th>
-                <th scope="col">Image</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">SubCateory</th>
-                <th scope="col">Status</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% viewuser.products.forEach(function(data, i) { %>
-                <tr>
-                  <td><%= 1 + i %></td>
-                  <td>
-                    <img
-                      src="<%= data.image ? data.image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
-                      width="50"
-                      height="50"
-                      class="profile_img rounded-circle border"
-                      style="cursor: pointer"
-                    />
-                  </td>
-                  <td><%= data.itemName %></td>
-                  <td><%= data?.subCategoryName %></td>
-                  <td>
-                    <% if (data?.status == 1) { %>
-                      <button
-                        onclick="changeStatus(this)"
-                        id="restaurantId_<%= data._id %>"
-                        class="btn btn-sm btn-success status"
-                        data-id="<%= data._id %>"
-                        value="0"
-                      >
-                        Active
-                      </button>
-                    <% } else { %>
-                      <button
-                        onclick="changeStatus(this)"
-                        id="restaurantId_<%= data._id %>"
-                        class="btn btn-sm btn-danger status"
-                        data-id="<%= data._id %>"
-                        value="1"
-                      >
-                        In-Active
-                      </button>
-                    <% } %>
-                  </td>
-                  <td>
-                    <div class="action-buttons">
-                      <a href="/subAdmin/restaurant_product_view/<%= data._id %>" class="btn btn-sm bg-warning">
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                      </a>
-                      <button
-                        onclick="confirmDelete('<%= data._id %>')"
-                        class="btn btn-sm bg-danger"
-                      >
-                        <i class="fa fa-trash"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              <% }); %>
-            </tbody>
-          </table>
+    <!-- Back Button -->
+    <div class="form-group text-left ml-3 mt-2">
+      <a
+        href="/subadmin/view_restaurant/<%= restaurant %>"
+        class="btn btn-dark rounded-pill"
+      >
+        <i class="fas fa-arrow-left"></i> Back
+      </a>
+    </div>
+    <!-- Grid Container -->
+    <div class="restaurant-grid">
+      <% viewuser.products.forEach(function(data, i) { %>
+      <div class="restaurant-item" data-index="<%= i %>">
+        <div class="restaurant-image-container">
+          <div class="restaurant-images" id="carousel-<%= i %>">
+            <% data.images.forEach(function(image, index) { %>
+            <div class="restaurant-image">
+              <img
+                src="<%= image ? image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
+                alt="<%= data.itemName %>"
+                class="img-fluid"
+              />
+            </div>
+            <% }); %>
+          </div>
+
+          <% if (data.images.length > 1) { %>
+          <button
+            class="carousel-arrow left-arrow"
+            onclick="moveSlide('left', '<%= i %>')"
+          >
+            &#10094;
+          </button>
+          <button
+            class="carousel-arrow right-arrow"
+            onclick="moveSlide('right', '<%= i %>')"
+          >
+            &#10095;
+          </button>
+          <% } %>
+        </div>
+
+        <div class="restaurant-info">
+          <h5><%= data.itemName %></h5>
+          <p class="sub-category"><%= data?.subCategoryName || 'N/A' %></p>
+          <p class="price">$<%= data.price || 'N/A' %></p>
+          <div class="buttons-container d-flex justify-content-between">
+            <div class="status-btn">
+              <% if (data?.status == 1) { %>
+              <button
+                id="restaurantId_<%= data._id %>"
+                class="btn btn-sm btn-success status"
+                data-id="<%= data._id %>"
+                value="0"
+              >
+                Active
+              </button>
+              <% } else { %>
+              <button
+                id="restaurantId_<%= data._id %>"
+                class="btn btn-sm btn-danger status"
+                data-id="<%= data._id %>"
+                value="1"
+              >
+                In-Active
+              </button>
+              <% } %>
+            </div>
+            <div class="view-btn">
+              <a
+                href="/subadmin/restaurant_product_view/<%= restaurant %>/<%=data._id%>"
+                class="btn btn-sm bg-warning"
+              >
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
+      <% }); %>
     </div>
   </section>
 </div>
 
+<!-- "Top Up" Button -->
+<button id="topUpButton" class="topup-btn">↑</button>
+
+<!-- jQuery (required for AJAX) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Styles -->
 <style>
-  .action-buttons {
-    display: flex;
-    gap: 5px; /* Adjust spacing between buttons as needed */
+  .restaurant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 15px;
   }
-  .action-buttons .btn {
-    margin: 0; /* Remove any default margin */
+
+  .restaurant-item {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .restaurant-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .restaurant-image-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .restaurant-images {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .restaurant-image {
+    min-width: 100%;
+  }
+
+  .restaurant-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .status-btn,
+  .view-btn {
+    display: inline-block;
+  }
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    outline: none;
+  }
+
+  .carousel-arrow:focus {
+    outline: none;
+  }
+
+  .left-arrow {
+    left: 10px;
+  }
+
+  .right-arrow {
+    right: 10px;
+  }
+
+  .restaurant-info {
+    padding: 12px 10px;
+    text-align: center;
+  }
+
+  .restaurant-info h5 {
+    margin: 8px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .restaurant-info .sub-category {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 8px;
+  }
+
+  .price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1e9e35;
+    margin: 8px 0;
   }
 </style>
 
 <script>
-  $(document).ready(function () {
-    $("#myTable").DataTable({
-      dom: "Bfrtip",
-      buttons: ["excel","print"],
+  document.addEventListener("DOMContentLoaded", function () {
+    const carousels = document.querySelectorAll(".restaurant-images");
+
+    // Add hover event listeners to specific product items
+    carousels.forEach((carousel, index) => {
+      const images = carousel.children;
+      let currentIndex = 0;
+      let autoScroll;
+
+      // Function to start auto-scroll
+      const startAutoScroll = () => {
+        if (images.length > 1) {
+          autoScroll = setInterval(() => {
+            currentIndex = (currentIndex + 1) % images.length;
+            carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+          }, 2000); // Change image every 2 seconds
+        }
+      };
+
+      // Function to stop auto-scroll
+      const stopAutoScroll = () => {
+        clearInterval(autoScroll);
+      };
+
+      // Event listeners for hover behavior
+      carousel.addEventListener("mouseenter", startAutoScroll);
+      carousel.addEventListener("mouseleave", stopAutoScroll);
     });
   });
 </script>
 
 <script>
-  setTimeout(function () {
-    $("div.msg").fadeOut();
-  }, 2000);
-</script>
+  function moveSlide(direction, carouselId) {
+    const carousel = document.querySelector(`#carousel-${carouselId}`);
+    const images = carousel.children;
+    const totalImages = images.length;
 
-<script>
-  function confirmDelete(id) {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: "btn btn-warning",
-        cancelButton: "btn btn-info",
-      },
-      buttonsStyling: true,
-    });
+    if (!carousel.dataset.currentIndex) {
+      carousel.dataset.currentIndex = 0;
+    }
 
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true,
-      })
-      .then((isConfirm) => {
-        if (isConfirm.isConfirmed) {
-          $.ajax({
-            url: `/subAdmin/delete_restaurant/${id}`,
-            type: "DELETE",
-            success: function () {
-              swalWithBootstrapButtons
-                .fire("Deleted!", "The restaurant has been deleted.", "success")
-                .then(() => {
-                  location.reload();
-                });
-            },
-          });
-        } else {
-          swalWithBootstrapButtons.fire(
-            "Cancelled",
-            "The restaurant is safe :)",
-            "error"
-          );
-        }
-      });
+    let currentIndex = parseInt(carousel.dataset.currentIndex);
+
+    if (direction === "left") {
+      // If it's the first image, move to the last image (loop backward)
+      currentIndex = (currentIndex - 1 + totalImages) % totalImages; // Move backward
+    } else if (direction === "right") {
+      // If it's the last image, move to the first image (loop forward)
+      currentIndex = (currentIndex + 1) % totalImages; // Move forward
+    }
+
+    // Apply the transform to move to the correct image
+    carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+    carousel.dataset.currentIndex = currentIndex; // Update the current index
   }
 </script>
 
-<script>
-  const changeStatus = (val) => {
-    let id = val.getAttribute("data-id");
-    let value = val.getAttribute("value");
-    let elemID = val.getAttribute("id");
-    elemID = document.getElementById(elemID);
+<!-- Auto-Scroll Script -->
+<!-- <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const carousels = document.querySelectorAll(".restaurant-images");
 
-    $.ajax({
-      type: "POST",
-      url: "/subAdmin/restaurant_status",
-      data: {
-        id: id,
-        value: value,
-      },
-      success: function (data) {
-        if (data) {
-          elemID.setAttribute("value", 0);
-          elemID.innerText = `Active`;
-          elemID.classList.remove("btn-danger");
-          elemID.classList.add("btn-success");
-        } else {
-          elemID.setAttribute("value", 1);
-          elemID.innerText = `In-Active`;
-          elemID.classList.remove("btn-success");
-          elemID.classList.add("btn-danger");
+    carousels.forEach((carousel) => {
+      const images = carousel.children;
+      let currentIndex = 0;
+
+      // Auto-scroll function
+      setInterval(() => {
+        if (images.length > 1) {
+          currentIndex = (currentIndex + 1) % images.length;
+          carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
         }
-        window.location.reload();
-      },
+      }, 3000); // Change image every 3 seconds
     });
-  };
-</script>
+  });
+</script> -->

@@ -67,7 +67,7 @@ module.exports=function(io){
     router.get("/restaurant_category/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_category)
     router.get("/restaurant_subCategory/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_subCategory)
     router.get("/restaurant_product/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_product)
-    router.get("/restaurant_product_view/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_product_view)
+    router.get("/restaurant_product_view/:restaurantId/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_product_view)
 
 
     //<------------------------------ Orders ------------------------->

@@ -1099,7 +1099,7 @@ module.exports = {
     
         // Fetch the restaurant data by restaurantId and populate the userId
         const restaurant = await Models.restaurantModel
-          .findById(req.params.id)
+          .findById(restaurantId)
           .lean();
     
         if (!restaurant) {
@@ -1144,7 +1144,7 @@ module.exports = {
           restaurantId,
           product,
           session: req.session.subAdmin,
-          msg: req.flash("msg"),
+          msg: req.flash("msg")||"",
         });
       } catch (error) {
         console.error("Error fetching product:", error);
