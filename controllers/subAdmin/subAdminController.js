@@ -100,10 +100,12 @@ module.exports = {
       const activeorders = await Models.orderModel.countDocuments({
         status: 4,
       });
+      let restaurantId = await Models.restaurantModel.findOne({_id: req.session.restaurant._id});
       res.render("SubAdmin/dashboard", {
         title,
         user,
         provider,
+        restaurantId,
         servicesdata: 0,
         contactus: 0,
         orders,
@@ -998,15 +1000,15 @@ module.exports = {
     },
     restaurant_category: async (req, res) => {
       try {
-        let title = "provider_list";
-        let viewuser = await Models.restaurantModel
-          .findById({ _id: req.params._id })
-          .populate("userId");
-      
+        const title = "Restaurant Category List";
+        const viewuser = await Models.restaurantModel
+          .findById({_id:req.params._id})
+          .populate("userId", "name email"); // Fetch limited fields if possible
+  
         res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_category_list", {
           title,
           viewuser,
-          restaurant:req.params._id,
+          restaurant: req.params._id,
           session: req.session.subAdmin,
           msg: req.flash("msg"),
         });
@@ -1015,43 +1017,37 @@ module.exports = {
         throw error;
       }
     },
+    
+    
     restaurant_subCategory: async (req, res) => {
       try {
-        let title = "provider_list";
+        // Fetch restaurant details
         const viewuser = await Models.restaurantModel
-        .findById(req.params._id)
-        .populate("userId") // Populate user information
-        .lean(); // Use `.lean()` to get a plain JavaScript object
-      
-      if (viewuser) {
-        // Map subCategories with corresponding category data
-        viewuser.subCategory = viewuser.subCategory.map((subCat) => {
-          const matchedCategory = viewuser.category.find(
-            (cat) => cat._id.toString() === subCat.categoryId.toString()
-          );
-      
-          return {
-            ...subCat,
-            categoryName: matchedCategory ? matchedCategory.name : null,
-            categoryImage: matchedCategory ? matchedCategory.image : null,
-          };
-        });
-      }
-          
-  
-          res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_subCategory_list", {
-          title,
-          viewuser,
-          restaurant:req.params._id,
-          session: req.session.subAdmin,
-          msg: req.flash("msg"),
-        });
+          .findById({_id:req.params._id})
+          .populate("userId");
+    
+        if (!viewuser) {
+          req.flash("msg", "Restaurant not found.");
+          return res.redirect("/subAdmin/some_error_page"); // Replace with the correct error page route
+        }
+    
+        // Render the category list
+        res.render(
+          "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_category_list",
+          {
+            title: "provider_list",
+            viewuser,
+            restaurant: req.params._id,
+            session: req.session.subAdmin,
+            msg: req.flash("msg"),
+          }
+        );
       } catch (error) {
         console.log(error);
         throw error;
       }
     },
-    restaurant_product: async (req, res) => {
+    restaurant_product: async (req, res) => { 
       try {
         let title = "provider_list";
         const viewuser = await Models.restaurantModel
