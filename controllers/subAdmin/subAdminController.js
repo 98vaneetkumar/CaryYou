@@ -553,6 +553,83 @@ module.exports = {
       throw error
     }
   },
+  edit_category:async(req,res)=>{
+   try {
+    const title = "Restaurant Category List";
+    let restaurant = await Models.restaurantModel.findOne({_id:req.params.resturantId});
+    const category = restaurant.category.find(category => category._id.toString() === req.params._id);
+
+    res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/edit_category", 
+      { 
+        title: title,
+        restaurant: req.params.resturantId, 
+        category:category,
+        session:req.session.subAdmin,
+        msg: req.flash("msg")||""
+        });
+   } catch (error) {
+    throw error
+   }
+  },
+  update_category:async(req,res)=>{
+    try {
+      const title = "Restaurant Category List";
+      let profilePicturePath = null;
+    
+      // Check and upload new image if provided
+      if (req.files && req.files.image) {
+        profilePicturePath = await helper.fileUpload(req.files.image);
+      }
+    
+      // Find the restaurant
+      let restaurant = await Models.restaurantModel.findOne({ _id: req.body.restaurant });
+    
+      // Find the specific category
+      const categoryIndex = restaurant.category.findIndex(category => category._id.toString() === req.body.id);
+    
+      if (categoryIndex === -1) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+    
+      // Prepare the update object
+      const updatedCategory = {
+        ...restaurant.category[categoryIndex],
+        name: req.body.name,
+      };
+    
+      if (profilePicturePath) {
+        updatedCategory.image = profilePicturePath;
+        // Delete the old image
+        if (restaurant.category[categoryIndex].image) {
+          await helper.deleteFile(restaurant.category[categoryIndex].image);
+        }
+      }
+    
+      // Update the specific category
+      restaurant.category[categoryIndex] = updatedCategory;
+    
+      // Save the updated restaurant document
+      await restaurant.save();
+    
+      const viewuser = await Models.restaurantModel
+      .findById({ _id: req.body.restaurant })
+      .populate("userId", "name email"); // Fetch limited fields if possible
+
+    res.render(
+      "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_category_list",
+      {
+        title,
+        viewuser,
+        restaurant: req.body.restaurant,
+        session: req.session.subAdmin,
+        msg: req.flash("msg")||"",
+      }
+    );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
 
   restaurant_subCategory: async (req, res) => {
     try {
