@@ -32,30 +32,30 @@
             </thead>
             <tbody>
               <% viewuser.category.forEach(function(data, i) { %>
-                <tr>
-                  <td><%= 1 + i %></td>
-                  <td>
-                    <img
-                      src="<%= data?.image ? data?.image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
-                      width="50"
-                      height="50"
-                      class="profile_img rounded-circle border"
-                      style="cursor: pointer"
-                    />
-                  </td>
-                  <td><%= data?.name %></td>
-                  <td>
-                    <div class="action-buttons">
-                      <a
-                        href="/subAdmin/edit_category/<%=restaurant%>/<%= data?.id %>"
-                        class="btn btn-sm bg-warning"
-                        title="Edit Category"
-                      >
-                        <i class="fa fa-edit"></i> Edit
-                      </a>
-                    </div>
-                  </td>
-                </tr>
+              <tr>
+                <td><%= 1 + i %></td>
+                <td>
+                  <img
+                    src="<%= data?.image ? data?.image : 'https://avatar.iran.liara.run/public/boy?username=Ash' %>"
+                    width="50"
+                    height="50"
+                    class="profile_img rounded-circle border"
+                    style="cursor: pointer"
+                  />
+                </td>
+                <td><%= data?.name %></td>
+                <td>
+                  <div class="action-buttons">
+                    <a
+                      href="/subAdmin/edit_category/<%=restaurant%>/<%= data?.id %>"
+                      class="btn btn-sm bg-warning"
+                      title="Edit Category"
+                    >
+                      <i class="fa fa-edit"></i> Edit
+                    </a>
+                  </div>
+                </td>
+              </tr>
               <% }); %>
             </tbody>
           </table>

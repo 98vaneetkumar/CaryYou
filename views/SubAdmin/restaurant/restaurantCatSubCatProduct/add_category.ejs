@@ -22,8 +22,9 @@
       </div>
         <div class="card-body">
           <form action="/subAdmin/Create_category" id="addForm" enctype="multipart/form-data" method="post">
+            <!-- Image Container -->
             <div class="row mt-sm-4 justify-content-center">
-              <div class="col-12 col-md-12 col-lg-4">
+              <div class="col-12 col-md-6">
                 <div class="card profile-widget bg-white">
                   <div class="profile-widget-header text-center py-3">
                     <img alt="image" width="200" height="200" id="blah" src="/assets/img/defaultimage.jpg"
@@ -34,29 +35,25 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-md-12 col-lg-10 offset-lg-0">
-                <div class="card-body p-0">
-                  <div class="form-group w-100 floating-addon">
-                    <label for="name">Category Name</label>
-                    <div class="input-group">
-                      <input id="name" type="text" class="form-control" name="name" placeholder="Category Name" required>
-                      <div class="input-group-append">
-                        <div class="input-group-text">
-                          <i class="fas fa-user"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <input id="_id" type="text" class="form-control" name="_id" value="<%=restaurant%>" hidden>
+            </div>
 
-                  <div class="text-right mt-4">
-                    <button type="submit" class="btn btn-info">
-                      Submit
-                    </button>
-                  </div>
+            <!-- Input Fields Section -->
+            <div class="row justify-content-center mt-4">
+              <div class="col-12 col-md-6 text-center">
+                <!-- Category Name Input -->
+                <div class="form-group w-100 floating-addon">
+                  <label for="name" class="d-none">Enter Category Name</label>
+                  <input id="name" type="text" class="form-control small-input" name="name" placeholder="Category Name" required>
+                </div>
+                <!-- Submit Button -->
+                <div class="mt-3">
+                  <button type="submit" class="btn btn-info w-50">Submit</button>
                 </div>
               </div>
             </div>
+
+            <!-- Hidden Input for Restaurant ID -->
+            <input id="_id" type="text" class="form-control" name="_id" value="<%=restaurant%>" hidden>
           </form>
         </div>
       </div>
@@ -68,14 +65,27 @@
   .error {
     color: red !important;
   }
-
-  .input-group .form-control {
-    border-right: none; /* Remove the right border of the input box */
+  
+  .small-input {
+    max-width: 300px; /* Set the maximum width for input fields */
+    margin: 0 auto; /* Center align the input field */
   }
 
-  .input-group-append .input-group-text {
-    background: #fff;
-    border-left: none; /* Remove the left border of the icon box */
+  .profile-widget-header {
+    position: relative;
+  }
+
+  h5 {
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .btn-info {
+    border-radius: 30px;
+  }
+
+  .btn-info.w-50 {
+    max-width: 200px; /* Adjust button width */
   }
 </style>
 
@@ -83,9 +93,7 @@
   function goBack() {
     window.history.back();
   }
-</script>
 
-<script>
   function previewImage(event) {
     const reader = new FileReader();
     reader.onload = function () {
@@ -96,7 +104,6 @@
   }
 
   $(document).ready(function () {
-
     jQuery.validator.addMethod("noSpace", function (value, element) {
       return value == '' || value.trim().length != 0;
     }, "No space allowed.");

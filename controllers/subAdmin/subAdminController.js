@@ -556,13 +556,13 @@ module.exports = {
   edit_category:async(req,res)=>{
    try {
     const title = "Restaurant Category List";
-    let restaurant = await Models.restaurantModel.findOne({_id:req.params.resturantId});
+    let restaurant = await Models.restaurantModel.findOne({_id:req.params.restaurantId});
     const category = restaurant.category.find(category => category._id.toString() === req.params._id);
 
     res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/edit_category", 
       { 
         title: title,
-        restaurant: req.params.resturantId, 
+        restaurant: req.params.restaurantId, 
         category:category,
         session:req.session.subAdmin,
         msg: req.flash("msg")||""
@@ -729,29 +729,22 @@ module.exports = {
   
   edit_subCategory: async (req, res) => {
     try {
-      const title = "Restaurant Subcategory List";
-  
-      // Find the restaurant and specific subcategory
-      let restaurant = await Models.restaurantModel.findOne({
-        _id: req.params.restaurantId,
+      const title = "Restaurant SubCategory List";
+      
+      let restaurant = await Models.restaurantModel.findOne({ _id: req.params.restaurantId });
+
+      const subCategory = restaurant.subCategory.find(subCategory => subCategory._id.toString() === req.params._id);
+
+      res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/edit_subCategory", {
+        title: title,
+        restaurant: req.params.restaurantId,
+        subCategory: subCategory,
+        session: req.session.subAdmin,
+        msg: req.flash("msg") || ""
       });
-      const subCategory = restaurant.subcategories.find(
-        (subCat) => subCat._id.toString() === req.params._id
-      );
-  
-      res.render(
-        "SubAdmin/restaurant/restaurantCatSubCatProduct/edit_subcategory",
-        {
-          title: title,
-          restaurant: req.params.restaurantId,
-          subCategory: subCategory,
-          session: req.session.subAdmin,
-          msg: req.flash("msg") || "",
-        }
-      );
     } catch (error) {
       console.error(error);
-      throw error;
+      res.status(500).send("An error occurred while processing the request");
     }
   },
   
