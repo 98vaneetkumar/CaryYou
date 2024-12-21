@@ -36,6 +36,8 @@ module.exports=function(io){
 
 
     router.get("/restaurant_category/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_category)
+    router.get("/add_category/:_id",sessionSubAdmin, controllers.subAdminController.add_category)
+    router.post("/Create_category",sessionSubAdmin, controllers.subAdminController.Create_category)
     router.get("/restaurant_subCategory/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_subCategory)
     router.get("/restaurant_product/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_product)
     router.get("/restaurant_product_view/:restaurantId/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_product_view)

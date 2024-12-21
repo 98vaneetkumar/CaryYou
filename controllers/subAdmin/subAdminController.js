@@ -505,6 +505,54 @@ module.exports = {
       throw error;
     }
   },
+  add_category:async(req,res)=>{
+    try {
+      const title = "Restaurant Category List";
+      res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/add_category", 
+        { 
+          title: title,
+          restaurant: req.params._id, 
+          session:req.session.subAdmin,
+          msg: req.flash("msg")||""
+          });
+    } catch (error) {
+      throw error
+    }
+  },
+  Create_category:async(req,res)=>{
+    try {
+      const title = "Restaurant Category List";
+        // Handle file upload using commonHelper
+        let profilePicturePath = null;
+        if (req.files && req.files.image) {
+              profilePicturePath = await helper.fileUpload(
+                req.files.image
+              );
+        }
+        let objToSave={
+            name:req.body.name,
+            image:profilePicturePath
+          }
+        await Models.restaurantModel.findByIdAndUpdate({_id:req.body._id},{$push:{category:objToSave}})
+        const viewuser = await Models.restaurantModel
+        .findById({ _id: req.body._id })
+        .populate("userId", "name email"); // Fetch limited fields if possible
+
+      res.render(
+        "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_category_list",
+        {
+          title,
+          viewuser,
+          restaurant: req.body._id,
+          session: req.session.subAdmin,
+          msg: req.flash("msg"),
+        }
+      );
+      return
+    } catch (error) {
+      throw error
+    }
+  },
 
   restaurant_subCategory: async (req, res) => {
     try {
