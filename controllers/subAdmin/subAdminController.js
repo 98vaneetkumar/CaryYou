@@ -50,6 +50,9 @@ module.exports = {
 
       // Store subadmin session
       req.session.subAdmin = findUser;
+
+      // req.session[findUser._id.toString()] = findUser;
+
       if (restaurantDetail) {
         req.session.restaurant = restaurantDetail;
       }
@@ -1001,4 +1004,6 @@ module.exports = {
       });
     }
   },
+
+
 };

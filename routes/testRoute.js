@@ -18,6 +18,8 @@ router.post('/delivered', controller.testController.markOrderDelivered);
 // Route to cancel an order
 router.post('/cancel', controller.testController.cancelOrder);
 
+router.post('/testRestaurant', controller.testController.testRestaurant);
+
 
 
 

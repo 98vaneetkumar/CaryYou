@@ -246,6 +246,21 @@ module.exports = {
     }
   },
   
+  
+  testRestaurant : async(req, res)=>{
+    try {
+      let objToSave = {
+        userId: "676662bdb0f809a8a679e045",
+        name: "chai tapri",
+      }
+
+      let data = await Models.restaurantModel.create(objToSave);
+      res.json(data);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
 
 
 
