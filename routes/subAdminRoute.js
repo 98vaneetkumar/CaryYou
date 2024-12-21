@@ -42,28 +42,6 @@ module.exports=function(io){
     router.post('/restaurant_status', controllers.subAdminController.restaurant_status)
 
 
-
-    router.get('/restaurant_order_list/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_order_list);
-    router.get('/restaurant_view_order/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_view_order);
-
-    router.get('/restaurant_active_order_list/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_active_order_list);
-    router.get('/restaurant_active_view_order/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_active_view_order);
-
-    router.get('/restaurant_delivered_order_list/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_delivered_order_list);
-    router.get('/restaurant_delivered_view_order/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_delivered_view_order);
-
-    router.get('/restaurant_cancel_order_list/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_cancel_order_list);
-    router.get('/restaurant_cancel_view_order/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_cancel_view_order);
-
-
-    router.get('/restaurant_pending_order_list/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_pending_order_list);
-    router.get('/restaurant_pending_view_order/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_pending_view_order);
-
-
-    router.get('/restaurant_return_order_list/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_return_order_list);
-    router.get('/restaurant_return_view_order/:_id', sessionSubAdmin, controllers.subAdminController.restaurant_return_view_order);
-
-
     router.get("/restaurant_category/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_category)
     router.get("/restaurant_subCategory/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_subCategory)
     router.get("/restaurant_product/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_product)
