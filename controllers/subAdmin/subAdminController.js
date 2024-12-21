@@ -130,8 +130,9 @@ module.exports = {
   subAdmin_profile: async (req, res) => {
     try {
       let title = "subAdmin_profile";
-      res.render("SubAdmin/SubAdmin/SubAdmin_profile", {
+      res.render("SubAdmin/subAdmin/subAdmin_profile", {
         title,
+        restaurant:req.session.restaurant._id,
         session: req.session,
         msg: req.flash("msg"),
       });
@@ -175,8 +176,9 @@ module.exports = {
   change_password: async (req, res) => {
     try {
       let title = "change_password";
-      res.render("SubAdmin/SubAdmin/change_password", {
+      res.render("SubAdmin/subAdmin/change_password", {
         title,
+        restaurant:req.session.restaurant._id,
         session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
@@ -227,6 +229,7 @@ module.exports = {
       res.render("SubAdmin/commission/commission", {
         title,
         users,
+        restaurant:req.session.restaurant._id,
         session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
