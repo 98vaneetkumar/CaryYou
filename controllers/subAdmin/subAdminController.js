@@ -86,18 +86,18 @@ module.exports = {
       let title = "dashboard";
       let user = await Models.userModel.countDocuments({ role: 1 });
       let provider = await Models.userModel.countDocuments({ role: 2 });
-      const orders = await Models.orderModel.countDocuments();
+      const orders = await Models.orderModel.countDocuments({restaurant:req.session.restaurant._id});
       const pendingorders = await Models.orderModel.countDocuments({
-        status: 1,
+        status: 1,restaurant:req.session.restaurant._id,
       });
       const deliveredorders = await Models.orderModel.countDocuments({
-        status: 2,
+        status: 2,restaurant:req.session.restaurant._id,
       });
       const cancelledorders = await Models.orderModel.countDocuments({
-        status: 3,
+        status: 3,restaurant:req.session.restaurant._id,
       });
       const activeorders = await Models.orderModel.countDocuments({
-        status: 4,
+        status: 4,restaurant:req.session.restaurant._id,
       });
       let restaurantId = await Models.restaurantModel.findOne({
         _id: req.session.restaurant._id,
@@ -606,7 +606,7 @@ module.exports = {
     try {
       const title = "order_list";
       const orders = await Models.orderModel
-        .find({})
+        .find({restaurant: req.params._id})
         .populate("orderBy", "fullName")
         .populate("restaurant", "name")
         .sort({ createdAt: -1 });
