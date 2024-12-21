@@ -5,7 +5,7 @@
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="/subadmin/dashboard">Dashboard</a></div>
         <div class="breadcrumb-item">
-          <a href="/subadmin/view_restaurant/<%= product.restaurantId %>">Restaurant</a>
+          <a href="/subadmin/restaurant_product/<%= restaurant %>">Product</a>
         </div>
         <div class="breadcrumb-item">Product Details</div>
       </div>
@@ -15,7 +15,7 @@
       <div class="card p-5 rounded-lg shadow-lg">
         <!-- Back Button -->
         <div class="form-group text-left mb-5">
-          <a href="/subadmin/restaurant_product/<%= restaurantId %>" class="btn btn-info rounded-pill">
+          <a href="/subadmin/restaurant_product/<%= restaurant %>" class="btn btn-info rounded-pill">
             <i class="fas fa-arrow-left"></i> Back to All Products of <%=restaurantName%>
           </a>
         </div>

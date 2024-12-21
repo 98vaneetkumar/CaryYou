@@ -1135,13 +1135,13 @@ module.exports = {
           categoryName: matchedCategory ? matchedCategory.name : null,
           categoryImage: matchedCategory ? matchedCategory.image : null,
         };
-    
+    console.log("product",product)
         // Render the SubAdmin view
         res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_view", {
           title,
           productId,
           restaurantName: restaurant.name,
-          restaurantId,
+          restaurant:req.params.restaurantId,
           product,
           session: req.session.subAdmin,
           msg: req.flash("msg")||"",
