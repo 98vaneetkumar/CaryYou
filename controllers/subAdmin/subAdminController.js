@@ -708,16 +708,16 @@ module.exports = {
     try {
       const title = "Restaurant subCategory List";
       
-      let restaurant = await Models.restaurantModel.findOne({ _id: req.params.restaurantId });
+      let restaurant1 = await Models.restaurantModel.findOne({ _id: req.params.restaurantId });
 
-      const subCategory = restaurant.subCategory.find(subCategory => subCategory._id.toString() === req.params._id);
-      console.log("logs",restaurant)
+      const subCategory = restaurant1.subCategory.find(subCategory => subCategory._id.toString() === req.params._id);
+      console.log("logs",req.params.restaurantId)
       console.log("subCategory",subCategory)
 
       res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/edit_subCategory", {
         title: title,
         restaurant: req.params.restaurantId,
-        restaurantData:restaurant,
+        restaurantData:restaurant1,
         subCategory: subCategory,
         session: req.session.subAdmin,
         msg: req.flash("msg") || ""
