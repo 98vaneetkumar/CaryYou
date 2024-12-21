@@ -711,6 +711,9 @@ module.exports = {
       let restaurant = await Models.restaurantModel.findOne({ _id: req.params.restaurantId });
 
       const subCategory = restaurant.subCategory.find(subCategory => subCategory._id.toString() === req.params._id);
+      console.log("logs",restaurant)
+      console.log("subCategory",subCategory)
+
       res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/edit_subCategory", {
         title: title,
         restaurant: req.params.restaurantId,
