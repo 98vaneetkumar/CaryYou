@@ -255,72 +255,46 @@ module.exports = {
     }
   },
 
+  bannerList:async(req,res)=>{
+    try {
+      const title = "banners";
+      const viewuser = await Models.restaurantModel
+        .findById({ _id: req.params._id })
+ 
+      res.render(
+        "SubAdmin/banner/banner_list",
+        {
+          title,
+          viewuser,
+          restaurant: req.params._id,
+          session: req.session.subAdmin,
+          msg: req.flash("msg"),
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  addBanner_view:async(req,res)=>{
+    try {
+      res.render("SubAdmin/login_page", { session:req.session.subAdmin, msg: req.flash("msg") });
+    } catch (error) {
+      console.log("error", error);
+      throw error;
+    }
+  },
+  deleteBanner:async(req,res)=>{
+    try {
+      let _id=req.body.id
+      
+    } catch (error) {
+      throw error;
+    }
+  },
+
   //---------------restaurant apis-------------------
 
-  restaurant_list: async (req, res) => {
-    try {
-      let title = "provider_list";
-      let userdata = await Models.restaurantModel
-        .find()
-        .populate("userId") // Populating the user details based on userId
-        .sort({ createdAt: -1 }); // Sorting by creation date, most recent first
-      res.render("SubAdmin/restaurant/restaurant_list", {
-        title,
-        userdata, // Passing the list of restaurants to the view
-        session: req.session.subAdmin, // Passing the session data for authentication purposes
-        msg: req.flash("msg"), // Flash message, if any
-      });
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  },
-
-  view_restaurant: async (req, res) => {
-    try {
-      let title = "provider_list";
-      let viewuser = await Models.restaurantModel
-        .findById({ _id: req.params.id })
-        .populate("userId");
-      const orders = await Models.orderModel.countDocuments({
-        restaurant: req.params.id,
-      });
-      const pendingOrders = await Models.orderModel.countDocuments({
-        status: 1,
-        restaurant: req.params.id,
-      });
-      const activeOrders = await Models.orderModel.countDocuments({
-        status: 4,
-        restaurant: req.params.id,
-      });
-      const deliveredOrders = await Models.orderModel.countDocuments({
-        status: 2,
-        restaurant: req.params.id,
-      });
-      const cancelledOrders = await Models.orderModel.countDocuments({
-        status: 3,
-        restaurant: req.params.id,
-      });
-
-      res.render("SubAdmin/restaurant/restaurant_view", {
-        title,
-        viewuser,
-        category: viewuser?.category?.length || 0,
-        subCategory: viewuser?.subCategory?.length || 0,
-        products: viewuser?.products?.length || 0,
-        orders,
-        pendingOrders,
-        activeOrders,
-        deliveredOrders,
-        cancelledOrders,
-        session: req.session.subAdmin,
-        msg: req.flash("msg"),
-      });
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  },
   restaurant_dashboard_filter: async (req, res) => {
     try {
       const title = "provider_list";
@@ -417,16 +391,7 @@ module.exports = {
       res.status(500).send("Internal Server Error");
     }
   },
-  delete_restaurant: async (req, res) => {
-    try {
-      let userid = req.body.id;
-      let remove = await Models.userModel.deleteOne({ _id: userid });
-      res.redirect("/subAdmin/user_list");
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  },
+
   restaurant_status: async (req, res) => {
     try {
       // Update the restaurant status

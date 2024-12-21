@@ -65,6 +65,11 @@ const restaurantSchema = new mongoose.Schema(
         ref: "user",
       },
     ],
+    banner_image:[
+      {
+      image: [{ type: String }],
+      }
+    ],
     openingTime: { type: String },
     closingTime: { type: String },
     status:{

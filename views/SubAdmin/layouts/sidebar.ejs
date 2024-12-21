@@ -34,6 +34,13 @@
         </a>
       </li>
 
+      <li class="<%=(title =='banners'?'active':'') %>">
+        <a class="nav-link" href="/subAdmin/bannerList/<%=restaurant%>">
+          <i class="fas fa-chess-board" style="font-size: large"></i>
+          <span><b>Banners</b></span>
+        </a>
+      </li>
+
       <li class="<%=(title =='Restaurant Category List'?'active':'') %>">
         <a class="nav-link" href="/subAdmin/restaurant_category/<%=restaurant%>">
           <i class="fas fa-th" style="font-size: large"></i>
@@ -126,12 +133,7 @@
         </a>
       </li>
 
-      <li class="<%=(title =='banners'?'active':'') %>">
-        <a class="nav-link" href="#">
-          <i class="fas fa-chess-board" style="font-size: large"></i>
-          <span><b>Banners</b></span>
-        </a>
-      </li>
+    
 
       <!-- <li class="<%=(title =='terms_condition'?'active':'') %>">
         <a class="nav-link" href="/subAdmin/terms_condition">

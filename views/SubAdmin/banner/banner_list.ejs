@@ -4,7 +4,7 @@
       <h1> Banners</h1>
 
       <div class="section-header-breadcrumb">
-        <a href="/subAdmin/add_banner" class="btn btn-sm " style="background-color: var(--theme);"><i class="fa fa-plus"> Add
+        <a href="/subAdmin/addBanner_view<%=restaurant%>" class="btn btn-sm " style="background-color: var(--theme);"><i class="fa fa-plus"> Add
             Banner </i></a>
       </div>
     </div>
@@ -20,14 +20,14 @@
               </tr>
             </thead>
             <tbody>
-              <%catedata.forEach(function(data,i) {%>
+              <%viewuser?.banner_image?.forEach(function(data,i) {%>
                 <tr>
                   <td>
                     <%=1+i%>
                   </td>
                   <td>
-                    <% if(data.bannerImage!=''){%>
-                      <img src="<%=data.banner_image%>" width="50" height="50" type="submit"
+                    <% if(data?.image!=''){%>
+                      <img src="<%=data?.image%>" width="50" height="50" type="submit"
                       class="profile_img rounded-circle border" style="cursor:pointer;">
                     <%} else {%>
                     <img src="/assets/img/defaultimage.jpg" width="50" height="50" type="submit"
@@ -35,8 +35,8 @@
                       <%}%>
                   </td>
                   <td>
-                    <a href="/subAdmin/view_banner/<%=data._id%>" class="btn btn-sm bg-warning"><i class="fa fa-eye"
-                        aria-hidden="true"></i></a>
+                    <!-- <a href="/subAdmin/view_banner/<%=data._id%>" class="btn btn-sm bg-warning"><i class="fa fa-eye"
+                        aria-hidden="true"></i></a> -->
                     <!-- <a href="/edit_category/<%=data._id%>" class="btn btn-sm bg-warning"><i class="fas fa-edit"></i></a> -->
                     <button onclick="confirmDelete('<%=data._id%>')" class="btn btn-sm bg-danger"> <i
                         class="fa fa-trash"></i> </button>
@@ -104,8 +104,8 @@
       if (isConfirm.isConfirmed) {
         // alert('asd')
         $.ajax({
-          url: "/subAdmin/delete_banner/:id",
-          type: 'delete',
+          url: "/subAdmin/delete_banner",
+          type: 'post',
           data: {
             id: id
           },

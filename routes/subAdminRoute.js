@@ -27,13 +27,11 @@ module.exports=function(io){
     // router.post('/Update_terms',  controllers.cmsController.Update_terms)
     // router.get('/privacy_policy', sessionSubAdmin,  controllers.cmsController.privacy_policy_user)
 
+    router.get("/bannerList/:_id",sessionSubAdmin, controllers.subAdminController.bannerList);
+    router.post("/addBanner_view",sessionSubAdmin, controllers.subAdminController.addBanner_view)
+    router.post("/delete_banner",sessionSubAdmin, controllers.subAdminController.deleteBanner)
 
-
-
-    router.get('/restaurant_list', sessionSubAdmin, controllers.subAdminController.restaurant_list)
-    router.get('/view_restaurant/:id', sessionSubAdmin, controllers.subAdminController.view_restaurant)
     router.post("/restaurantDashboardFilter",sessionSubAdmin, controllers.subAdminController.restaurant_dashboard_filter)
-    router.delete('/delete_rastaurant/:id', controllers.subAdminController.delete_restaurant)
     router.post('/restaurant_status', controllers.subAdminController.restaurant_status)
 
 
