@@ -25,7 +25,6 @@
       </a>
     </div>
 
-    <br />
     <ul class="sidebar-menu">
       <li class="<%=(title =='dashboard'?'active':'') %>">
         <a class="nav-link" href="/subAdmin/dashboard">
@@ -68,7 +67,6 @@
         </a>
       </li>
 
-      <!-- Orders -->
       <li class="<%=(title =='order_list'?'active':'') %>">
         <a class="nav-link" href="/subAdmin/order_list/<%=restaurant%>"
           ><i class="fas fa-box" style="font-size: large"></i
@@ -127,41 +125,47 @@
           <span><b>Product Review</b></span>
         </a>
       </li>
-
-      <!-- <li class="<%=(title =='vendors'?'active':'') %>">
-        <a class="nav-link" href="#">
-          <i class="fas fa-store" style="font-size: large"></i>
-          <span><b>Vendors</b></span>
-        </a>
-      </li> -->
-
-      <!-- <li class="<%=(title =='services'?'active':'') %>">
-        <a class="nav-link" href="#">
-          <i class="fas fa-wrench" style="font-size: large"></i>
-          <span><b>Services</b></span>
-        </a>
-      </li> -->
-
-      <!-- <li class="<%=(title =='terms_condition'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/terms_condition">
-          <i class="fas fa-leaf" style="font-size: large"></i>
-          <span><b>Terms & Conditions</b></span>
-        </a>
-      </li>
-
-      <li class="<%=(title =='privacy_policy'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/privacy_policy">
-          <i class="fas fa-hands" style="font-size: large"></i>
-          <span><b>Privacy Policy</b></span>
-        </a>
-      </li>
-
-      <li class="<%=(title =='about_us'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/about_us">
-          <i class="fas fa-book" style="font-size: large"></i>
-          <span><b>About Us</b></span>
-        </a>
-      </li> -->
     </ul>
   </aside>
 </div>
+
+<style>
+/* Sidebar fixes */
+.main-sidebar {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100vh;
+  position: fixed;
+  background: #fff; /* Optional: ensure background color is set */
+  width: 250px; /* Adjust width as needed */
+}
+
+.sidebar-menu {
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+.sidebar-menu li {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+.sidebar-menu a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  transition: background 0.3s ease;
+}
+
+.sidebar-menu a:hover {
+  background: #f4f4f4;
+  border-radius: 4px;
+}
+
+.sidebar-menu .active {
+  background: #e0e0e0;
+  font-weight: bold;
+}
+</style>
