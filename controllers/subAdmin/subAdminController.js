@@ -489,7 +489,7 @@ module.exports = {
       const viewuser = await Models.restaurantModel
         .findById({ _id: req.params._id })
         .populate("userId", "name email") // Fetch limited fields if possible
-        .sort({ updatedAt: -1 }); 
+        .sort({ createdAt: -1 }); 
       res.render(
         "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_category_list",
         {
@@ -533,15 +533,17 @@ module.exports = {
             name:req.body.name,
             image:profilePicturePath
           }
-        // await Models.restaurantModel.findByIdAndUpdate({_id:req.body._id},{$push:{category:objToSave}})
-        await Models.restaurantModel.findByIdAndUpdate(
-          { _id: req.body._id },
-          {
-            $push: { category: objToSave },
-            $setOnInsert: { category: [] }, // Ensures the `category` field is initialized if missing
-          },
-          { upsert: true } // Creates the document if it doesn't exist
-        );
+       
+          // Update restaurant model to add the subcategory
+      await Models.restaurantModel.findByIdAndUpdate(
+        { _id: req.body._id },
+        {
+          $push: { category: objToSave }, // Push the new subCategoryObj
+        },
+        {
+          upsert: true, // Create the document if it doesn't exist
+        }// Creates the document if it doesn't exist
+      );
         res.redirect(`restaurant_category/${req.body._id}`);
       return
     } catch (error) {
@@ -620,7 +622,7 @@ module.exports = {
       const viewuser = await Models.restaurantModel
         .findById(req.params._id)
         .populate("userId") // Populate user information
-        .sort({ updatedAt: -1 })
+        .sort({ createdAt: -1 })
         .lean(); // Use `.lean()` to get a plain JavaScript object
 
       if (viewuser) {
