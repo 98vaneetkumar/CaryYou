@@ -1,1 +1,148 @@
-hello
+<div class="main-content">
+  <section class="section">
+    <div class="section-header">
+      <h1>Edit SubCategory</h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active">
+          <a href="/subAdmin/dashboard">Dashboard</a>
+        </div>
+        <div class="breadcrumb-item">
+          <a href="/subAdmin/restaurant_subCategory/<%=restaurant%>">Sub Category</a>
+        </div>
+        <div class="breadcrumb-item">Edit SubCategory</div>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <div class="card">
+        <!-- Back Button -->
+        <div class="form-group text-left ml-3 mt-2">
+          <button 
+              type="button" 
+              class="btn btn-dark rounded-pill d-flex align-items-center px-3" 
+              onclick="goBack()" 
+              aria-label="Go Back"
+          >
+              <i class="fas fa-arrow-left mr-2"></i> Back
+          </button>
+        </div>
+
+        <!-- Form Section -->
+        <form action="/subAdmin/update_subCategory" id="editForm" method="post" enctype="multipart/form-data">
+          <!-- Image Upload Section -->
+          <div class="row mt-sm-4 justify-content-center">
+            <div class="col-12 col-md-6">
+              <div class="card profile-widget bg-white">
+                <div class="profile-widget-header text-center py-3">
+                  <img alt="image" width="200" height="200" id="blah" src="<%=subCategory.image%>"
+                    class="profile_img rounded-circle border">
+                  <input type="file" name="image" id="imgInp"
+                    accept="image/*" onchange="previewImage(event)"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group w-100">
+            <label for="category" class="font-weight-bold">Select Category</label>
+            <select id="category" name="categoryId"  class="form-control small-input" required>
+              <% restaurantData.category.forEach(cat => { %>
+                <option value="<%= cat._id %>" <%= cat._id.toString() === subCategory.categoryId.toString() ? 'selected' : '' %>>
+                  <%= cat.name %>
+                </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <!-- Input Fields Section -->
+          <div class="row justify-content-center mt-4">
+            <div class="col-12 col-md-6 text-center">
+              <!-- SubCategory Name Input -->
+              <div class="form-group w-100 floating-addon">
+                <label for="name" class="d-none">Enter SubCategory Name</label>
+                <input type="text" class="form-control small-input" name="name" value="<%=subCategory.name%>"
+                  placeholder="SubCategory Name" required>
+              </div>
+              <!-- Hidden Inputs -->
+              <input type="hidden" name="id" value="<%=subCategory._id%>">
+              <input type="hidden" name="restaurant" value="<%=restaurant%>">
+              <!-- Submit Button -->
+              <div class="mt-3">
+                <button type="submit" class="btn btn-success w-50">Update</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  .error {
+    color: red !important;
+  }
+
+  .small-input {
+    max-width: 300px; /* Set the maximum width for input fields */
+    margin: 0 auto; /* Center align the input field */
+  }
+
+  .profile-widget-header {
+    position: relative;
+  }
+
+  h5 {
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .btn-success {
+    border-radius: 30px;
+  }
+
+  .btn-success.w-50 {
+    max-width: 200px; /* Adjust button width */
+    margin-bottom: 20px; /* Add space below the button */
+  }
+</style>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+
+  function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function () {
+      const imgElement = document.getElementById('blah');
+      imgElement.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+  }
+
+  $(document).ready(function () {
+    jQuery.validator.addMethod("noSpace", function (value, element) {
+      return value == '' || value.trim().length != 0;
+    }, "No space allowed.");
+
+    $('form[id="editForm"]').validate({
+      rules: {
+        name: {
+          required: true,
+          noSpace: true, // Ensures no spaces are allowed
+        }
+      },
+      messages: {
+        name: {
+          required: "SubCategory name is required.",
+          noSpace: "Spaces are not allowed in the SubCategory name.",
+        }
+      },
+      submitHandler: function (form) {
+        form.submit();
+      }
+    });
+  });
+</script>
