@@ -1,84 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SubAdmin Navbar</title>
     <style>
-        .main-navbar {
-            background-color: #dc8a32;
-        }
+      .main-navbar {
+        background-color: #dc8a32;
+      }
 
-        .nav-link, .dropdown-item {
-            color: #000000;
-        }
+      .nav-link,
+      .dropdown-item {
+        color: #000000;
+      }
 
-        .navbar-nav .dropdown-menu {
-            background-color: #ffffff;
-        }
+      .navbar-nav .dropdown-menu {
+        background-color: #ffffff;
+      }
 
-        .nav-link.nav-link-lg {
-            font-size: 1.2rem;
-        }
+      .nav-link.nav-link-lg {
+        font-size: 1.2rem;
+      }
 
-        .dropdown-menu {
-            min-width: 180px;
-        }
+      .dropdown-menu {
+        min-width: 180px;
+      }
 
-     
-        .nav-link.nav-link-user img {
-            border-radius: 50%;
-            height: 35px;
-        }
+      .nav-link.nav-link-user img {
+        border-radius: 50%;
+        height: 35px;
+      }
 
-        .dropdown-item i {
-            margin-right: 10px;
-        }
+      .dropdown-item i {
+        margin-right: 10px;
+      }
 
-      
-        .navbar-nav .nav-link,
-        .navbar-nav .dropdown-item {
-            padding: 10px 15px;
-        }
+      .navbar-nav .nav-link,
+      .navbar-nav .dropdown-item {
+        padding: 10px 15px;
+      }
 
-      
-        .navbar-nav .dropdown-item:hover {
-            background-color: transparent; 
-        }
+      .navbar-nav .dropdown-item:hover {
+        background-color: transparent;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="navbar navbar-expand-lg main-navbar">
-        <form class="form-inline mr-auto">
-            <ul class="navbar-nav mr-3">
-                <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
-            </ul>
-        </form>
-
-        <ul class="navbar-nav navbar-right">
-            <li class="dropdown">
-                <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                    <img alt="image" src="<%=session.image%>" class="rounded-circle" height="35px">
-                    <div class="d-sm-none d-lg-inline-block">
-                        <%=session.name%>
-                    </div>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a href="/subAdmin/subAdmin_profile" class="dropdown-item has-icon">
-                        <i class="fas fa-user"></i> Profile
-                    </a>
-                    <a href="/subAdmin/Change_Password" class="dropdown-item has-icon">
-                        <i class="fas fa-key"></i> Change password
-                    </a>
-                    <a href="/subAdmin/subAdmin_commission" class="dropdown-item has-icon">
-                        <i class="fas fa-percent"></i> SubAdmin Commission
-                    </a>
-                    <a href="/subAdmin/logout" id="logout-link" onclick="logout()" class="dropdown-item has-icon text-danger">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </a>
-                </div>
-            </li>
+      <form class="form-inline mr-auto">
+        <ul class="navbar-nav mr-3">
+          <li>
+            <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"
+              ><i class="fas fa-bars"></i
+            ></a>
+          </li>
         </ul>
+      </form>
+
+      <ul class="navbar-nav navbar-right">
+        <li class="dropdown">
+          <a
+            href="#"
+            data-toggle="dropdown"
+            class="nav-link dropdown-toggle nav-link-lg nav-link-user"
+          >
+            <img
+              alt="image"
+              src="<%=session.image%>"
+              class="rounded-circle"
+              height="35px"
+            />
+            <div class="d-sm-none d-lg-inline-block"><%=session.name%></div>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a href="/subAdmin/subAdmin_profile" class="dropdown-item has-icon">
+              <i class="fas fa-user"></i> Profile
+            </a>
+            <a href="/subAdmin/Change_Password" class="dropdown-item has-icon">
+              <i class="fas fa-key"></i> Change password
+            </a>
+            <a
+              href="/subAdmin/subAdmin_commission"
+              class="dropdown-item has-icon"
+            >
+              <i class="fas fa-percent"></i> SubAdmin Commission
+            </a>
+            <a
+              href="/subAdmin/logout"
+              id="logout-link"
+              onclick="logout()"
+              class="dropdown-item has-icon text-danger"
+            >
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+      </ul>
     </nav>
-</body>
+  </body>
 </html>

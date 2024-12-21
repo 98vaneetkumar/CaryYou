@@ -42,14 +42,20 @@
       </li>
 
       <li class="<%=(title =='Restaurant Category List'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/restaurant_category/<%=restaurant%>">
+        <a
+          class="nav-link"
+          href="/subAdmin/restaurant_category/<%=restaurant%>"
+        >
           <i class="fas fa-tags" style="font-size: large"></i>
           <span><b>Categories</b></span>
         </a>
       </li>
 
       <li class="<%=(title =='Restaurant subCategory List'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/restaurant_subCategory/<%=restaurant%>">
+        <a
+          class="nav-link"
+          href="/subAdmin/restaurant_subCategory/<%=restaurant%>"
+        >
           <i class="fas fa-tag" style="font-size: large"></i>
           <span><b>Sub Categories</b></span>
         </a>
@@ -85,7 +91,10 @@
       </li>
 
       <li class="<%=(title =='delivered_orders'?'active':'') %>">
-        <a class="nav-link" href="/subAdmin/delivered_order_list/<%=restaurant%>">
+        <a
+          class="nav-link"
+          href="/subAdmin/delivered_order_list/<%=restaurant%>"
+        >
           <i class="fas fa-truck" style="font-size: large"></i>
           <span><b>Delivered Orders</b></span>
         </a>
@@ -98,17 +107,10 @@
         </a>
       </li>
 
-      <li class="<%=(title =='vendors'?'active':'') %>">
+      <li class="<%=(title =='accounting'?'active':'') %>">
         <a class="nav-link" href="#">
-          <i class="fas fa-store" style="font-size: large"></i>
-          <span><b>Vendors</b></span>
-        </a>
-      </li>
-
-      <li class="<%=(title =='services'?'active':'') %>">
-        <a class="nav-link" href="#">
-          <i class="fas fa-wrench" style="font-size: large"></i>
-          <span><b>Services</b></span>
+          <i class="fas fa-money-bill" style="font-size: large"></i>
+          <span><b>Accounting</b></span>
         </a>
       </li>
 
@@ -119,13 +121,6 @@
         </a>
       </li>
 
-      <li class="<%=(title =='accounting'?'active':'') %>">
-        <a class="nav-link" href="#">
-          <i class="fas fa-money-bill" style="font-size: large"></i>
-          <span><b>Accounting</b></span>
-        </a>
-      </li>
-
       <li class="<%=(title =='product_review'?'active':'') %>">
         <a class="nav-link" href="#">
           <i class="fas fa-search" style="font-size: large"></i>
@@ -133,7 +128,19 @@
         </a>
       </li>
 
-    
+      <!-- <li class="<%=(title =='vendors'?'active':'') %>">
+        <a class="nav-link" href="#">
+          <i class="fas fa-store" style="font-size: large"></i>
+          <span><b>Vendors</b></span>
+        </a>
+      </li> -->
+
+      <!-- <li class="<%=(title =='services'?'active':'') %>">
+        <a class="nav-link" href="#">
+          <i class="fas fa-wrench" style="font-size: large"></i>
+          <span><b>Services</b></span>
+        </a>
+      </li> -->
 
       <!-- <li class="<%=(title =='terms_condition'?'active':'') %>">
         <a class="nav-link" href="/subAdmin/terms_condition">

@@ -116,7 +116,7 @@ module.exports = {
         deliveredorders,
         cancelledorders,
         activeorders,
-        vendors: 0,
+        accounting: 0,
         categories: restaurantId.category.length || 0,
         subcategories: restaurantId.subCategory.length || 0,
         products: restaurantId.products.length || 0,
