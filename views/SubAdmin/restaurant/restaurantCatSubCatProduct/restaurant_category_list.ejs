@@ -9,16 +9,21 @@
         <div class="breadcrumb-item">Restaurant Category</div>
       </div>
     </div>
-    <div class="d-flex justify-content-end mb-3">
-      <a
-        href="/subAdmin/add_category/<%=restaurant%>"
-        class="btn btn-sm"
-        style="background-color: var(--theme); color: white"
-      >
-        <i class="fa fa-plus"></i> Add Category
-      </a>
+    
+    <!-- Add Category Button aligned right (but not too far) -->
+    <div class="d-flex mb-3">
+      <div class="ml-auto" style="max-width: 200px;">
+        <a
+          href="/subAdmin/add_category/<%=restaurant%>"
+          class="btn btn-sm"
+          style="background-color: var(--theme); color: white; width: 100%;"
+        >
+          <i class="fa fa-plus"></i> Add Category
+        </a>
+      </div>
     </div>
-    <div class="col-12 col-mt-5">
+    
+    <div class="col-mt-5">
       <div class="card-datatable">
         <div class="table-responsive">
           <table id="myTable" class="table table-hover table-md">
@@ -27,7 +32,7 @@
                 <th scope="col">S No.</th>
                 <th scope="col">Image</th>
                 <th scope="col">Category Name</th>
-                <th scope="col">Actions</th>
+                <th scope="col" class="action-header">Actions</th> <!-- This is the header to which the button will align -->
               </tr>
             </thead>
             <tbody>
@@ -79,23 +84,18 @@
     display: flex;
   }
 
-  .justify-content-end {
-    justify-content: flex-end;
+  .ml-auto {
+    margin-left: auto; /* Aligns to the right but with some space */
   }
 
   td.text-center {
     vertical-align: middle; /* Ensures vertical alignment of the content in the center */
   }
-</style>
 
-<!-- <script>
-  $(document).ready(function () {
-    $("#myTable").DataTable({
-      dom: "Bfrtip",
-      buttons: ["excel", "print"],
-    });
-  });
-</script> -->
+  .action-header {
+    text-align: center;
+  }
+</style>
 
 <script>
   setTimeout(function () {
