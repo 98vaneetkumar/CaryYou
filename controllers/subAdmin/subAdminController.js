@@ -488,8 +488,11 @@ module.exports = {
       const title = "Restaurant Category List";
       const viewuser = await Models.restaurantModel
         .findById({ _id: req.params._id })
-        .populate("userId", "name email") // Fetch limited fields if possible
-        .sort({ createdAt: -1 }); 
+        .populate("userId", "name email"); // Fetch limited fields if possible; 
+        if (viewuser && viewuser.category) {
+          // Sort categories by createdAt in descending order (latest first)
+          viewuser.category.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        }
       res.render(
         "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_category_list",
         {
@@ -638,6 +641,10 @@ module.exports = {
             categoryImage: matchedCategory ? matchedCategory.image : null,
           };
         });
+      }
+      if (viewuser && viewuser.subCategory) {
+        // Sort categories by createdAt in descending order (latest first)
+        viewuser.subCategory.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       }
       // Render the category list
       res.render(
