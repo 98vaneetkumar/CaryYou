@@ -126,68 +126,6 @@ module.exports = {
     }
   },
 
-  user_list: async (req, res) => {
-    try {
-      let title = "user_list";
-      let userdata = await Models.userModel
-        .find({ role: 1 })
-        .sort({ createdAt: -1 });
-
-      res.render("SubAdmin/user/user_list", {
-        title,
-        userdata,
-        session: req.session.subAdmin,
-        msg: req.flash("msg"),
-      });
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  },
-
-  view_user: async (req, res) => {
-    try {
-      let title = "user_list";
-      let viewuser = await Models.userModel.findById({ _id: req.params.id });
-      // console.log(viewuser,"viewuserviewuserviewuserviewuser");return
-      res.render("SubAdmin/user/view_user", {
-        title,
-        viewuser,
-        session: req.session.subAdmin,
-        msg: req.flash("msg"),
-      });
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  },
-
-  delete_user: async (req, res) => {
-    try {
-      let userid = req.body.id;
-      let remove = await Models.userModel.deleteOne({ _id: userid });
-      res.redirect("/subadmin/user_list");
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  },
-
-  user_status: async (req, res) => {
-    try {
-      var check = await Models.userModel.updateOne(
-        { _id: req.body.id },
-        { status: req.body.value }
-      );
-      req.flash("msg", "Status update successfully");
-
-      if (req.body.value == 0) res.send(false);
-      if (req.body.value == 1) res.send(true);
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  },
 
   subAdmin_profile: async (req, res) => {
     try {

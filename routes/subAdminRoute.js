@@ -10,11 +10,6 @@ module.exports=function(io){
     router.get('/dashboard', sessionSubAdmin, controllers.subAdminController.dashboard)
     router.get("/logout", controllers.subAdminController.logout)
 
-    router.get('/user_list', sessionSubAdmin, controllers.subAdminController.user_list)
-    router.get('/view_user/:id', sessionSubAdmin, controllers.subAdminController.view_user)
-    router.delete('/delete_user/:id', controllers.subAdminController.delete_user)
-    router.post('/user_status', controllers.subAdminController.user_status)
-
 
     //<------------------------------ subAdmin ------------------------->
     router.get('/subAdmin_profile', sessionSubAdmin, controllers.subAdminController.subAdmin_profile)
