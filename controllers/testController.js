@@ -252,9 +252,66 @@ module.exports = {
       let objToSave = {
         userId: "676662bdb0f809a8a679e045",
         name: "chai tapri",
+        image: '/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg',
+        address: '3323 Example Street, City, Country',
+        category: [
+          {
+            name: 'Indian Cuisine',
+            image: '/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg',
+            status: 1,
+          },
+          {
+            name: 'Chinese Cuisine',
+            image: '/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg',
+            status: 1,
+          }
+        ],
+        subCategory: [
+          {
+            name: 'Biryani',
+            image: '/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg',
+            categoryId: '6755aeede7becf5dcd7c0780',
+            status: 1,
+          },
+          {
+            name: 'Noodles',
+            image: '/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg',
+            categoryId: '6755aeede7becf5dcd7c0781',
+            status: 1,
+          }
+        ],
+        products: [
+          {
+            subCategoryId: '6755aeede7becf5dcd7c0782',
+            images: ['/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg','/images/5655530d-1d85-4042-9ec0-de07bbc0943a.jpg'],
+            itemName: 'Hyderabadi Biryani',
+            price: '12.99',
+            size: 'Large',
+            status: 1,
+          }
+        ],
+        staffs: [
+          '6753fd42efe5fd5b8963a3b8',
+          '675449f250481a79e5d4ee95'
+        ],
+        openingTime: '09:00 AM',
+        closingTime: '11:00 PM',
       }
+      const restaurantId = "6755aeede7becf5dcd7c077f"; // Replace with your restaurant ID
 
-      let data = await Models.restaurantModel.create(objToSave);
+      let data = await Models.restaurantModel.findOne({_id:restaurantId});
+const currentDate = new Date(); // Use current date and time
+
+// let data=await Models.restaurantModel.updateOne(
+//       { _id: restaurantId },
+//       {
+//         $set: {
+//           "products.$[].createdAt": currentDate, // Update `createdAt` for all subcategories
+//           "products.$[].updatedAt": currentDate, // Update `updatedAt` for all subcategories
+//         },
+//       }
+//     )
+    // console.log("data",data)
       res.json(data);
     } catch (error) {
       console.log(error);

@@ -1,6 +1,7 @@
 const Models = require("../../Models/index");
 const bcrypt = require("bcrypt");
 const helper = require("../../helpers/commonHelper.js");
+const mongoose = require("mongoose");
 
 module.exports = {
   login_page: async (req, res) => {
@@ -309,93 +310,143 @@ module.exports = {
       // Calculate date range based on the filter
       const now = new Date();
       let startDate, endDate;
-
+    
+      // Switch to calculate startDate and endDate based on the filter
       switch (filter) {
         case "today":
-          startDate = new Date(now.setHours(0, 0, 0, 0));
-          endDate = new Date(now.setHours(23, 59, 59, 999));
+          startDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
+          endDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
           break;
+        
         case "weekly":
-          startDate = new Date(now.setDate(now.getDate() - 7));
-          endDate = new Date();
+          startDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 7, 0, 0, 0, 0));
+          endDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
           break;
+    
         case "monthly":
-          startDate = new Date(now.setMonth(now.getMonth() - 1));
-          endDate = new Date();
+          startDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, now.getUTCDate(), 0, 0, 0, 0));
+          endDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
           break;
+    
         case "3months":
-          startDate = new Date(now.setMonth(now.getMonth() - 3));
-          endDate = new Date();
+          startDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 3, now.getUTCDate(), 0, 0, 0, 0));
+          endDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
           break;
+    
         case "6months":
-          startDate = new Date(now.setMonth(now.getMonth() - 6));
-          endDate = new Date();
+          startDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 6, now.getUTCDate(), 0, 0, 0, 0));
+          endDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
           break;
+    
         case "1year":
-          startDate = new Date(now.setFullYear(now.getFullYear() - 1));
-          endDate = new Date();
+          startDate = new Date(Date.UTC(now.getUTCFullYear() - 1, now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
+          endDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
           break;
+    
         case "5years":
-          startDate = new Date(now.setFullYear(now.getFullYear() - 5));
-          endDate = new Date();
+          startDate = new Date(Date.UTC(now.getUTCFullYear() - 5, now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
+          endDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
           break;
+    
         default:
           startDate = null; // No date filter
           endDate = null;
       }
-
-      // Define the query object for date-based filtering
+    
       const dateQuery =
         startDate && endDate
           ? {
               createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) },
             }
-          : {};
+          : {}; // Apply date filter only if startDate and endDate are provided
+    
       // Fetch filtered restaurant data
       const userdata = await Models.restaurantModel
         .findById({ _id, ...dateQuery })
-        .populate("userId") // Populating the user details based on userId
-        .sort({ createdAt: -1 }); // Sorting by creation date, most recent first
+        .populate("userId")
+        .sort({ createdAt: -1 });
+    
       const orders = await Models.orderModel.countDocuments({
-        restaurant: req.params.id,
+        restaurant: req.body.id,
         ...dateQuery,
       });
+    
       const pendingOrders = await Models.orderModel.countDocuments({
         status: 1,
-        restaurant: req.params.id,
+        restaurant: req.body.id,
         ...dateQuery,
       });
+    
       const activeOrders = await Models.orderModel.countDocuments({
         status: 4,
-        restaurant: req.params.id,
+        restaurant: req.body.id,
         ...dateQuery,
       });
+    
       const deliveredOrders = await Models.orderModel.countDocuments({
         status: 2,
-        restaurant: req.params.id,
+        restaurant: req.body.id,
         ...dateQuery,
       });
+    
       const cancelledOrders = await Models.orderModel.countDocuments({
         status: 3,
-        restaurant: req.params.id,
+        restaurant: req.body.id,
         ...dateQuery,
       });
-
+    
+      // Aggregation pipelines for category, subcategory, and products
+      const categoryPipeline = [
+        { $match: { _id: new mongoose.Types.ObjectId(req.body.id) } },
+        { $unwind: "$category" },
+        // Only apply date filter if startDate and endDate are defined
+        ...(startDate && endDate ? [{ $match: { "category.createdAt": { $gte: startDate, $lte: endDate } } }] : []),
+        { $count: "matchingCategoriesCount" },
+      ];
+    
+      const subCategoryPipeline = [
+        { $match: { _id: new mongoose.Types.ObjectId(req.body.id) } },
+        { $unwind: "$subCategory" },
+        // Only apply date filter if startDate and endDate are defined
+        ...(startDate && endDate ? [{ $match: { "subCategory.createdAt": { $gte: startDate, $lte: endDate } } }] : []),
+        { $count: "matchingSubCategoriesCount" },
+      ];
+    
+      const productPipeline = [
+        { $match: { _id: new mongoose.Types.ObjectId(req.body.id) } },
+        { $unwind: "$products" },
+        // Only apply date filter if startDate and endDate are defined
+        ...(startDate && endDate ? [{ $match: { "products.createdAt": { $gte: startDate, $lte: endDate } } }] : []),
+        { $count: "matchingProductCount" },
+      ];
+    
+      // Execute the aggregation pipelines
+      const categoryResult = await Models.restaurantModel.aggregate(categoryPipeline);
+      const subCategoryResult = await Models.restaurantModel.aggregate(subCategoryPipeline);
+      const productResult = await Models.restaurantModel.aggregate(productPipeline);
+    
+      const category = categoryResult.length > 0 ? categoryResult[0].matchingCategoriesCount : 0;
+      const subcategory = subCategoryResult.length > 0 ? subCategoryResult[0].matchingSubCategoriesCount : 0;
+      const product = productResult.length > 0 ? productResult[0].matchingProductCount : 0;
+    
+    
       return res.json({
         userdata,
-        category: userdata?.category?.length || 0,
-        subCategory: userdata?.subcategory?.length || 0,
-        products: userdata?.products?.length || 0,
+        category,
+        subCategory: subcategory,
+        products: product,
         orders,
         pendingOrders,
         activeOrders,
         deliveredOrders,
         cancelledOrders,
+        vendors: 0,
       });
     } catch (error) {
       console.error("Error in restaurant_view:", error);
       res.status(500).send("Internal Server Error");
     }
+    
   },
 
   restaurant_status: async (req, res) => {

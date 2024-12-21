@@ -17,6 +17,11 @@
       </div>
     </div>    
     <div class="row">
+
+      <div id="loader" class="setting-gear-loader" style="display: none">
+        <div class="gear"></div>
+      </div>
+      <div id="restaurant_id" data-value="<%= restaurantId._id %>" hidden></div>
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-top">
         <a href="/subAdmin/order_list/<%= restaurantId._id%>">
           <div
@@ -28,9 +33,9 @@
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold"><b>Orders</b></h4>
+                <h4  style="color: white; font-weight: bold"><b>Orders</b></h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div id="orders" value="<%= orders %>" class="card-body" style="color: white; font-weight: bold">
                 <%= orders %>
               </div>
             </div>
@@ -54,7 +59,7 @@
                   <b>Pending Orders</b>
                 </h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div  id="pendingorders" value="<%= pendingorders %>" class="card-body" style="color: white; font-weight: bold">
                 <%= pendingorders %>
               </div>
             </div>
@@ -73,9 +78,9 @@
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold">Active Orders</h4>
+                <h4  style="color: white; font-weight: bold">Active Orders</h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div id="activeorders" value="<%= activeorders %>" class="card-body" style="color: white; font-weight: bold">
                 <%= activeorders %>
               </div>
             </div>
@@ -98,7 +103,7 @@
                   Delivered Orders
                 </h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div  id="deliveredorders" value="<%= deliveredorders %>" class="card-body" style="color: white; font-weight: bold">
                 <%= deliveredorders %>
               </div>
             </div>
@@ -121,7 +126,7 @@
                   Cancelled Orders
                 </h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div id="cancelledorders" value="<%= cancelledorders %>" class="card-body" style="color: white; font-weight: bold">
                 <%= cancelledorders %>
               </div>
             </div>
@@ -142,7 +147,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold">Categories</h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div id="categories" value="<%= categories %>" class="card-body" style="color: white; font-weight: bold">
                 <%= categories %>
               </div>
             </div>
@@ -163,7 +168,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold">Sub Categories</h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div id="subcategories" value="<%= subcategories %>" class="card-body" style="color: white; font-weight: bold">
                 <%= subcategories %>
               </div>
             </div>
@@ -184,7 +189,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold">Products</h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div id="products" value="<%= products %>"  class="card-body" style="color: white; font-weight: bold">
                 <%= products %>
               </div>
             </div>
@@ -206,7 +211,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold">Vendors</h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div id="vendors" value="<%= vendors %>"   class="card-body" style="color: white; font-weight: bold">
                 <%= vendors %>
               </div>
             </div>
@@ -228,7 +233,7 @@
               <div class="card-header">
                 <h4 style="color: white; font-weight: bold"><b>Services</b></h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div id="servicesdata" value="<%= servicesdata %>"  class="card-body" style="color: white; font-weight: bold">
                 <%= servicesdata %>
               </div>
             </div>
@@ -252,7 +257,7 @@
                   <b>Contact Us</b>
                 </h4>
               </div>
-              <div class="card-body" style="color: white; font-weight: bold">
+              <div id="contactus" value="<%= contactus %>" class="card-body" style="color: white; font-weight: bold">
                 <%= contactus %>
               </div>
             </div>
@@ -261,17 +266,7 @@
       </div>
     </div>
 
-    <!-- Number of Responses -->
-    <!-- <div class="col-12 col-md-6 col-lg-6">
-      <div class="card" style="background: linear-gradient(135deg, #cccccc, #eeeeee);">
-        <div class="card-header">
-          <h4 style="color: white; font-weight: bold;">Number Of Response</h4>
-        </div>
-        <div class="card-body">
-          <canvas id="myChart"></canvas>
-        </div>
-      </div>
-    </div> -->
+
   </section>
 </div>
 
@@ -315,17 +310,17 @@
   // Update card data dynamically
   function updateCardData(data) {
     document.getElementById("orders").textContent = data.orders || 0;
-    document.getElementById("pendingOrders").textContent =
+    document.getElementById("pendingorders").textContent =
       data.pendingOrders || 0;
-    document.getElementById("activeOrders").textContent =
+    document.getElementById("activeorders").textContent =
       data.activeOrders || 0;
-    document.getElementById("deliveredOrders").textContent =
+    document.getElementById("deliveredorders").textContent =
       data.deliveredOrders || 0;
-    document.getElementById("cancelledOrders").textContent =
+    document.getElementById("cancelledorders").textContent =
       data.cancelledOrders || 0;
-    document.getElementById("category").textContent = data.categories || 0;
-    document.getElementById("subCategory").textContent =
-      data.subCategories || 0;
+    document.getElementById("categories").textContent = data.category || 0;
+    document.getElementById("subcategories").textContent =
+      data.subCategory || 0;
     document.getElementById("products").textContent = data.products || 0;
   }
 
@@ -352,7 +347,7 @@
       }
 
       const data = await response.json();
-
+console.log("data",data)
       // Update card content
       updateCardData(data);
     } catch (error) {
@@ -372,39 +367,3 @@
     fetchData(); // Initial data fetch
   });
 </script>
-
-<!-- Uncommented code for dynamic charts -->
-<!--
-<script>
-  var totalUsers = <%= user %>;
-  var totalProviders = <%= provider %>; // Example data for total providers
-
-  new Chart("myChart", {
-    type: "bar",
-    data: {
-      labels: ["Users", "Providers"],
-      datasets: [
-        {
-          label: "Statistics",
-          data: [totalUsers, totalProviders],
-          backgroundColor: ["rgba(83, 167, 172, 0.9)", "#a3d349"],
-          barThickness: 130,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-              min: 0,
-              max: 100, // Adjust based on your data
-            },
-          },
-        ],
-      },
-    },
-  });
-</script>
--->

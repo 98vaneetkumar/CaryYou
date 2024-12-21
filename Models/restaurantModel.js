@@ -8,7 +8,7 @@ const restaurantSchema = new mongoose.Schema(
       required: true,
       ref: "user",
     },
-    name:{type:String},
+    name: { type: String },
     image: { type: String },
     address: { type: String },
     location: {
@@ -28,7 +28,9 @@ const restaurantSchema = new mongoose.Schema(
       {
         name: { type: String, required: true },
         image: { type: String },
-        status:{type:Number,default:1}// 1 for acitve  and 0 for  not acitve
+        status: { type: Number, default: 1 }, // 1 for active and 0 for inactive
+        createdAt: { type: Date, default: Date.now },
+        updatedAt: { type: Date, default: Date.now },
       },
     ],
     subCategory: [
@@ -38,10 +40,10 @@ const restaurantSchema = new mongoose.Schema(
         categoryId: {
           type: Schema.Types.ObjectId,
         },
-        status:{type:Number,default:1}// 1 for acitve  and 0 for  not acitve
-
+        status: { type: Number, default: 1 }, // 1 for active and 0 for inactive
+        createdAt: { type: Date, default: Date.now },
+        updatedAt: { type: Date, default: Date.now },
       },
-
     ],
     products: [
       {
@@ -53,9 +55,10 @@ const restaurantSchema = new mongoose.Schema(
         itemName: { type: String, required: true },
         price: { type: String, required: true },
         size: { type: String },
-        status:{type:Number,default:1},// 1 for acitve  and 0 for  not acitve
-        description:{type: String}
-
+        status: { type: Number, default: 1 }, // 1 for active and 0 for inactive
+        description: { type: String },
+        createdAt: { type: Date, default: Date.now },
+        updatedAt: { type: Date, default: Date.now },
       },
     ],
     staffs: [
@@ -65,20 +68,45 @@ const restaurantSchema = new mongoose.Schema(
         ref: "user",
       },
     ],
-    banner_image:[
+    banner_image: [
       {
-      image: [{ type: String }],
-      }
+        image: [{ type: String }],
+      },
     ],
     openingTime: { type: String },
     closingTime: { type: String },
-    status:{
+    status: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
-  { timestamps: true }
+  { timestamps: true } // Enable timestamps for the main schema
 );
+
+// Middleware to update timestamps for nested objects
+restaurantSchema.pre("save", function (next) {
+  const now = Date.now();
+
+  // Update timestamps for category
+  this.category.forEach((item) => {
+    if (!item.createdAt) item.createdAt = now;
+    item.updatedAt = now;
+  });
+
+  // Update timestamps for subCategory
+  this.subCategory.forEach((item) => {
+    if (!item.createdAt) item.createdAt = now;
+    item.updatedAt = now;
+  });
+
+  // Update timestamps for products
+  this.products.forEach((item) => {
+    if (!item.createdAt) item.createdAt = now;
+    item.updatedAt = now;
+  });
+
+  next();
+});
 
 restaurantSchema.index({ location: "2dsphere" });
 
