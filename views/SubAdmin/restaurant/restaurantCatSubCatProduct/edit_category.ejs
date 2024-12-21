@@ -8,23 +8,28 @@
         <div class="breadcrumb-item">Edit Category</div>
       </div>
     </div>
-    
+
     <div class="section-body">
-      <div class="form-group">
-        <div class="col-sm-12 col-md-5 text-right mt-4">
-          <button type="button" class="btn btn-success" onclick="goBack()">Back</button>
-        </div>
-      </div>
       <div class="card">
+        <div class="form-group text-left ml-3 mt-2">
+          <button 
+              type="button" 
+              class="btn btn-dark rounded-pill d-flex align-items-center px-3" 
+              onclick="goBack()" 
+              aria-label="Go Back"
+          >
+              <i class="fas fa-arrow-left mr-2"></i> Back
+          </button>
+        </div>
         <form action="/subAdmin/update_category" id="addForm" method="post" enctype="multipart/form-data">
-          <div class="row mt-sm-4 justify-content-center ">
+          <div class="row mt-sm-4 justify-content-center">
             <div class="col-12 col-md-12 col-lg-4">
               <div class="card profile-widget bg-white">
                 <div class="profile-widget-header text-center py-3">
                   <img alt="image" width="200" height="200" id="blah" src="<%=category.image%>"
                     class="profile_img rounded-circle border">
-                  <input type="file" name="image" title="" value="<%= category.image %>" id="imgInp"
-                    accept="image/x-png,image/gif,image/jpeg"
+                  <input type="file" name="image" id="imgInp"
+                    accept="image/*" onchange="previewImage(event)"
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
                 </div>
               </div>
@@ -33,15 +38,15 @@
             <div class="col-12 col-lg-10 offset-lg-0">
               <div class="card-body">
                 <div class="form-group col-12 floating-addon">
-                  <label> Name</label>
+                  <label>Name</label>
                   <div class="input-group">
-                    <div class="input-group-prepend">
+                    <input type="text" class="form-control" name="name" value="<%=category.name%>" required>
+                    <div class="input-group-append">
                       <div class="input-group-text">
                         <i class="fas fa-user"></i>
                       </div>
                     </div>
                   </div>
-                  <input type="text" class="form-control" name="name" value="<%=category.name%>" required>
                   <input type="hidden" name="id" value="<%=category._id%>">
                   <input type="hidden" name="restaurant" value="<%=restaurant%>">
                   <div class="invalid-feedback">
@@ -63,7 +68,6 @@
   </section>
 </div>
 
-
 <style>
   .error {
     color: red !important;
@@ -83,9 +87,7 @@
   function goBack() {
     window.history.back();
   }
-</script>
 
-<script>
   function previewImage(event) {
     const reader = new FileReader();
     reader.onload = function () {
@@ -96,7 +98,6 @@
   }
 
   $(document).ready(function () {
-
     jQuery.validator.addMethod("noSpace", function (value, element) {
       return value == '' || value.trim().length != 0;
     }, "No space allowed.");
@@ -106,21 +107,13 @@
         name: {
           required: true,
           noSpace: true, // Ensures no spaces are allowed
-        },
-        // image: {
-        //   required: true, // Image field is required
-        //   accept: "image/*", // Ensures the uploaded file is an image
-        // }
+        }
       },
       messages: {
         name: {
           required: "Category name is required.",
           noSpace: "Spaces are not allowed in the category name.",
-        },
-        // image: {
-        //   required: "Please upload an image.",
-        //   accept: "Only image files are allowed."
-        // }
+        }
       },
       submitHandler: function (form) {
         form.submit();

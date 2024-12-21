@@ -1,0 +1,131 @@
+<div class="main-content">
+    <div class="form-group col-12">
+      <section class="section">
+        <div class="section-header">
+          <h1> Add subCategory</h1>
+          <div class="section-header-breadcrumb">
+            <div class="breadcrumb-item active"><a href="/subAdmin/dashboard">Dashboard</a></div>
+            <div class="breadcrumb-item">Add subCategory</div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="form-group text-left ml-3 mt-2">
+            <button 
+                type="button" 
+                class="btn btn-dark rounded-pill d-flex align-items-center px-3" 
+                onclick="goBack()" 
+                aria-label="Go Back"
+            >
+                <i class="fas fa-arrow-left mr-2"></i> Back
+            </button>
+        </div>
+          <div class="card-body">
+            <form action="/subAdmin/Create_subCategory" id="addForm" enctype="multipart/form-data" method="post">
+              <div class="row mt-sm-4 justify-content-center">
+                <div class="col-12 col-md-12 col-lg-4">
+                  <div class="card profile-widget bg-white">
+                    <div class="profile-widget-header text-center py-3">
+                      <img alt="image" width="200" height="200" id="blah" src="/assets/img/defaultimage.jpg"
+                        class="profile_img rounded-circle border">
+                      <input type="file" name="image" title="" value="" onchange="previewImage(event)" id="imgInp"
+                        accept="image/x-png,image/gif,image/jpeg"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-10 offset-lg-0">
+                  <div class="card-body p-0">
+                    <div class="form-group w-100 floating-addon">
+                      <label for="name">subCategory Name</label>
+                      <div class="input-group">
+                        <input id="name" type="text" class="form-control" name="name" placeholder="subCategory Name" required>
+                        <div class="input-group-append">
+                          <div class="input-group-text">
+                            <i class="fas fa-user"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <input id="_id" type="text" class="form-control" name="_id" value="<%=restaurant%>" hidden>
+  
+                    <div class="text-right mt-4">
+                      <button type="submit" class="btn btn-info">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  
+  <style>
+    .error {
+      color: red !important;
+    }
+  
+    .input-group .form-control {
+      border-right: none; /* Remove the right border of the input box */
+    }
+  
+    .input-group-append .input-group-text {
+      background: #fff;
+      border-left: none; /* Remove the left border of the icon box */
+    }
+  </style>
+  
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+  
+  <script>
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const imgElement = document.getElementById('blah');
+        imgElement.src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  
+    $(document).ready(function () {
+  
+      jQuery.validator.addMethod("noSpace", function (value, element) {
+        return value == '' || value.trim().length != 0;
+      }, "No space allowed.");
+  
+      $('form[id="addForm"]').validate({
+        rules: {
+          name: {
+            required: true,
+            noSpace: true, // Ensures no spaces are allowed
+          },
+          image: {
+            required: true, // Image field is required
+            accept: "image/*", // Ensures the uploaded file is an image
+          }
+        },
+        messages: {
+          name: {
+            required: "Sub Category name is required.",
+            noSpace: "Spaces are not allowed in the Sub Category name.",
+          },
+          image: {
+            required: "Please upload an image.",
+            accept: "Only image files are allowed."
+          }
+        },
+        submitHandler: function (form) {
+          form.submit();
+        }
+      });
+    });
+  </script>
+  

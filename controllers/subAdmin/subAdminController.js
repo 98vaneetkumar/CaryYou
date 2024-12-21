@@ -669,6 +669,157 @@ module.exports = {
       throw error;
     }
   },
+  add_subCategory:async(req,res)=>{
+    try {
+      const title = "Restaurant subCategory List";
+      res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/add_subCategory", 
+        { 
+          title: title,
+          restaurant: req.params._id, 
+          session:req.session.subAdmin,
+          msg: req.flash("msg")||""
+          });
+    } catch (error) {
+      throw error
+    }
+  },
+  Create_subCategory: async (req, res) => {
+    try {
+      const title = "Restaurant Subcategory List";
+  
+      // Handle file upload using commonHelper
+      let profilePicturePath = null;
+      if (req.files && req.files.image) {
+        profilePicturePath = await helper.fileUpload(req.files.image);
+      }
+  
+      // Prepare subcategory object to save
+      const subCategoryObj = {
+        name: req.body.name,
+        image: profilePicturePath,
+        subCategoryId: req.body.subCategoryId, // Link subcategory to the parent category
+      };
+  
+      // Update restaurant model to add the subcategory
+      await Models.restaurantModel.findByIdAndUpdate(
+        { _id: req.body.restaurantId },
+        { $push: { subcategories: subCategoryObj } }
+      );
+  
+      // Fetch updated restaurant and populate the necessary details
+      const viewuser = await Models.restaurantModel
+        .findById({ _id: req.body.restaurantId })
+        .populate("userId", "name email");
+  
+      res.render(
+        "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_subcategory_list",
+        {
+          title,
+          viewuser,
+          restaurant: req.body.restaurantId,
+          session: req.session.subAdmin,
+          msg: req.flash("msg"),
+        }
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+  
+  edit_subCategory: async (req, res) => {
+    try {
+      const title = "Restaurant Subcategory List";
+  
+      // Find the restaurant and specific subcategory
+      let restaurant = await Models.restaurantModel.findOne({
+        _id: req.params.restaurantId,
+      });
+      const subCategory = restaurant.subcategories.find(
+        (subCat) => subCat._id.toString() === req.params._id
+      );
+  
+      res.render(
+        "SubAdmin/restaurant/restaurantCatSubCatProduct/edit_subcategory",
+        {
+          title: title,
+          restaurant: req.params.restaurantId,
+          subCategory: subCategory,
+          session: req.session.subAdmin,
+          msg: req.flash("msg") || "",
+        }
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+  
+  update_subCategory: async (req, res) => {
+    try {
+      const title = "Restaurant Subcategory List";
+      let profilePicturePath = null;
+  
+      // Check and upload new image if provided
+      if (req.files && req.files.image) {
+        profilePicturePath = await helper.fileUpload(req.files.image);
+      }
+  
+      // Find the restaurant
+      let restaurant = await Models.restaurantModel.findOne({
+        _id: req.body.restaurantId,
+      });
+  
+      // Find the specific subcategory
+      const subCategoryIndex = restaurant.subcategories.findIndex(
+        (subCat) => subCat._id.toString() === req.body.id
+      );
+  
+      if (subCategoryIndex === -1) {
+        return res.status(404).json({ message: "Subcategory not found" });
+      }
+  
+      // Prepare the update object
+      const updatedSubCategory = {
+        ...restaurant.subcategories[subCategoryIndex],
+        name: req.body.name,
+      };
+  
+      if (profilePicturePath) {
+        updatedSubCategory.image = profilePicturePath;
+        // Delete the old image
+        if (restaurant.subcategories[subCategoryIndex].image) {
+          await helper.deleteFile(restaurant.subcategories[subCategoryIndex].image);
+        }
+      }
+  
+      // Update the specific subcategory
+      restaurant.subcategories[subCategoryIndex] = updatedSubCategory;
+  
+      // Save the updated restaurant document
+      await restaurant.save();
+  
+      // Fetch updated restaurant and populate the necessary details
+      const viewuser = await Models.restaurantModel
+        .findById({ _id: req.body.restaurantId })
+        .populate("userId", "name email");
+  
+      res.render(
+        "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_subcategory_list",
+        {
+          title,
+          viewuser,
+          restaurant: req.body.restaurantId,
+          session: req.session.subAdmin,
+          msg: req.flash("msg") || "",
+        }
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+  
   restaurant_product: async (req, res) => {
     try {
       let title = "provider_list";
