@@ -18,9 +18,14 @@
         <form action="" method="get" enctype="multipart/form-data">
           <!-- Back Button -->
           <div class="form-group text-left ml-3 mt-2">
-            <a href="/subAdmin/order_list" class="btn btn-dark rounded-pill">
-              <i class="fas fa-arrow-left"></i> Back
-            </a>
+            <button 
+                type="button" 
+                class="btn btn-dark rounded-pill d-flex align-items-center px-3" 
+                onclick="goBack()" 
+                aria-label="Go Back"
+            >
+                <i class="fas fa-arrow-left mr-2"></i> Back
+            </button>
           </div>
 
           <div class="row mt-sm-4 justify-content-center mx-0">
@@ -90,6 +95,11 @@
   }
 </script>
 
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
 <style>
   .profile_img {
     object-fit: cover;

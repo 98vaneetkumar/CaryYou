@@ -964,6 +964,7 @@ module.exports = {
       res.render("SubAdmin/orders/view_order", {
         title, // Pass the title to the view
         order, // Pass the order details to the view
+        restaurant:req.params.restaurant,
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.subAdmin, // Pass session details (if needed)
         msg: req.flash("msg"), // Pass any flash messages (if needed)
@@ -1045,6 +1046,7 @@ module.exports = {
       res.render("SubAdmin/orders/active_order_view", {
         title, // Pass the title to the view
         order, // Pass the order details to the view
+        restaurant:req.params.restaurant,
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.subAdmin, // Pass session details (if needed)
         msg: req.flash("msg"), // Pass any flash messages (if needed)
@@ -1126,6 +1128,7 @@ module.exports = {
       res.render("SubAdmin/orders/delivered_order_view", {
         title, // Pass the title to the view
         order, // Pass the order details to the view
+        restaurant:req.params.restaurant,
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.subAdmin, // Pass session details (if needed)
         msg: req.flash("msg"), // Pass any flash messages (if needed)
@@ -1206,6 +1209,7 @@ module.exports = {
       res.render("SubAdmin/orders/cancel_order_view", {
         title, // Pass the title to the view
         order, // Pass the order details to the view
+        restaurant:req.params.restaurant,
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.subAdmin, // Pass session details (if needed)
         msg: req.flash("msg"), // Pass any flash messages (if needed)
@@ -1287,6 +1291,7 @@ module.exports = {
       res.render("SubAdmin/orders/pending_order_view", {
         title, // Pass the title to the view
         order, // Pass the order details to the view
+        restaurant:req.params.restaurant,
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.subAdmin, // Pass session details (if needed)
         msg: req.flash("msg"), // Pass any flash messages (if needed)
