@@ -28,7 +28,8 @@ module.exports=function(io){
     // router.get('/privacy_policy', sessionSubAdmin,  controllers.cmsController.privacy_policy_user)
 
     router.get("/bannerList/:_id",sessionSubAdmin, controllers.subAdminController.bannerList);
-    router.post("/addBanner_view",sessionSubAdmin, controllers.subAdminController.addBanner_view)
+    router.post("/addBanner_view/:restaurantId",sessionSubAdmin, controllers.subAdminController.addBanner_view)
+    router.post("/addBanner/:restaurantId",sessionSubAdmin, controllers.subAdminController.create_Bannner)
     router.post("/delete_banner",sessionSubAdmin, controllers.subAdminController.deleteBanner)
 
     router.post("/restaurantDashboardFilter",sessionSubAdmin, controllers.subAdminController.restaurant_dashboard_filter)

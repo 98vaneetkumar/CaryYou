@@ -285,10 +285,24 @@ module.exports = {
   },
   addBanner_view:async(req,res)=>{
     try {
-      res.render("SubAdmin/login_page", { session:req.session.subAdmin, msg: req.flash("msg") });
+      let title="banners"
+      res.render("SubAdmin/banner/add_banner", 
+        { 
+          title,
+          restaurant:req.params.restaurantId,
+          session:req.session.subAdmin, 
+          msg: req.flash("msg")||"" 
+        });
     } catch (error) {
       console.log("error", error);
       throw error;
+    }
+  },
+  create_Bannner:async(req,res)=>{
+    try {
+      
+    } catch (error) {
+      throw error
     }
   },
   deleteBanner:async(req,res)=>{
