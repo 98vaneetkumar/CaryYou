@@ -268,7 +268,7 @@
 
 
   </section>
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-lg-6">
       <div class="card">
         <div class="card-header">
@@ -280,7 +280,6 @@
       </div>
     </div>
 
-    <!-- Graph for Orders -->
     <div class="col-lg-6">
       <div class="card">
         <div class="card-header">
@@ -291,9 +290,9 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
 <style>
   .section-header {
@@ -318,7 +317,19 @@
 
 <script>
   const filterDropdown = document.getElementById("filter");
-
+// Initial data setup for graphs
+let categoryCount =
+    parseInt(document.getElementById("categories").textContent) || 0;
+  let subCategoryCount =
+    parseInt(document.getElementById("subcategories").textContent) || 0;
+  let productCount =
+    parseInt(document.getElementById("products").textContent) || 0;
+  let pendingOrderCount =
+    parseInt(document.getElementById("pendingorders").textContent) || 0;
+  let activeOrderCount =
+    parseInt(document.getElementById("activeorders").textContent) || 0;
+  let cancelledOrderCount =
+    parseInt(document.getElementById("cancelledorders").textContent) || 0; 
   // Loader Element
   const loader = document.getElementById("loader");
 
@@ -332,21 +343,8 @@
     if (loader) loader.style.display = "none";
   }
 
-// Initial data setup for graphs
-let categoryCount =
-    parseInt(document.getElementById("categories").textContent) || 0;
-  let subCategoryCount =
-    parseInt(document.getElementById("subcategories").textContent) || 0;
-  let productCount =
-    parseInt(document.getElementById("products").textContent) || 0;
-  let pendingOrderCount =
-    parseInt(document.getElementById("pendingorders").textContent) || 0;
-  let activeOrderCount =
-    parseInt(document.getElementById("activeorders").textContent) || 0;
-  let cancelledOrderCount =
-    parseInt(document.getElementById("cancelledorders").textContent) || 0;  // Update card data dynamically
+ // Update card data dynamically
 
-    console.log("categoryCount",categoryCount,subCategoryCount)
   function updateCardData(data) {
     document.getElementById("banners").textContent = data.banners||0
     document.getElementById("orders").textContent = data.orders || 0;
@@ -406,7 +404,7 @@ let categoryCount =
         datasets: [
           {
             label: "Count",
-            data: [10, 29, 30], // Initial data
+            data: [data.category, data.subCategory, data.products], // Initial data
             backgroundColor: [
               "#6666ff", // Category (solid blue)
               "#33cccc", // SubCategory (solid cyan)
@@ -513,8 +511,8 @@ let categoryCount =
   });
 
   // // Initialize dashboard on page load
-  // document.addEventListener("DOMContentLoaded", () => {
-  //   fetchData(); // Initial data fetch
+  // document.addEventListener("DOMContentLoaded", async() => {
+  //   await fetchData(); // Initial data fetch
   // });
     // Initialize charts and set initial data on page load
     document.addEventListener("DOMContentLoaded", () => {
