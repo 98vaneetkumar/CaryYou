@@ -8,7 +8,7 @@
           <div class="breadcrumb-item">Add Category</div>
         </div>
       </div>
-      
+
       <div class="card">
         <div class="form-group text-left ml-3 mt-2">
           <button 
@@ -19,12 +19,14 @@
           >
               <i class="fas fa-arrow-left mr-2"></i> Back
           </button>
-      </div>
+        </div>
+
         <div class="card-body">
           <form action="/subAdmin/Create_category" id="addForm" enctype="multipart/form-data" method="post">
-            <!-- Image Container -->
-            <div class="row mt-sm-4 justify-content-center">
-              <div class="col-12 col-md-6">
+            <!-- Main Content Section -->
+            <div class="row align-items-center justify-content-center">
+              <!-- Image Section -->
+              <div class="col-12 col-md-4 text-center">
                 <div class="card profile-widget bg-white">
                   <div class="profile-widget-header text-center py-3">
                     <img alt="image" width="200" height="200" id="blah" src="/assets/img/defaultimage.jpg"
@@ -35,18 +37,16 @@
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Input Fields Section -->
-            <div class="row justify-content-center mt-4">
-              <div class="col-12 col-md-6 text-center">
+              <!-- Input Fields and Button Section -->
+              <div class="col-12 col-md-6">
                 <!-- Category Name Input -->
-                <div class="form-group w-100 floating-addon">
+                <div class="form-group floating-addon">
                   <label for="name" class="d-none">Enter Category Name</label>
                   <input id="name" type="text" class="form-control small-input" name="name" placeholder="Category Name" required>
                 </div>
                 <!-- Submit Button -->
-                <div class="mt-3">
+                <div class="mt-3 text-center">
                   <button type="submit" class="btn btn-info w-50">Submit</button>
                 </div>
               </div>
@@ -65,7 +65,7 @@
   .error {
     color: red !important;
   }
-  
+
   .small-input {
     max-width: 300px; /* Set the maximum width for input fields */
     margin: 0 auto; /* Center align the input field */
@@ -86,6 +86,17 @@
 
   .btn-info.w-50 {
     max-width: 200px; /* Adjust button width */
+  }
+
+  .profile-widget {
+    padding: 10px;
+  }
+
+  @media (min-width: 768px) {
+    .row.align-items-center {
+      display: flex;
+      flex-wrap: nowrap;
+    }
   }
 </style>
 

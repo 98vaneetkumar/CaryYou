@@ -24,9 +24,10 @@
         </div>
         <div class="card-body">
           <form action="/subAdmin/Create_subCategory" id="addSubCategoryForm" enctype="multipart/form-data" method="post">
-            <!-- Image Section -->
-            <div class="row mt-sm-4 justify-content-center">
-              <div class="col-12 col-md-6">
+            <!-- Image and Input Section -->
+            <div class="row mt-sm-4 align-items-center justify-content-center">
+              <!-- Image Section -->
+              <div class="col-12 col-md-4">
                 <div class="card profile-widget bg-white">
                   <div class="profile-widget-header text-center py-3">
                     <img alt="image" width="200" height="200" id="blah" src="/assets/img/defaultimage.jpg"
@@ -37,26 +38,20 @@
                   </div>
                 </div>
               </div>
-            </div>
 
-               <!-- Category Dropdown -->
-               <div class="row justify-content-center">
-                <div class="col-12 col-md-6 text-center">
-                  <div class="form-group">
-                    <label for="categorySelect" class="d-none">Select Category</label>
-                    <select id="categorySelect" name="categoryId" class="form-control small-input" required>
-                      <option value="">Select Category</option>
-                      <% category.forEach(category => { %>
-                        <option value="<%= category._id %>"><%= category.name %></option>
-                      <% }) %>
-                    </select>
-                  </div>
+              <!-- Input Fields Section -->
+              <div class="col-12 col-md-6">
+                <!-- Category Dropdown -->
+                <div class="form-group">
+                  <label for="categorySelect" class="d-none">Select Category</label>
+                  <select id="categorySelect" name="categoryId" class="form-control small-input" required>
+                    <option value="">Select Category</option>
+                    <% category.forEach(category => { %>
+                      <option value="<%= category._id %>"><%= category.name %></option>
+                    <% }) %>
+                  </select>
                 </div>
-              </div>
 
-            <!-- Input Section -->
-            <div class="row justify-content-center mt-4">
-              <div class="col-12 col-md-6 text-center">
                 <!-- Sub Category Name Input -->
                 <div class="form-group w-100 floating-addon">
                   <label for="subCategoryName" class="d-none">Enter Sub Category Name</label>
@@ -64,7 +59,7 @@
                 </div>
 
                 <!-- Submit Button -->
-                <div class="mt-3">
+                <div class="form-group text-center mt-3">
                   <button type="submit" class="btn btn-info w-50">Submit</button>
                 </div>
               </div>

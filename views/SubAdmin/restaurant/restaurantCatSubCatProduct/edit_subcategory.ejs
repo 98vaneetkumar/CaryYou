@@ -3,19 +3,14 @@
     <div class="section-header">
       <h1>Edit SubCategory</h1>
       <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item active">
-          <a href="/subAdmin/dashboard">Dashboard</a>
-        </div>
-        <div class="breadcrumb-item">
-          <a href="/subAdmin/restaurant_subCategory/<%=restaurant%>">Sub Category</a>
-        </div>
+        <div class="breadcrumb-item active"><a href="/subAdmin/dashboard">Dashboard</a></div>
+        <div class="breadcrumb-item"><a href='/subAdmin/restaurant_subCategory/<%=restaurant%>'>Sub Category</a></div>
         <div class="breadcrumb-item">Edit SubCategory</div>
       </div>
     </div>
 
     <div class="section-body">
       <div class="card">
-        <!-- Back Button -->
         <div class="form-group text-left ml-3 mt-2">
           <button 
               type="button" 
@@ -26,12 +21,11 @@
               <i class="fas fa-arrow-left mr-2"></i> Back
           </button>
         </div>
-
-        <!-- Form Section -->
         <form action="/subAdmin/update_subCategory" id="editForm" method="post" enctype="multipart/form-data">
-          <!-- Image Upload Section -->
-          <div class="row mt-sm-4 justify-content-center">
-            <div class="col-12 col-md-6">
+          <!-- Image and Input Fields Section -->
+          <div class="row mt-sm-4 align-items-center justify-content-center">
+            <!-- Image Section -->
+            <div class="col-12 col-md-4">
               <div class="card profile-widget bg-white">
                 <div class="profile-widget-header text-center py-3">
                   <img alt="image" width="200" height="200" id="blah" src="<%=subCategory.image%>"
@@ -42,33 +36,34 @@
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="form-group w-100">
-            <label for="category" class="font-weight-bold">Select Category</label>
-            <select id="category" name="categoryId"  class="form-control small-input" required>
-              <% restaurantData.category.forEach(cat => { %>
-                <option value="<%= cat._id %>" <%= cat._id.toString() === subCategory.categoryId.toString() ? 'selected' : '' %>>
-                  <%= cat.name %>
-                </option>
-              <% }); %>
-            </select>
-          </div>
+            <!-- Input Fields Section -->
+            <div class="col-12 col-md-6">
+              <!-- Category Dropdown -->
+              <div class="form-group w-100 mb-3 text-center">
+                <label for="category" class="font-weight-bold d-block mb-2 text-center mx-auto">Select Category</label>
+                <select id="category" name="categoryId" class="form-control small-input" required>
+                  <% restaurantData.category.forEach(cat => { %>
+                    <option value="<%= cat._id %>" <%= cat._id.toString() === subCategory.categoryId.toString() ? 'selected' : '' %>>
+                      <%= cat.name %>
+                    </option>
+                  <% }); %>
+                </select>
+              </div>
 
-          <!-- Input Fields Section -->
-          <div class="row justify-content-center mt-4">
-            <div class="col-12 col-md-6 text-center">
               <!-- SubCategory Name Input -->
-              <div class="form-group w-100 floating-addon">
+              <div class="form-group w-100 floating-addon mb-3">
                 <label for="name" class="d-none">Enter SubCategory Name</label>
                 <input type="text" class="form-control small-input" name="name" value="<%=subCategory.name%>"
                   placeholder="SubCategory Name" required>
               </div>
+
               <!-- Hidden Inputs -->
               <input type="hidden" name="id" value="<%=subCategory._id%>">
               <input type="hidden" name="restaurant" value="<%=restaurant%>">
+
               <!-- Submit Button -->
-              <div class="mt-3">
+              <div class="form-group text-center mt-3">
                 <button type="submit" class="btn btn-success w-50">Update</button>
               </div>
             </div>
@@ -104,7 +99,29 @@
 
   .btn-success.w-50 {
     max-width: 200px; /* Adjust button width */
-    margin-bottom: 20px; /* Add space below the button */
+  }
+
+  /* Adjust image container spacing */
+  .profile-widget-header img {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  /* Adjust the spacing between form fields */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  /* Align the label and input field */
+  .form-group label {
+    display: block; /* Ensure label is block-level to be on top */
+    margin-bottom: 5px; /* Add some space between label and input */
+    text-align: center; /* Center-align the label text */
+  }
+
+  .form-group select {
+    display: block;
+    margin: 0 auto; /* Center-align the dropdown */
   }
 </style>
 

@@ -22,9 +22,10 @@
           </button>
         </div>
         <form action="/subAdmin/update_category" id="editForm" method="post" enctype="multipart/form-data">
-          <!-- Image Container -->
-          <div class="row mt-sm-4 justify-content-center">
-            <div class="col-12 col-md-6">
+          <!-- Image and Input Fields Section -->
+          <div class="row mt-sm-4 align-items-center justify-content-center">
+            <!-- Image Section -->
+            <div class="col-12 col-md-4">
               <div class="card profile-widget bg-white">
                 <div class="profile-widget-header text-center py-3">
                   <img alt="image" width="200" height="200" id="blah" src="<%=category.image%>"
@@ -35,11 +36,9 @@
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Input Fields Section -->
-          <div class="row justify-content-center mt-4">
-            <div class="col-12 col-md-6 text-center">
+            <!-- Input Fields Section -->
+            <div class="col-12 col-md-6">
               <!-- Category Name Input -->
               <div class="form-group w-100 floating-addon">
                 <label for="name" class="d-none">Enter Category Name</label>
@@ -50,7 +49,7 @@
               <input type="hidden" name="id" value="<%=category._id%>">
               <input type="hidden" name="restaurant" value="<%=restaurant%>">
               <!-- Submit Button -->
-              <div class="mt-3">
+              <div class="form-group text-center mt-3">
                 <button type="submit" class="btn btn-success w-50">Update</button>
               </div>
             </div>
@@ -86,7 +85,6 @@
 
   .btn-success.w-50 {
     max-width: 200px; /* Adjust button width */
-    margin-bottom: 20px; /* Add space below the button */
   }
 </style>
 
