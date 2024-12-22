@@ -27,49 +27,49 @@ module.exports=function(io){
     // router.post('/Update_terms',  controllers.cmsController.Update_terms)
     // router.get('/privacy_policy', sessionSubAdmin,  controllers.cmsController.privacy_policy_user)
 
-    router.get("/bannerList/:_id",sessionSubAdmin, controllers.subAdminController.bannerList);
-    router.post("/addBanner_view/:restaurantId",sessionSubAdmin, controllers.subAdminController.addBanner_view)
-    router.post("/addBanner/:restaurantId",sessionSubAdmin, controllers.subAdminController.create_Bannner)
+    router.get("/bannerList",sessionSubAdmin, controllers.subAdminController.bannerList);
+    router.get("/addBanner_view",sessionSubAdmin, controllers.subAdminController.addBanner_view)
+    router.post("/addBanner",sessionSubAdmin, controllers.subAdminController.create_Bannner)
     router.post("/delete_banner",sessionSubAdmin, controllers.subAdminController.deleteBanner)
 
     router.post("/restaurantDashboardFilter",sessionSubAdmin, controllers.subAdminController.restaurant_dashboard_filter)
     router.post('/restaurant_status', controllers.subAdminController.restaurant_status)
 
 
-    router.get("/restaurant_category/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_category)
-    router.get("/add_category/:_id",sessionSubAdmin, controllers.subAdminController.add_category)
+    router.get("/restaurant_category",sessionSubAdmin, controllers.subAdminController.restaurant_category)
+    router.get("/add_category",sessionSubAdmin, controllers.subAdminController.add_category)
     router.post("/Create_category",sessionSubAdmin, controllers.subAdminController.Create_category)
-    router.get("/edit_category/:restaurantId/:_id",sessionSubAdmin, controllers.subAdminController.edit_category)
+    router.get("/edit_category/:_id",sessionSubAdmin, controllers.subAdminController.edit_category)
     router.post("/update_category",sessionSubAdmin, controllers.subAdminController.update_category)
 
 
-    router.get("/restaurant_subCategory/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_subCategory)
-    router.get("/add_subCategory/:_id",sessionSubAdmin, controllers.subAdminController.add_subCategory)
+    router.get("/restaurant_subCategory",sessionSubAdmin, controllers.subAdminController.restaurant_subCategory)
+    router.get("/add_subCategory",sessionSubAdmin, controllers.subAdminController.add_subCategory)
     router.post("/Create_subCategory",sessionSubAdmin, controllers.subAdminController.Create_subCategory)
-    router.get("/edit_subCategory/:restaurantId/:_id",sessionSubAdmin, controllers.subAdminController.edit_subCategory)
+    router.get("/edit_subCategory/:_id",sessionSubAdmin, controllers.subAdminController.edit_subCategory)
     router.post("/update_subCategory",sessionSubAdmin, controllers.subAdminController.update_subCategory)
     
 
-    router.get("/restaurant_product/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_product)
-    router.get("/restaurant_product_view/:restaurantId/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_product_view)
+    router.get("/restaurant_product",sessionSubAdmin, controllers.subAdminController.restaurant_product)
+    router.get("/restaurant_product_view/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_product_view)
 
 
     //<------------------------------ Orders ------------------------->
-    router.get('/order_list/:_id', sessionSubAdmin, controllers.subAdminController.order_list);
-    router.get('/view_order/:restaurant/:_id', sessionSubAdmin, controllers.subAdminController.view_order);
+    router.get('/order_list', sessionSubAdmin, controllers.subAdminController.order_list);
+    router.get('/view_order/:_id', sessionSubAdmin, controllers.subAdminController.view_order);
 
-    router.get('/active_order_list/:_id', sessionSubAdmin, controllers.subAdminController.active_order_list);
-    router.get('/active_view_order/:restaurant/:_id', sessionSubAdmin, controllers.subAdminController.active_view_order);
+    router.get('/active_order_list', sessionSubAdmin, controllers.subAdminController.active_order_list);
+    router.get('/active_view_order/:_id', sessionSubAdmin, controllers.subAdminController.active_view_order);
 
-    router.get('/delivered_order_list/:_id', sessionSubAdmin, controllers.subAdminController.delivered_order_list);
-    router.get('/delivered_view_order/:restaurant/:_id', sessionSubAdmin, controllers.subAdminController.delivered_view_order);
+    router.get('/delivered_order_list', sessionSubAdmin, controllers.subAdminController.delivered_order_list);
+    router.get('/delivered_view_order/:_id', sessionSubAdmin, controllers.subAdminController.delivered_view_order);
 
-    router.get('/cancel_order_list/:_id', sessionSubAdmin, controllers.subAdminController.cancel_order_list);
-    router.get('/cancel_view_order/:restaurant/:_id', sessionSubAdmin, controllers.subAdminController.cancel_view_order);
+    router.get('/cancel_order_list', sessionSubAdmin, controllers.subAdminController.cancel_order_list);
+    router.get('/cancel_view_order/:_id', sessionSubAdmin, controllers.subAdminController.cancel_view_order);
 
 
-    router.get('/pending_order_list/:_id', sessionSubAdmin, controllers.subAdminController.pending_order_list);
-    router.get('/pending_view_order/:restaurant/:_id', sessionSubAdmin, controllers.subAdminController.pending_view_order);
+    router.get('/pending_order_list', sessionSubAdmin, controllers.subAdminController.pending_order_list);
+    router.get('/pending_view_order/:_id', sessionSubAdmin, controllers.subAdminController.pending_view_order);
 
 
     return router

@@ -4,7 +4,7 @@
       <h1>Edit Category</h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="/subAdmin/dashboard">Dashboard</a></div>
-        <div class="breadcrumb-item"><a href='/subAdmin/restaurant_category/<%=restaurant%>'>Category</a></div>
+        <div class="breadcrumb-item"><a href='/subAdmin/restaurant_category'>Category</a></div>
         <div class="breadcrumb-item">Edit Category</div>
       </div>
     </div>
@@ -57,7 +57,6 @@
               </div>
               <!-- Hidden Inputs -->
               <input type="hidden" name="id" value="<%=category._id%>">
-              <input type="hidden" name="restaurant" value="<%=restaurant%>">
               <!-- Submit Button -->
               <div class="form-group text-center mt-3">
                 <button type="submit" class="btn btn-success w-50">Update</button>

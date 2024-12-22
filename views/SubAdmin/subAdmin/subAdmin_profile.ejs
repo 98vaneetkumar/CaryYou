@@ -15,7 +15,7 @@
               <div class="card profile-widget">
                 <div class="profile-widget-header text-center py-3">
                   <% if(session.image !='' ) { %>
-                    <img alt="image" width="200" height="200" id="blah" src="<%=session.subAdmin.image%>"
+                    <img alt="image" width="200" height="200" id="blah" src="<%=users.image%>"
                       class="profile_img rounded-circle"></td>
                     <% } else { %>
                       <img src="/assets/img/defaultimage.jpg" width="200" height="200" id="blah"
@@ -31,14 +31,14 @@
               <div class="card-body">
                 <div class="form-group col-12 floating-addon">
                   <label>Name</label>
-                  <input type="text" class="form-control" name="name" value="<%=session.subAdmin.fullName%>" required>
+                  <input type="text" class="form-control" name="name" value="<%=users.fullName%>" required>
                   <input type="hidden" name="hiddenid" value="">
                 </div>
 
                 <div class="form-group col-12 floating-addon">
                   <label>Email</label>
                   <div class="input-group">
-                    <input type="email" class="form-control" name="email" value="<%=session.subAdmin.email%>" disabled>
+                    <input type="email" class="form-control" name="email" value="<%=users.email%>" disabled>
                     <input type="hidden" name="" value="">
                     <div class="invalid-feedback">
                       Please fill in the email
@@ -55,7 +55,7 @@
                       name="phone"
                       oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                       maxlength="12"
-                      value="<%=session.subAdmin.phoneNumber%>"
+                      value="<%=users.phoneNumber%>"
                       required
                     />
                     <div class="invalid-feedback">
@@ -67,7 +67,7 @@
                 <!-- New Organisation Name Field -->
                 <div class="form-group col-12 floating-addon">
                   <label>Organisation Name</label>
-                  <input type="text" class="form-control" name="organisation" value="<%= session.restaurant?.name %>" required>
+                  <input type="text" class="form-control" name="organisation" value="<%= restaurantDetail.name %>" required>
                   <div class="invalid-feedback">
                     Please fill in the organisation name
                   </div>

@@ -10,6 +10,16 @@
         </div>
       </div>
       <div class="card">
+        <div class="form-group text-left ml-3 mt-2">
+          <button 
+              type="button" 
+              class="btn btn-dark rounded-pill d-flex align-items-center px-3" 
+              onclick="goBack()" 
+              aria-label="Go Back"
+          >
+              <i class="fas fa-arrow-left mr-2"></i> Back
+          </button>
+        </div>
         <div class="card-body">
           <form action="/subAdmin/addBanner" id="addForm" enctype="multipart/form-data" method="post">
             <div class="row mt-sm-4 justify-content-center">
@@ -55,6 +65,9 @@
   }
 </style>
 <script>
+    function goBack() {
+    window.history.back();
+  }
   function previewImage(event) {
     const reader = new FileReader();
     reader.onload = function () {

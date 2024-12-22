@@ -108,7 +108,7 @@ module.exports = {
         user,
         provider,
         restaurantId,
-        restaurant: restaurantId._id,
+        // restaurant: restaurantId._id,
         servicesdata: 0,
         contactus: 0,
         orders,
@@ -121,6 +121,7 @@ module.exports = {
         subcategories: restaurantId.subCategory.length || 0,
         products: restaurantId.products.length || 0,
         returnrequests: 0,
+        banners:restaurantId.banner_image.length || 0,
         session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
@@ -134,10 +135,16 @@ module.exports = {
   subAdmin_profile: async (req, res) => {
     try {
       let title = "subAdmin_profile";
+      let users = await Models.userModel.findOne({
+        _id: req.session.subAdmin._id,
+      });
+      let restaurantDetail=await Models.restaurantModel.findOne({userId:req.session.subAdmin._id})
       res.render("SubAdmin/subAdmin/subAdmin_profile", {
         title,
-        restaurant:req.session.restaurant._id,
-        session: req.session,
+        // restaurant:req.session.restaurant._id,
+        users,
+        restaurantDetail,
+        session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
     } catch (error) {
@@ -182,7 +189,7 @@ module.exports = {
       let title = "change_password";
       res.render("SubAdmin/subAdmin/change_password", {
         title,
-        restaurant:req.session.restaurant._id,
+        // restaurant:req.session.restaurant._id,
         session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
@@ -233,7 +240,7 @@ module.exports = {
       res.render("SubAdmin/commission/commission", {
         title,
         users,
-        restaurant:req.session.restaurant._id,
+        // restaurant:req.session.restaurant._id,
         session: req.session.subAdmin,
         msg: req.flash("msg"),
       });
@@ -266,14 +273,14 @@ module.exports = {
     try {
       const title = "banners";
       const viewuser = await Models.restaurantModel
-        .findById({ _id: req.params._id })
+        .findById({ _id: req.session.restaurant._id })
  
       res.render(
         "SubAdmin/banner/banner_list",
         {
           title,
           viewuser,
-          restaurant: req.params._id,
+          // restaurant: req.params._id,
           session: req.session.subAdmin,
           msg: req.flash("msg"),
         }
@@ -289,7 +296,7 @@ module.exports = {
       res.render("SubAdmin/banner/add_banner", 
         { 
           title,
-          restaurant:req.params.restaurantId,
+          // restaurant:req.params.restaurantId,
           session:req.session.subAdmin, 
           msg: req.flash("msg")||"" 
         });
@@ -300,7 +307,25 @@ module.exports = {
   },
   create_Bannner:async(req,res)=>{
     try {
-      
+      let profilePicturePath = null;
+      if (req.files && req.files.image) {
+            profilePicturePath = await helper.fileUpload(
+              req.files.image
+            );
+      }
+      let objToSave={
+          image:profilePicturePath
+        }
+      await Models.restaurantModel.findByIdAndUpdate(
+        { _id: req.session.restaurant._id },
+        {
+          $push: { banner_image: objToSave }, // Push the new subCategoryObj
+        },
+        {
+          upsert: true, // Create the document if it doesn't exist
+        }// Creates the document if it doesn't exist
+      );
+        res.redirect(`bannerList`);
     } catch (error) {
       throw error
     }
@@ -308,7 +333,17 @@ module.exports = {
   deleteBanner:async(req,res)=>{
     try {
       let _id=req.body.id
-      
+      await Models.restaurantModel.findByIdAndUpdate(
+        { _id: req.session.restaurant._id },
+        {
+          $pull: { banner_image: { _id: _id } }, // Match the object by its _id
+        },
+        {
+          new: true // Return the updated document
+        }
+      );
+      res.redirect(`bannerList`);
+
     } catch (error) {
       throw error;
     }
@@ -434,14 +469,25 @@ module.exports = {
         { $count: "matchingProductCount" },
       ];
     
+      const bannerPipeline = [
+        { $match: { _id: new mongoose.Types.ObjectId(req.body.id) } },
+        { $unwind: "$banner_image" },
+        // Only apply date filter if startDate and endDate are defined
+        ...(startDate && endDate ? [{ $match: { "banner_image.createdAt": { $gte: startDate, $lte: endDate } } }] : []),
+        { $count: "matchingbannerCount" },
+      ];
       // Execute the aggregation pipelines
       const categoryResult = await Models.restaurantModel.aggregate(categoryPipeline);
       const subCategoryResult = await Models.restaurantModel.aggregate(subCategoryPipeline);
       const productResult = await Models.restaurantModel.aggregate(productPipeline);
+      const bannerResult = await Models.restaurantModel.aggregate(bannerPipeline);
+
     
       const category = categoryResult.length > 0 ? categoryResult[0].matchingCategoriesCount : 0;
       const subcategory = subCategoryResult.length > 0 ? subCategoryResult[0].matchingSubCategoriesCount : 0;
       const product = productResult.length > 0 ? productResult[0].matchingProductCount : 0;
+      const banners = bannerResult.length > 0 ? bannerResult[0].matchingbannerCount : 0;
+
     
     
       return res.json({
@@ -449,6 +495,7 @@ module.exports = {
         category,
         subCategory: subcategory,
         products: product,
+        banners:banners,
         orders,
         pendingOrders,
         activeOrders,
@@ -501,7 +548,7 @@ module.exports = {
     try {
       const title = "Restaurant Category List";
       const viewuser = await Models.restaurantModel
-        .findById({ _id: req.params._id })
+        .findById({ _id: req.session.restaurant._id })
         .populate("userId", "name email"); // Fetch limited fields if possible; 
         if (viewuser && viewuser.category) {
           // Sort categories by createdAt in descending order (latest first)
@@ -512,7 +559,7 @@ module.exports = {
         {
           title,
           viewuser,
-          restaurant: req.params._id,
+          // restaurant: req.params._id,
           session: req.session.subAdmin,
           msg: req.flash("msg"),
         }
@@ -528,7 +575,7 @@ module.exports = {
       res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/add_category", 
         { 
           title: title,
-          restaurant: req.params._id, 
+          // restaurant: req.params._id, 
           session:req.session.subAdmin,
           msg: req.flash("msg")||""
           });
@@ -553,7 +600,7 @@ module.exports = {
        
           // Update restaurant model to add the subcategory
       await Models.restaurantModel.findByIdAndUpdate(
-        { _id: req.body._id },
+        { _id: req.session.restaurant._id },
         {
           $push: { category: objToSave }, // Push the new subCategoryObj
         },
@@ -561,7 +608,7 @@ module.exports = {
           upsert: true, // Create the document if it doesn't exist
         }// Creates the document if it doesn't exist
       );
-        res.redirect(`restaurant_category/${req.body._id}`);
+        res.redirect(`restaurant_category`);
       return
     } catch (error) {
       throw error
@@ -570,13 +617,13 @@ module.exports = {
   edit_category:async(req,res)=>{
    try {
     const title = "Restaurant Category List";
-    let restaurant = await Models.restaurantModel.findOne({_id:req.params.restaurantId});
+    let restaurant = await Models.restaurantModel.findOne({_id:req.session.restaurant._id});
     const category = restaurant.category.find(category => category._id.toString() === req.params._id);
-
+console.log("Restaurant category",category)
     res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/edit_category", 
       { 
         title: title,
-        restaurant: req.params.restaurantId, 
+        // restaurant: req.params.restaurantId, 
         category:category,
         session:req.session.subAdmin,
         msg: req.flash("msg")||""
@@ -596,7 +643,7 @@ module.exports = {
       }
     
       // Find the restaurant
-      let restaurant = await Models.restaurantModel.findOne({ _id: req.body.restaurant });
+      let restaurant = await Models.restaurantModel.findOne({ _id: req.session.restaurant._id });
     
       // Find the specific category
       const categoryIndex = restaurant.category.findIndex(category => category._id.toString() === req.body.id);
@@ -625,7 +672,7 @@ module.exports = {
       // Save the updated restaurant document
       await restaurant.save();
     
-      res.redirect(`restaurant_category/${req.body.restaurant}`);
+      res.redirect(`restaurant_category`);
     } catch (error) {
       console.error(error);
       throw error;
@@ -637,7 +684,7 @@ module.exports = {
 
       const title = "Restaurant subCategory List";
       const viewuser = await Models.restaurantModel
-        .findById(req.params._id)
+        .findById(req.session.restaurant._id)
         .populate("userId") // Populate user information
         .sort({ createdAt: -1 })
         .lean(); // Use `.lean()` to get a plain JavaScript object
@@ -666,7 +713,7 @@ module.exports = {
         {
           title,
           viewuser,
-          restaurant: req.params._id,
+          // restaurant: req.params._id,
           session: req.session.subAdmin,
           msg: req.flash("msg"),
         }
@@ -679,11 +726,11 @@ module.exports = {
   add_subCategory:async(req,res)=>{
     try {
       const title = "Restaurant subCategory List";
-      let restaurant=await Models.restaurantModel.findOne({_id:req.params._id})
+      let restaurant=await Models.restaurantModel.findOne({_id:req.session.restaurant._id})
       res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/add_subCategory", 
         { 
           title: title,
-          restaurant: req.params._id, 
+          // restaurant: req.params._id, 
           category:restaurant.category,
           session:req.session.subAdmin,
           msg: req.flash("msg")||""
@@ -711,7 +758,7 @@ module.exports = {
   
       // Update restaurant model to add the subcategory
       await Models.restaurantModel.findByIdAndUpdate(
-        { _id: req.body._id },
+        { _id: req.session.restaurant._id },
         {
           $push: { subCategory: subCategoryObj }, // Push the new subCategoryObj
         },
@@ -720,7 +767,7 @@ module.exports = {
         }// Creates the document if it doesn't exist
       );
 
-      res.redirect(`restaurant_subCategory/${req.body._id}`);
+      res.redirect(`restaurant_subCategory`);
     } catch (error) {
       console.error(error);
       throw error;
@@ -731,13 +778,13 @@ module.exports = {
     try {
       const title = "Restaurant subCategory List";
       
-      let restaurant1 = await Models.restaurantModel.findOne({ _id: req.params.restaurantId });
+      let restaurant1 = await Models.restaurantModel.findOne({ _id: req.session.restaurant._id });
 
       const subCategory = restaurant1.subCategory.find(subCategory => subCategory._id.toString() === req.params._id);
 
       res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/edit_subcategory", {
         title: title,
-        restaurant: req.params.restaurantId,
+        // restaurant: req.params.restaurantId,
         restaurantData:restaurant1,
         subCategory: subCategory,
         session: req.session.subAdmin,
@@ -751,8 +798,6 @@ module.exports = {
   
   update_subCategory: async (req, res) => {
     try {
-      console.log("req.body",req.body)
-      // return
       const title = "Restaurant subCategory List";
       let profilePicturePath = null;
   
@@ -763,7 +808,7 @@ module.exports = {
   
       // Find the restaurant
       let restaurant = await Models.restaurantModel.findOne({
-        _id: req.body.restaurant,
+        _id: req.session.restaurant._id,
       });
   
       // Find the specific subcategory
@@ -795,7 +840,7 @@ module.exports = {
   
       // Save the updated restaurant document
       await restaurant.save();
-     res.redirect(`restaurant_subCategory/${req.body.restaurant}`);
+     res.redirect(`restaurant_subCategory`);
 
     } catch (error) {
       console.error(error);
@@ -807,7 +852,7 @@ module.exports = {
     try {
       let title = "provider_list";
       const viewuser = await Models.restaurantModel
-        .findById(req.params._id)
+        .findById(req.session.restaurant._id)
         .populate("userId") // Populate user information
         .lean(); // Use `.lean()` to get a plain JavaScript object
 
@@ -835,7 +880,7 @@ module.exports = {
         {
           title,
           viewuser,
-          restaurant: req.params._id,
+          // restaurant: req.params._id,
           session: req.session.subAdmin,
           msg: req.flash("msg"),
         }
@@ -848,12 +893,12 @@ module.exports = {
   restaurant_product_view: async (req, res) => {
     try {
       let title = "provider_list";
-      const restaurantId = req.params.restaurantId; // Restaurant ID from the request
+      // const restaurantId = req.params.restaurantId; // Restaurant ID from the request
       const productId = req.params._id; // Product ID from the request
 
       // Fetch the restaurant data by restaurantId and populate the userId
       const restaurant = await Models.restaurantModel
-        .findById(restaurantId)
+        .findById({_id:req.session.restaurant._id})
         .lean();
 
       if (!restaurant) {
@@ -898,7 +943,7 @@ module.exports = {
           title,
           productId,
           restaurantName: restaurant.name,
-          restaurant: req.params.restaurantId,
+          // restaurant: req.params.restaurantId,
           product,
           session: req.session.subAdmin,
           msg: req.flash("msg") || "",
@@ -916,7 +961,7 @@ module.exports = {
     try {
       const title = "order_list";
       const orders = await Models.orderModel
-        .find({restaurant: req.params._id})
+        .find({restaurant: req.session.restaurant._id})
         .populate("orderBy", "fullName")
         .populate("restaurant", "name")
         .sort({ createdAt: -1 });
@@ -935,7 +980,7 @@ module.exports = {
 
       res.render("SubAdmin/orders/order_list", {
         title,
-        restaurant: req.params._id,
+        // restaurant: req.params._id,
         orderdata: formattedOrders,
         session: req.session.subAdmin, // Ensure session data is passed here
         msg: req.flash("msg") || "", // Flash message
@@ -978,7 +1023,7 @@ module.exports = {
       res.render("SubAdmin/orders/view_order", {
         title, // Pass the title to the view
         order, // Pass the order details to the view
-        restaurant:req.params.restaurant,
+        // restaurant:req.params.restaurant,
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.subAdmin, // Pass session details (if needed)
         msg: req.flash("msg"), // Pass any flash messages (if needed)
@@ -997,7 +1042,7 @@ module.exports = {
     try {
       const title = "active_orders";
       const orders = await Models.orderModel
-        .find({ status: 4, restaurant: req.params._id })
+        .find({ status: 4, restaurant: req.session.restaurant._id })
         .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
         .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
         .sort({ createdAt: -1 });
@@ -1015,7 +1060,7 @@ module.exports = {
 
       res.render("SubAdmin/orders/active_order_list", {
         title,
-        restaurant: req.params._id,
+        // restaurant: req.params._id,
         orderdata: formattedOrders,
         session: req.session.subAdmin, // Ensure session data is passed here
         msg: req.flash("msg") || "", // Flash message
@@ -1060,7 +1105,7 @@ module.exports = {
       res.render("SubAdmin/orders/active_order_view", {
         title, // Pass the title to the view
         order, // Pass the order details to the view
-        restaurant:req.params.restaurant,
+        // restaurant:req.params.restaurant,
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.subAdmin, // Pass session details (if needed)
         msg: req.flash("msg"), // Pass any flash messages (if needed)
@@ -1079,7 +1124,7 @@ module.exports = {
     try {
       const title = "delivered_orders";
       const orders = await Models.orderModel
-        .find({ status: 2, restaurant: req.params._id })
+        .find({ status: 2, restaurant: req.session.restaurant._id })
         .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
         .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
         .sort({ createdAt: -1 });
@@ -1097,7 +1142,7 @@ module.exports = {
 
       res.render("SubAdmin/orders/delivered_order_list", {
         title,
-        restaurant: req.params._id,
+        // restaurant: req.params._id,
         orderdata: formattedOrders,
         session: req.session.subAdmin, // Ensure session data is passed here
         msg: req.flash("msg") || "", // Flash message
@@ -1142,7 +1187,7 @@ module.exports = {
       res.render("SubAdmin/orders/delivered_order_view", {
         title, // Pass the title to the view
         order, // Pass the order details to the view
-        restaurant:req.params.restaurant,
+        // restaurant:req.params.restaurant,
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.subAdmin, // Pass session details (if needed)
         msg: req.flash("msg"), // Pass any flash messages (if needed)
@@ -1160,7 +1205,7 @@ module.exports = {
     try {
       const title = "cancelled_orders";
       const orders = await Models.orderModel
-        .find({ status: 3, restaurant: req.params._id })
+        .find({ status: 3, restaurant: req.session.restaurant._id })
         .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
         .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
         .sort({ createdAt: -1 });
@@ -1178,7 +1223,7 @@ module.exports = {
 
       res.render("SubAdmin/orders/cancel_order_list", {
         title,
-        restaurant: req.params._id,
+        // restaurant: req.params._id,
         orderdata: formattedOrders,
         session: req.session.subAdmin, // Ensure session data is passed here
         msg: req.flash("msg") || "", // Flash message
@@ -1223,7 +1268,7 @@ module.exports = {
       res.render("SubAdmin/orders/cancel_order_view", {
         title, // Pass the title to the view
         order, // Pass the order details to the view
-        restaurant:req.params.restaurant,
+        // restaurant:req.params.restaurant,
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.subAdmin, // Pass session details (if needed)
         msg: req.flash("msg"), // Pass any flash messages (if needed)
@@ -1242,7 +1287,7 @@ module.exports = {
     try {
       const title = "pending_orders";
       const orders = await Models.orderModel
-        .find({ status: 1, restaurant: req.params._id })
+        .find({ status: 1, restaurant: req.session.restaurant._id })
         .populate("orderBy", "fullName") // Fetching only the 'name' field of the user
         .populate("restaurant", "name") // Fetching only the 'name' field of the restaurant
         .sort({ createdAt: -1 });
@@ -1260,7 +1305,7 @@ module.exports = {
       console.log("formattedOrders", formattedOrders);
       res.render("SubAdmin/orders/pending_order_list", {
         title,
-        restaurant: req.params._id,
+        // restaurant: req.params._id,
         orderdata: formattedOrders,
         session: req.session.subAdmin, // Ensure session data is passed here
         msg: req.flash("msg") || "", // Flash message
@@ -1305,7 +1350,7 @@ module.exports = {
       res.render("SubAdmin/orders/pending_order_view", {
         title, // Pass the title to the view
         order, // Pass the order details to the view
-        restaurant:req.params.restaurant,
+        // restaurant:req.params.restaurant,
         orderStatus: getOrderStatus(order.status), // Pass the order status
         session: req.session.subAdmin, // Pass session details (if needed)
         msg: req.flash("msg"), // Pass any flash messages (if needed)

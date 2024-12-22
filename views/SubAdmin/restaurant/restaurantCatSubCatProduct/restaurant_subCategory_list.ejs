@@ -11,7 +11,7 @@
     </div>
     <div class="d-flex justify-content-end mb-3">
       <a
-        href="/subAdmin/add_subCategory/<%=restaurant%>"
+        href="/subAdmin/add_subCategory"
         class="btn btn-sm"
         style="background-color: var(--theme); color: white"
       >
@@ -48,7 +48,7 @@
                 <td><%= data?.name %></td>
                 <td>
                   <div class="action-buttons">
-                    <a href="/subAdmin/edit_subCategory/<%= restaurant %>/<%= data?._id %>"
+                    <a href="/subAdmin/edit_subCategory/<%= data?._id %>"
                       class="btn btn-sm bg-warning" title="Edit subCategory">
                      <i class="fa fa-edit"></i> Edit
                    </a>

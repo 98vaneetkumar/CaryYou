@@ -23,7 +23,7 @@
       </div>
       <div id="restaurant_id" data-value="<%= restaurantId._id %>" hidden></div>
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-top">
-        <a href="/subAdmin/order_list/<%= restaurantId._id%>">
+        <a href="/subAdmin/order_list">
           <div
             class="card card-statistic-1"
             style="background: linear-gradient(135deg, #33cc33, #66ff66)"
@@ -44,7 +44,7 @@
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-top">
-        <a href="/subAdmin/pending_order_list/<%= restaurantId._id%>">
+        <a href="/subAdmin/pending_order_list">
           <div
             class="card card-statistic-1"
             style="background: linear-gradient(135deg, #cc9933, #ffd466)"
@@ -68,7 +68,7 @@
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-top">
-        <a href="/subAdmin/active_order_list/<%= restaurantId._id%>">
+        <a href="/subAdmin/active_order_list">
           <div
             class="card card-statistic-1"
             style="background: linear-gradient(135deg, #ffc300, #ffd966)"
@@ -89,7 +89,7 @@
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-top">
-        <a href="/subAdmin/delivered_order_list/<%= restaurantId._id%>">
+        <a href="/subAdmin/delivered_order_list">
           <div
             class="card card-statistic-1"
             style="background: linear-gradient(135deg, #33a1ff, #66c2ff)"
@@ -112,7 +112,7 @@
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-left">
-        <a href="/subAdmin/cancel_order_list/<%= restaurantId._id%>">
+        <a href="/subAdmin/cancel_order_list">
           <div
             class="card card-statistic-1"
             style="background: linear-gradient(135deg, #ff5733, #ff8c66)"
@@ -135,7 +135,7 @@
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-left">
-        <a href="/subAdmin/restaurant_category/<%= restaurantId._id%>">
+        <a href="/subAdmin/restaurant_category">
           <div
             class="card card-statistic-1"
             style="background: linear-gradient(135deg, #16a085, #48c9b0)"
@@ -156,7 +156,7 @@
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
-        <a href="/subAdmin/restaurant_subCategory/<%= restaurantId._id%>">
+        <a href="/subAdmin/restaurant_subCategory">
           <div
             class="card card-statistic-1"
             style="background: linear-gradient(135deg, #2980b9, #5dade2)"
@@ -177,7 +177,7 @@
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
-        <a href="/subAdmin/restaurant_product/<%= restaurantId._id%>">
+        <a href="/subAdmin/restaurant_product">
           <div
             class="card card-statistic-1"
             style="background: linear-gradient(135deg, #cb894c, #dfa172)"
@@ -220,26 +220,26 @@
       </div>
 
       <!-- Services Card -->
-      <!-- <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
-        <a href="#">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
+        <a href="/subAdmin/bannerList">
           <div
             class="card card-statistic-1"
-            style="background: linear-gradient(135deg, #33cc99, #66cc99)"
+            style="background: linear-gradient(135deg, #33cc99, #1de380)"
           >
             <div class="card-icon" style="background: rgba(38, 151, 114, 0.8)">
-              <i class="fas fa-list"></i>
+              <i class="fas fa-chess-board"></i>
             </div>
             <div class="card-wrap">
               <div class="card-header">
-                <h4 style="color: white; font-weight: bold"><b>Services</b></h4>
+                <h4 style="color: white; font-weight: bold"><b>Banners</b></h4>
               </div>
-              <div id="servicesdata" value="<%= servicesdata %>"  class="card-body" style="color: white; font-weight: bold">
-                <%= servicesdata %>
+              <div id="banners" value="<%= banners %>"  class="card-body" style="color: white; font-weight: bold">
+                <%= banners %>
               </div>
             </div>
           </div>
         </a>
-      </div>   -->
+      </div>  
 
       <!-- Contact Us Card -->
       <div class="col-lg-3 col-md-6 col-sm-6 col-12 animate-right">
@@ -268,7 +268,32 @@
 
 
   </section>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Category, SubCatgory, and Products</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="userGraph"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graph for Orders -->
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Order Statistics</h4>
+        </div>
+        <div class="card-body">
+          <canvas id="orderGraph"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
   .section-header {
@@ -307,8 +332,23 @@
     if (loader) loader.style.display = "none";
   }
 
-  // Update card data dynamically
+// Initial data setup for graphs
+let categoryCount =
+    parseInt(document.getElementById("categories").textContent) || 0;
+  let subCategoryCount =
+    parseInt(document.getElementById("subcategories").textContent) || 0;
+  let productCount =
+    parseInt(document.getElementById("products").textContent) || 0;
+  let pendingOrderCount =
+    parseInt(document.getElementById("pendingorders").textContent) || 0;
+  let activeOrderCount =
+    parseInt(document.getElementById("activeorders").textContent) || 0;
+  let cancelledOrderCount =
+    parseInt(document.getElementById("cancelledorders").textContent) || 0;  // Update card data dynamically
+
+    console.log("categoryCount",categoryCount,subCategoryCount)
   function updateCardData(data) {
+    document.getElementById("banners").textContent = data.banners||0
     document.getElementById("orders").textContent = data.orders || 0;
     document.getElementById("pendingorders").textContent =
       data.pendingOrders || 0;
@@ -322,6 +362,117 @@
     document.getElementById("subcategories").textContent =
       data.subCategory || 0;
     document.getElementById("products").textContent = data.products || 0;
+
+
+    categoryCount = data.category || 0;
+      subCategoryCount = data.subCategory || 0;
+      productCount = data.products || 0;
+      pendingOrderCount = data.pendingOrders || 0;
+      activeOrderCount = data.activeOrders || 0;
+      deliveredOrderCount = data.deliveredOrders || 0;
+      cancelledOrderCount = data.cancelledOrders || 0;
+
+      // Update charts
+      userGraph.data.datasets[0].data = [
+        categoryCount,
+        subCategoryCount,
+        productCount,
+      ];
+      userGraph.update();
+
+      orderGraph.data.datasets[0].data = [
+        pendingOrderCount,
+        activeOrderCount,
+        deliveredOrderCount,
+        cancelledOrderCount,
+      ];
+      orderGraph.update();
+
+  }
+
+  let userGraph, orderGraph;
+ // Initialize Charts
+ function initializeCharts() {
+    const userGraphCtx = document.getElementById("userGraph").getContext("2d");
+    const orderGraphCtx = document
+      .getElementById("orderGraph")
+      .getContext("2d");
+
+    // User Graph setup
+    userGraph = new Chart(userGraphCtx, {
+      type: "bar",
+      data: {
+        labels: ["Category", "SubCategory", "Products"],
+        datasets: [
+          {
+            label: "Count",
+            data: [10, 29, 30], // Initial data
+            backgroundColor: [
+              "#6666ff", // Category (solid blue)
+              "#33cccc", // SubCategory (solid cyan)
+              "#33cc99", // Products (solid greenish)
+            ],
+            borderColor: [
+              "#4444ff", // Category border (darker blue)
+              "#33aaaa", // SubCategory border (darker cyan)
+              "#33aa88", // Products border (darker greenish)
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: "Category, SubCategory, and Product" },
+        },
+      },
+    });
+
+    // Order Graph setup
+    orderGraph = new Chart(orderGraphCtx, {
+      type: "doughnut",
+      data: {
+        labels: [
+          "Pending Orders",
+          "Active Orders",
+          "Delivered Orders",
+          "Cancelled Orders",
+        ],
+        datasets: [
+          {
+            label: "Orders",
+            data: [
+              pendingOrderCount,
+              activeOrderCount,
+              deliveredOrderCount,
+              cancelledOrderCount,
+            ], // Initial data
+            backgroundColor: [
+              "#e68900", // Pending Orders (darker orange)
+              "#ffc300", // Active Orders (red-orange)
+              "#33a1ff", // Delivered Orders (light blue)
+              "#ff5733", // Cancelled Orders (yellow)
+            ],
+            borderColor: [
+              "#d39e00", // Pending Orders border (darker yellow)
+              "#e1a700", // Active Orders border (darker red-orange)
+              "#267bbf", // Delivered Orders border (darker blue)
+              "#d14b17", // Cancelled Orders border (darker yellow)
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: "bottom" },
+          title: { display: true, text: "Order Statistics" },
+        },
+      },
+    });
   }
 
   // Fetch data and update dashboard
@@ -347,7 +498,6 @@
       }
 
       const data = await response.json();
-console.log("data",data)
       // Update card content
       updateCardData(data);
     } catch (error) {
@@ -362,8 +512,13 @@ console.log("data",data)
     await fetchData();
   });
 
-  // Initialize dashboard on page load
-  document.addEventListener("DOMContentLoaded", () => {
-    fetchData(); // Initial data fetch
+  // // Initialize dashboard on page load
+  // document.addEventListener("DOMContentLoaded", () => {
+  //   fetchData(); // Initial data fetch
+  // });
+    // Initialize charts and set initial data on page load
+    document.addEventListener("DOMContentLoaded", () => {
+    initializeCharts(); // Initialize charts
+    fetchData(); // Fetch initial data
   });
 </script>

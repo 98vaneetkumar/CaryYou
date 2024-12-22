@@ -71,7 +71,10 @@ const restaurantSchema = new mongoose.Schema(
     banner_image: [
       {
         image: [{ type: String }],
+        createdAt: { type: Date, default: Date.now },
+        updatedAt: { type: Date, default: Date.now },
       },
+   
     ],
     openingTime: { type: String },
     closingTime: { type: String },
@@ -101,6 +104,10 @@ restaurantSchema.pre("save", function (next) {
 
   // Update timestamps for products
   this.products.forEach((item) => {
+    if (!item.createdAt) item.createdAt = now;
+    item.updatedAt = now;
+  });
+  this.banner_image.forEach((item) => {
     if (!item.createdAt) item.createdAt = now;
     item.updatedAt = now;
   });
