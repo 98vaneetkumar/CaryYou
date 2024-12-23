@@ -72,25 +72,26 @@
           <div class="buttons-container d-flex justify-content-between">
             <div class="status-btn">
               <% if (data?.status == 1) { %>
-              <button
-                id="restaurantId_<%= data._id %>"
-                class="btn btn-sm btn-success status"
-                data-id="<%= data._id %>"
-                value="0"
-              >
-                Active
-              </button>
+                <button
+                  id="product_<%= data._id %>"
+                  class="btn btn-sm btn-success status"
+                  data-id="<%= data._id %>"
+                  value="0"
+                >
+                  Active
+                </button>
               <% } else { %>
-              <button
-                id="restaurantId_<%= data._id %>"
-                class="btn btn-sm btn-danger status"
-                data-id="<%= data._id %>"
-                value="1"
-              >
-                In-Active
-              </button>
+                <button
+                  id="product_<%= data._id %>"
+                  class="btn btn-sm btn-danger status"
+                  data-id="<%= data._id %>"
+                  value="1"
+                >
+                  In-Active
+                </button>
               <% } %>
             </div>
+            
             <div class="view-edit-delete-btn">
               <!-- View Button -->
               <a
@@ -384,3 +385,40 @@ swalWithBootstrapButtons.fire({
     });
   });
 </script> -->
+
+
+<script>
+  $(document).ready(function () {
+    $(".status").click(function () {
+      const button = $(this);
+      const productId = button.data("id");
+      const newStatus = button.val();
+
+      // Send AJAX request to toggle status
+      $.ajax({
+        url: "/subAdmin/product_status",
+        type: "POST",
+        data: {
+          productId: productId,
+          status: newStatus,
+        },
+        success: function (response) 
+        {
+          if (response.success) {
+            // Update button class and text based on new status
+            if (newStatus == 1) {
+              button.removeClass("btn-danger").addClass("btn-success").val("0").text("Active");
+            } else {
+              button.removeClass("btn-success").addClass("btn-danger").val("1").text("In-Active");
+            }
+          } else {
+            alert("Failed to update product status.");
+          }
+        },
+        error: function () {
+          alert("An error occurred. Please try again later.");
+        },
+      });
+    });
+  });
+</script>

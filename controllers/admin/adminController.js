@@ -1668,6 +1668,10 @@ module.exports = {
           categoryName: matchedCategory ? matchedCategory.name : null,
           categoryImage: matchedCategory ? matchedCategory.image : null,
       };
+      if (product) {
+        // Sort categories by createdAt in descending order (latest first)
+        product.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      }
       res.render("Admin/restaurant/restaurantCatSubCatProduct/restaurant_product_view", {
         title,
         productId,

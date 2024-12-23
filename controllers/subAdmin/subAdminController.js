@@ -1107,6 +1107,27 @@ console.log("Restaurant category",category)
       res.status(500).json({ message: "An error occurred while deleting the product" });
     }
   },
+  product_status:async(req,res)=>{
+    try {
+      const { productId, status } = req.body;
+
+      // Find the restaurant and update the specific product's status
+      const restaurant = await Models.restaurantModel.findOneAndUpdate(
+        { "products._id": productId },
+        { $set: { "products.$.status": parseInt(status) } },
+        { new: true }
+      );
+  
+      if (!restaurant) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+      res.json({ success: true, message: "Product status updated successfully", status: parseInt(status) });
+      // Redirect or respond after successful update
+      // res.redirect("restaurant_product"); // Ensure this matches your front-end route
+    } catch (error) {
+      throw error
+    }
+  },
   
   restaurant_product_view: async (req, res) => {
     try {
