@@ -51,6 +51,8 @@ module.exports=function(io){
     
 
     router.get("/restaurant_product",sessionSubAdmin, controllers.subAdminController.restaurant_product)
+    router.get("/add_product",sessionSubAdmin, controllers.subAdminController.add_product)
+    router.post("/Create_product",sessionSubAdmin, controllers.subAdminController.Create_product)
     router.get("/restaurant_product_view/:_id",sessionSubAdmin, controllers.subAdminController.restaurant_product_view)
 
 

@@ -875,6 +875,10 @@ console.log("Restaurant category",category)
         });
       }
 
+      if (viewuser && viewuser.products) {
+        // Sort categories by createdAt in descending order (latest first)
+        viewuser.products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      }
       res.render(
         "SubAdmin/restaurant/restaurantCatSubCatProduct/restaurant_product_list",
         {
@@ -890,6 +894,63 @@ console.log("Restaurant category",category)
       throw error;
     }
   },
+  add_product: async (req, res) => {
+    try {
+      const title = "provider_list";
+      const restaurant = await Models.restaurantModel.findOne({ _id: req.session.restaurant._id });
+      res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/add_product", {
+        title: title,
+        subcategories: restaurant.subCategory, // Categories associated with the restaurant
+        session: req.session.subAdmin, // Subadmin session data
+        msg: req.flash("msg") || "", // Flash messages, if any
+      });
+    } catch (error) {
+      console.log("error in add_product", error);
+      throw error;
+    }
+  },
+  Create_product: async (req, res) => {
+    try {
+      const title = "provider_list";
+      let productImagePath = [];
+  
+      // Handle file upload using helper method
+      if (req.files && req.files.images) {
+        const images = req.files.images;
+  
+        // Handle multiple image uploads
+        for (let i = 0; i < images.length; i++) {
+          const imagePath = await helper.fileUpload(images[i]);
+          productImagePath.push(imagePath);
+        }
+      }
+      // Prepare product object to save
+      const productObj = {
+        itemName: req.body.itemName,
+        price: req.body.price,
+        description: req.body.description,
+        size: req.body.size, // Optional
+        images: productImagePath, // Array of image paths
+        subCategoryId: req.body.subCategoryId,
+        restaurantId: req.session.restaurant._id, // Assuming the session has restaurant ID
+      };
+  
+      // Add the new product to the restaurant's products list
+      await Models.restaurantModel.findByIdAndUpdate(
+        { _id: req.session.restaurant._id },
+        { $push: { products: productObj } },
+        {
+          upsert: true, // Create the document if it doesn't exist
+        }// Creates the document if it doesn't exist  // Assuming `products` is an array field in restaurant schema
+      );
+  
+      // Redirect to product list page or send success response
+      res.redirect(`restaurant_product`);
+    } catch (error) {
+      console.error(error);  // Log error details
+      res.status(500).json({ error: error.message || "Failed to create product" });
+    }
+  },  
   restaurant_product_view: async (req, res) => {
     try {
       let title = "provider_list";

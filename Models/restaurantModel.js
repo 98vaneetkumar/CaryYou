@@ -9,6 +9,10 @@ const restaurantSchema = new mongoose.Schema(
       ref: "user",
     },
     name: { type: String },
+    type: {
+      type: Number, // 1 for restaurant, 2 for grocery store,
+      default: 0,
+    },
     image: { type: String },
     address: { type: String },
     location: {
@@ -74,7 +78,6 @@ const restaurantSchema = new mongoose.Schema(
         createdAt: { type: Date, default: Date.now },
         updatedAt: { type: Date, default: Date.now },
       },
-   
     ],
     openingTime: { type: String },
     closingTime: { type: String },
@@ -117,5 +120,4 @@ restaurantSchema.pre("save", function (next) {
 
 restaurantSchema.index({ location: "2dsphere" });
 
-module.exports =
-  mongoose.models.restaurant || mongoose.model("restaurant", restaurantSchema);
+module.exports = mongoose.models.restaurant || mongoose.model("restaurant", restaurantSchema);
