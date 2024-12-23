@@ -950,7 +950,85 @@ console.log("Restaurant category",category)
       console.error(error);  // Log error details
       res.status(500).json({ error: error.message || "Failed to create product" });
     }
-  },  
+  },
+  edit_product: async (req, res) => {
+    try {
+      const title = "provider_list";
+  
+      // Fetch the restaurant based on the session data
+      let restaurant = await Models.restaurantModel.findOne({ _id: req.session.restaurant._id });
+  
+      // Find the product from the restaurant's product list using the ID
+      const product = restaurant.products.find(products => products._id.toString() === req.params._id);
+      res.render("SubAdmin/restaurant/restaurantCatSubCatProduct/edit_product", {
+        title: title,
+        restaurantData: restaurant,
+        products: product,
+        session: req.session.subAdmin,
+        msg: req.flash("msg") || ""
+      });
+    } catch (error) {
+      console.error("Error in edit_product:", error);
+      res.status(500).send("An error occurred while processing the request");
+    }
+  },
+  update_product: async (req, res) => {
+    try {
+      console.log('=====', req.body)
+      // return;
+      const title = "provider_list";
+      let profilePicturePath = null;
+  
+      // Check and upload new image if provided
+      if (req.files && req.files.image) {
+        // Use helper function to upload image
+        profilePicturePath = await helper.fileUpload(req.files.image);
+      }
+  
+      // Find the restaurant
+      const restaurant = await Models.restaurantModel.findOne({ _id: req.session.restaurant._id });
+  
+      // Find the specific subcategory
+      const productIndex = restaurant.products.findIndex(products => products._id.toString() === req.body.id);
+  
+      if (productIndex === -1) {
+        return res.status(404).json({ message: "products not found" });
+      }
+  
+      // Prepare the update object
+      const updatedproducts = {
+        ...restaurant.products[productIndex],
+        itemName: req.body.itemName, // Update the name
+        price: req.body.price, // Update the price
+        size: req.body.size, // Update the size
+        description: req.body.description, // Update the description
+        subCategoryId: req.body.subcategory, // Update the subcategory
+      };
+  
+      // If a new profile image was uploaded
+      if (profilePicturePath) {
+        updatedproducts.image = profilePicturePath;
+  
+        // Delete the old image if it exists
+        if (restaurant.products[productIndex].image) {
+          await helper.deleteFile(restaurant.products[productIndex].image);
+        }
+      }
+  
+      // Update the specific products in the restaurant
+      restaurant.products[productIndex] = updatedproducts;
+  
+      // Save the updated restaurant document
+      await restaurant.save();
+  
+      // Redirect after success
+      res.redirect('/restaurant_products'); // Ensure the redirect path is correct
+    } catch (error) {
+      console.error("Error updating product:", error);
+      res.status(500).json({ message: "An error occurred while updating the product" });
+    }
+  },
+  
   restaurant_product_view: async (req, res) => {
     try {
       let title = "provider_list";
