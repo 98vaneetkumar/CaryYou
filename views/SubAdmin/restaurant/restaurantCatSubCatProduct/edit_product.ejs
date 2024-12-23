@@ -40,13 +40,16 @@
                       <!-- Plus button for uploading new images -->
                       <button type="button" class="plus-btn" onclick="document.getElementById('imgInput').click()">+</button>
                     </div>
+                   <!-- Updated File Input to Allow Multiple Selection -->
                     <input 
-                      type="file" 
-                      name="newImages" 
-                      id="imgInput" 
-                      accept="image/*" 
-                      onchange="previewImages(event)" 
-                      style="display: none;">
+                    type="file" 
+                    name="newImages[]" 
+                    id="imgInput" 
+                    accept="image/*" 
+                    multiple 
+                    onchange="previewImages(event)" 
+                    style="display: none;">
+
                   </div>
                 </div>
               </div>
@@ -251,54 +254,62 @@
 </style>
 
 <script>
-  function goBack() {
-    window.history.back();
-  }
+function goBack() {
+  window.history.back();
+}
+function previewImages(event) {
+  const files = event.target.files;
+  const imageContainer = document.getElementById("imageContainer");
 
-  function previewImages(event) {
-    const files = event.target.files;
-    const imageContainer = document.getElementById("imageContainer");
+  // Loop through all selected files and display thumbnails
+  Array.from(files).forEach((file) => {
+    const reader = new FileReader();
+    reader.onload = function () {
+      const imageThumbnail = document.createElement("div");
+      imageThumbnail.classList.add("image-thumbnail");
 
-    // Loop through selected files and display images with delete buttons
-    for (let i = 0; i < files.length; i++) {
-      const reader = new FileReader();
-      reader.onload = function () {
-        const imageThumbnail = document.createElement("div");
-        imageThumbnail.classList.add("image-thumbnail");
+      // Create the image element
+      const imgElement = document.createElement("img");
+      imgElement.src = reader.result;
+      imgElement.alt = "Uploaded Image";
+      imageThumbnail.appendChild(imgElement);
 
-        // Create image element
-        const imgElement = document.createElement("img");
-        imgElement.src = reader.result;
-        imageThumbnail.appendChild(imgElement);
-
-        // Create delete button
-        const deleteButton = document.createElement("button");
-        deleteButton.classList.add("delete-btn");
-        deleteButton.innerHTML = "&times;"; // X mark
-        deleteButton.onclick = function () {
-          imageThumbnail.remove();
-        };
-        imageThumbnail.appendChild(deleteButton);
-
-        // Append the image thumbnail to the container
-        imageContainer.appendChild(imageThumbnail);
+      // Create delete button
+      const deleteButton = document.createElement("button");
+      deleteButton.classList.add("delete-btn");
+      deleteButton.innerHTML = "&times;";
+      deleteButton.onclick = function () {
+        imageThumbnail.remove();
       };
-      reader.readAsDataURL(files[i]);
-    }
-  }
+      imageThumbnail.appendChild(deleteButton);
 
-  function deleteImage(imageSrc) {
-    // Make an AJAX request to delete the image from the server
-    fetch(`/subAdmin/delete_image?image=${imageSrc}`, {
-      method: 'DELETE',
-    })
-      .then(response => response.json())
-      .then(data => {
-        // If deletion is successful, remove the image from the DOM
-        if (data.success) {
-          const imageThumbnail = document.querySelector(`img[src='${imageSrc}']`).parentElement;
-          imageThumbnail.remove();
-        }
-      });
-  }
+      // Append thumbnail to the container
+      imageContainer.appendChild(imageThumbnail);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// Track removed images
+const removedImages = [];
+
+function deleteImage(imageSrc) {
+  removedImages.push(imageSrc);
+
+  // Remove the image element
+  const imageThumbnail = document.querySelector(`img[src='${imageSrc}']`).parentElement;
+  imageThumbnail.remove();
+}
+
+// Attach removed images to the form before submission
+document.getElementById("editProductForm").addEventListener("submit", function (event) {
+  // Attach removed images to a hidden input field
+  const removeImagesInput = document.createElement("input");
+  removeImagesInput.type = "hidden";
+  removeImagesInput.name = "removeImages";
+  removeImagesInput.value = JSON.stringify(removedImages);
+  this.appendChild(removeImagesInput);
+});
+
 </script>
+  

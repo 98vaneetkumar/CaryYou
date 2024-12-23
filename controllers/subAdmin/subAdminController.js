@@ -643,40 +643,47 @@ console.log("Restaurant category",category)
       }
     
       // Find the restaurant
-      let restaurant = await Models.restaurantModel.findOne({ _id: req.session.restaurant._id });
+      const restaurant = await Models.restaurantModel.findOne({
+        _id: req.session.restaurant._id,
+      });
     
-      // Find the specific category
-      const categoryIndex = restaurant.category.findIndex(category => category._id.toString() === req.body.id);
+      if (!restaurant) {
+        return res.status(404).json({ message: "Restaurant not found" });
+      }
     
-      if (categoryIndex === -1) {
+      // Find the specific category by its ID
+      const category = restaurant.category.find(
+        (cat) => cat._id.toString() === req.body.id
+      );
+    
+      if (!category) {
         return res.status(404).json({ message: "Category not found" });
       }
     
-      // Prepare the update object
-      const updatedCategory = {
-        ...restaurant.category[categoryIndex],
-        name: req.body.name,
-      };
+      // Update the category properties directly
+      category.name = req.body.name;
     
       if (profilePicturePath) {
-        updatedCategory.image = profilePicturePath;
-        // Delete the old image
-        if (restaurant.category[categoryIndex].image) {
-          await helper.deleteFile(restaurant.category[categoryIndex].image);
+        // Update the image if a new one is uploaded
+        const oldImagePath = category.image;
+        category.image = profilePicturePath;
+    
+        // Optionally delete the old image file
+        if (oldImagePath) {
+          await helper.deleteFile(oldImagePath);
         }
       }
-    
-      // Update the specific category
-      restaurant.category[categoryIndex] = updatedCategory;
     
       // Save the updated restaurant document
       await restaurant.save();
     
+      // Redirect to the appropriate route
       res.redirect(`restaurant_category`);
     } catch (error) {
-      console.error(error);
-      throw error;
+      console.error("Error updating category:", error);
+      res.status(500).json({ message: "An error occurred while updating the category" });
     }
+    
   },
 
   restaurant_subCategory: async (req, res) => {
@@ -798,54 +805,57 @@ console.log("Restaurant category",category)
   
   update_subCategory: async (req, res) => {
     try {
-      const title = "Restaurant subCategory List";
+      const title = "Restaurant SubCategory List";
       let profilePicturePath = null;
-  
+    
       // Check and upload new image if provided
       if (req.files && req.files.image) {
         profilePicturePath = await helper.fileUpload(req.files.image);
       }
-  
+    
       // Find the restaurant
-      let restaurant = await Models.restaurantModel.findOne({
+      const restaurant = await Models.restaurantModel.findOne({
         _id: req.session.restaurant._id,
       });
-  
-      // Find the specific subcategory
-      const subCategoryIndex = restaurant.subCategory.findIndex(
+    
+      if (!restaurant) {
+        return res.status(404).json({ message: "Restaurant not found" });
+      }
+    
+      // Find the specific subcategory by its ID
+      const subCategory = restaurant.subCategory.find(
         (subCat) => subCat._id.toString() === req.body.id
       );
-  
-      if (subCategoryIndex === -1) {
+    
+      if (!subCategory) {
         return res.status(404).json({ message: "Subcategory not found" });
       }
-  
-      // Prepare the update object
-      const updatedSubCategory = {
-        ...restaurant.subCategory[subCategoryIndex],
-        name: req.body.name,
-        categoryId:req.body.categoryId
-      };
-  
+    
+      // Update the fields of the existing subcategory
+      subCategory.name = req.body.name;
+      subCategory.categoryId = req.body.categoryId;
+    
       if (profilePicturePath) {
-        updatedSubCategory.image = profilePicturePath;
-        // Delete the old image
-        if (restaurant.subCategory[subCategoryIndex].image) {
-          await helper.deleteFile(restaurant.subCategory[subCategoryIndex].image);
+        // Update the image field with the new path
+        const oldImagePath = subCategory.image;
+        subCategory.image = profilePicturePath;
+    
+        // Optionally delete the old image file
+        if (oldImagePath) {
+          await helper.deleteFile(oldImagePath);
         }
       }
-  
-      // Update the specific subcategory
-      restaurant.subCategory[subCategoryIndex] = updatedSubCategory;
-  
+    
       // Save the updated restaurant document
       await restaurant.save();
-     res.redirect(`restaurant_subCategory`);
-
+    
+      // Redirect to the appropriate route
+      res.redirect(`restaurant_subCategory`);
     } catch (error) {
-      console.error(error);
-      throw error;
+      console.error("Error updating subcategory:", error);
+      res.status(500).json({ message: "An error occurred while updating the subcategory" });
     }
+    
   },
   
   restaurant_product: async (req, res) => {
@@ -974,58 +984,127 @@ console.log("Restaurant category",category)
   },
   update_product: async (req, res) => {
     try {
-      console.log('=====', req.body)
-      // return;
-      const title = "provider_list";
-      let profilePicturePath = null;
-  
-      // Check and upload new image if provided
-      if (req.files && req.files.image) {
-        // Use helper function to upload image
-        profilePicturePath = await helper.fileUpload(req.files.image);
-      }
-  
-      // Find the restaurant
-      const restaurant = await Models.restaurantModel.findOne({ _id: req.session.restaurant._id });
-  
-      // Find the specific subcategory
-      const productIndex = restaurant.products.findIndex(products => products._id.toString() === req.body.id);
-  
-      if (productIndex === -1) {
-        return res.status(404).json({ message: "products not found" });
-      }
-  
-      // Prepare the update object
-      const updatedproducts = {
-        ...restaurant.products[productIndex],
-        itemName: req.body.itemName, // Update the name
-        price: req.body.price, // Update the price
-        size: req.body.size, // Update the size
-        description: req.body.description, // Update the description
-        subCategoryId: req.body.subcategory, // Update the subcategory
-      };
-  
-      // If a new profile image was uploaded
-      if (profilePicturePath) {
-        updatedproducts.image = profilePicturePath;
-  
-        // Delete the old image if it exists
-        if (restaurant.products[productIndex].image) {
-          await helper.deleteFile(restaurant.products[productIndex].image);
+      const {
+        itemName,
+        price,
+        size,
+        description,
+        subcategory,
+        productId,
+        removeImages,
+      } = req.body;
+    
+      // Initialize an array to store the paths of newly uploaded images
+      let productImagePath = [];
+    
+      // Handle file uploads for new images
+      if (req.files && req.files['newImages[]']) {
+        // Ensure that the images are handled as an array
+        const images = Array.isArray(req.files['newImages[]'])
+          ? req.files['newImages[]']
+          : [req.files['newImages[]']];
+    
+        for (const image of images) {
+          const imagePath = await helper.fileUpload(image); // Upload using your helper
+          productImagePath.push(imagePath);
         }
       }
+    
+      // Fetch the restaurant document
+      const restaurant = await Models.restaurantModel.findOne({
+        _id: req.session.restaurant._id,
+      });
+      if (!restaurant) {
+        return res.status(404).json({ message: "Restaurant not found" });
+      }
+    
+      // Find the product to update by ID
+      const productIndex = restaurant.products.findIndex(
+        (product) => product._id.toString() === productId
+      );
+      if (productIndex === -1) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+    
+      // Retrieve the product to update
+      const productToUpdate = restaurant.products[productIndex];
+      let updatedImages = productToUpdate.images || [];
+    
+      // Handle removal of specified images
+      if (removeImages) {
+        const imagesToRemove = JSON.parse(removeImages); // Parse JSON string of image paths
+        updatedImages = updatedImages.filter((img) => !imagesToRemove.includes(img));
+    
+        // Optionally delete images from the server
+        for (const img of imagesToRemove) {
+          await helper.deleteFile(img); // Use helper to remove files
+        }
+      }
+    
+      // Add newly uploaded images to the list
+      updatedImages = [...updatedImages, ...productImagePath];
+    
+      // Update product details
+      restaurant.products[productIndex] = {
+        ...productToUpdate.toObject(), // Copy the original product object
+        itemName,
+        price,
+        size,
+        description,
+        subCategoryId: subcategory,
+        images: updatedImages,
+      };
+    
+      // Save the updated restaurant document
+      await restaurant.save();
+    
+      // Redirect or respond after successful update
+      res.redirect("restaurant_product"); // Ensure this matches your front-end route
+    } catch (error) {
+      console.error("Error updating product:", error);
+      res
+        .status(500)
+        .json({ message: "An error occurred while updating the product" });
+    }
+    
+  },
+  delete_product:async(req,res)=>{
+    try {
+      console.log("req.body:", req.body);
   
-      // Update the specific products in the restaurant
-      restaurant.products[productIndex] = updatedproducts;
+      const  productId  = req.body.id; // Extract the product ID from the request body
+  
+      // Fetch the restaurant document
+      const restaurant = await Models.restaurantModel.findOne({ _id: req.session.restaurant._id });
+      if (!restaurant) {
+        return res.status(404).json({ message: "Restaurant not found" });
+      }
+  
+      // Check if the product exists in the restaurant's products array
+      const productIndex = restaurant.products.findIndex((product) => product._id.toString() === productId);
+      if (productIndex === -1) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+  
+      // Remove the specific product
+      const removedProduct = restaurant.products.splice(productIndex, 1); // Remove and save the removed product
+      console.log("Removed Product:", removedProduct);
+  
+      // Optionally delete related images/files if required
+      if (removedProduct[0]?.images) {
+        for (const image of removedProduct[0].images) {
+          await helper.deleteFile(image); // Use your helper to delete files
+        }
+      }
   
       // Save the updated restaurant document
       await restaurant.save();
   
-      // Redirect after success
-      res.redirect('/restaurant_products'); // Ensure the redirect path is correct
+       // Redirect to product list page or send success response
+       res.redirect(`restaurant_product`);
     } catch (error) {
-      console.error("Error updating product:", error);
-      res.status(500).json({ message: "An error occurred while updating the product" });
+      console.error("Error deleting product:", error);
+      res.status(500).json({ message: "An error occurred while deleting the product" });
     }
   },
   
